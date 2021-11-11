@@ -25,7 +25,12 @@
 				</th:block>
 				<th:block sec:authorize="isAuthenticated()">
 					<li><a href="/member/logout">로그아웃</a></li>
-					<li><a href="#마이페이지">마이페이지</a></li>
+					<th:block sec:authorize="hasRole('MEMBER')">
+						<li><a href="#마이페이지">마이페이지</a></li>
+					</th:block>
+					<th:block sec:authorize="hasRole('ADMIN')">
+						<li><a href="#관리자페이지">관리자페이지</a></li>
+					</th:block>
 				</th:block>
 			</ul></li>
 	</ul>
