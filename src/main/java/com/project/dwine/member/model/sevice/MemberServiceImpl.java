@@ -31,7 +31,6 @@ public class MemberServiceImpl implements MemberService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		Member member = memberMapper.findMemberById(username);
-		System.out.println(member);
 
 		if (member == null) {
 			member = new Member();
@@ -49,6 +48,8 @@ public class MemberServiceImpl implements MemberService {
 
 		UserImpl user = new UserImpl(member.getUser_id(), member.getUser_pw(), authorities);
 		user.setDetails(member);
+		
+		System.out.println(user);
 
 		return user;
 	}
@@ -61,7 +62,6 @@ public class MemberServiceImpl implements MemberService {
 		HashMap<String, Object> joinMember = new HashMap<>();
 		joinMember.put("member", member);
 		joinMember.put("birthday", birth);
-		System.out.println(joinMember.get("birthday").getClass());
 
 		memberMapper.joinMember(joinMember);
 

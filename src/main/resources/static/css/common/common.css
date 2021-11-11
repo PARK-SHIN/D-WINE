@@ -47,6 +47,7 @@ header {
 	display: flex;
 	list-style: none;
 	text-align: center;
+	padding-left: 60px;
 }
 
 .menu_nav li {
@@ -56,7 +57,7 @@ header {
 .member_nav {
 	width: 25%;
 	display: flex;
-	padding: 8px 40px 8px 0;
+	padding: 8px 60px 8px 0;
 	justify-content: end;
 }
 
@@ -70,6 +71,7 @@ header {
 	list-style: none;
 	width: 104px;
 	text-align: center;
+	padding-bottom: 5px;
 }
 
 .member_nav img:hover {
@@ -92,14 +94,13 @@ header {
 	text-decoration: none;
 	color: #808080;
 	font-weight: bold;
-	padding: 2px;
-	font-size: 17px;
+	font-size: 15px;
 	transition: 0.5s;
 }
 
 .submenu a:hover {
 	color: #6B0E1F;
-	font-size: 20px;
+	font-size: 17px;
 }
 
 footer {
