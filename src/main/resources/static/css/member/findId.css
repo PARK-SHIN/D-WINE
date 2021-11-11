@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+.findId_header {
+	text-align: center;
+	font-family: 'Acme', sans-serif;
+	margin: 50px;
+}
+
+.findId_header a {
+	cursor: pointer;
+	text-decoration: none;
+	font-size: 96px;
+	color: #6B0E1F;
+}
+
+.findId_main {
+	text-align: center;
+}
+
+.findId_main p {
+	margin-top: 20px;
+}
+
+.findId_box {
+	display: inline-block;
+	padding: 50px;
+	border: solid #6B0E1F;
+	border-radius: 10%;
+}
+
+.findId_box input[name^=user] {
+	width: 400px;
+	height: 60px;
+	border-radius: 12px;
+	font-size: 20px;
+	padding-left: 10px;
+	border: 1px solid #808080;
+}
+
+.findId_box input:focus {
+	border: 1px solid #6B0E1F;
+	outline: 1px solid #6B0E1F;
+}
+
+.findId_box input[type="submit"], .findId_box input[type="button"] {
+	width: 205px;
+	height: 50px;
+	border-radius: 12px;
+	border: none;
+	color: white;
+	background-color: #6B0E1F;
+}

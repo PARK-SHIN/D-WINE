@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Acme&display=swap"
+	rel="stylesheet">
+<link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/member/joinConfirm.css" rel="stylesheet">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="joinConfirm_header">
+			<label><a href="/home">D.WINE</a></label>
+		</div>
+		<section class="joinConfirm_main">
+			<div class="joinConfirm_box">
+				<p>
+					<input type="button" id="kakaoLogin" value="회원가입"
+						onclick="goJoin()">
+				</p>
+					<h1>휴대폰 인증</h1>
+			</div>
+
+		</section>
+
+	</div>
+	<footer th:replace="common/footer :: footer"></footer>
+	<script>
+		function goJoin() {
+			location.href = '/member/join';
+		}
+	</script>
+</body>
+</html>

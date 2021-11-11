@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.project.dwine.member.model.dao.MemberMapper">
+	<resultMap type="com.project.dwine.member.model.vo.Member"
+		id="memberResultMap">
+		<id property="user_no" column="user_no" />
+		<result property="user_id" column="user_id" />
+		<result property="user_pw" column="user_pw" />
+		<result property="user_name" column="user_name" />
+		<result property="user_birth" column="user_birth" />
+		<result property="user_phone" column="user_phone" />
+		<result property="user_nickname" column="user_nickname" />
+		<result property="user_point" column="user_point" />
+		<result property="reported_count" column="reported_count" />
+		<association property="authority"
+			resultMap="authorityResultMap" />
+	</resultMap>
+	<resultMap type="com.project.dwine.member.model.vo.Authority"
+		id="authorityResultMap">
+		<id property="code" column="authority_no" />
+		<result property="name" column="authority_name" />
+	</resultMap>
+	
+	<select id="findMemberById" resultMap="memberResultMap">
+		select
+			m.user_no,
+			m.user_id,
+			m.user_pw,
+			m.user_name,
+			m.user_birth,
+			m.user_phone,
+			m.user_nickname,
+			m.user_point,
+			m.reported_count,
+			m.authority_no,
+			a.authority_no,
+			a.authority_name
+		from member m
+		left join authority a on(m.authority_no = a.authority_no)
+		where m.user_id = #{ userId }
+	</select>
+	
+	<insert id="joinMember" parameterType="java.util.Map">
+		insert into member(
+			user_no,
+			user_id,
+			user_pw,
+			user_name,
+			user_birth,
+			user_phone,
+			user_nickname,
+			user_point,
+			reported_count,
+			authority_no,
+			user_status
+		) values(
+			user_no_seq.nextval,
+			#{member.user_id},
+			#{member.user_pw},
+			#{member.user_name},
+			To_Date(#{birthday}, 'yy/mm/dd'),
+			#{member.user_phone},
+			#{member.user_nickname},
+			default,
+			default,
+			default,
+			default	
+		)
+	</insert>
+</mapper>
