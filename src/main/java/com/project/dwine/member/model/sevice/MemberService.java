@@ -8,4 +8,6 @@ public interface MemberService extends UserDetailsService{
 
 	void join(Member member, String birth);
 
+	int findMemberByNickname(String nickName);
+
 }

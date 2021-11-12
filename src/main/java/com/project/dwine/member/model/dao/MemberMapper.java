@@ -13,4 +13,6 @@ public interface MemberMapper {
 
 	Member findMemberById(String userId);
 
+	int findMemberByNickname(String nickName);
+
 }
