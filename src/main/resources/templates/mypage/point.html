@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>내 포인트</title>
+<link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/mypage/point.css" rel="stylesheet">
+</head>
+<body>
+<header th:include="common/header :: header"></header>
+	<div id="container">
+        <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
+        </nav>
+        <div class="contents">
+            <div class="inner">
+                <div>
+                    <h3 style="font-size: 24px;">내 적립 포인트</h3>
+                </div>
+                <hr style="width: 700px; padding-right: 130px;">
+                <h3 class="title">총 적립금</h3>
+                <h3 class="title"></h3>
+                <div class="totalArea" th:each="point : ${pointList}">
+               		<input type="hidden" class="hiddenarea" th:value="${point.total}">
+               </div>
+               
+               <!--  <h3 class="title sum" th:each="point : ${pointList}" th:text="${point.point}"></h3> -->
+                
+                <div class="point_list">
+                    <ul class="point_header">
+                        <li class="num">번호</li>
+                        <li class="date">날짜</li>
+                        <li class="point">금액</li>
+                        <li class="content">내용</li>
+                    </ul>
+                    <ul th:each="point : ${pointList}">
+	                        <li class="num" th:text="${point.point_no}"></li>
+	                        <li class="date" th:text="${#dates.format(point.pdate, 'yyyy.MM.dd')}"></li>
+	                        <li class="point" th:each="pr : ${purchaseList}">
+	                        	<th:block th:if="${pr.use_point} != 0">-<label th:text="${pr.use_point}"></label></th:block>
+	                        	<th:block th:unless="${pr.use_point} == 0 and ${point.point} != 0"><label th:text="${point.point}"></label></th:block>
+	                        </li>
+	                        <li class="content">
+	                        	<th:block th:if="">구매에 대한 적립</th:block>
+	                        	<th:block th:unless="" >리뷰에 대한 적립</th:block>
+	                        	<th:block th:unless="">구매에 대한 사용</th:block>
+	                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    	var test = document.querySelector(".inner").firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling;
+    	console.log(test);
+    	var test2 = test.nextSibling.nextSibling;
+    	var test3 = test2.nextSibling.nextSibling.firstChild.nextSibling;
+    	console.log(test3); // hiddenarea
+    	console.log(test3.value);
+    	console.log(test2.className);
+    	test2.innerHTML= test3.value;
+    </script>
+<footer th:include="common/footer :: footer"></footer>
+</body>
+</html>

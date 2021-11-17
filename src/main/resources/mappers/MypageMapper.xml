@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dwine.mypage.model.dao.MypageMapper">
+
+	<resultMap type="com.project.dwine.member.model.vo.Member"
+		id="memberResultMap">
+		<id property="user_no" column="user_no" />
+		<result property="user_id" column="user_id" />
+		<result property="user_pw" column="user_pw" />
+		<result property="user_name" column="user_name" />
+		<result property="user_birth" column="user_birth" />
+		<result property="user_phone" column="user_phone" />
+		<result property="user_nickname" column="user_nickname" />
+		<result property="user_point" column="user_point" />
+		<result property="reported_count" column="reported_count" />
+		<association property="authority"
+			resultMap="authorityResultMap" />
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.mypage.model.vo.Review"
+		id="ReviewResultMap">
+		<id property="review_no" column="review_no" />
+		<result property="review_text" column="REVIEW_TEXT" />
+		<result property="review_image" column="review_image" />
+		<result property="review_date" column="review_date" />
+		<result property="review_modify" column="review_modify" />
+		<result property="star" column="star" />
+		<result property="status" column="status" />
+		<result property="od_no" column="od_no" />
+		<result property="user_no" column="user_no" />
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.member.model.vo.Authority"
+		id="authorityResultMap">
+		<id property="code" column="authority_no" />
+		<result property="name" column="authority_name" />
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.mypage.model.vo.Point"
+		id="PointResultMap">
+		<id property="point_no" column="point_no" />
+		<result property="content" column="content" />
+		<result property="point" column="point" />
+		<result property="pdate" column="pdate" />
+		<result property="review_no" column="review_no" />
+		<result property="purchase_no" column="purchase_no" />
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.mypage.model.vo.Purchase"
+		id="PurchaseResultMap">
+		<id property="purchase_no" column="purchase_no" />
+		<result property="purchase_date" column="purchase_date" />
+		<result property="use_point" column="use_point" />
+		<result property="pickup_date" column="pickup_date" />
+		<result property="pickup_place" column="pickup_place" />
+		<result property="pickup_time" column="pickup_time" />
+		<result property="order_status" column="order_status" />
+		<result property="status" column="status" />
+		<result property="refund_date" column="refund_date" />
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.mypage.model.vo.Wish" id="WishResultMap">
+		<id property="wish_no" column="WISH_NO" />
+		<result property="wish_date" column="WISH_DATE" />
+		<result property="user_no" column="USER_NO" />
+		<result property="product_no" column="PRODUCT_NO" />
+	</resultMap>
+	
+	<!-- <resultMap type="com.project.dwine.mypage.model.vo.Authority"
+		id="">
+		<id property="code" column="authority_no" />
+		<result property="name" column="authority_name" />
+	</resultMap> -->
+
+	<update id="memberModify" parameterType="com.project.dwine.member.model.vo.Member">
+		UPDATE MEMBER
+		SET
+			USER_PW = #{user_pw},
+			USER_NICKNAME = #{user_nickname},
+			USER_NAME = #{user_name},
+			USER_PHONE = #{user_phone}
+		WHERE USER_NO = #{user_no}
+	</update>
+	
+	<select id="findAllReview" resultMap="ReviewResultMap">
+		SELECT
+			REVIEW_NO,
+			review_text,
+			REVIEW_IMAGE,
+			REVIEW_DATE,
+			REVIEW_MODIFY,
+			STAR,
+			r.STATUS,
+			r.USER_NO,
+			r.OD_NO,
+			p.product_kname
+		FROM REVIEW r
+		JOIN ORDER_DETAIL od ON(r.od_no = od.od_no)
+        JOIN PRODUCT p ON(od.product_no = p.product_no)
+		WHERE r.STATUS = 'Y'
+		AND USER_NO = #{user_no}
+		ORDER BY REVIEW_DATE DESC
+	</select>
+
+	<select id="selectMember" resultMap="memberResultMap">
+		SELECT
+			USER_NO,
+			USER_ID,
+			USER_PW,
+			USER_NAME,
+			USER_BIRTH,
+			USER_PHONE,
+			USER_NICKNAME,
+			USER_STATUS
+		FROM MEMBER
+		WHERE USER_NO = #{user_no}
+		AND USER_STATUS = 'Y'
+	</select>
+	
+	<insert id="reviewInsert" parameterType="com.project.dwine.mypage.model.vo.Review">
+		INSERT INTO REVIEW
+		(	REVIEW_NO,
+			REVIEW_TEXT,
+			REVIEW_IMAGE,
+			REVIEW_DATE,
+			REVIEW_MODIFY,
+			STAR,
+			STATUS,
+			USER_NO,
+			OD_NO
+		)
+		VALUES
+		(	SEQ_RNO.NEXTVAL,
+			#{review_text},
+			#{review_image},
+			SYSDATE,
+			SYSDATE,
+			#{star},
+			Y,
+			#{user_no},
+			#{od_no}
+		)
+	</insert>
+	
+	<select id="selectOneReview" resultMap="ReviewResultMap">
+		SELECT
+			REVIEW_NO,
+			review_text,
+			REVIEW_IMAGE,
+			REVIEW_DATE,
+			REVIEW_MODIFY,
+			STAR,
+			STATUS,
+			USER_NO,
+			OD_NO
+		FROM REVIEW
+		WHERE REVIEW_NO = #{review_no}
+	</select>
+	
+	<update id="reviewDelete">
+		UPDATE REVIEW
+		SET STATUS = 'N'
+		WHERE REVIEW_NO = #{review_no}
+	</update>
+	
+	<select id="selectWishList" resultMap="WishResultMap">
+		SELECT 
+			WISH_NO,
+			WISH_DATE,
+			USER_NO,
+			P.PRODUCT_NO,
+			P.PRODUCT_KNAME,
+			P.THUMBNAIL
+		FROM WISH W
+		JOIN PRODUCT P ON (W.PRODUCT_NO=P.PRODUCT_NO)
+		WHERE USER_NO = #{user_no}
+		order by wish_date desc
+	</select>
+	
+	<select id="pointList" resultMap="PointResultMap"> 
+		SELECT
+			POINT_NO,
+			CONTENT,
+			POINT,
+			PDATE,
+			P.USER_NO,
+			R.REVIEW_NO,
+			PC.PURCHASE_NO,
+             PC.USE_POINT,
+            SUM(POINT)  over (partition by P.USER_NO) TOTAL
+		FROM POINT P
+		LEFT JOIN REVIEW R ON (P.REVIEW_NO = R.REVIEW_NO)
+		LEFT JOIN PURCHASE PC ON (P.PURCHASE_NO = PC.PURCHASE_NO)
+		WHERE P.USER_NO = 2
+        AND R.STATUS = 'Y'
+        OR PC.STATUS = 'Y'
+        GROUP BY POINT_NO, CONTENT, PDATE, P.USER_NO, R.REVIEW_NO, PC.PURCHASE_NO, POINT, PC.USE_POINT
+		ORDER BY PDATE DESC
+	</select>
+	
+	<select id="selectOrderList" resultMap="PurchaseResultMap">
+		select
+		    p.purchase_no,
+		    purchase_date,
+		    purchase_price,
+		    pickup_date,
+		    pickup_place,
+		    pickup_time,
+		    order_status,
+		    p.status,
+		    refund_date,
+		    p.user_no,
+		    od_no,
+		    od_count,
+		    od_price,
+		    od.product_no,
+		    pro.product_kname
+		from purchase p
+		join order_detail od on(p.purchase_no = od.purchase_no)
+		join product pro on(pro.product_no = od.product_no)
+		where p.user_no = #{user_no}
+		order by p.purchase_no DESC
+	</select>
+	
+	<update id="pickupModify" parameterType="com.project.dwine.mypage.model.vo.Purchase">
+		UPDATE PURCHASE
+		SET
+			pickup_place = #{pickup_place},
+			pickup_date = #{pickup_date},
+			pickup_time = #{pickup_time}
+		WHERE purchase_no = #{purchase_no}
+	</update>
+	
+	<update id="pwdModify" parameterType="com.project.dwine.member.model.vo.Member">
+		UPDATE MEMBER
+		SET user_pw = #{newPw}
+		WHERE USER_NO = #{user_no}
+		AND USER_PW = #{user_pw}
+	</update>
+	
+	<delete id="deleteOneWish">
+		DELETE FROM WISH WHERE WISH_NO = #{wish_no}
+	</delete>
+	
+	<update id="pwdModfiytest" parameterType="com.project.dwine.member.model.vo.Member">
+		UPDATE MEMBER
+		SET user_pw = #{user_pw}
+		where user_no = #{user_no}
+	</update>
+	
+	<update id="deleteMember">
+		UPDATE MEMBER
+		SET
+		USER_STATUS = 'N'
+		WHERE USER_NO = #{user_no}
+	</update>
+	
+	<select id="purchaseList" resultMap="PurchaseResultMap">
+		SELECT
+			PURCHASE_NO,
+			PURCHASE_DATE,
+			USE_POINT
+		FROM PURCHASE
+		WHERE STATUS = 'Y'
+		AND USER_NO = #{user_no}			
+	</select>
+
+</mapper>

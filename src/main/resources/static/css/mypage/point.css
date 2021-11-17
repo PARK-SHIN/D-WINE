@@ -1,0 +1,90 @@
+@charset "UTF-8";
+#container {
+            width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            /* border: 1px solid red; */
+        }
+
+        .snb {
+            width: 200px;
+            /* height: 2500px; */
+            height: 100%;
+            /* border: 1px solid blue; */
+        }
+
+        .contents {
+            width: 888px;
+            height: 100%;
+            /*2500px -> 100%*/
+            /* border: 1px solid black; */
+        }
+
+        .inner {
+            margin-top: 30px;
+            margin-left: 27px;
+            width: 836px;
+            height: 100%;
+            /* border: 1px solid yellow; */
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .snb {
+            width: 210px;
+        }
+        
+        .title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        .point_list {
+            /* margin: 20px 30px; */
+            min-height: 565px;
+            /* margin: 0 auto; */
+        }
+        .point_list>ul {
+            border-bottom: 1px solid #EBEBEB;
+            height: 50px;
+            line-height: 50px;
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+        }
+        .point_list>ul.last {
+            border: 0;
+        }
+        .point_list>ul>li {
+            text-align: center;
+        }
+        .point_header {
+            background-color: #E5E5E5;
+        }
+        .point_list .num {
+            width: 50px;
+        }
+        .point_list .date {
+            width: 100px;
+        }
+        .point_list .point {
+            width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .point_list .content{
+            width: 150px;
+        }
+        .inner ul,
+        .inner li {
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+        /* .sum {
+            margin-bottom: 60px;
+        } */
