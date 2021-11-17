@@ -10,6 +10,18 @@
 	rel="stylesheet">
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/member/joinConfirm.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+	crossorigin="anonymous"></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript"
+	src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
+<style>
+.kakao_login {
+	min-height: 80%;
+	align-content: center;
+}
+</style>
 </head>
 <body>
 	<div class="wrapper">
@@ -18,11 +30,15 @@
 		</div>
 		<section class="joinConfirm_main">
 			<div class="joinConfirm_box">
-				<p>
-					<input type="button" id="kakaoLogin" value="회원가입"
+				<h1>본인 인증을 진행해 주세요</h1>
+				<p class="kakao_login">
+					<a
+						href="https://kauth.kakao.com/oauth/authorize?client_id=fae29f41478653a98fe5c415e8f363f3&redirect_uri=http://localhost:8000/member/kakaojoin&response_type=code">
+						<img alt="" src="/images/kakao_login.png">
+					</a> <br> <input type="button" id="goJoin" value="회원가입"
 						onclick="goJoin()">
 				</p>
-					<h1>휴대폰 인증</h1>
+
 			</div>
 
 		</section>

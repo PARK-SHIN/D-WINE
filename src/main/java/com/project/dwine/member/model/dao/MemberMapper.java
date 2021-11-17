@@ -9,10 +9,12 @@ import com.project.dwine.member.model.vo.Member;
 @Mapper
 public interface MemberMapper {
 
-	void joinMember(HashMap<String, Object> joinMember);
+	int joinMember(HashMap<String, Object> joinMember);
 
 	Member findMemberById(String userId);
 
 	int findMemberByNickname(String nickName);
+
+	int checkId(String userEmail);
 
 }

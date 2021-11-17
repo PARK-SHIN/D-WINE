@@ -15,6 +15,19 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
 	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 	crossorigin="anonymous"></script>
+<th:block th:if="${#request.getAttribute('join') != null}">
+	<th:block th:if="${#request.getAttribute('join') == 'joinFail'}">
+		<script>
+			alert('회원가입에 실패했습니다.')
+		</script>
+	</th:block>
+	<th:block th:if="${#request.getAttribute('join') == 'unableAge'}">
+		<script>
+			alert('성인만 회원가입이 가능합니다.')
+			location.href='/member/joinConfirm';
+			</script>
+	</th:block>
+</th:block>
 </head>
 <body>
 	<div class="wrapper">
@@ -25,35 +38,42 @@
 			<div class="joinForm_box">
 				<form name="joinForm" th:action="@{/member/join}" method="post">
 					<p>
-						<label for="user_id">아이디</label><br> 
-						<input type="email" id="user_id" name="user_id" placeholder="사용 가능한 이메일" required>
-						<input type="button" id="check_email" name="check_email" value="이메일 인증" onclick="emailSend()"><br> 
-						<input type="text" id="userId_confirm" name="userId_confirm" placeholder="인증번호 입력"> 
-						<input type="button" id="check_confirm" name="check_confirm" value="인증" onclick="emailCheck()">
+						<label for="user_id">아이디</label><br> <input type="email"
+							id="user_id" name="user_id" placeholder="사용 가능한 이메일" required>
+						<input type="button" id="check_email" name="check_email"
+							value="이메일 인증" onclick="emailSend()"><br> <input
+							type="text" id="userId_confirm" name="userId_confirm"
+							placeholder="인증번호 입력"> <input type="button"
+							id="check_confirm" name="check_confirm" value="인증"
+							onclick="emailCheck()">
 					</p>
 					<p>
-						<label for="user_pw">비밀번호</label><br> 
-						<input type="password" id="user_pw" name="user_pw" placeholder="8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요." required>
-						<span id="pwdform"></span> <br> 
-						<input type="password" id="user_pw_check" name="user_pw_check" placeholder="비밀번호 확인" required> 
-						<span id="pwdresult"></span>
+						<label for="user_pw">비밀번호</label><br> <input type="password"
+							id="user_pw" name="user_pw"
+							placeholder="8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요." required>
+						<span id="pwdform"></span> <br> <input type="password"
+							id="user_pw_check" name="user_pw_check" placeholder="비밀번호 확인"
+							required> <span id="pwdresult"></span>
 					</p>
 					<p>
-						<label for="user_name">이름</label><br> 
-						<input type="text" id="user_name" name="user_name" required>
+						<label for="user_name">이름</label><br> <input type="text"
+							id="user_name" name="user_name" required><span
+							id="nameoform"></span>
 					</p>
 					<p>
-						<label for="user_nickname">닉네임</label><br> 
-						<input type="text" id="user_nickname" name="user_nickname" required> 
-						<input type="button" id="check_nickName" name="check_nickName" value="중복 확인" onclick="nicknameCheck()">
+						<label for="user_nickname">닉네임</label><br> <input type="text"
+							id="user_nickname" name="user_nickname"
+							th:value="${session.user_nickname}" required> <input
+							type="button" id="check_nickName" name="check_nickName"
+							value="중복 확인" onclick="nicknameCheck()">
 					</p>
 					<p>
-						<label for="user_birth">생년월일</label><br> 
-						<input type="date" id="user_birth" name="user_birth" required>
+						<label for="user_birth">생년월일</label><br> <input type="date"
+							id="user_birth" name="user_birth" required>
 					</p>
 					<p>
-						<label for="user_phone">전화번호</label><br> 
-						<input type="tel" id="user_phone" name="user_phone" required>
+						<label for="user_phone">전화번호</label><br> <input type="tel"
+							id="user_phone" name="user_phone" required>
 					</p>
 					<input type="button" value="회원가입" onclick="joinSubmit()" />
 				</form>
@@ -62,22 +82,27 @@
 		</section>
 		<footer th:include="common/footer :: footer"></footer>
 	</div>
- 	<script>
+	<script>
 		var email_check = false;
 		var password_form = false;
 		var password_check = false;
+		var userName_check = false;
 		var nickname_check = false;
 		
+		
 	   /* ============================ 이메일 확인 스크립트 ============================ */
-	    var emailConfirm_key;
-	    var preEmail;
 	    
 	    // 이메일 변경 시 재 인증 필요
+	    var emailConfirm_key;
+	    var tempEmailConfirm_key;
+	    var preEmail;
 	    user_id.addEventListener('input', () => {
 	    	 if (preEmail != user_id.value) {
 	    		 email_check = false;
+	    		 emailConfirm_key = "";
 	    	}else{
 	    		email_check = true;
+	    		emailConfirm_key= tempEmailConfirm_key;
 	    	}
 	    });
 	    
@@ -87,14 +112,20 @@
 	    	let emailCheck = isEmail(clientEmail);
 	    	
 	    	if(emailCheck){
-	    		alert('인증번호가 발송되었습니다')
 	    		$.ajax({
 	    			type:"post",
 	    			url:"/member/email",
 	    			data:{userEmail:clientEmail},
 	    			success : function(tempKey){
-	    				preEmail = clientEmail
-	    				emailConfirm_key = tempKey;
+	    				if(tempKey=="unable"){
+							alert('이미 사용중인 이메일입니다.');
+	    				}else{
+	    					alert('인증번호가 발송되었습니다')
+	    					preEmail = clientEmail
+		    				emailConfirm_key = tempKey;
+	    					tempEmailConfirm_key = tempKey;
+	    				}
+	    				
 	    			},
 	    			error : function(e){
 	    				alert('다시 시도해주세요');
@@ -173,6 +204,18 @@
 	    	
 	    	return regExp.test(pwd);
 	    }
+	    
+	    /* ============================ 이름 확인 스크립트 ============================ */
+	    user_name.addEventListener('input', () => {
+	    	 if (user_nickname.value.length<2 || ser_nickname.value.length>5) {
+	    		 nameoform.innerHTML = '이름을 확인해주세요';
+	    		 nickname_check = false;
+	    	}else{
+	    		nameoform.innerHTML = '';
+	    		nickname_check = true;
+	    	}
+	    });
+	    
 	    
 	    /* ============================ 닉네임 확인 스크립트 ============================ */
 	    var preNickname;

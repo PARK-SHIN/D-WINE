@@ -41,6 +41,10 @@
 		where m.user_id = #{ userId }
 	</select>
 	
+	<select id="checkId" resultType="_int">
+		select COUNT(*) from member where user_id = #{ userEmail }
+	</select>
+	
 	<select id="findMemberByNickname" resultType="_int">
 		select COUNT(*) from member where user_nickname = #{ nickName }
 	</select>
