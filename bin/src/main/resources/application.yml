@@ -3,20 +3,11 @@ server:  port: 8000
   
 # orale driver config
 spring:
-  servlet:
-    multipart:
-      file-size-threshold: 1MB
-      location: C:\Temp\Upload
-      max-file-size: 100MB
-      max-request-size: 100MB   
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
     url: jdbc:oracle:thin:@localhost:1521:xe
     username: dwine
-    password: dwine   
- 
+    password: dwine
+    
 # mybatis config
 mybatis:  mapper-locations: mappers/**/*.xml
-  
-  
-  
