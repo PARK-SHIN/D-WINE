@@ -65,7 +65,7 @@ public class MemberController {
 		String user_age = (String) userInfo.get("age_range");
 
 		if (!userInfo.isEmpty()) {
-			if (user_age.equals("0~9") || user_age.equals("10~19") || user_age.equals("20~29")) {
+			if (user_age.equals("0~9") || user_age.equals("10~19")) {
 				kakaoAPI.kakaoLogout(access_Token);
 				request.setAttribute("join", "unableAge");
 				return "member/joinForm";
