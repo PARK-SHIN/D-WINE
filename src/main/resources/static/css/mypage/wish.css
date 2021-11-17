@@ -1,0 +1,170 @@
+@charset "UTF-8";
+ #container {
+    width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    height: 1400px;
+}
+
+.snb {
+    width: 200px;
+    /* height: 2500px; */
+    height: 100%;
+}
+
+.contents {
+    width: 888px;
+    height: 100%;
+    /*2500px -> 100%*/
+}
+
+.inner {
+    margin-top: 30px;
+    margin-left: 27px;
+    width: 836px;
+    /* height: 100%; */
+}
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+.snb {
+    width: 210px;
+}
+
+.snb_inner {
+    width: 170px;
+    margin: 30px auto 0;
+}
+.wish_list {
+    /* margin: 20px 30px; */
+    min-height: 565px;
+    /* margin: 0 auto; */
+}
+.wish_list>ul {
+    border-bottom: 1px solid #EBEBEB;
+    height: 50px;
+    line-height: 50px;
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+}
+.wish_list>ul.last {
+    border: 0;
+}
+.wish_list>ul>li {
+    text-align: center;
+}
+.wish_header {
+    background-color: #E5E5E5;
+}
+.wish_list .wish_date {
+    width: 150px;
+}
+.wish_list .del {
+    width: 50px;
+}
+.wish_list .title {
+    width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.parent{
+    width: 350px;
+    margin: 10px auto;
+}
+
+.first {
+    float: left;
+    width:20px;
+    box-sizing: border-box;
+    padding-top: 10px;
+    margin-top: 14px;
+}
+
+.second{
+    float: left;
+    margin-left: 5%;
+    width:80px;
+    box-sizing: border-box;
+}
+
+.third{
+    float: left;
+    width:190px;
+    margin-left: 10px;
+    box-sizing: border-box;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    position: relative;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    outline: none !important;
+    border: 1px solid #c4c4c4;
+    border-radius: 2px;
+    background: #fbfbfb;
+}
+input[type="checkbox"]::before {
+    content: "\2713";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    overflow: hidden;
+    transform: scale(0) translate(-50%, -50%);
+    line-height: 1;
+}
+
+input[type="checkbox"]:hover {
+    border-color: rgba(170, 170, 170, 0.5);
+}
+
+input[type="checkbox"]:checked {
+    background-color: #83131E;
+    border-color: rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+input[type="checkbox"]:checked::before {
+    border-radius: 2px;
+    transform: scale(1) translate(-50%, -50%)
+}
+.date1 {
+    margin-top: 30px;
+}
+.del1 {
+    margin-top: 30px;
+}
+.cartBtnArea {
+    float : right;
+}
+.cartBtn {
+    border: 1px solid #83131E;
+    color: #83131E;
+    background-color: white;
+    border-radius: 5px;
+    width: 200px;
+    height: 30px;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    margin-top: 40px;
+}
+.cartBtn:hover{
+    cursor: pointer;
+}
+.closeImg:hover {
+    cursor: pointer;
+}
+.wish_list > ul,
+.wish_list > li {
+    margin: 0;
+    padding: 0;
+    /* font-size: 14px; */
+}
