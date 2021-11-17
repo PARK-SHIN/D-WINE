@@ -13,7 +13,7 @@
 		<result property="user_no" column="user_no"/>
 	</resultMap>
 
-	<select id="findAllNotice" resultMap="noticeResultMap">
+	<select id="selectNoticeList" resultMap="noticeResultMap">
 	SELECT
 		   	 NOTICE_NO
 		   , NOTICE_CATEGORY	

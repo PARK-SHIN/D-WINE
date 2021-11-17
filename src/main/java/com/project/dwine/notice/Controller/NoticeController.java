@@ -26,9 +26,9 @@ public class NoticeController {
 	
 	
 	@GetMapping("main")
-	public ModelAndView findMenuList(ModelAndView mv){
+	public ModelAndView noticeList(ModelAndView mv){
 
-		List<Notice> noticeList = noticeService.findAllNotice();
+		List<Notice> noticeList = noticeService.selectNoticeList();
 		mv.addObject("noticeList" , noticeList);
 		mv.setViewName("notice/main");
 
