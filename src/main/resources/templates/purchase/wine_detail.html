@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Wine_Detail</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+        integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" 
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <style>
+        .wine_detail_view{
+            width: 1000px;
+            margin : 0 auto;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button{
+            cursor: pointer;
+        }
+
+        .search{
+            margin: 50px 0;
+        }
+
+
+        .search .wine_name{
+            margin: 10px 0;
+            width: 80%;
+            height: 50px;
+            padding: 0 10px;
+            border-right: none;
+          }
+
+        .search button{
+            background-color: #83131E;
+            color: white;
+            width: 17.5%;
+            height: 52.2px;
+            border: none;
+        }
+
+
+        input[type=range] {
+            height: 20px;
+        }
+
+        .slidecontainer input[type=range] {
+            -webkit-appearance: none;
+        }
+
+        .slidecontainer input[type=range]:focus {
+            outline: none;
+        }
+
+        /*webkit (Chrome)의 경우*/
+        .slidecontainer input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 5px;
+            cursor: pointer;
+            background: #83131E;
+        }
+
+        .slidecontainer input[type=range]::-webkit-slider-thumb {
+            border: 1px solid #83131E;
+            height: 15px;
+            width: 10px;
+            background: #83131E;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -5px;
+            /*chrome의 경우 margin-top값을 부여해야합니다.*/
+        }
+
+        .slidecontainer input[type=range]:focus::-webkit-slider-runnable-track {
+            background: #83131E;
+            /*네모버튼에 포커스를 줬을때 뒤에 라인(ㅡ)의 효과*/
+        }
+
+        /*Firefox의 경우*/
+        .slidecontainer input[type=range]::-moz-range-track {
+            width: 100%;
+            height: 5px;
+            cursor: pointer;
+            background: #83131E;
+        }
+
+        .slidecontainer input[type=range]::-moz-range-thumb {
+            border: 1px solid #83131E;
+            height: 15px;
+            width: 10px;
+            background: #ffffff;
+            cursor: pointer;
+        }
+
+
+        .product_view {
+            display: flex;
+        
+            width: 100%;
+        }
+
+        .product_view .img img {
+            width: 500px;
+            height: 500px;
+        }
+
+        .product_score{
+            border-top: 1px solid #d1d1d1;
+            border-bottom: 1px solid #d1d1d1;
+            font-size: 20px;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px 0;
+        }
+
+        .product_score span{
+            color: rgb(102, 102, 102);
+            font-size: 15px;
+        }
+
+        .graph .graph_info {
+            display: flex;
+            margin: 0px;
+            padding: 0;
+        }
+
+        .graph .wine_info {
+            margin-right: 10px;
+
+        }
+
+        .product_info {
+            margin: 0 auto;
+            width: 588px;
+        }
+
+        .product_info>li {
+            margin: 20px;
+        }
+
+        .product_info h2 {
+            font-size: 24px;
+            color :  #83131E;
+        }
+
+		.product_info .hashtag{
+			font-size: 17px;
+			font-weight: bold;
+		}
+		
+        .price {
+            font-size: 40px;
+        }
+
+        .slider_value {
+            color: #83131E;
+            margin-left: 43px;
+        }
+
+        .btns {
+            display: flex;
+        }
+
+        .btns div {
+            display: flex;
+        }
+
+
+        .btns .btn1 {
+            width:170px;
+            height: 53px;
+            background-color: rgb(34, 34, 34);
+            border: none;
+            color: #fff
+        }
+
+        .btns .btn2 {
+            width: 170px;
+            height: 53px;
+            background-color: rgb(247, 81, 26);
+            border: none;
+            color: #fff
+        }
+
+        .fa-heart {
+            font-size: 44px;
+            margin-left: 10px;
+            color: black;
+
+        }
+
+        /* 구매 카운트*/
+     
+
+        .price_name {
+            margin: 10px 0;
+        }
+
+        .price_count {
+            display: flex;
+        }
+
+        .payment_price {
+            margin: 30px 0 30px 0;
+        }
+
+        .price_count button {
+            background-color: #ffffff;
+            border: none;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            box-shadow: none;
+            display: block;
+        }
+
+        #count {
+      
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+        }
+
+        .total {
+            font-size: 20px;
+        }
+
+        .total_price {
+            font-size: 35px;
+            color: rgb(247, 81, 26);
+        }
+
+        .won {
+            font-size: 20px;
+            color: rgb(247, 81, 26);
+        }
+
+        .alert_ul{
+            text-align: center;
+            font-size: 20px;
+            width: 800px;
+            margin: 0 auto;
+
+        }
+
+        .alert_ul li{
+            border: 2px solid #e9e9e9;
+            padding: 20px 0;
+            width: 800px;
+        }
+        .alert{
+            color: red;
+            font-weight: bolder;
+        }
+     
+
+
+        .product_detail_view h2{
+            margin-top: 50px;
+        }
+
+        .under_line{
+            border-bottom: 2px solid black;
+            margin-bottom: 70px;
+        }
+
+        .prod_info_group{
+            text-align: center;
+            margin: 100px 0 0 0;
+
+        }
+
+        .kor_name{
+            font-size: 24px;
+            color: #83131E;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .for_name{
+            font-size: 50px;
+            margin: 0;
+        }
+
+        .icon_content .fas{
+            font-size: 50px;
+            width: 60px;
+            margin: 0 20px;
+        }
+
+        .icon_content{
+            display: flex;
+            height: 60px;
+            margin-top: 40px;
+        }
+
+		.icon_info{
+			width: 150px;
+		}
+
+        .icon_info .info1 {
+            color: #83131E;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .icon_info .info2 {
+            font-size: 25px;
+        }
+
+        .prod_info{
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .prod{
+            text-align: center;
+            margin-top: 30px;
+            padding-left: 100px;
+        }
+
+        .detail_wine_img{
+            width: 400px;
+            height: 400px;
+        }
+
+        .wine_category{
+            padding: 0;
+            width: 400px;
+            margin-left: 240px;
+        }
+
+        .wine_category li{
+            margin: 20px;
+        }
+
+        .category_title{
+            color: #83131E;
+            font-size: 20px;
+            margin : 0 50px 0 0;
+        }
+
+        .category_content{
+            font-size: 20px;
+        }
+
+        .wine_color{
+            color: #83131E;
+        }
+
+        .inf{
+            margin: 60px 0;
+            font-size: 20px;
+           
+        }
+
+        .inf p{
+            line-height: 2.5rem;
+        }
+
+        .wine_info_img{
+            display: block;
+            width: 500px;
+            height: 500px;
+            margin: 0 auto;
+           
+        }
+
+        .product_h3{
+            margin: 100px 0 50px;
+        }
+
+        .essential_table{
+            border: 2px solid #e9e9e9;
+            width: 800px;
+            margin: 0 auto;
+        }
+
+        .essential_table tr th{
+            border: 1px solid #e9e9e9;
+            /* border: 1px solid black; */
+            width: 30%;
+            height: 53px;
+        }
+
+        .essential_table tr td{
+            border: 1px solid #e9e9e9;
+            /* border: 1px solid black; */
+            width: 70%;
+            height: 53px;
+            padding-left: 30px;
+        }
+
+        .review{
+            padding: 0;
+            border-bottom: 1px solid black;
+        }
+        .review li{
+            border-top: 1px solid black;
+        }
+
+        .review .review_info{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .report_btn button{
+            border: none;
+            background: none;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        
+        .review_content{
+            margin: 20px 0 30px 0;
+        }
+
+        .review_img{
+            margin-top: 30px;
+        }
+
+        .review_img img{
+            width: 300px;
+            height: 300px;
+        }
+
+        .product_change{
+            border-bottom: 1px solid #e9e9e9;
+        }
+        .product_change th{
+            border-top: 1px solid #e9e9e9;
+        }
+
+        .product_change td{
+            border-top: 1px solid #e9e9e9;
+        }
+        
+        .notice{
+            color: #83131E;
+        }
+   
+    </style>
+</head>
+
+<body>
+    <div class="wine_detail_view">
+    <div class="search">
+        <input class="wine_name" type="text"><button>와인 검색하기</button>
+    </div>
+    <div class="product_view">
+        <div class="img_score">
+            <div class="img">
+                <img th:src="${ product.thumbnail }" />
+            </div>
+            <div class="product_score">
+               고객리뷰&emsp;★★★★★ (4.6)&ensp;<span>25건</span>
+            </div>
+        </div>
+        <ul class="product_info">
+            <li>
+                <h2 th:text="${product.product_kname}"></h2><h2 th:text="${product.product_ename}"></h2>
+            </li>
+            <li>
+                <span class="price" th:text="${product.sale_price}"></span><span class="price">원</span><br>
+            </li>
+            <li>
+            	<span th:each="hash : ${product.hash_names}">
+	                <span class="hashtag" th:text="|#${hash.hash_name}|"></span>
+            	</span>
+            </li>
+            <li class="graph">
+                <div class="graph_info">
+                    <div class="wine_info">당도</div>
+                    <div class="slidecontainer">
+                        <input type="range" min="0" max="5" value="" class="slider" id="myRange" th:value="${#strings.substring(product.taste_graph,0,1)}">
+                    </div>
+                </div>
+                <div class="graph_info">
+                    <div class="wine_info">산도</div>
+                    <div class="slidecontainer">
+                        <input type="range" min="0" max="5" value="" class="slider" id="myRange" th:value="${#strings.substring(product.taste_graph,2,3)}">
+                    </div>
+                </div>
+                <div class="graph_info">
+                    <div class="wine_info">반디</div>
+                    <div class="slidecontainer">
+                        <input type="range" min="0" max="5" value="" class="slider" id="myRange"  th:value="${#strings.substring(product.taste_graph,4,5)}">
+                    </div>
+                </div>
+                <div class="graph_info">
+                    <div class="wine_info">탄닌</div>
+                    <div class="slidecontainer">
+                        <input type="range" min="0" max="5" value="" class="slider" id="myRange"  th:value="${#strings.substring(product.taste_graph,6,7)}">
+                    </div>
+                </div>
+                <div class="slider_value">row&emsp;&emsp;&emsp;&emsp;&ensp;high</div>
+            </li>
+            <li>
+
+                 <div class="price_count">
+                     <button class="minus" onclick='count("minus")'><i class="fas fa-minus"></i></button>
+                     <div id='count'>1</div>
+                     <button class="plus" onclick='count("plus")'><i class="fas fa-plus"></i></button>
+                 </div>
+               
+                <div class="payment_price">
+                    <span class="total">합계 : </span>
+                    <span class="total_price" id="tprice" th:text="${product.sale_price}"></span>
+                    <span class="won">원</span>
+                </div>
+            </li>
+
+            <li class="btns">
+                <div>
+                    <button class="btn1" onclick='submit("cart");'>장바구니</button>
+                    <button class="btn2" onclick='submit("buy");'>구매하기</button>
+                    <input type="hidden" id="product_no" name="product_no" th:value="${product.product_no}">
+                </div>
+                <i class="far fa-heart" id="heard" onclick="wishbutton()"></i>
+                <!-- <a href="#"><i class="far fa-heart" id="heard"></i></a> -->
+            </li>
+        </ul>
+    </div>
+
+
+    <script th:inline="javascript">
+    
+   		function submit(type)  {
+    		let product_no = document.querySelector("#product_no").value;
+    		let count = document.getElementById('count').innerText;
+            let price = document.getElementById("tprice").innerText;
+       
+    		console.log(product_no);
+    		console.log(count);
+    		console.log(price);
+    
+    	if(type === 'buy'){
+    		location.href = ""
+    	}
+    
+    
+   		}
+    
+    
+        function count(type)  {
+            // 결과를 표시할 element
+            const resultElement = document.getElementById('count');
+            const tpElement = document.getElementById("tprice");
+          
+            // 현재 화면에 표시된 값
+            let number = resultElement.innerText;
+            let total_price = tpElement.innerText;
+           
+            
+            total_price = parseInt(total_price);
+            let price = /*[[${product.sale_price}]]*/  'default';
+            
+            // 더하기/빼기
+            if(type === "plus") {
+                number = parseInt(number) + 1;
+                total_price += price;
+                
+            }else if(type === "minus")  {
+                if(number == 1){
+                    alert('한개이상 주문해주세요.');
+                } else{
+                    number = parseInt(number) - 1;
+                    total_price -= price;
+                }
+            }
+            
+            // 결과 출력
+            resultElement.innerText = number;
+            tpElement.innerText = total_price;
+        }
+        
+        function wishbutton(){
+            const heart = document.getElementsByClassName("fa-heart")[0];
+            const heart_color = heart.style.color;
+
+            if(heart_color == "red"){
+                heart.style.color= "black";
+            } else{
+                heart.style.color= "red";
+
+            }
+
+        }
+        
+        
+        
+      
+
+    </script>
+
+
+
+
+    <!-- 상세 정보-->
+    <div class="product_detail_view">
+        <h2>상품 상세 정보</h2>
+        <p class="under_line"></p>
+        <ul class="alert_ul">
+            <li>
+                <p class="alert">※경고※</p>
+                알코올은 발암물질로 지나친 음주는 간암, 위암등을 발생 시킵니다.<br>
+                임신 중 음주는 기형아 출생 위험을 높입니다.<br>      
+            </li>   
+            <li>
+                ※주류 품목 구매 시 결제수단이 <span class="alert">제한</span>될 수 있으니 구매 시 참고 바랍니다.
+            </li>
+            <li>
+                <p class="alert">※비알콜 음료는 성인용 음료입니다.※</p>
+                비알콜 음료의 경우 알코올이 1%미만 소량 함유되어 있으니 알코올에 취약한 임산부 등의 취식에 주의 바랍니다.
+            </li>
+        </ul>
+        <div class="prod_info_group">        
+            <p class="kor_name" th:text="${product.product_kname}"></p>
+            <p class="for_name" th:text="${product.product_ename}"></p>
+            
+            <div class="prod_info">
+                <div class="prod">
+                    <div class="icon_content">
+                        <div class="icon">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <div class="icon_info">
+                            <div class="info1">와인종류</div>
+                            <span class="info2" th:text="${product.type_name}"></span><span class="info2">와인</span>
+                        </div>
+                    </div>        
+                    <div class="icon_content">
+                        <div class="icon">
+                            <i class="fas fa-wine-glass-alt"></i>
+                        </div>
+                        <div class="icon_info">
+                            <div class="info1">용량</div>
+                            <span class="info2" th:text="${product.capacity}"></span><span class="info2">ml</span>
+                        </div>
+                    </div>
+                    <div class="icon_content">
+                        <div class="icon">
+                            <i class="fas fa-beer"></i>
+                        </div>
+                        <div class="icon_info">
+                            <div class="info1">도수</div>
+                            <span class="info2" th:text="${product.abv}"></span><span class="info2">%</span>
+                        </div>
+                    </div>
+                </div>
+                <img class="detail_wine_img" th:src="${ product.thumbnail }" />
+            </div>
+        </div>
+        <ul class="wine_category">
+            <li>
+                <span class="category_title">국가/지역</span>
+                <span class="category_content" th:text="${product.country_name}"></span><br>
+            </li>
+            <li>
+                <span class="category_title">와이너리</span>&nbsp;
+                <span class="category_content" th:text="${product.winery}"></span><br> 
+            </li>
+            <li>
+                <span class="category_title">포도품종</span>&nbsp;
+                <span class="category_content" th:text="${product.variety_name}"></span><br>
+            </li>
+        </ul>
+
+
+        <div class="information inf">
+            <h3 class="wine_color">INFORMATION</h3>
+            <p th:text="${product.information}"></p>
+        </div>
+
+        <div class="awards inf">
+            <h3 class="wine_color">AWARDS</h3>
+            <p th:text="${product.award}"></p>
+        </div>
+
+        <div class="tip inf">
+            <h3 class="wine_color">TIP</h3>
+            <p th:text="${product.tip}"></p>
+        </div>
+        <img class="wine_info_img" th:src="${ product.label_image }">
+
+        <h3 class="product_h3">상품 필수정보</h3>
+        <table class="essential_table"  summary="상품 필수정보 보여주는 표">
+					<colgroup><col style="width:29%"><col></colgroup>
+					<tbody>
+					<tr>
+							<th scope="row"><div class="in">품명 및 모델명</div></th>
+							<td><div class="in">상세설명참조</div></td>
+						</tr>
+					<tr>
+							<th scope="row"><div class="in">식품의 유형</div></th>
+							<td><div class="in">상세설명참조</div></td>
+						</tr>
+					<tr>
+							<th scope="row"><div class="in">생산자 및 소재지</div></th>
+							<td><div class="in">상세설명참조 (제조국 : 칠레)</div></td>
+						</tr>
+					<tr>
+							<th scope="row"><div class="in">수입자</div></th>
+							<td><div class="in">상세설명참조</div></td>
+						</tr>
+					<tr>
+							<th scope="row"><div class="in">제조연월일/유통기한</div></th>
+							<td><div class="in">상세설명참조/상세설명참조</div></td>
+						</tr>
+					<tr>
+							<th scope="row"><div class="in">포장 단위별 내용물의 용량 (중량), 수량, 크기</div></th>
+							<td><div class="in">상세설명참조</div></td>
+						</tr>
+					<tr>
+							<th scope="row"><div class="in">주원료/함량(원료 원산지)</div></th>
+							<td><div class="in">상세설명참조</div></td>
+						</tr>
+					<tr>
+							<th scope="row"><div class="in">영양성분</div></th>
+							<td><div class="in">해당사항 없음</div></td>
+						</tr>
+					<tr>
+							<th scope="row"><div class="in">유전자 변형식품 여부</div></th>
+							<td><div class="in">해당사항 없음</div></td>
+						</tr>
+					<tr>
+							<th scope="row"><div class="in">사용할 때 주의사항</div></th>
+							<td><div class="in">상세설명참조</div></td>
+						</tr>
+					<tr>
+							<th scope="row"><div class="in">소비자 상담 관련 전화번호</div></th>
+							<td><div class="in">상세설명참조</div></td>
+						</tr>
+					<tr>
+							<th scope="row"><div class="in">수입식품안전관리특별법에 따른 수입신고 필함 여부</div></th>
+							<td><div class="in">수입식품안전관리특별법에 따른 수입신고를 필함</div></td>
+						</tr>
+					</tbody>
+		</table>
+
+        <h3 class="product_h3">고객리뷰</h3>
+        <ul class="review">
+            <li>
+                <div class="review_info">
+                    <p class="review_nick">
+                        llsszz
+                    </p>
+                    <p class="report_btn">
+                        <button>신고</button>
+                    </p>
+                </div>
+                <span class="review_score">
+                    ★★★★★
+                </span> &emsp;
+                <span class="review_date">
+                    2021-10-21
+                </span>
+                <div class="review_content">
+                    <div class="review_text">
+                        와인맛 잘 모르지만 이건 확실히 맛있어요.와인맛 잘 모르지만 이건 확실히 맛있어요.와인맛 잘 모르지만 이건 확실히 맛있어요.
+                    </div>
+                    <div class="review_img">
+                        <img src="./resources/images/wine_info.PNG"alt="">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="review_info">
+                    <p class="review_nick">
+                        llsszz
+                    </p>
+                    <p class="report_btn">
+                        <button>신고</button>
+                    </p>
+                </div>
+                <span class="review_score">
+                    ★★★★★
+                </span> &emsp;
+                <span class="review_date">
+                    2021-10-21
+                </span>
+                <div class="review_content">
+                    <div class="review_text">
+                        와인맛 잘 모르지만 이건 확실히 맛있어요.와인맛 잘 모르지만 이건 확실히 맛있어요.와인맛 잘 모르지만 이건 확실히 맛있어요.
+                    </div>
+                    <div class="review_img">
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <h3 class="product_h3">교환 및 반품 안내</h3>
+        <table class="product_change">
+            <colgroup>
+                <col class="col_claim1">
+                <col class="col_calim2">
+            </colgroup>
+            <tbody>
+            <tr>
+                        <th scope="row">
+                            <div class="in">교환/반품 신청기간</div>
+                        </th>
+                        <td>
+                            <div class="in">
+                                <ul>
+                                    <li>단순변심 및 사이즈/색상 불만에 관련된 교환/반품 신청은 배송완료 후 7일 이내에 가능합니다.</li>
+                                    <li>상품이 표기/광고내용과 다르거나 계약내용과 다른 경우 상품을 받으신 날부터 3개월 이내, </li>
+                                    <li>또는 사실을 알게된 날(알 수 있었던 날)부터 30일 이내에 신청 가능합니다.</li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                <tr>
+            </tr>
+            <tr>
+                <th class="row">
+                    <div class="in">교환/반품 불가 안내</div>
+                </th>
+                <td>
+                    <div class="in">
+                        <ul>
+                            <li><span class="cdtl_tx_bold">전자상거래 등에서 소비자보호에 관한 법률에 따라 다음의 경우 청약철회가 제한될 수 있습니다.</span></li>
+                            <li class="ty_space">고객님이 상품 포장을 개봉하여 사용 또는 설치 완료되어 상품의 가치가 훼손된 경우<br><span class="subinfo">(단, 내용 확인을 위한 포장 개봉의 경우는 예외)</span></li>
+                            <li>고객님의 단순변심으로 인한 교환/반품 신청이 상품 수령한 날로부터 7일이 경과한 경우</li>
+                            <li>고객님의 사용 또는 일부 소비에 의해 상품의 가치가 훼손된 경우</li>
+                            <li>시간 경과에 따라 상품 등의 가치가 현저히 감소하여 재판매가 불가능한 경우</li>
+                            <li>기타, 상품의 교환, 환불 및 상품 결함 등의 보상은 소비자분쟁해결기준(공정거래위원회 고시)에 의함</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="notice">자세한 내용은 고객센터로 문의 부탁드립니다.</p>
+    </div>
+    </div>
+
+
+
+
+
+</body>
+</html>
