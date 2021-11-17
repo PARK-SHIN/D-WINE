@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>detail View</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<style>
+	.input_area {
+		display: flex;
+		margin-bottom: 20px;
+	}
+	
+	.label_area {
+		width: 200px;
+	}
+	
+	.text_area {
+		resize: none;
+		width: 400px;
+		height: 300px;
+		overflow-y: scroll;
+	}
+	
+	input[type=range] {
+		display: inline;
+		background: #c4c4c4;
+		-webkit-appearance: none;
+		border-radius: 5px;
+		height: 0.5em;
+	}
+
+	input[type=range]::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		background: #83131E;
+		cursor: pointer;
+		border: 1px solid #000000;
+		height: 1em;
+		width: 1em;
+		border-radius: 50%;
+	}
+
+	.img_area {
+		width: 350px;
+		height: 350px;
+		border: 1px solid black;
+	}
+	
+	.cancle_btn {
+		border: 1px solid #83131E;
+		border-radius: 5px;
+		background: white;
+		color: #83131E;
+	}
+	
+	.modify_btn {
+		border: 1px solid #83131E;
+		border-radius: 5px;
+		background: #83131E;
+		color: white;
+	}
+	
+	.delete_btn {
+		border: 1px solid #83131E;
+		border-radius: 5px;
+		background: #83131E;
+		color: white;
+	}
+	
+	.btn {
+		height: 44px;
+		width: 98.9552230834961px;
+		left: 0px;
+		top: 0px;
+		border-radius: 5px;
+	}
+	
+	#enroll_form {
+		width: 800px;
+	}
+	
+	#btn_area {
+		width: 500px;
+		text-align: center;
+	}
+	
+	#hash_btn {
+		background: #83131E;
+		color: white;
+		margin-left: 20px;
+		border-radius: 5px;
+		border: 1px solid #83131E;
+	}
+	.name_area {
+		width: 400px;
+	}
+	.img {
+		width: 350px;
+		height: 350px;
+	}
+	.hash_box {
+		width: 100px;
+		margin-right: 10px;
+	}
+</style>    
+</head>
+<body>
+    <h1>상품 상세 정보</h1>
+    <div>
+    	등록일 : <span th:text="${#dates.format(product.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+    	수정일 : <span th:text="${#dates.format(product.modifyDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+    </div>
+    <hr>
+	<h3>상품 기본 정보</h3>
+	<div class="input_area">
+		<div class="label_area">카테고리</div>
+		<div class="category">
+			<input class="category_area" type="text" th:value="${product.type.typeName}" readonly><br>
+			<input class="category_area" type="text" th:value="${product.country.countryName}" readonly><br>
+			<input class="category_area" type="text" th:value="${product.variety.varietyName}" readonly> 
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">상품명</div>
+		<div>
+			<input class="name_area" type="text" name="kname" placeholder="한글명" th:value="${product.productKName}" readonly><br> 
+			<input class="name_area" type="text" name="ename" placeholder="영문명" th:value="${product.productEName}" readonly>
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">원가</div>
+		<div>
+			<input type="number" name="cost_price" min="0" th:value="${product.costPrice}" readonly>
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">판매가</div>
+		<div>
+			<input type="number" name="sale_price" min="0" th:value="${product.salePrice}" readonly>
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">대표 이미지</div>
+		<div>
+			<div class="img_area">
+				<img class="img" th:src="${product.thumbnail}">
+			</div>
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">수량</div>
+		<div>
+			<input type="number" name="product_count" th:value="${product.productCount}" readonly>
+		</div>
+	</div>
+
+	<br>
+	<h3>상품 상세설명</h3>
+	<div class="input_area">
+		<div class="label_area">와이너리</div>
+		<div>
+			<input type="text" name="winary" th:value="${product.winery}" readonly>
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">용량 / 도수</div>
+		<div>
+			<input type="number" name="capacity" min="0" th:value="${product.capacity}" readonly>ml / 
+			<input type="number" name="abv" min="0" th:value="${product.abv}" readonly>%
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">해시태그</div>
+		<div>
+			<input class="hash_box" type="text" th:each="hashtag : ${product.HashtagList}" th:value="${hashtag.hashName}" readonly>
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">맛 그래프</div>
+		<div>
+		<!-- <div th:each="graph : ${#strings.arraySplit(product.tasteGraph,'/')}"> -->
+		<!-- <span th:text="${graph}"></span> -->
+			<label>당도</label><input type="range" name="sweetness" min="0" max="5" disabled><br> 
+			<label>산도</label><input type="range" name="acidity" min="0" max="5" disabled ><br> 
+			<label>바디</label><input type="range" name="body" min="0" max="5" disabled ><br>
+			<label>탄닌</label><input type="range" name="tannin" min="0" max="5" disabled>
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">INFORMATION</div>
+		<div>
+			<textarea class="text_area" th:text="${product.information}" readonly></textarea>
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">AWARD</div>
+		<div>
+			<textarea class="text_area" th:text="${product.award}" readonly></textarea>
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">TIP</div>
+		<div>
+			<textarea class="text_area" th:text="${product.tip}" readonly></textarea>
+		</div>
+	</div>
+	<div class="input_area">
+		<div class="label_area">LABEL IMAGE</div>
+		<div>
+			<div class="img_area">
+				<img class="img" th:src="${product.labelImage}">
+			</div>
+		</div>
+	</div>
+	<div id="btn_area">
+		<button class="cancle_btn btn" onclick="location.href='/product/list'">목록</button>
+		<button class="modify_btn btn">수정</button>
+		<button class="delete_btn btn">삭제</button>
+	</div>
+	
+	<script th:inline="javascript">
+		/* $(function(){
+			var val = $('input[type=range]').val();
+			$('input[type=range]').css(
+					'background',
+					'linear-gradient(to right, #83131E 0%, #83131E'
+					+ val * 20 + '%, #c4c4c4 ' + val
+					+ '%, #c4c4c4 100%)');
+		}) */
+		
+		
+		$(function(){
+			/*<![CDATA[*/
+		    var tasteGraph = /*[[${product.tasteGraph}]]*/ '0/0/0/0';
+			/*]]>*/
+			
+			var arr = tasteGraph.split("/");
+			
+			var sweetness =  $("input[name=sweetness]");
+			sweetness.val(arr[0]);
+			var acidity = $("input[name=acidity]");
+			acidity.val(arr[1]);
+			var body = $("input[name=body]");
+			body.val(arr[2]);
+			var tannin = $("input[name=tannin]")
+			tannin.val(arr[3]);
+			
+			/* background: linear-gradient(to right, #83131E 0%, #83131E 50%, #c4c4c4 50%, #fff 100%); */
+			
+			sweetness.css('background', 'linear-gradient(to right, #83131E ' + sweetness.val() * 20 + '%, #c4c4c4 ' + sweetness.val() + '%, #c4c4c4 100%');
+			acidity.css('background', 'linear-gradient(to right, #83131E ' + acidity.val() * 20 + '%, #c4c4c4 ' + acidity.val() + '%, #c4c4c4 100%');
+			body.css('background','linear-gradient(to right, #83131E 0%, #83131E ' + body.val() * 20 + '%, #c4c4c4 ' + body.val() + '%, #c4c4c4 100%)');
+			tannin.css('background','linear-gradient(to right, #83131E 0%, #83131E ' + tannin.val() * 20 + '%, #c4c4c4 ' + tannin.val() + '%, #c4c4c4 100%)');
+			
+		});
+
+	</script>
+</body>
+</html>
