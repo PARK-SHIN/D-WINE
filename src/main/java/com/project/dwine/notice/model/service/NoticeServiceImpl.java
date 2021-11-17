@@ -19,9 +19,9 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<Notice> findAllNotice() {
+	public List<Notice> selectNoticeList() {
 		
-		return noticeMapper.findAllNotice();
+		return noticeMapper.selectNoticeList();
 	}
 
 	@Override

@@ -9,8 +9,8 @@ import com.project.dwine.notice.model.vo.Notice;
 @Mapper
 public interface NoticeMapper {
 	
-	List<Notice> findAllNotice();
-
+	List<Notice> selectNoticeList();
+	
 	int registNewNotice(Notice newNotice);
 
 }

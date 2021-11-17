@@ -18,13 +18,13 @@ public class Notice {
 	
 	public Notice() {}
 
-	public Notice(int notice_no, int notice_category, String title, String context, Date create_date, Date modify_date,
-			char status, int user_no) {
+	public Notice(int notice_no, int notice_category, String notice_title, String notice_context, Date create_date,
+			Date modify_date, char status, int user_no) {
 		super();
 		this.notice_no = notice_no;
 		this.notice_category = notice_category;
-		this.notice_title = title;
-		this.notice_context = context;
+		this.notice_title = notice_title;
+		this.notice_context = notice_context;
 		this.create_date = create_date;
 		this.modify_date = modify_date;
 		this.status = status;
@@ -47,20 +47,20 @@ public class Notice {
 		this.notice_category = notice_category;
 	}
 
-	public String getTitle() {
+	public String getNotice_title() {
 		return notice_title;
 	}
 
-	public void setTitle(String title) {
-		this.notice_title = title;
+	public void setNotice_title(String notice_title) {
+		this.notice_title = notice_title;
 	}
 
-	public String getContext() {
+	public String getNotice_context() {
 		return notice_context;
 	}
 
-	public void setContext(String context) {
-		this.notice_context = context;
+	public void setNotice_context(String notice_context) {
+		this.notice_context = notice_context;
 	}
 
 	public Date getCreate_date() {
@@ -97,13 +97,11 @@ public class Notice {
 
 	@Override
 	public String toString() {
-		return "Notice [notice_no=" + notice_no + ", notice_category=" + notice_category + ", notice_title=" + notice_title
-				+ ", notice_context=" + notice_context + ", create_date=" + create_date + ", modify_date=" + modify_date + ", status="
-				+ status + ", user_no=" + user_no + "]";
+		return "Notice [notice_no=" + notice_no + ", notice_category=" + notice_category + ", notice_title="
+				+ notice_title + ", notice_context=" + notice_context + ", create_date=" + create_date
+				+ ", modify_date=" + modify_date + ", status=" + status + ", user_no=" + user_no + "]";
 	}
-	
-	
-	
+
 	
 	
 	

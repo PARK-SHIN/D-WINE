@@ -6,8 +6,10 @@ import com.project.dwine.notice.model.vo.Notice;
 
 public interface NoticeService {
 	
-	List<Notice> findAllNotice();
-
+	List<Notice> selectNoticeList();
+	
+	
+	
 	int registNewNotice(Notice newNotice);
 
 }
