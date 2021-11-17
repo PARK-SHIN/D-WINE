@@ -63,7 +63,7 @@
 			authority_no,
 			user_status
 		) values(
-			user_no_seq.nextval,
+			seq_user_no.nextval,
 			#{member.user_id},
 			#{member.user_pw},
 			#{member.user_name},
