@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="com.project.dwine.notice.model.dao.NoticeMapper">
+	<resultMap type="com.project.dwine.notice.model.vo.Notice"
+				id="noticeResultMap">
+		<id property="notice_no" column="notice_no"/>
+		<result property="notice_category" column="notice_category"/>
+		<result property="notice_ctitle" column="notice_ctitle"/>
+		<result property="notice_ccontext" column="notice_ccontext"/>
+		<result property="create_date" column="create_date"/>
+		<result property="modify_date" column="modify_date"/>
+		<result property="status" column="status"/>
+		<result property="user_no" column="user_no"/>
+	</resultMap>
+
+	<select id="findAllNotice" resultMap="noticeResultMap">
+	SELECT
+		   	 NOTICE_NO
+		   , NOTICE_CATEGORY	
+		   , NOTICE_TITLE
+		   , NOTICE_CONTEXT
+		   , CREATE_DATE
+		   , MODIFY_DATE
+		   , STATUS
+		   , USER_NO
+		
+	  FROM NOTICE
+      WHERE STATUS = 'Y'
+      ORDER BY NOTICE_NO DESC
+	</select>
+
+
+
+
+
+
+</mapper>

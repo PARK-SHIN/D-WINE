@@ -1,5 +1,6 @@
 # server port config
-server:  port: 8000
+server:
+  port: 8000
   
 # orale driver config
 spring:
@@ -14,9 +15,24 @@ spring:
     url: jdbc:oracle:thin:@localhost:1521:xe
     username: dwine
     password: dwine   
- 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 아이디
+    password: 비밀번호
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
 # mybatis config
-mybatis:  mapper-locations: mappers/**/*.xml
-  
-  
-  
+mybatis:
+  mapper-locations: mappers/**/*.xml
+
+

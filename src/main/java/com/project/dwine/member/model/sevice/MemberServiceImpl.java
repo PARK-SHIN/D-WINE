@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.dwine.member.model.dao.MemberMapper;
@@ -30,6 +31,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+		System.out.println(username);
 		Member member = memberMapper.findMemberById(username);
 
 		if (member == null) {
@@ -48,14 +50,20 @@ public class MemberServiceImpl implements MemberService {
 
 		UserImpl user = new UserImpl(member.getUser_id(), member.getUser_pw(), authorities);
 		user.setDetails(member);
-		
-		System.out.println(user);
 
 		return user;
 	}
 
 	@Override
-	public void join(Member member, String birth) {
+	public int checkId(String userEmail) {
+
+		int result = memberMapper.checkId(userEmail);
+
+		return result;
+	}
+
+	@Override
+	public int join(Member member, String birth) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		member.setUser_pw(passwordEncoder.encode(member.getUser_pw()));
 
@@ -63,8 +71,18 @@ public class MemberServiceImpl implements MemberService {
 		joinMember.put("member", member);
 		joinMember.put("birthday", birth);
 
-		memberMapper.joinMember(joinMember);
+		int result = memberMapper.joinMember(joinMember);
 
+		return result;
+
+	}
+
+	@Override
+	public int findMemberByNickname(String nickName) {
+
+		int result = memberMapper.findMemberByNickname(nickName);
+
+		return result;
 	}
 
 }

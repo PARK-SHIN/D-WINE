@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>공지사항</title>
+<link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/notice/main.css" rel="stylesheet">    
+</head>
+<body>
+<div class="loginForm_header">
+	<label><a href="/home">D.WINE</a></label>
+</div>
+  <div class="content">
+    	<h2>공지사항</h2> 
+       
+    <hr>
+    <button id="insertBtn">등록</button><br>
+    <button id="deleteBtn">선택삭제</button>
+    <div id=searchdiv><input type="text" id="searchTitle"> 
+        <button>검색</button> 
+    </div>
+    <div class="noticeList">
+        <table class="noticeTable">
+            <tr>
+                <th><input type="checkbox" class="allCheck"></th>
+                <th>카테고리</th>
+                <th>제목</th>
+                <th>등록일</th>
+            </tr>
+            <tr th:each="notice : ${ noticeList }">
+                <td><input type="checkbox" class="checkbox"></td>
+                <td>이벤트</td>
+                <td th:text="${ notice.notice_title}"></td>
+                <td th:text="${ notice.createDate}"></td>
+            </tr>  
+            <tr>
+                <td><input type="checkbox" class="checkbox"></td>
+                <td>일반</td>
+                <td>빼빼로데이 기념으로 인하여 고객 운영 시간을 확장..</td>
+                <td>2021.11.11</td>
+            </tr>    
+
+        </table>    
+
+    </div>
+
+
+</div>
+<div th:replace="common/footer :: footer"></div>
+</body>
+</html>
