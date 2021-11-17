@@ -24,7 +24,7 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
-    
+
 # mybatis config
 mybatis:
   mapper-locations: mappers/**/*.xml
