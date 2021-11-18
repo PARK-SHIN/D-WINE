@@ -21,14 +21,37 @@
 	<th:block th:if="${#request.getAttribute('join') == 'unknownAge'}">
 		<script>
 			alert('연령대 항목에 동의해주세요.')
-			location.href='/member/joinConfirm';
-			</script>
+			location.href = '/member/joinConfirm';
+		</script>
+	</th:block>
+	<th:block th:if="${#request.getAttribute('join') == 'disagreeInfo'}">
+		<script>
+			alert('모든 항목에 동의해주세요.')
+			location.href = '/member/joinConfirm';
+		</script>
+	</th:block>
+	<th:block th:if="${#request.getAttribute('join') == 'cancleConfirm'}">
+		<script>
+			alert('네이버 인증을 취소하셨습니다')
+			location.href = '/member/joinConfirm';
+		</script>
+	</th:block>
+	<th:block th:if="${#request.getAttribute('join') == 'unableAge'}">
+		<script>
+			alert('성인만 회원가입이 가능합니다.')
+			location.href = '/member/joinConfirm';
+		</script>
 	</th:block>
 </th:block>
 <style>
-.kakao_login {
+.join_btn {
 	min-height: 80%;
 	align-content: center;
+}
+
+.naver_login img {
+	width: 300px;
+	font-size: 10px;
 }
 </style>
 </head>
@@ -40,19 +63,21 @@
 		<section class="joinConfirm_main">
 			<div class="joinConfirm_box">
 				<h1>본인 인증을 진행해 주세요</h1>
-				<p class="kakao_login">
-					<a
+				<p class="join_btn">
+					<a class="kakao_login"
 						href="https://kauth.kakao.com/oauth/authorize?client_id=fae29f41478653a98fe5c415e8f363f3&redirect_uri=http://localhost:8000/member/kakaojoin&response_type=code">
 						<img alt="" src="/images/kakao_login.png">
+					</a><br> <a class="naver_login"
+						href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=5LDpNfva7bgqFzmEnZCl&state=STATE_STRING&redirect_uri=http://localhost:8000/member/naverjoin">
+						<img alt="" src="/images/naver_login.png">
 					</a>
 				</p>
-
 			</div>
 		</section>
-
 	</div>
 	<footer th:replace="common/footer :: footer"></footer>
 	<script>
+		
 	</script>
 </body>
 </html>
