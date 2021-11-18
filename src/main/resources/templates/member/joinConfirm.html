@@ -16,6 +16,15 @@
 <!-- iamport.payment.js -->
 <script type="text/javascript"
 	src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
+
+<th:block th:if="${#request.getAttribute('join') != null}">
+	<th:block th:if="${#request.getAttribute('join') == 'unknownAge'}">
+		<script>
+			alert('연령대 항목에 동의해주세요.')
+			location.href='/member/joinConfirm';
+			</script>
+	</th:block>
+</th:block>
 <style>
 .kakao_login {
 	min-height: 80%;
@@ -35,20 +44,15 @@
 					<a
 						href="https://kauth.kakao.com/oauth/authorize?client_id=fae29f41478653a98fe5c415e8f363f3&redirect_uri=http://localhost:8000/member/kakaojoin&response_type=code">
 						<img alt="" src="/images/kakao_login.png">
-					</a> <br> <input type="button" id="goJoin" value="회원가입"
-						onclick="goJoin()">
+					</a>
 				</p>
 
 			</div>
-
 		</section>
 
 	</div>
 	<footer th:replace="common/footer :: footer"></footer>
 	<script>
-		function goJoin() {
-			location.href = '/member/join';
-		}
 	</script>
 </body>
 </html>
