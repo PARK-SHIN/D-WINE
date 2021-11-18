@@ -9,15 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.dwine.member.dto.MailDto;
 import com.project.dwine.member.model.sevice.GetAccessToken;
@@ -45,34 +41,37 @@ public class MemberController {
 	}
 
 	@GetMapping("/joinConfirm")
-	public String joinConfirm() {
+	public String joinConfirm(HttpSession session) {
+
+		session.removeAttribute("access_Token");
+		session.removeAttribute("user_nickname");
+		session.removeAttribute("age_range");
+
 		return "member/joinConfirm";
 	}
 
 	@GetMapping("/kakaojoin")
 	public String kakaoJoin(@RequestParam(required = false) String code, HttpSession session,
 			HttpServletRequest request) {
-		System.out.println("code" + code);
-
-		System.out.println("access_Token : " + session.getAttribute("access_Token"));
-
 		String access_Token = kakaoAPI.getAccessToken(code);
-		System.out.println("access_Token : " + access_Token);
-
 		HashMap<String, Object> userInfo = kakaoAPI.getUserInfo(access_Token);
-		System.out.println("login Controller : " + userInfo);
-
-		String user_age = (String) userInfo.get("age_range");
-
+		String user_age = "";
+		if (userInfo.get("age_range") == null) {
+			kakaoAPI.kakaoLogout(access_Token);
+			request.setAttribute("join", "unknownAge");
+			return "member/joinConfirm";
+		} else {
+			user_age = (String) userInfo.get("age_range");
+		}
 		if (!userInfo.isEmpty()) {
 			if (user_age.equals("0~9") || user_age.equals("10~19")) {
-				kakaoAPI.kakaoLogout(access_Token);
 				request.setAttribute("join", "unableAge");
 				return "member/joinForm";
 			} else {
 				session.setAttribute("access_Token", access_Token);
 				session.setAttribute("user_nickname", userInfo.get("nickname"));
 				session.setAttribute("age_range", userInfo.get("age_range"));
+				kakaoAPI.kakaoLogout(access_Token);
 			}
 		}
 
@@ -94,8 +93,6 @@ public class MemberController {
 		int result = memberService.join(member, birth);
 
 		if (result > 0) {
-			String access_Token = (String) session.getAttribute("access_Token");
-			kakaoAPI.kakaoLogout(access_Token);
 			session.removeAttribute("access_Token");
 			session.removeAttribute("user_nickname");
 			session.removeAttribute("age_range");

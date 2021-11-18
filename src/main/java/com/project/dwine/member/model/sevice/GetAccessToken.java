@@ -108,12 +108,12 @@ public class GetAccessToken {
 			JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
 			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-			String email = kakao_account.getAsJsonObject().get("email").getAsString();
-			String age_range = kakao_account.getAsJsonObject().get("age_range").getAsString();
-
 			userInfo.put("nickname", nickname);
-			userInfo.put("email", email);
-			userInfo.put("age_range", age_range);
+
+			if (kakao_account.getAsJsonObject().get("age_range") != null) {
+				String age_range = kakao_account.getAsJsonObject().get("age_range").getAsString();
+				userInfo.put("age_range", age_range);
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -121,32 +121,18 @@ public class GetAccessToken {
 
 		return userInfo;
 	}
-	
-	 public void kakaoLogout(String access_Token) {
-	        String reqURL = "https://kapi.kakao.com/v1/user/logout";
-	        try {
-	            URL url = new URL(reqURL);
-	            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-	            conn.setRequestMethod("POST");
-	            conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 
-	            int responseCode = conn.getResponseCode();
-	            System.out.println("responseCode : " + responseCode);
+	public void kakaoLogout(String access_Token) {
+		String reqURL = "https://kapi.kakao.com/v1/user/unlink";
+		try {
+			URL url = new URL(reqURL);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Authorization", "Bearer " + access_Token);
+			conn.getResponseCode();
 
-	            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-	            System.out.println(br.toString());
-	            
-	            
-	            String result = "";
-	            String line = "";
-
-	            while ((line = br.readLine()) != null) {
-	                result += line;
-	            }
-	            System.out.println("result : "+result);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
