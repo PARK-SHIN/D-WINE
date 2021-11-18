@@ -39,6 +39,10 @@
 	border: 1px solid #808080;
 }
 
+.joinForm_box input[readonly] {
+	background: lightgray;
+}
+
 .joinForm_box input:focus {
 	border: 1px solid #6B0E1F;
 	outline: 1px solid #6B0E1F;
@@ -55,6 +59,8 @@
 	height: 50px;
 	color: white;
 	background-color: #6B0E1F;
+	cursor:pointer;
+
 }
 
 .joinForm_box input[value="회원가입"] {
@@ -62,6 +68,7 @@
 	background-color: #6B0E1F;
 	color: white;
 	margin-top: 30px;
+	cursor:pointer
 }
 
 #pwdresult, #pwdform {

@@ -1,7 +1,9 @@
 package com.project.dwine.member.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.dwine.member.dto.MailDto;
-import com.project.dwine.member.model.sevice.GetAccessToken;
+import com.project.dwine.member.model.sevice.GetKakaoAccessToken;
+import com.project.dwine.member.model.sevice.GetNaverAccessToken;
 import com.project.dwine.member.model.sevice.MemberService;
 import com.project.dwine.member.model.sevice.SendEmailService;
 import com.project.dwine.member.model.vo.Member;
@@ -27,13 +30,16 @@ public class MemberController {
 
 	private MemberService memberService;
 	private SendEmailService sendEmailService;
-	private GetAccessToken kakaoAPI;
+	private GetKakaoAccessToken kakaoAPI;
+	private GetNaverAccessToken naverAPI;
 
 	@Autowired
-	public MemberController(MemberService memberService, SendEmailService sendEmailService, GetAccessToken kakaoAPI) {
+	public MemberController(MemberService memberService, SendEmailService sendEmailService,
+			GetKakaoAccessToken kakaoAPI, GetNaverAccessToken naverAPI) {
 		this.memberService = memberService;
 		this.sendEmailService = sendEmailService;
 		this.kakaoAPI = kakaoAPI;
+		this.naverAPI = naverAPI;
 	}
 
 	@GetMapping("/login")
@@ -46,6 +52,9 @@ public class MemberController {
 		session.removeAttribute("access_Token");
 		session.removeAttribute("user_nickname");
 		session.removeAttribute("age_range");
+		session.removeAttribute("name");
+		session.removeAttribute("birth");
+		session.removeAttribute("mobile");
 
 		return "member/joinConfirm";
 	}
@@ -78,6 +87,36 @@ public class MemberController {
 		return "redirect:/member/join";
 	}
 
+	@GetMapping("/naverjoin")
+	public String naverJoin(@RequestParam(required = false) String code, HttpSession session,
+			HttpServletRequest request) throws ParseException {
+		String access_Token = naverAPI.getAccessToken(code);
+		if (access_Token == null) {
+			request.setAttribute("join", "cancleConfirm");
+			return "member/joinConfirm";
+		}
+		HashMap<String, Object> userInfo = naverAPI.getUserInfo(access_Token);
+
+		if (userInfo != null) {
+			String age = (String) userInfo.get("age");
+			if (age.equals("0-9") || age.equals("10-19")) {
+				request.setAttribute("join", "unableAge");
+				return "member/joinConfirm";
+			} else {
+				String birth = userInfo.get("birthyear") + "-" + userInfo.get("birthday");
+				session.setAttribute("name", userInfo.get("name"));
+				session.setAttribute("birth", birth);
+				session.setAttribute("mobile", userInfo.get("mobile"));
+				naverAPI.naverLogout(access_Token);
+			}
+		} else {
+			naverAPI.naverLogout(access_Token);
+			request.setAttribute("join", "disagreeInfo");
+			return "member/joinConfirm";
+		}
+		return "redirect:/member/join";
+	}
+
 	@GetMapping("/join")
 	public String join() {
 		return "member/joinForm";
@@ -96,6 +135,9 @@ public class MemberController {
 			session.removeAttribute("access_Token");
 			session.removeAttribute("user_nickname");
 			session.removeAttribute("age_range");
+			session.removeAttribute("name");
+			session.removeAttribute("birth");
+			session.removeAttribute("mobile");
 
 			return "redirect:/member/login";
 		} else {
