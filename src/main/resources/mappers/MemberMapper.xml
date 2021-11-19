@@ -41,6 +41,22 @@
 		where m.user_id = #{ userId }
 	</select>
 	
+	<select id="findMemberId" parameterType="String" resultType="String">
+		select
+			user_id
+		from member
+		where user_name = #{ user_name }
+		and user_phone = #{ user_phone }
+	</select>
+	
+	<select id="findMemberByName_Id" parameterType="String" resultType="_int">
+		select
+			COUNT(*)
+		from member
+		where user_name = #{ user_name }
+		and user_id = #{ user_id }
+	</select>
+	
 	<select id="checkId" resultType="_int">
 		select COUNT(*) from member where user_id = #{ userEmail }
 	</select>
@@ -76,6 +92,11 @@
 			default	
 		)
 	</insert>
+	
+	<update id="updateTempPassword" parameterType="String">
+		update member set user_pw = #{ user_pw }
+		where user_id = #{ user_id }
+	</update>
 	
 	
 </mapper>

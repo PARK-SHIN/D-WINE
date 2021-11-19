@@ -17,4 +17,10 @@ public interface MemberMapper {
 
 	int checkId(String userEmail);
 
+	String findMemberId(String user_name, String user_phone);
+
+	int findMemberByName_Id(String user_name, String user_id);
+
+	void updateTempPassword(String user_id, String user_pw);
+
 }
