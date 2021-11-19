@@ -85,4 +85,24 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	@Override
+	public String findMemberId(String user_name, String user_phone) {
+
+		String userId = memberMapper.findMemberId(user_name, user_phone);
+
+		return userId;
+	}
+
+	@Override
+	public int findMemberByName_Id(String user_name, String user_id) {
+		int findMemberByName_Id = memberMapper.findMemberByName_Id(user_name, user_id);
+		return findMemberByName_Id;
+	}
+
+	@Override
+	public void updateTempPassword(String user_id, String tempPassword) {
+		memberMapper.updateTempPassword(user_id, tempPassword);
+
+	}
+
 }

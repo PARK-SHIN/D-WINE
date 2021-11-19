@@ -3,7 +3,6 @@ package com.project.dwine.member.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -148,13 +148,50 @@ public class MemberController {
 	}
 
 	@GetMapping("/findId")
-	public String findId() {
+	public void findId() {
+	}
+
+	@PostMapping("/findId")
+	public String findId(HttpServletRequest request, HttpSession session, Member member) {
+
+		String userId = memberService.findMemberId(member.getUser_name(), member.getUser_phone());
+
+		if (userId == null) {
+			request.setAttribute("findId", "noMember");
+			return "member/findId";
+		} else {
+			request.setAttribute("userId", userId);
+		}
 		return "member/findId";
+
 	}
 
 	@GetMapping("/findPw")
-	public String findPw() {
+	public void findPw() {
+	}
+
+	@PostMapping("/findPw")
+	public String findPw(HttpServletRequest request, HttpSession session, Member member) {
+
+		int findMemberPw = memberService.findMemberByName_Id(member.getUser_name(), member.getUser_id());
+
+		if (findMemberPw > 0) {
+			MailDto dto = sendEmailService.sendTempPw(member.getUser_id());
+			sendEmailService.mailSend(dto);
+
+			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+			String tempPw = bCryptPasswordEncoder.encode(dto.getTempPassword());
+			if (bCryptPasswordEncoder.matches(dto.getTempPassword(), tempPw)) {
+				memberService.updateTempPassword(member.getUser_id(), tempPw);
+				request.setAttribute("findPw", "modifyPw");
+			}
+		} else {
+			request.setAttribute("findPw", "noMember");
+			return "member/findPw";
+
+		}
 		return "member/findPw";
+
 	}
 
 	@PostMapping("/email")
