@@ -84,13 +84,13 @@
 			var name = document.getElementById('user_name');
 			var birth = document.getElementById('user_birth');
 			var mobile = document.getElementById('user_phone');
-			if(name.value != null){
+			if(name.value != ""){
 				$('#user_name').prop('readonly', true);
 			}
-			if(birth.value != null){
+			if(birth.value != ""){
 				$('#user_birth').prop('readonly', true);
 			}
-			if(mobile.value != null){
+			if(mobile.value != ""){
 				$('#user_phone').prop('readonly', true);
 			}
 		});
