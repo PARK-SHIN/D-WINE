@@ -2,6 +2,7 @@ package com.project.dwine.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -13,7 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.project.dwine.member.model.sevice.MemberService;
 
-
+@Configuration
 @EnableWebSecurity
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -23,11 +24,11 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public SpringSecurityConfiguration(MemberService memberService) {
 		this.memberService = memberService;
 	}
-	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
 
 	@Override
 	public void configure(WebSecurity web) {

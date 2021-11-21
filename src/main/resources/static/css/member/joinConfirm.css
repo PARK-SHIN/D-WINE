@@ -17,6 +17,22 @@
 	text-align: center;
 }
 
+.join_btn {
+	position: relative;
+	top: 10px;
+}
+
+.join_btn a {
+	display: inline-block;
+}
+
+.joinInfo {
+	border-color: #6B0E1F;
+	resize: none;
+	padding: 0px 15px;
+	font-weight: bold;
+}
+
 .joinConfirm_box {
 	display: inline-block;
 	width: 550px;
@@ -24,3 +40,4 @@
 	border: solid #6B0E1F;
 	border-radius: 10%;
 }
+

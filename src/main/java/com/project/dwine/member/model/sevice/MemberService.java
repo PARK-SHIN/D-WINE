@@ -4,8 +4,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.project.dwine.member.model.vo.Member;
 
-public interface MemberService extends UserDetailsService{
+public interface MemberService extends UserDetailsService {
 
-	void join(Member member, String birth);
+	int join(Member member, String birth);
+
+	int findMemberByNickname(String nickName);
+
+	int checkId(String userEmail);
+
+	String findMemberId(String user_name, String user_phone);
+
+	int findMemberByName_Id(String user_name, String user_id);
+
+	void updateTempPassword(String user_id, String tempPassword);
 
 }

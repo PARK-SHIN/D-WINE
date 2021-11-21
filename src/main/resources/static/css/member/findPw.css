@@ -26,6 +26,8 @@
     padding: 50px;
     border: solid #6B0E1F;
     border-radius: 10%;
+    width: 416px;
+	height: 254px;
 }
 
 .findPw_box input[name ^=user] {
