@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+ <title>공지사항 디테일</title>
+    <style>
+    .content {
+	margin : 50px auto;
+	height : auto;
+	min-height : 100%;
+	width: 900px;
+}
+
+    #noticeform{
+	    justify-content: center;
+	    align-items: center;   
+    }
+
+    #titleLabel{
+        margin-right: 38px;
+    }
+
+
+    label{
+        margin-right: 5px;
+    }
+
+    select{
+        width: 64px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    option{
+        width: 64px;
+        height: 20px;
+    }
+
+    #title{
+        height: 30px;
+        width: 600px;
+    }
+
+    #summernote{
+        text-align: center;
+        border: black 1px solid;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        width: 800px;
+        height: 350px;
+    }
+
+    .btnArea{
+        text-align: center;
+        border-top: 1px solid #282A35;
+        padding: 30px;
+        width: 900px;
+    }
+    #cancleBtn{
+            background: white ;
+            border: 1px solid #83131E ;
+            color: #83131E;
+            width:150px;
+            height: 25px;
+            border-radius: 8%;
+            margin-right: 30px;
+        }
+
+    #enrollBtn{
+          
+            background: #83131E ;
+            border: none;
+            color:white;
+            width:150px;
+            height: 25px;
+            border-radius: 8%;
+            margin-right: 30px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div class=content>
+    <h2>공지사항 - 등록</h2>   
+    <hr>
+    <br>
+     <div>
+    	등록일 : <span th:text="${#dates.format(notice.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+    	수정일 : <span th:text="${#dates.format(notice.modifyDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+    </div>
+    <br>
+    <div class="categoryArea"><label>카테고리</label>
+    <select id="selectArea">
+        <option value="plain">일반</option>
+        <option value="event">이벤트</option>
+    </select></div><br>
+    <div class="titleArea"><label id="titleLabel">제목</label>
+    <input type="text" id="title" name="notice_title" th:value="${notice.notice_title}" readonly></div>
+   
+
+    <div id="summernote" th:text="${notice.notice_context}" readonly></div>
+
+    <div class="btnArea">
+        <button id="cancleBtn">취소</button> 
+        <input id="enrollBtn" type="submit" value="등록">
+    </div>
+
+</div>
+</body>
+</html>

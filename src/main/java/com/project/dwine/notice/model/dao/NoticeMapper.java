@@ -10,7 +10,11 @@ import com.project.dwine.notice.model.vo.Notice;
 public interface NoticeMapper {
 	
 	List<Notice> selectNoticeList();
+
+	Notice selectNoticeByno(int notice_no);
 	
-	int registNewNotice(Notice newNotice);
+	int registNewNotice(int notice_category, String notice_title, String notice_context, int user_no);
+
+
 
 }

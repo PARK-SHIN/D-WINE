@@ -1,0 +1,112 @@
+@charset "UTF-8";
+#container {
+            width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            /* border: 1px solid red; */
+        }
+
+        .snb {
+            width: 200px;
+            /* height: 2500px; */
+            height: 100%;
+            /* border: 1px solid blue; */
+        }
+
+        .contents {
+            width: 888px;
+            height: 100%;
+            /*2500px -> 100%*/
+            /* border: 1px solid black; */
+        }
+
+        .inner {
+            margin-top: 30px;
+            margin-left: 27px;
+            width: 836px;
+            height: 100%;
+            /* border: 1px solid yellow; */
+        }
+
+        /**/
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .snb {
+            width: 210px;
+        }
+
+        /* 별점 */
+        /* .star-rating {
+       		display: flex;
+			 flex-direction: row-reverse;
+			 font-size: 2.25rem;
+			 line-height: 2.5rem;
+			 justify-content: space-around;
+			 padding: 0 0.2em;
+			 text-align: center;
+			 width: 5em;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            -webkit-text-fill-color: transparent;
+            Will override color (regardless of order)
+            -webkit-text-stroke-width: 2.3px;
+            -webkit-text-stroke-color: gold;
+            cursor: pointer;
+        }
+
+        .star-rating :checked~label {
+            -webkit-text-fill-color: gold;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover~label {
+            -webkit-text-fill-color: #fff58c;
+        } */
+
+        .cmd {
+            margin-top: 20px;
+            margin-left : 300px;
+        }
+
+        #save {
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #83131E;
+            color: #fff;
+            border : 0px;
+            cursor: pointer;
+        }
+        
+        /* 별점 스타일 */
+		.star {
+			display: inline-block;
+			width: 30px;
+			height: 60px;
+			cursor: pointer;
+		}
+		
+		.star_left {
+			background: url(/images/mypage/star.png) no-repeat 0 0;;
+			background-size: 60px;
+			margin-right: -3px;
+		}
+		
+		.star_right {
+			background: url(/images/mypage/star.png) no-repeat -30px 0;
+			background-size: 60px;
+			margin-left: -3px;
+		}
+		
+		.star.on {
+			background-image: url(/images/mypage/star_on.png)
+		}
