@@ -1,8 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <meta charset="UTF-8">
 <title>비밀번호수정</title>
 <link href="/css/mypage/pwdModify.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	const successMessgae = '[[${ message }]]';
+	
+	if(successMessgae){
+		alert(successMessgae);
+	}
+</script>
 </head>
 <body>
 	<div class="pwdOuter">
@@ -11,7 +22,7 @@
 			<div class="pwdForm">
 				<form id="updatePwdForm" th:action="@{/mypage/pwdModify}" method="post"
 					onsubmit="return checkPwd();">
-					<input type="hidden" name="user_no" th:value="${user_no}">
+					<input type="hidden" id="user_no" name="user_no" th:value="${user_no}">
 					<h4>현재 비밀번호</h4>
 					<span class="input_area"> <input type="password"
 						name="user_pwd" id="user_pwd"  maxlength="15" required>
@@ -50,7 +61,48 @@
 			
 			return true;
 		}
-		
 	</script>
+	
+	<!-- <script>
+	 
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+		// ajax 테스트
+		$(function(){
+			$("#updatePwdBtn").on("click", function(){
+				var user_no = $("#user_no").val(); // 유저번호
+				var user_pwd = $("#user_pwd").val(); //현재 비번
+				var newPwd = $("#newPwd").val();
+				console.log(user_no);
+				console.log(user_pwd);
+				console.log(newPwd);
+				
+				$.ajax({
+					url : "/mypage/pwdModify", 
+					data: {user_no:user_no, user_pwd : user_pwd, newPwd : newPwd},
+					beforeSend: function(xhr){
+				        xhr.setRequestHeader(header, token);
+				    },
+					contentType : "application/json; charset=utf-8",
+					type : "POST",
+					success : function(data){
+						if(data > 0){
+							alert("비밀번호 수정에 성공하였습니다");
+							opener.window.location.reload(); 
+							self.close();	
+						} else {
+							alert("비밀번호 수정에 실패하였습니다");
+							opener.window.location.reload(); 
+							self.close();	
+						}
+						
+					},
+					error : function(e){
+						console.log(e);
+					}
+				})
+			});
+		}) 
+	</script> -->
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>내 포인트</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/point.css" rel="stylesheet">
 </head>
@@ -18,32 +19,47 @@
                 </div>
                 <hr style="width: 700px; padding-right: 130px;">
                 <h3 class="title">총 적립금</h3>
-                <h3 class="title"></h3>
+                <h3 class="title" id="sum"></h3>
                 <div class="totalArea" th:each="point : ${pointList}">
                		<input type="hidden" class="hiddenarea" th:value="${point.total}">
                </div>
+               <div class="user_pointArea" style="display:none;" th:each="point : ${pointList}">
+	               <th:block th:if="${point.use_point} != 0">
+	               		<input type="number" th:value="${point.use_point}">
+	               	</th:block>
+               </div>
+               <h3 style="display:none" class="result"></h3>
                
                <!--  <h3 class="title sum" th:each="point : ${pointList}" th:text="${point.point}"></h3> -->
                 
-                <div class="point_list">
+               <!-- <div class="point_list" style="overflow:scroll; height:405px;"> -->
+               <div class="point_list">
                     <ul class="point_header">
                         <li class="num">번호</li>
                         <li class="date">날짜</li>
-                        <li class="point">금액</li>
+                        <li class="point">사용 / 적립</li>
                         <li class="content">내용</li>
                     </ul>
-                    <ul th:each="point : ${pointList}">
-	                        <li class="num" th:text="${point.point_no}"></li>
-	                        <li class="date" th:text="${#dates.format(point.pdate, 'yyyy.MM.dd')}"></li>
-	                        <li class="point" th:each="pr : ${purchaseList}">
-	                        	<th:block th:if="${pr.use_point} != 0">-<label th:text="${pr.use_point}"></label></th:block>
-	                        	<th:block th:unless="${pr.use_point} == 0 and ${point.point} != 0"><label th:text="${point.point}"></label></th:block>
-	                        </li>
-	                        <li class="content">
-	                        	<th:block th:if="">구매에 대한 적립</th:block>
-	                        	<th:block th:unless="" >리뷰에 대한 적립</th:block>
-	                        	<th:block th:unless="">구매에 대한 사용</th:block>
-	                        </li>
+                    <ul class="">
+                        <li class="num">-</li>
+                        <li class="date">2002.20.20</li>
+                        <li class="point">2000</li>
+                        <li class="content">첫 가입 이벤트 적립</li>
+                    </ul>
+                    <ul th:each="point,index : ${pointList}">
+                        <!-- <li class="num" th:text="${#lists.sort(index.count, reverse)}"></li> -->
+                        <li class="num" th:text="${index.count}">
+                        </li>
+                        <li class="date" th:text="${#dates.format(point.pdate, 'yyyy.MM.dd')}"></li>
+                        <li class="point">
+                        	<th:block th:if="${point.use_point} != 0">-<label th:text="${point.use_point}"></label> / <label th:text="${point.point}"></label></th:block>
+                        	<th:block th:unless="${point.use_point} != 0"><label th:text="${point.point}"></label></th:block>
+                        </li>
+                        <li class="content" th:text="${point.content}">
+                        	<!-- <th:block th:if="${point.purchase_no} != 0 and ${point.review_no} == 0">구매에 대한 적립</th:block>
+                        	<th:block th:unless="${point.review_no} != 0 and ${point.purchase_no} == 0" >리뷰에 대한 적립</th:block>
+                        	<th:block th:unless="${point.user_no} != 0">구매에 대한 사용</th:block> -->
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -55,9 +71,25 @@
     	var test2 = test.nextSibling.nextSibling;
     	var test3 = test2.nextSibling.nextSibling.firstChild.nextSibling;
     	console.log(test3); // hiddenarea
-    	console.log(test3.value);
+    	console.log("ddd" +test3.value); // 총합계
     	console.log(test2.className);
-    	test2.innerHTML= test3.value;
+    	
+    	var sum = document.querySelector("#sum");
+    	console.log("sum.value : " + sum.value);
+    	
+    	var point = $("[type=number]").val();
+    	console.log("point : " + point);
+    	if(point != null){
+    		$(".result").val(point);
+    	}
+    	var d = 2000;
+    	if(point = null){
+    		point = 0;
+    	} 
+    	d += Number( test3.value ) - Number( point );
+    	console.log("d : " +d);
+    	
+    	test2.innerHTML= d;
     </script>
 <footer th:include="common/footer :: footer"></footer>
 </body>

@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>찜 리스트</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/wish.css" rel="stylesheet">
 <style>
@@ -22,33 +25,67 @@
                 <div>
                     <h3 style="font-size: 24px;">찜 리스트</h3>
                 </div>
-                <div class="wish_list">
-                    <ul class="wish_header">
-                        <li class="title">상품정보</li>
-                        <li class="wish_date">찜한날짜</li>
-                        <li class="del">삭제</li>
-                    </ul>
-                    <ul style="height: 100px;" th:each="w : ${ wishList }">
-                        <li class="title">
-                            <div class="parent">
-                                <div class="first"><input type="checkbox"></div>
-                                <div class="second"><img th:src="${w.thumbnail}" width="80px" height="80px" alt="wineImg"> </div>
-                                <div class="third"> <label th:text="${w.product_kname}"></label> </div>
-                            </div>
-                        </li>
-                        <li class="wish_date date1"><label th:text="${#dates.format(w.wish_date, 'yyyy.MM.dd')}"></label></li>
-                        <li class="del del1">
-                            <a th:href="@{/mypage/wish/{wish_no}(wish_no=${w.wish_no})}"><img class="closeImg" width="20px" height="20px" src="/images/mypage/close.png"></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="cartBtnArea">
-                	<!-- <a class="cartBtn" th:href="@{/cart/{user_no}(user_no=${w.user_no})}">선택한 상품 장바구니 담기</a> -->
-                    <input class="cartBtn" type="button" value="선택한 상품 장바구니 담기">
-                </div>
+                <form th:action="@{/mypage/wishToCart}" method="post">
+	                <div class="wish_list">
+	                    <ul class="wish_header">
+	                        <li class="title">상품정보</li>
+	                        <li class="wish_date">찜한날짜</li>
+	                        <li class="del">삭제</li>
+	                    </ul>
+	                    <ul style="height: 100px;" th:each="w : ${ wishList }">
+	                        <li class="title">
+	                            <div class="parent">
+	                                <div class="first"><input type="checkbox" name="ck_code" th:value="${w.product_no}"></div>
+	                                <div class="second"><img th:src="${w.thumbnail}" width="80px" height="80px" alt="wineImg"> </div>
+	                                <div class="third"> <label th:text="${w.product_kname}"></label> </div>
+	                            </div>
+	                        </li>
+	                        <li class="wish_date date1"><label th:text="${#dates.format(w.wish_date, 'yyyy.MM.dd')}"></label></li>
+	                        <li class="del del1">
+	                        	<input type="hidden" th:value="${w.product_no}" name="product_no"/>
+		                		<input type="hidden" th:value="${w.user_no}" name="user_no"/>
+	                            <a th:href="@{/mypage/wish/{wish_no}(wish_no=${w.wish_no})}"><img class="closeImg" width="20px" height="20px" src="/images/mypage/close.png"></a>
+	                        </li>
+	                    </ul>
+		                <div class="cartBtnArea">
+		                	<!-- <a class="cartBtn" th:href="@{/cart/{user_no}(user_no=${w.user_no})}">선택한 상품 장바구니 담기</a> -->
+		                    <input class="cartBtn" type="submit" value="선택한 상품 장바구니 담기">
+		                </div>
+	                </div>
+                </form>
             </div>
             </div>
         </div>
+        
+        <script>
+	        var header = $("meta[name='_csrf_header']").attr('content');
+	    	var token = $("meta[name='_csrf']").attr('content');
+            var checkArr = [];     // 배열 초기화
+            var user_no = $("input[name='user_no']").val();
+            console.log(user_no);
+	        function checkboxArr() {
+	            $("input[name='ck_code']:checked").each(function(i) {
+	                checkArr.push($(this).val());     // 체크된 것만 값을 뽑아서 배열에 push
+	                console.log(checkArr[i]);
+	            })
+	        }
+         
+            function insertCart(){
+            	$.ajax({
+                    url: '/mypage/wishToCart'
+                    , beforeSend: function(xhr){
+        		        xhr.setRequestHeader(header, token);
+        		    },                    
+                    type: 'post'
+                    , data: {
+                    	checkedValue : checkArr,
+                    	user_no : user_no
+                    }
+                });	
+            }
+            
+        
+        </script>
    
  <footer th:include="common/footer :: footer"></footer>
 </body>

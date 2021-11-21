@@ -80,3 +80,21 @@
             margin-left: 230px;
             margin-top: 20px;
         }
+        #nickname_check {
+        	padding: 10px 15px;
+            border-radius: 5px;
+            background-color: #83131E;
+            color: #fff;
+            border : 0px;
+            cursor: pointer;
+            font-size : 13px;
+        }
+        #check_nickName{
+        	padding: 10px 15px;
+            border-radius: 5px;
+            background-color: #83131E;
+            color: #fff;
+            border : 0px;
+            cursor: pointer;
+            font-size : 13px;
+        }
