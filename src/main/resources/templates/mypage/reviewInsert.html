@@ -20,21 +20,16 @@
                     <h3 style="font-size: 24px;">리뷰 작성</h3>
                 </div>
                 <hr style="width: 700px; padding-right: 130px;">
-                <form th:action="@{/mypage/reviewInsert}" method="post" enctype="multipart/form-data">   
+                <form th:action="@{/mypage/reviewInsertForm}" method="post" enctype="multipart/form-data">   
                 	<input type="hidden" name="star" id="star">
                 	<input type="hidden" name="user_no" th:value="${user_no}">
-                	<input type="hidden" name="od_no" th:vlaue="${od_no}">
-                	<input type="hidden" name="product_no" th:value="${product_no}">
+                	<input type="hidden" name="od_no" th:value="${od_no}">
                     <div>
                         <h3>별점</h3>
                         <div class="star-box">
-							<span class="star star_left">
-							</span> 
-							<span class="star star_right">
-							</span> 
-							<span class="star star_left" value="1.5">
-								<span style="display:none;">1.5</span>  
-							</span> 
+                        	<span class="star star_left"></span>
+							<span class="star star_right"></span>
+							<span class="star star_left" value="1.5"></span> 
 							<span class="star star_right" data-value="2"></span>
 							<span class="star star_left" value="2.5"></span> 
 							<span class="star star_right" value="3"></span>
@@ -42,6 +37,16 @@
 							<span class="star star_right" value="4"></span>
 							<span class="star star_left" value="4.5"></span> 
 							<span class="star star_right" value="5"></span>
+							<!-- <span class="star star_left"></span> 
+							<span class="star star_right"></span> 
+							<span class="star star_left" value="1.5"></span> 
+							<span class="star star_right" data-value="2"></span>
+							<span class="star star_left" value="2.5"></span> 
+							<span class="star star_right" value="3"></span>
+							<span class="star star_left" value="3.5"></span> 
+							<span class="star star_right" value="4"></span>
+							<span class="star star_left" value="4.5"></span> 
+							<span class="star star_right" value="5"></span> -->
 							
 							<input name= "star" type="hidden" id="star">
 						</div>
@@ -55,7 +60,7 @@
                     </div>
                     <br>
                     <div>
-                        <h3>리뷰이미지 첨부 <span style="font-size: 12px;">(1장만 첨부 가능합니다.)&nbsp;</span><input name="review_image" type="file" id="imgfile" accept="image/gif,image/jpeg,image/png"></h3>
+                        <h3>리뷰이미지 첨부 <span style="font-size: 12px;">(1장만 첨부 가능합니다.)&nbsp;</span><input name="singleFile" type="file" id="imgfile" accept="image/gif,image/jpeg,image/png"></h3>
                         <div id="fileArea" style="max-width: 500px; max-height: 500px;">
                             <!-- 이미지 첨부 영역 -->
                         </div>
@@ -95,6 +100,7 @@
 	       document.getElementById('star').value = (result+1)/2;
 	    });
     </script>
+    
 <footer th:include="common/footer :: footer"></footer>
 </body>
 </html>

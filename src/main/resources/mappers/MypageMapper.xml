@@ -66,6 +66,7 @@
 		<result property="product_no" column="PRODUCT_NO" />
 	</resultMap>
 	
+	
 	<!-- <resultMap type="com.project.dwine.mypage.model.vo.Authority"
 		id="">
 		<id property="code" column="authority_no" />
@@ -130,13 +131,13 @@
 			OD_NO
 		)
 		VALUES
-		(	SEQ_RNO.NEXTVAL,
+		(	SEQ_RNO.nextval,
 			#{review_text},
 			#{review_image},
 			SYSDATE,
 			SYSDATE,
 			#{star},
-			Y,
+			'Y',
 			#{user_no},
 			#{od_no}
 		)
@@ -186,16 +187,16 @@
 			P.USER_NO,
 			R.REVIEW_NO,
 			PC.PURCHASE_NO,
-             PC.USE_POINT,
+            PC.USE_POINT,
             SUM(POINT)  over (partition by P.USER_NO) TOTAL
 		FROM POINT P
 		LEFT JOIN REVIEW R ON (P.REVIEW_NO = R.REVIEW_NO)
 		LEFT JOIN PURCHASE PC ON (P.PURCHASE_NO = PC.PURCHASE_NO)
-		WHERE P.USER_NO = 2
-        AND R.STATUS = 'Y'
-        OR PC.STATUS = 'Y'
+		WHERE P.USER_NO = #{user_no}
+        AND (R.STATUS = 'Y'
+        OR PC.STATUS = 'Y')
         GROUP BY POINT_NO, CONTENT, PDATE, P.USER_NO, R.REVIEW_NO, PC.PURCHASE_NO, POINT, PC.USE_POINT
-		ORDER BY PDATE DESC
+		ORDER BY POINT_NO
 	</select>
 	
 	<select id="selectOrderList" resultMap="PurchaseResultMap">
@@ -264,5 +265,43 @@
 		WHERE STATUS = 'Y'
 		AND USER_NO = #{user_no}			
 	</select>
+	
+	<update id="updateCancelPayment" parameterType="com.project.dwine.mypage.model.vo.Purchase">
+		UPDATE PURCHASE
+		SET
+		ORDER_STATUS = '결제취소',
+		REFUND_DATE = SYSDATE
+		WHERE PURCHASE_NO = #{purchase_no}
+	</update>
+	
+	<select id="nicknameCheck" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER 
+		WHERE USER_NICKNAME = #{user_nickname}
+	</select>
+
+	<select id="findReviewNo" resultType="_int">
+		select seq_rno.currval from dual
+	</select>
+	
+	<insert id="insertReviewPoint" parameterType="com.project.dwine.mypage.model.vo.Point">
+		INSERT INTO POINT 
+        (point_no, CONTENT, POINT, PDATE, USER_NO, REVIEW_NO)
+        VALUES(seq_point_no.nextval, '리뷰에 대한 적립', 300, sysdate, #{user_no}, #{review_no})
+	</insert>
+	
+	<insert id="insertWishToCart" parameterType="com.project.dwine.mypage.model.vo.Cart">
+		INSERT INTO CART (CART_NO, CART_COUNT, USER_NO, PRODUCT_NO)
+		VALUES (SEQ_CART_NO.NEXTVAL, 1, #{user_no}, #{product_no})
+	</insert>
+	
+	<update id="reviewUpdate" parameterType="com.project.dwine.mypage.model.vo.Review">
+		UPDATE REVIEW SET
+			REVIEW_TEXT = #{review_text},
+			REVIEW_IMAGE = #{review_image},
+			REVIEW_MODIFY = SYSDATE
+		WHERE REVIEW_NO = #{review_no}
+	</update>
+	
 
 </mapper>

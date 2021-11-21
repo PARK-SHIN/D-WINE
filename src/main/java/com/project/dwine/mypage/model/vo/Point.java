@@ -6,7 +6,7 @@ public class Point {
 	
 	private int point_no;
 	private String content;
-	private Double point;
+	private int point;
 	private Date pdate;
 	private int review_no;
 	private int purchase_no;
@@ -15,7 +15,7 @@ public class Point {
 	
 	public Point() {}
 
-	public Point(int point_no, String content, Double point, Date pdate, int review_no, int purchase_no, int use_point,
+	public Point(int point_no, String content, int point, Date pdate, int review_no, int purchase_no, int use_point,
 			int total) {
 		super();
 		this.point_no = point_no;
@@ -44,11 +44,11 @@ public class Point {
 		this.content = content;
 	}
 
-	public Double getPoint() {
+	public int getPoint() {
 		return point;
 	}
 
-	public void setPoint(Double point) {
+	public void setPoint(int point) {
 		this.point = point;
 	}
 
