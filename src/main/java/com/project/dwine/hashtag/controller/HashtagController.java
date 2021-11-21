@@ -1,13 +1,20 @@
 package com.project.dwine.hashtag.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.dwine.hashtag.model.service.HashtagService;
@@ -24,7 +31,7 @@ private HashtagService hashtagService;
 		this.hashtagService = hashtagService;
 	}
 	
-	@GetMapping("form")
+	@GetMapping("/form")
 	public void hashtagForm() {}
 	
 	@GetMapping(value="category", produces = "application/json; charset=UTF-8")
@@ -40,6 +47,57 @@ private HashtagService hashtagService;
 		return map;
 	}
 	
+	@PostMapping("/hashNameCheck") 
+	public void hashNameCheck(HttpServletResponse response, @RequestParam String hashName) throws IOException {
+		
+		int result = hashtagService.hashNameCheck(hashName);
+		
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(result);
+	}
 	
-
+	@PostMapping("regist")
+	public void registHashtag(HttpServletResponse response, @RequestParam String hashName, @RequestParam String hashType) throws IOException {
+		response.setCharacterEncoding("UTF-8");
+		
+		int result = hashtagService.registHashtag(hashName, Integer.parseInt(hashType));		
+	
+		if(result > 0) {
+			response.getWriter().print("success");
+		} else {
+			response.getWriter().print("fail");
+		}
+	}
+	
+	@PostMapping("/modify")
+	public void modifyHashtag(HttpServletResponse response, @RequestParam String hashNo, @RequestParam String hashName, @RequestParam String hashType) throws IOException {
+		response.setCharacterEncoding("UTF-8");
+		
+		int result = hashtagService.modifyHashtag(Integer.parseInt(hashNo), hashName, Integer.parseInt(hashType));
+		
+		if(result > 0) {
+			response.getWriter().print("success");
+		} else {
+			response.getWriter().print("fail");
+		}
+	}
+	
+	@PostMapping("/delete")
+	public void deleteHashtag(HttpServletResponse response, @RequestParam String hashNo) throws IOException {
+		response.setCharacterEncoding("UTF-8");
+		
+		int result = hashtagService.deleteHashtag(Integer.parseInt(hashNo));
+		
+		if(result > 0) {
+			response.getWriter().print("success");
+		} else {
+			response.getWriter().print("fail");
+		}
+	}
+	
+	@PostMapping(value="selectByHashNo", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public Hashtag selectByHashNo(@RequestParam int hashNo) {
+		return hashtagService.selectByHashNo(hashNo);
+	}
 }

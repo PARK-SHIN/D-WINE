@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>Hashtag Form</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <style>
@@ -48,6 +50,9 @@
     .controll {
     	margin-bottom: 20px;
     }
+    li:hover {
+    	background: #c4c4c4;
+    }
 </style>
 </head>
 <body>
@@ -55,55 +60,226 @@
         <div id="left_box">
             <div class="center">
                 <label>mood</label>
-                <form>
-                	<ul class="list_box" id="mood"></ul>
-                </form>
+                <ul class="list_box" id="mood"></ul>
             </div>
             <div class="center">
-                <label>food</label>
-                <form>
-                	<ul class="list_box" id="food"></ul>
-                </form>
+                <label>food</label>             
+                <ul class="list_box" id="food"></ul>
             </div>
         </div>
         <div id="right_box">
         	<div class="controll">
-        		<label>등록</label><input type="radio" id="regist" name="function">
-        		<label>수정</label><input type="radio" id="modify" name="function">
-        		<label>삭제</label><input type="radio" id="delete" name="function">
-        	</div>
-        	<div>
-        		<label class="label">해시태그 번호</label>
-	            <input type="number" name="hash_no"><br>
-	            <label  class="label">해시태그명</label>
-	            <input type="text" name="hash_name"><br>
-	            <label  class="label">해시태그 타입</label>
-	            <label for="mood">mood</label><input type="radio" id="mood" name="type">
-	            <label for="food">food</label><input type="radio" id="food" name="type">
-        	</div>
+	        	<label>등록</label><input type="radio" id="regist" name="function" value="regist" checked>
+	        	<label>수정</label><input type="radio" id="modify" name="function" value="modify">
+	        	<label>삭제</label><input type="radio" id="delete" name="function" value="delete">
+	        </div>
+  			<div>
+	        	<label class="label">해시태그 번호</label>
+		        <input type="number" id="hashNo" name="hashNo" readonly><br>
+		        <label  class="label">해시태그명</label>
+		        <input type="text" id="hashName" name="hashName" required="required"><input id="hashNameCheck" type="button" onclick="return hashNameCheck()" value="중복확인"><br>
+		        <label  class="label">해시태그 타입</label>
+		        <label for="mood">mood</label><input type="radio" id="mood" name="hashType" value="1" required="required">
+		        <label for="food">food</label><input type="radio" id="food" name="hashType" value="2">
+	        </div>
+	        <div class="center btn_area">
+	        	<button id='deleteBtn' class="btn" onclick='deleteHash()'>삭제</button>
+	        	<button id='registBtn' class="btn" onclick='registHash()'>등록</button>
+	        	<button id='modifyBtn' class="btn" onclick='modifyHash()'>수정</button>
+	        </div>
+	        	
         </div>
     </div>
     
     <script>
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+    
+    /* default - 버튼 비활성화, 중복확인을 해야 활성화 */
+    $(".btn").attr("disabled", true);
+    
+    /* 해시태그 list 보여주는 <ul>에 해시태그 <li> 추가 */
     $.get("/hashtag/category", function(map) {
 		const mood = $("#mood");
 		const food = $("#food");
-		
+
 		var html1 = '';
 		var html2 = '';
 		
 		$.each(map['mood'], function(index, value){
-			html1 += '<li><input type="hidden" name="hashNo" value=' + value.hashNo + '>' + value.hashName + '</li>'
+			html1 += '<li value="' + value.hashNo + '">' + value.hashName + '</li>'
 		});
 		mood.html(html1);
 		
 		$.each(map['food'], function(index, value){
-			html2 += '<li><input type="hidden" name="hashNo" value=' + value.hashNo + '>' + value.hashName + '</li>'
+			html2 += '<li value="' + value.hashNo + '">' + value.hashName + '</li>'
 		});
 		food.html(html2);
 	});
     
+    /* 해시태그명 중복 체크 */
+    function hashNameCheck() {
+		var hashName = $("#hashName").val();
+		var isUsable = false;
+		console.log(hashName);
+		
+		if(!hashName) {
+			$("#hashName").focus();
+			alert("해시태그명을 입력해주세요.");
+		} else {
+			$.ajax({
+				url : "/hashtag/hashNameCheck",
+				data : {hashName :  hashName},
+				type : "post",
+				success : function(result) {
+					if(result > 0) {
+						alert("중복 된 해시태그명이 있습니다.");
+						$("#hashName").focus();
+					} else {
+						if(confirm('사용 가능한 닉네임입니다. 사용하시겠습니까?')) {
+							$("#hashName").attr('readonly', true);
+							isUsable = true; // 사용 가능한 아이디라는 flag 값
+						} else {
+							$("#hashName").attr('readonly', false);
+							isUsable = false;
+						}
+					}
+					if(isUsable) {
+						$(".btn").removeAttr("disabled");
+					} else {
+						$(".btn").attr("disabled", true);
+					}
+				}, 
+				error : function(e) {
+					console.log(e);
+				}
+			});
+		}
+		
+		
+	};
+	
+	/* radio value에 따라 버튼 보이기 */
+	$("#registBtn").show();
+ 	$("#modifyBtn").hide();
+ 	$("#deleteBtn").hide();
+ 	
+    /* radio에 따라 form 보여주기 */
+	$('input[name=function]').on("change", function(){
+		var radio = $('input[name=function]:checked');
+		$(".btn").attr("disabled", true);
+		
+		if(radio.val() == "delete") {
+		 	$("#hashNameCheck").attr('disabled', true);
+		 	$("input[name=hashType]").attr('disabled', true);
+		 	$("#hashName").prop('readonly', true);
+		 	
+		 	$("#deleteBtn").show();
+		 	$("#registBtn").hide();
+		 	$("#modifyBtn").hide();
+
+		} else if(radio.val() == "regist"){
+			$("#hashNameCheck").attr('disabled', false);
+		 	$("input[name=hashType]").attr('disabled', false);
+		 	$("#hashName").prop('readonly', false);
+		 	
+		 	$("#hashNo").val("");
+		 	$("#hashName").val("");
+		 	$("input[name=hashType]").prop("checked", false);
+		 	
+		 	$("#registBtn").show();
+		 	$("#modifyBtn").hide();
+		 	$("#deleteBtn").hide();
+		} else {
+			$("#hashNameCheck").attr('disabled', false);
+		 	$("input[name=hashType]").attr('disabled', false);
+		 	$("#hashName").prop('readonly', false);
+		 	
+		 	$("#modifyBtn").show();
+		 	$("#registBtn").hide();
+		 	$("#deleteBtn").hide();
+		}
+	});
     
+    // 해시태그 등록 
+	function registHash() {
+		var hashName = $("#hashName").val();
+		var hashType = $("input[name=hashType]:checked").val();
+		$.ajax({
+			url : "/hashtag/regist",
+			data : {hashName:hashName, hashType:hashType},
+			type : "post",
+			success : function(data) {
+				console.log(data);
+				window.location.href = "/hashtag/form";
+			}, 
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+	
+    /* 해시태그 수정 */
+	function modifyHash() {
+		var hashNo = $("#hashNo").val();
+		var hashName = $("#hashName").val();
+		var hashType = $("input[name=hashType]:checked").val();
+		$.ajax({
+			url : "/hashtag/modify",
+			data : {hashNo:hashNo, hashName:hashName, hashType:hashType},
+			type : "post",
+			success : function(data) {
+				console.log(data);
+				window.location.href = "/hashtag/form";
+			}, 
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+	
+    /* 해시태그 삭제 */
+    function deleteHash() {
+    	var hashNo = $("#hashNo").val();
+    	
+    	if(hashNo == null) {
+    		alert("해시태그를 선택해주세요.");
+    	} else {
+    		$.ajax({
+    			url : "/hashtag/delete",
+    			data : {hashNo:hashNo},
+    			type : "post",
+    			success : function(data) {
+    				console.log(data);
+    				window.location.href = "/hashtag/form";
+    			}, 
+    			error : function(e) {
+    				console.log(e);
+    			}
+    		});
+    	}
+    }
+    
+	/* <li> 하나 선택시 값 불러오기 */
+	$(".list_box").on("click", "li", function(){
+		var hashNo = $(this).val();
+	    $.ajax({
+			url : "/hashtag/selectByHashNo",
+			data : {hashNo : hashNo},
+			type : "post",
+			success : function(data) {
+				if($('input[name=function]:checked').val() != "regist") {
+					$('#hashNo').val(data.hashNo);
+					$("#hashName").val(data.hashName);
+					$('input:radio[name=hashType][value=' + data.hashType + ']').prop('checked', true);
+				}
+			}, 
+			error : function(e) {
+				console.log(e);
+			}
+		}); 
+	});
     </script>
 </body>
 </html>

@@ -10,4 +10,14 @@ import com.project.dwine.hashtag.model.vo.Hashtag;
 public interface HashtagMapper {
 
 	List<Hashtag> selectHashtagList(int hashType);
+
+	int hashNameCheck(String hashName);
+
+	int registHashtag(String hashName, int hashType);
+
+	Hashtag selectByHashNo(int hashNo);
+
+	int modifyHashtag(int hashNo, String hashName, int hashType);
+
+	int deleteHashtag(int hashNo);
 }
