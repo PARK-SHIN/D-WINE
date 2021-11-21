@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/mypage/review.css" rel="stylesheet">
+<title>나의 리뷰관리</title>
+
+</head>
+<body>
+<header th:include="common/header :: header"></header>
+	<div id="container">
+        <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
+        </nav>
+        <div class="contents">
+            <div class="inner">
+                <div>
+                    <h3 style="font-size: 24px;">내가 작성한 리뷰</h3>
+                </div>
+                <hr style="width: 700px; padding-right: 130px;">
+                	<input id="userNo" type="hidden" name="user_no" value=${sessionScope.user_no}>
+                <div class="review_list">
+                    <ul style="height: 100px;" th:each="review : ${ reviewList }">
+                        <li class="title">
+                            <p class="pname" th:text="${review.product_kname}"></p>
+                            <p style="text-align: left;" th:text="${review.review_text}"></p>
+                        </li>
+                        <li class="review_date">
+                        	작성일 : <span th:text="${#dates.format(review.review_modify, 'yyyy-MM-dd')}"></span>
+                        </li>
+                        <li class="del">
+                             <!-- <span><button class="modifybtn" type="submit" th:href="@{/mypage/reviewUpdate/{review_no}(review_no=${review.review_no})}">수정</button></span> -->
+                            <a class="modifybtn" th:href="@{/mypage/review/{review_no}(review_no=${review.review_no})}">수정</a>
+                            <a class="deletebtn" th:href="@{/mypage/reviewDelete/{review_no}(review_no=${review.review_no})}">삭제</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    	
+    </script>
+<footer th:include="common/footer :: footer"></footer>
+</body>
+</html>

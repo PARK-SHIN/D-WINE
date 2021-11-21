@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Acme&display=swap"
+	rel="stylesheet">
+<link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/member/findPw.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+	crossorigin="anonymous"></script>
+<th:block th:if="${#request.getAttribute('findPw') != null}">
+	<th:block th:if="${#request.getAttribute('findPw') == 'noMember'}">
+		<script>
+			alert('가입된 정보가 없습니다.')
+		</script>
+	</th:block>
+	<th:block th:if="${#request.getAttribute('findPw') == 'modifyPw'}">
+		<script>
+			alert('임시 비밀번호가 메일로 발송되었습니다.')
+		</script>
+	</th:block>
+</th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="findPw_header">
+			<label><a href="/home">D.WINE</a></label>
+		</div>
+		<section class="findPw_main">
+			<div class="findPw_box">
+				<form th:action="@{/member/findPw}" method="post">
+					<p>
+						<input type="text" name="user_name" placeholder="이름">
+					</p>
+					<p>
+						<input type="text" name="user_id" placeholder="이메일">
+					</p>
+					<p>
+						<input type="submit" value="비밀번호 찾기"> <input type="button"
+							id="kakaoLogin" value="로그인"
+							onclick="location.href='/member/login'">
+					</p>
+				</form>
+			</div>
+		</section>
+	</div>
+	<footer th:replace="common/footer :: footer"></footer>
+</body>
+</html>

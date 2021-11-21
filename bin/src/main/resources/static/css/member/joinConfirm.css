@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+.joinConfirm_header {
+	text-align: center;
+	font-family: 'Acme', sans-serif;
+	margin: 50px;
+}
+
+.joinConfirm_header a {
+	cursor: pointer;
+	text-decoration: none;
+	font-size: 96px;
+	color: #6B0E1F;
+}
+
+.joinConfirm_main {
+	text-align: center;
+}
+
+.join_btn {
+	position: relative;
+	top: 10px;
+}
+
+.join_btn a {
+	display: inline-block;
+}
+
+.joinInfo {
+	border-color: #6B0E1F;
+	resize: none;
+	padding: 0px 15px;
+	font-weight: bold;
+}
+
+.joinConfirm_box {
+	display: inline-block;
+	width: 550px;
+	height: 550px;
+	border: solid #6B0E1F;
+	border-radius: 10%;
+}
+

@@ -1,0 +1,199 @@
+@charset "UTF-8";
+#container {
+            width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            /* border: 1px solid red; */
+        }
+
+        .snb {
+            width: 200px;
+            /* height: 2500px; */
+            height: 100%;
+            /* border: 1px solid blue; */
+        }
+
+        .contents {
+            width: 888px;
+            height: 100%;
+            /*2500px -> 100%*/
+            /* border: 1px solid black; */
+        }
+
+        .inner {
+            margin-top: 30px;
+            margin-left: 27px;
+            width: 836px;
+            height: 100%;
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .snb {
+            width: 210px;
+        }
+
+        .snb_inner {
+            width: 170px;
+            margin: 30px auto 0;
+        }
+
+        .snb_inner>h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 17px;
+        }
+
+        .snb_inner>ul>li {
+            margin-bottom: 20px;
+            list-style: none;
+        }
+        ul > li {
+            list-style: none;
+        }
+
+        
+        .order_list {
+            font-size: 15px;
+            /* margin: 20px 30px; */
+            min-height: 565px;
+            /* margin: 0 auto; */
+        }
+        .order_list>ul {
+            border-bottom: 1px solid #f3f5f7;
+            height: 50px;
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+        }
+        .order_list>ul.last {
+            border: 0;
+        }
+        .order_list>ul>li {
+            text-align: center;
+        }
+        .order_header {
+            background-color: #E5E5E5;
+        }
+        .order_list .order_date {
+            width: 90px;
+            margin-left: -50px;
+        }
+        .order_list .pname {
+            width: 225px;
+        }
+        .order_list .count {
+            width: 30px;
+        }
+        .order_list .status {
+            width: 160px;
+        }
+        .order_list .sum {
+            width: 80px;
+        }
+        .fsmall {
+            font-size: 12px;
+            margin-top: 1px;
+        }
+        .pnameSize {
+            font-size: 14px;
+        }
+        .csli {
+            padding-top: 6px;
+        }
+        button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: #83131E;
+            color: #fff;
+            border : 0px;
+            cursor: pointer;
+        }
+        .csul {
+            padding-top: 15px;
+            padding-left : 15px;
+        }
+        .dateul {
+            padding-top: 5px;
+        }
+        .nameul {
+            padding-top: 5px;
+        }
+        .stul {
+            padding-top: 15px;
+        }
+        .countSize {
+            padding-left: 20px;
+        }
+        .order_ul {
+            margin-top: -15px;
+        }
+        .modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .modal .bg {
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .modalBox {
+          position: absolute;
+          background-color: #fff;
+          width: 580px;
+          height: 480px;
+          padding: 15px;
+        }
+
+        .modalBox button {
+          display: block;
+          width: 80px;
+          margin: 0 auto;
+        }
+
+        .hidden {
+          display: none;
+        }
+        .closeArea img{
+           float: right;
+           
+        }
+        .closeArea img:hover{
+           cursor: pointer;
+        }
+        .labelSize {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+        label {
+            margin-left: 105px;
+        }
+        .submitInput{
+            padding: 10px 15px;
+            border-radius: 5px;
+            background-color: #83131E;
+            color: #fff;
+            border : 0px;
+            cursor: pointer;
+            width: 80px;
+            margin-left: 240px;
+        }
+        .labelArea {
+        	margin : 0;
+        	padding : 0;
+        }
+        .sumSize {
+        	text-align : center;
+        }

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dwine.purchase.model.dao.PurchaseMapper">
+	
+	<resultMap id="productResultMap" type="com.project.dwine.purchase.model.vo.Product">
+		<id property="product_no" column="PRODUCT_NO"/>
+		<result property="product_kname" column="PRODUCT_KNAME"/>
+		<result property="product_ename" column="PRODUCT_ENAME"/>
+		<result property="cost_price" column="COST_PRICE"/>
+		<result property="sale_price" column="SALE_PRICE"/>
+		<result property="product_count" column="PRODUCT_COUNT"/>
+		<result property="winery" column="WINERY"/>
+		<result property="thumbnail" column="THUMBNAIL"/>
+		<result property="capacity" column="CAPACITY"/>
+		<result property="abv" column="ABV"/>
+		<result property="taste_graph" column="TASTE_GRAPH"/>
+		<result property="information" column="INFORMATION"/>
+		<result property="award" column="AWARD"/>
+		<result property="tip" column="TIP"/>
+		<result property="label_image" column="LABEL_IMAGE"/>
+		<result property="status" column="STATUS"/>
+		<result property="create_date" column="CREATE_DATE"/>
+		<result property="modify_date" column="MODIFY_DATE"/>
+		<result property="variety_no" column="VARIETY_NO"/>
+		<result property="type_no" column="TYPE_NO"/>
+		<result property="country_no" column="COUNTRY_NO"/>
+	</resultMap>
+	
+	<resultMap id="productDetailResultMap" type="com.project.dwine.purchase.model.vo.Product">
+		<id property="product_no" column="PRODUCT_NO"/>
+		<result property="product_kname" column="PRODUCT_KNAME"/>
+		<result property="product_ename" column="PRODUCT_ENAME"/>
+		<result property="cost_price" column="COST_PRICE"/>
+		<result property="sale_price" column="SALE_PRICE"/>
+		<result property="product_count" column="PRODUCT_COUNT"/>
+		<result property="winery" column="WINERY"/>
+		<result property="thumbnail" column="THUMBNAIL"/>
+		<result property="capacity" column="CAPACITY"/>
+		<result property="abv" column="ABV"/>
+		<result property="taste_graph" column="TASTE_GRAPH"/>
+		<result property="information" column="INFORMATION"/>
+		<result property="award" column="AWARD"/>
+		<result property="tip" column="TIP"/>
+		<result property="label_image" column="LABEL_IMAGE"/>
+		<result property="status" column="STATUS"/>
+		<result property="create_date" column="CREATE_DATE"/>
+		<result property="modify_date" column="MODIFY_DATE"/>
+		<result property="variety_no" column="VARIETY_NO"/>
+		<result property="type_no" column="TYPE_NO"/>
+		<result property="country_no" column="COUNTRY_NO"/>
+		<result property="country_name" column="COUNTRY_NAME"/>
+		<result property="type_name" column="TYPE_NAME"/>
+		<result property="variety_name" column="VARIETY_NAME"/>
+		<collection property="hash_names" resultMap="hashAllNames"/>
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.purchase.model.vo.Hashtag" id="hashAllNames">
+		<id property="hash_no" column="HASH_NO"/>
+		<result property="hash_type" column="HASH_TYPE"/>
+		<result property="hash_name" column="HASH_NAME"/>
+	</resultMap>
+	
+	<select id="hashList" resultMap="hashAllNames">
+		SELECT
+				B.HASH_NO
+			  , B.HASH_TYPE
+              , B.HASH_NAME
+      	FROM PRODUCT P
+           LEFT JOIN PRODUCT_HASHTAG A ON(P.PRODUCT_NO = A.PRODUCT_NO)
+           LEFT JOIN HASHTAG B ON(A.HASH_NO = B.HASH_NO)
+           WHERE P.PRODUCT_NO = #{ id }
+	</select>
+	
+	<select id="wineList" resultMap="productResultMap">
+		SELECT
+			    PRODUCT_NO
+			  , PRODUCT_KNAME
+			  , PRODUCT_ENAME
+			  , COST_PRICE
+			  , SALE_PRICE
+			  , PRODUCT_COUNT
+			  , WINERY
+			  , THUMBNAIL
+			  , CAPACITY
+			  , ABV
+			  , TASTE_GRAPH
+			  , INFORMATION
+			  , AWARD
+			  , TIP
+			  , LABEL_IMAGE
+			  , STATUS
+			  , CREATE_DATE
+			  , MODIFY_DATE
+			  , VARIETY_NO
+			  , TYPE_NO
+			  , COUNTRY_NO
+		   FROM PRODUCT
+		  WHERE STATUS = 'Y'
+		  ORDER BY PRODUCT_NO
+	</select>
+	
+	<select id="wineDetail" resultMap="productDetailResultMap">
+		 SELECT
+			    P.PRODUCT_NO
+			  , P.PRODUCT_KNAME
+			  , P.PRODUCT_ENAME
+			  , P.COST_PRICE
+			  , P.SALE_PRICE
+			  , P.PRODUCT_COUNT
+			  , P.WINERY
+			  , P.THUMBNAIL
+			  , P.CAPACITY
+			  , P.ABV
+			  , P.TASTE_GRAPH
+			  , P.INFORMATION
+			  , P.AWARD
+			  , P.TIP
+			  , P.LABEL_IMAGE
+			  , P.STATUS
+			  , P.CREATE_DATE
+			  , P.MODIFY_DATE
+			  , P.VARIETY_NO
+			  , P.TYPE_NO
+			  , P.COUNTRY_NO
+              , C.COUNTRY_NAME
+              , D.TYPE_NAME
+              , E.VARIETY_NAME
+              , B.HASH_NO
+              , B.HASH_TYPE
+              , B.HASH_NAME
+		   FROM PRODUCT P
+           LEFT JOIN PRODUCT_HASHTAG A ON(P.PRODUCT_NO = A.PRODUCT_NO)
+           LEFT JOIN HASHTAG B ON(A.HASH_NO = B.HASH_NO)
+           LEFT JOIN COUNTRY C ON (P.COUNTRY_NO = C.COUNTRY_NO)
+           LEFT JOIN TYPE D ON(P.TYPE_NO = D.TYPE_NO)
+           LEFT JOIN VARIETY E ON(P.VARIETY_NO = E.VARIETY_NO)
+          WHERE P.PRODUCT_NO = #{ id }
+	</select>
+
+	<select id="filterWineList" parameterType="String" resultMap="productResultMap">
+		SELECT
+				P.PRODUCT_NO
+			  , P.PRODUCT_KNAME
+			  , P.PRODUCT_ENAME
+			  , P.COST_PRICE
+			  , P.SALE_PRICE
+			  , P.PRODUCT_COUNT
+			  , P.WINERY
+			  , P.THUMBNAIL
+			  , P.CAPACITY
+			  , P.ABV
+			  , P.TASTE_GRAPH
+			  , P.INFORMATION
+			  , P.AWARD
+			  , P.TIP
+			  , P.LABEL_IMAGE
+			  , P.STATUS
+			  , P.CREATE_DATE
+			  , P.MODIFY_DATE
+			  , P.VARIETY_NO
+			  , P.TYPE_NO
+			  , P.COUNTRY_NO
+		   FROM PRODUCT P
+           LEFT JOIN COUNTRY C ON (P.COUNTRY_NO = C.COUNTRY_NO)
+           LEFT JOIN TYPE D ON(P.TYPE_NO = D.TYPE_NO)
+           LEFT JOIN VARIETY E ON(P.VARIETY_NO = E.VARIETY_NO)
+           WHERE 1=1
+			<if test="country!=null and !country.equals('')">
+					AND COUNTRY_NAME = #{ country }		
+			</if>
+			<if test="type!=null and !type.equals('')">
+					AND TYPE_NAME = #{ type }		
+			</if>
+			<if test="name!=null and !name.equals('')">
+					AND (UPPER(REPLACE(PRODUCT_KNAME,' ','')) LIKE REPLACE(UPPER('%' ||  #{name} || '%'),' ','') OR UPPER(REPLACE(PRODUCT_ENAME,' ','')) LIKE REPLACE(UPPER('%' ||  #{name} || '%'),' ',''))
+			</if>
+			<if test="variety!=null and !variety.equals('')">
+					AND VARIETY_NAME = #{ variety }
+			</if>
+			<if test="price!=null and !price.equals('')">
+				<if test="price.equals('10000')">
+					AND SALE_PRICE &lt;= 10000
+				</if>
+				<if test="price.equals('30000')">
+					AND SALE_PRICE BETWEEN 10000 AND 30000
+				</if>
+				<if test="price.equals('50000')">
+					AND SALE_PRICE BETWEEN 30000 AND 50000
+				</if>
+				<if test="price.equals('100000')">
+					AND SALE_PRICE BETWEEN 50000 AND 100000
+				</if>
+				<if test="price.equals('200000')">
+					AND SALE_PRICE BETWEEN 100000 AND 200000
+				</if>
+				<if test="price.equals('300000')">
+					AND SALE_PRICE BETWEEN 200000 AND 300000
+				</if>
+			</if>
+	</select>
+	
+	<select id="sortWineList" parameterType="String" resultMap="productResultMap">
+		SELECT
+			    PRODUCT_NO
+			  , PRODUCT_KNAME
+			  , PRODUCT_ENAME
+			  , COST_PRICE
+			  , SALE_PRICE
+			  , PRODUCT_COUNT
+			  , WINERY
+			  , THUMBNAIL
+			  , CAPACITY
+			  , ABV
+			  , TASTE_GRAPH
+			  , INFORMATION
+			  , AWARD
+			  , TIP
+			  , LABEL_IMAGE
+			  , STATUS
+			  , CREATE_DATE
+			  , MODIFY_DATE
+			  , VARIETY_NO
+			  , TYPE_NO
+			  , COUNTRY_NO
+		   FROM PRODUCT
+           WHERE 1=1            
+            <if test="val!=null and !val.equals('')">
+				<if test="val.equals('hprice')">
+					ORDER BY SALE_PRICE DESC
+				</if>
+				<if test="val.equals('lprice')">
+					ORDER BY SALE_PRICE
+				</if>
+				<if test="val.equals('latest')">
+					ORDER BY CREATE_DATE
+				</if>
+			</if>
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+

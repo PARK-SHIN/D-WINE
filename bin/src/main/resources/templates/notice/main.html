@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>공지사항</title>
+<link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/notice/main.css" rel="stylesheet">    
+</head>
+<body>
+<header th:include="common/header :: header"></header>
+<div class="wrapper">
+  <div class="content">
+    	<h2>공지사항</h2> 
+       
+    <hr>
+    <button id="insertBtn" onclick="location.href='/notice/regist'">등록</button><br>
+    <button id="deleteBtn">선택삭제</button>
+    <div id=searchdiv><input type="text" id="searchTitle"> 
+        <button>검색</button> 
+    </div>
+    <div class="noticeList">
+        <table class="noticeTable">
+            <tr>
+                <th><input type="checkbox" class="allCheck"></th>
+                <th>카테고리</th>
+                <th>제목</th>
+                <th>등록일</th>
+            </tr>
+            <tr th:each="notice : ${ noticeList }">
+                <td><input type="checkbox" class="checkbox"></td>
+                <td th:text="${ notice.notice_category}"></td>
+                <td th:text="${ notice.notice_title}"></td>
+                <td th:text="${ #dates.format(notice.create_date, 'yyyy-MM-dd')}"></td>
+            </tr>     
+
+        </table>    
+
+    </div>
+
+   </div>
+</div>
+<div th:replace="common/footer :: footer"></div>
+</body>
+</html>

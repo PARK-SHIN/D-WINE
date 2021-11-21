@@ -1,0 +1,82 @@
+@charset "UTF-8";
+#container {
+            width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            /* border: 1px solid red; */
+        }
+
+        .snb {
+            width: 200px;
+            /* height: 2500px; */
+            height: 100%;
+            /* border: 1px solid blue; */
+        }
+
+        .contents {
+            width: 888px;
+            height: 100%;
+            /*2500px -> 100%*/
+            /* border: 1px solid black; */
+        }
+
+        .inner {
+            margin-top: 30px;
+            margin-left: 27px;
+            width: 836px;
+            height: 100%;
+            /* border: 1px solid yellow; */
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .snb {
+            width: 210px;
+        }
+
+        .snb_inner {
+            width: 170px;
+            margin: 30px auto 0;
+        }
+
+        .snb_inner>h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 17px;
+        }
+
+        .snb_inner>ul>li {
+            margin-bottom: 20px;
+            list-style: none;
+        }
+        button {
+            padding: 10px 15px;
+            border-radius: 5px;
+            background-color: #83131E;
+            color: #fff;
+            border : 0px;
+            cursor: pointer;
+        }
+        .inputbox{
+            width: 500px;
+            height: 45px;
+        }
+        form > input {
+            font-size: 18px;
+        }
+        #save {
+            padding: 10px 15px;
+            border-radius: 5px;
+            background-color: #83131E;
+            color: #fff;
+            border : 0px;
+            cursor: pointer;
+        }
+        .cmd {
+            margin-left: 230px;
+            margin-top: 20px;
+        }
