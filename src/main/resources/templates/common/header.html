@@ -4,20 +4,20 @@
 <header th:fragment="header">
 	<ul class="menu_nav">
 		<li><a href="#">추천와인</a></li>
-		<li><a href="#">상품</a></li>
-		<li><a href="#">공지사항</a></li>
+		<li><a href="/purchase/wine_list">상품</a></li>
+		<li><a href="/notice/main">공지사항</a></li>
 	</ul>
 
 	<div class="main_logo">
-		<a href="/home"> <img alt="logo" src="images/main_logo.png">
+		<a href="/home"> <img alt="logo" src="/images/common/main_logo.png">
 		</a>
 	</div>
 
 	<ul class="member_nav">
 		<li><a href="#장바구니"> <img alt="logo" class="shopping_cart"
-				src="images/shopping-cart.png">
+				src="/images/common/shopping-cart.png">
 		</a></li>
-		<li><img alt="logo" class="login_icon" src="images/loginIcon.png">
+		<li><img alt="logo" class="login_icon" src="/images/common/loginIcon.png">
 			<ul class="member_sub submenu">
 				<th:block sec:authorize="isAnonymous()">
 					<li><a href="/member/login">로그인</a></li>

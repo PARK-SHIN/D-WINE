@@ -41,6 +41,30 @@
 		where m.user_id = #{ userId }
 	</select>
 	
+	<select id="findMemberId" parameterType="String" resultType="String">
+		select
+			user_id
+		from member
+		where user_name = #{ user_name }
+		and user_phone = #{ user_phone }
+	</select>
+	
+	<select id="findMemberByName_Id" parameterType="String" resultType="_int">
+		select
+			COUNT(*)
+		from member
+		where user_name = #{ user_name }
+		and user_id = #{ user_id }
+	</select>
+	
+	<select id="checkId" resultType="_int">
+		select COUNT(*) from member where user_id = #{ userEmail }
+	</select>
+	
+	<select id="findMemberByNickname" resultType="_int">
+		select COUNT(*) from member where user_nickname = #{ nickName }
+	</select>
+	
 	<insert id="joinMember" parameterType="java.util.Map">
 		insert into member(
 			user_no,
@@ -55,7 +79,7 @@
 			authority_no,
 			user_status
 		) values(
-			user_no_seq.nextval,
+			seq_user_no.nextval,
 			#{member.user_id},
 			#{member.user_pw},
 			#{member.user_name},
@@ -68,4 +92,11 @@
 			default	
 		)
 	</insert>
+	
+	<update id="updateTempPassword" parameterType="String">
+		update member set user_pw = #{ user_pw }
+		where user_id = #{ user_id }
+	</update>
+	
+	
 </mapper>
