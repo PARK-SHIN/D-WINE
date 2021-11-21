@@ -65,6 +65,7 @@
 			, CREATE_DATE
 			, MODIFY_DATE
 		  FROM PRODUCT
+		  WHERE STATUS = 'Y'
 		  ORDER BY PRODUCT_NO
 	</select>
 	
@@ -130,4 +131,83 @@
 		 FROM VARIETY
 		 ORDER BY VARIETY_NO
 	</select>
+	
+	<insert id="registProduct" parameterType="com.project.dwine.product.model.vo.Product">
+		INSERT 
+			INTO PRODUCT
+		(
+			  PRODUCT_NO
+			, PRODUCT_KNAME
+			, PRODUCT_ENAME
+			, COST_PRICE
+			, SALE_PRICE
+			, PRODUCT_COUNT
+			, WINERY
+			, THUMBNAIL
+			, CAPACITY
+			, ABV
+			, TASTE_GRAPH
+			, INFORMATION
+			, AWARD
+			, TIP
+			, LABEL_IMAGE
+			, STATUS
+			, CREATE_DATE
+			, MODIFY_DATE
+			, VARIETY_NO
+			, TYPE_NO
+			, COUNTRY_NO	
+		)
+		VALUES
+		(
+			  SEQ_PNO.NEXTVAL
+			, #{ productKName }
+			, #{ productEName }
+			, #{ costPrice }
+			, #{ salePrice }
+			, #{ productCount }
+			, #{ winery }
+			, #{ thumbnail }
+			, #{ capacity }
+			, #{ abv }
+			, #{ tasteGraph }
+			, #{ information }
+			, #{ award }
+			, #{ tip }
+			, #{ labelImage }
+			, DEFAULT
+			, SYSDATE
+			, SYSDATE
+			, #{ variety.varietyNo }
+			, #{ type.typeNo }
+			, #{ country.countryNo }
+		)
+	</insert>
+	
+	<select id="selectLastSeqNo" resultType="_int">
+		SELECT 
+			SEQ_PNO.CURRVAL 
+		FROM DUAL
+	</select>
+	
+	<insert id="registProductHash" parameterType="_int">
+		INSERT 
+		 INTO PRODUCT_HASHTAG
+		(
+			  PRODUCT_NO
+			, HASH_NO
+		)
+		VALUES
+		(
+			  SEQ_PNO.CURRVAL
+		    , #{ hashNo }
+		)
+	</insert>
+	
+	<update id="deleteProduct">
+		UPDATE PRODUCT
+			SET STATUS = 'N'
+		WHERE PRODUCT_NO = #{ productNo }
+	</update>
+	
 </mapper>

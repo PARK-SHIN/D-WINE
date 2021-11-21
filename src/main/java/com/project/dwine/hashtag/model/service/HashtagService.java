@@ -8,10 +8,13 @@ public interface HashtagService {
 
 	List<Hashtag> selectHashtagList(int hashType);
 
-	/*
-	 * List<Hashtag> selectMoodList();
-	 * 
-	 * List<Hashtag> selectFoodList();
-	 */
+	int hashNameCheck(String hashName);
 
+	int registHashtag(String hashName, int hashType);
+
+	Hashtag selectByHashNo(int hashNo);
+
+	int modifyHashtag(int hashNo, String hashName, int hashType);
+
+	int deleteHashtag(int hashNo);
 }

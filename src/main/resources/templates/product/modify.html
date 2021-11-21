@@ -2,13 +2,14 @@
 <html xmlns:th="http://http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>registForm</title>
+<title>product Form</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <style>
 	.input_area {
 		display: flex;
 		margin-bottom: 20px;
 	}
+	
 	.label_area {
 		width: 200px;
 	}
@@ -37,6 +38,7 @@
 		width: 1em;
 		border-radius: 50%;
 	}
+	
 	.image_area {
 		width: 350px;
 		height: 350px;
@@ -87,14 +89,10 @@
 	.name_area {
 		width: 400px;
 	}
-	.img {
-		width: 350px;
-		height: 350px;
-	}
 </style>    
 </head>
 <body>
-    <h1>상품 등록</h1>
+    <h1>상품 수정</h1>
     <hr>
     <form id="enrollForm" th:action="@{/product/regist(${_csrf.parameterName}=${_csrf.token})}" method="post" encType="multipart/form-data">
         <h3>상품 기본 정보</h3>
@@ -188,13 +186,11 @@
     </form>
 
     <script>
-    	// input range css
         $('input[type=range]').on('input', function(){
             var val = $(this).val();
             $(this).css('background', 'linear-gradient(to right, #83131E 0%, #83131E '+ val*20 +'%, #c4c4c4 ' + val + '%, #c4c4c4 100%)');
         });
         
-    	// 와인 종류, 포도 품종, 국가 카테고리 가져오기
         $(function(){
         	$.get("/product/category", function(map) {
         		const type = $("#type");
@@ -214,7 +210,6 @@
         		});
         	});
         	
-        	// 해시태그 가져오기
         	$.get("/hashtag/category", function(map) {
         		const mood1 = $("#mood1");
         		const mood2 = $("#mood2");
@@ -232,23 +227,6 @@
 				});
         	});
         })
-      
-        // 이미지 프리뷰
-        let fileElements = document.querySelectorAll("[type=file]");
-		let imageArea = document.querySelectorAll(".image_area");
-		fileElements.forEach(item => item.addEventListener('change', preview));
-		function preview(){
-			
-			let index = Array.from(fileElements).indexOf(this);
-			//세개의 경로에서  파일이 어디서 첨부되었는지 알아야함
-			if(this.files&&this.files[0]){
-				let reader = new FileReader();
-				reader.readAsDataURL(this.files[0]);
-				reader.onload = function(){
-					imageArea[index].innerHTML = '<img class="img" src="' + reader.result + '">';
-				}
-			}
-		}
     </script>
 </body>
 </html>

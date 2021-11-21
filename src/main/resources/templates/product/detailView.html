@@ -101,6 +101,9 @@
 		width: 100px;
 		margin-right: 10px;
 	}
+	#productNoForm {
+		display: inline;
+	}
 </style>    
 </head>
 <body>
@@ -116,7 +119,7 @@
 		<div class="category">
 			<input class="category_area" type="text" th:value="${product.type.typeName}" readonly><br>
 			<input class="category_area" type="text" th:value="${product.country.countryName}" readonly><br>
-			<input class="category_area" type="text" th:value="${product.variety.varietyName}" readonly> 
+			<input class="category_area" type="text" th:value="${product.variety.varietyNo}" readonly> 
 		</div>
 	</div>
 	<div class="input_area">
@@ -213,21 +216,15 @@
 	</div>
 	<div id="btn_area">
 		<button class="cancle_btn btn" onclick="location.href='/product/list'">목록</button>
-		<button class="modify_btn btn">수정</button>
-		<button class="delete_btn btn">삭제</button>
+		<button class="modify_btn btn" onclick="location.href='/product/modify'">수정</button>
+		<form id="productNoForm" th:action="@{/product/delete}" method="post" onsubmit="return checkConfirm()">
+			<input type="hidden" name="productNo" th:value="${product.productNo}">
+			<button class="delete_btn btn">삭제</button>
+		</form>
 	</div>
+
 	
 	<script th:inline="javascript">
-		/* $(function(){
-			var val = $('input[type=range]').val();
-			$('input[type=range]').css(
-					'background',
-					'linear-gradient(to right, #83131E 0%, #83131E'
-					+ val * 20 + '%, #c4c4c4 ' + val
-					+ '%, #c4c4c4 100%)');
-		}) */
-		
-		
 		$(function(){
 			/*<![CDATA[*/
 		    var tasteGraph = /*[[${product.tasteGraph}]]*/ '0/0/0/0';
@@ -250,9 +247,12 @@
 			acidity.css('background', 'linear-gradient(to right, #83131E ' + acidity.val() * 20 + '%, #c4c4c4 ' + acidity.val() + '%, #c4c4c4 100%');
 			body.css('background','linear-gradient(to right, #83131E 0%, #83131E ' + body.val() * 20 + '%, #c4c4c4 ' + body.val() + '%, #c4c4c4 100%)');
 			tannin.css('background','linear-gradient(to right, #83131E 0%, #83131E ' + tannin.val() * 20 + '%, #c4c4c4 ' + tannin.val() + '%, #c4c4c4 100%)');
-			
 		});
 
+		function checkConfirm() {
+			if(confirm("정말 삭제하시겠습니까?")) return true
+			else return false;
+		}	
 	</script>
 </body>
 </html>

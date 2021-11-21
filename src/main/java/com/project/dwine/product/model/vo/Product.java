@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.dwine.hashtag.model.vo.Hashtag;
 
@@ -29,9 +30,9 @@ public class Product {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createDate;		// 상품 등록일
 	private Date modifyDate;		// 상품 수정일
-	private Variety variety;			// 포도 품종
+	private Variety variety;		// 포도 품종
 	private Type type;				// 와인 종류
-	private Country country;			// 국가 번호
+	private Country country;		// 국가
 	
 	/* 한 상품은 여러 해시태그를 가질 수 있음 - PRODUCT_HASHTAG와 조인한 결과 값 */
 	private List<Hashtag> HashtagList;
@@ -65,6 +66,29 @@ public class Product {
 		this.type = type;
 		this.country = country;
 		HashtagList = hashtagList;
+	}
+
+	public Product(String productKName, String productEName, int costPrice, int salePrice, int productCount,
+			String winery, String thumbnail, int capacity, double abv, String tasteGraph, String information,
+			String award, String tip, String labelImage, Variety variety, Type type, Country country) {
+		super();
+		this.productKName = productKName;
+		this.productEName = productEName;
+		this.costPrice = costPrice;
+		this.salePrice = salePrice;
+		this.productCount = productCount;
+		this.winery = winery;
+		this.thumbnail = thumbnail;
+		this.capacity = capacity;
+		this.abv = abv;
+		this.tasteGraph = tasteGraph;
+		this.information = information;
+		this.award = award;
+		this.tip = tip;
+		this.labelImage = labelImage;
+		this.variety = variety;
+		this.type = type;
+		this.country = country;
 	}
 
 	public int getProductNo() {
@@ -248,12 +272,16 @@ public class Product {
 		return "Product [productNo=" + productNo + ", productKName=" + productKName + ", productEName=" + productEName
 				+ ", costPrice=" + costPrice + ", salePrice=" + salePrice + ", productCount=" + productCount
 				+ ", winery=" + winery + ", thumbnail=" + thumbnail + ", capacity=" + capacity + ", abv=" + abv
-				+ ", taste_graph=" + tasteGraph + ", information=" + information + ", award=" + award + ", tip=" + tip
+				+ ", tasteGraph=" + tasteGraph + ", information=" + information + ", award=" + award + ", tip=" + tip
 				+ ", labelImage=" + labelImage + ", status=" + status + ", createDate=" + createDate + ", modifyDate="
 				+ modifyDate + ", variety=" + variety + ", type=" + type + ", country=" + country + ", HashtagList="
 				+ HashtagList + "]";
 	}
 
+	
+
+	
+	
 	
 
 	
