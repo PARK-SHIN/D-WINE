@@ -68,6 +68,21 @@ public class ProductServiceImpl implements ProductService{
 		
 	}
 
+	@Override
+	public int modifyProduct(Product product) {
+		return productMapper.modifyProduct(product);
+	}
+
+	@Override
+	public int modifyProductHash(int productNo, int hashNo, int preHashNo) {
+		return productMapper.modifyProductHash(productNo, hashNo, preHashNo);
+	}
+
+	@Override
+	public int deleteMultiProduct(int productNo) {
+		return productMapper.deleteMultiProduct(productNo);
+	}
+
 	
 
 }

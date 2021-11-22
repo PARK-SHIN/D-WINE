@@ -2,8 +2,11 @@
 <html xmlns:th="http://http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>registForm</title>
+<title>product regist</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<link href="/css/common/common.css" rel="stylesheet">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <style>
 	.input_area {
 		display: flex;
@@ -50,7 +53,7 @@
 		color: #83131E;
 	}
 	
-	.insert_btn {
+	.regist_btn {
 		border: 1px solid #83131E;
 		border-radius: 5px;
 		background: #83131E;
@@ -65,7 +68,7 @@
 		border-radius: 5px;
 	}
 	
-	#enroll_form {
+	#registForm {
 		width: 800px;
 	}
 	
@@ -94,9 +97,10 @@
 </style>    
 </head>
 <body>
+	<header th:include="common/header :: header"></header>
     <h1>상품 등록</h1>
     <hr>
-    <form id="enrollForm" th:action="@{/product/regist(${_csrf.parameterName}=${_csrf.token})}" method="post" encType="multipart/form-data">
+    <form id="registForm" th:action="@{/product/regist}" method="post" encType="multipart/form-data" onsubmit="return validate()">
         <h3>상품 기본 정보</h3>
         <div class="input_area">
             <div class="label_area">카테고리</div>
@@ -183,11 +187,16 @@
         </div>
         <div id="btn_area">
             <button class="cancle_btn btn" onclick="location.href='/product/list'">취소</button>
-            <button class="insert_btn btn">등록</button>
+            <button class="regist_btn btn">등록</button>
         </div>
     </form>
+    <footer th:include="common/footer :: footer"></footer>
 
     <script>
+	    var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+    
     	// input range css
         $('input[type=range]').on('input', function(){
             var val = $(this).val();
@@ -232,6 +241,28 @@
 				});
         	});
         })
+    	
+     	// 해시태그 중복 안되게 처리
+		function validate() {
+			var mood1 = $("#mood1");
+    		var mood2 = $("#mood2");
+    		var food1 = $("#food1");
+    		var food2 = $("#food2");
+			
+    		if(mood1.val() == mood2.val() && food1.val() == food2.val()) {
+				alert("mood와 food 해시태그가 중복됩니다.");
+				return false;
+			} else if(mood1.val() == mood2.val()) {
+				alert("mood 해시태그가 중복됩니다.");
+				return false;
+			} else if(food1.val() == food2.val()) {
+				alert("food 해시태그가 중복됩니다.");
+				return false;
+			}
+			
+			return true;
+		}
+    	
       
         // 이미지 프리뷰
         let fileElements = document.querySelectorAll("[type=file]");

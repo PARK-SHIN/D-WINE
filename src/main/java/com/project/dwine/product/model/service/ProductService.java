@@ -27,6 +27,12 @@ public interface ProductService {
 
 	int deleteProduct(int productNo);
 
+	int modifyProduct(Product product);
+
+	int modifyProductHash(int productNo, int hashNo, int preHashNo);
+
+	int deleteMultiProduct(int productNo);
+
 
 
 
