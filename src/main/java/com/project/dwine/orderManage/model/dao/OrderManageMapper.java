@@ -13,6 +13,6 @@ public interface OrderManageMapper {
 
 	List<Purchase> stateChangeList(String state);
 	
-	// int updateOrderStatus(int purchaseNo, String orderStatus);
+	int updateOrderStatus(int purchaseNo, String orderStatus);
 	
 }

@@ -66,10 +66,10 @@
 		 ORDER BY P.PURCHASE_NO DESC
 	</select>
 	
-	<!-- <update id="updateOrderStatus" parameterMap="com.project.dwine.orderManage.model.vo.Purchase">
+	<update id="updateOrderStatus" parameterType="com.project.dwine.orderManage.model.vo.Purchase">
 		UPDATE PURCHASE
 		   SET ORDER_STATUS = #{ orderStatus }
 		 WHERE PURCHASE_NO = #{ purchaseNo }
-	</update> -->
+	</update>
 
 </mapper>
