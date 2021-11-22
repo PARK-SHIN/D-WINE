@@ -87,20 +87,20 @@
     <hr>
     <br>
      <div>
-    	등록일 : <span th:text="${#dates.format(notice.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-    	수정일 : <span th:text="${#dates.format(notice.modifyDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+    	등록일 : <span th:text="${#dates.format(notice.create_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+    	수정일 : <span th:text="${#dates.format(notice.modify_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
     </div>
     <br>
     <div class="categoryArea"><label>카테고리</label>
     <select id="selectArea">
-        <option value="plain">일반</option>
-        <option value="event">이벤트</option>
+        <option value="일반">일반</option>
+        <option value="이벤트">이벤트</option>
     </select></div><br>
     <div class="titleArea"><label id="titleLabel">제목</label>
     <input type="text" id="title" name="notice_title" th:value="${notice.notice_title}" readonly></div>
    
 
-    <div id="summernote" th:text="${notice.notice_context}" readonly></div>
+    <div id="summernote" th:utext="${notice.notice_context}" readonly></div>
 
     <div class="btnArea">
         <button id="cancleBtn">취소</button> 

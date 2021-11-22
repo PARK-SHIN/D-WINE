@@ -10,7 +10,7 @@ public interface NoticeService {
 	
 	Notice selectNoticeByNo(int notice_no);
 
-	int registNewNotice(int notice_category, String notice_title, String notice_context, int user_no);
+	int registNewNotice(Notice notice);
 
 
 
