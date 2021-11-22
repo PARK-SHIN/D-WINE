@@ -2,11 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>Wine_Detail</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
-        integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" 
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+  <link href="/css/common/common.css" rel="stylesheet">      
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <style>
         .wine_detail_view{
             width: 1000px;
@@ -446,12 +447,15 @@
         
         .notice{
             color: #83131E;
+            margin-bottom: 100px;
         }
    
     </style>
 </head>
 
 <body>
+<header th:include="common/header :: header"></header>
+<div class="wrapper">
     <div class="wine_detail_view">
     <div class="search">
         <input class="wine_name" type="text"><button>와인 검색하기</button>
@@ -530,26 +534,57 @@
             </li>
         </ul>
     </div>
+	
+	<script>
+	
+	
+		var header = $("meta[name='_csrf_header']").attr('content');
+		var token = $("meta[name='_csrf']").attr('content');
+    
+		function submit(type)  {
+			let product_no = document.querySelector("#product_no").value;
+			let count = document.getElementById('count').innerText;
+	        let price = document.getElementById("tprice").innerText;
+	   
+			console.log(product_no);
+			console.log(count);
+			console.log(price);
+			
+			var param = {};
+			param.product_no = product_no;
+			param.cart_count = count;
+			// param.price = price;
+			
+			console.log(param);
+
+		if(type === 'cart'){
+		 	$.ajax({
+				url : "/cart/add",
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
+				data: JSON.stringify(param),
+				contentType : "application/json; charset=utf-8",
+				type : "POST",
+				success : function(data){
+					console.log("확인 : " + data);
+					alert(data.msg);
+					
+					if(data.msg == "로그인이 필요합니다."){
+						location.href="/member/login";
+					}
+				},
+				error : function(e){
+					console.log(e);
+				}
+			});
+		}
+	}
+	
+	</script>
 
 
     <script th:inline="javascript">
-    
-   		function submit(type)  {
-    		let product_no = document.querySelector("#product_no").value;
-    		let count = document.getElementById('count').innerText;
-            let price = document.getElementById("tprice").innerText;
-       
-    		console.log(product_no);
-    		console.log(count);
-    		console.log(price);
-    
-    	if(type === 'buy'){
-    		location.href = ""
-    	}
-    
-    
-   		}
-    
     
         function count(type)  {
             // 결과를 표시할 element
@@ -779,7 +814,7 @@
                         llsszz
                     </p>
                     <p class="report_btn">
-                        <button>신고</button>
+                        <button onclick="report()">신고</button>
                     </p>
                 </div>
                 <span class="review_score">
@@ -797,7 +832,13 @@
                 </div>
             </li>
         </ul>
-
+	<script>
+        function report(){
+            window.open("/purchase/reviewReport", "popup1", "width=500, height=600");
+        }
+    </script>
+    
+    
         <h3 class="product_h3">교환 및 반품 안내</h3>
         <table class="product_change">
             <colgroup>
@@ -843,8 +884,8 @@
         <p class="notice">자세한 내용은 고객센터로 문의 부탁드립니다.</p>
     </div>
     </div>
-
-
+	</div>
+<div th:replace="common/footer :: footer"></div>
 
 
 

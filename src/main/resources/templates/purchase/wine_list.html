@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<meta charset="UTF-8">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <meta name="_csrf" th:content="${_csrf.token}">
-<meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href="/css/common/common.css" rel="stylesheet">
@@ -15,6 +15,10 @@
        margin: 0 auto;
    }
 
+	#wineListForm{
+		margin-top: 50px;
+	}
+	
 /*  select */
 
     .search select {
@@ -134,7 +138,8 @@
     
 </style>
 <body>
-	<!-- <header th:include="common/header :: header"></header> -->
+	<header th:include="common/header :: header"></header>
+	<div class="wrapper">
     <div class="wine_list">
     <form id="wineListForm">
         <div class="search">
@@ -339,16 +344,13 @@
 						
 						let html = '';				
 						for(let index in data){
-							html +='<p>' + data[index].information + '</p>';
-							
-							/* 	html += '<li><div class="product_explain"><div class="product_img"><a th:href="@{\'/purchase/\'' + data[index].product_no + '}"><img th:src=' + data[index].thumnail + '></a></div>'
+							 html += '<li><div class="product_explain"><div class="product_img"><a href="/purchase/' + data[index].product_no + '"><img src="' + data[index].thumbnail + '"></a></div>'
 							+ '<div class="product_explain"><div class="product_KoreaName"}>' + data[index].product_kname + '</div><div class="product_foreignName">'
 							+ data[index].product_ename + '</div><span class="product_price">'+ data[index].sale_price + '</span>&nbsp;원<br>'
 							+ '<div class="product_score">★★★★★<span class="review_count"> 25개</span></div></div></div></li>'
-						 */
 						 }
 											
-						$(".test").html(html);
+						$(".product_list").html(html);
 					},
 					error : function(e){
 						console.log(e);
@@ -357,7 +359,6 @@
 			});
 		});
 	</script>
-    <div class="test">동해물과</div>
 
 <!-- <a th:href="@{/room/{id}(id=${room.id})}">입장하기</a> -->
 <ul class="product_list">
@@ -380,6 +381,7 @@
         </div>
     </li>
 </ul>
+</div>
 </div>
     <footer th:replace="common/footer :: footer"></footer>
 </body>

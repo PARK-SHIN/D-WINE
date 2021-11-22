@@ -3,6 +3,8 @@ package com.project.dwine.purchase.model.vo;
 import java.util.Date;
 import java.util.List;
 
+import com.project.dwine.cart.model.vo.Cart;
+
 public class Product {
 
 	private int product_no;
@@ -32,7 +34,7 @@ public class Product {
 	private String type_name;
 	private String variety_name;
 	private List<Hashtag> hash_names;
-	
+	private List<Cart> cart;
 	
 	public Product() {}
 
@@ -99,6 +101,19 @@ public class Product {
 	}
 
 	
+
+	public Product(int product_no, String product_kname, String product_ename, int sale_price, int product_count, String thumbnail,
+			String status, List<Cart> cart) {
+		super();
+		this.product_no = product_no;
+		this.product_kname = product_kname;
+		this.product_ename = product_ename;
+		this.sale_price = sale_price;
+		this.product_count = product_count;
+		this.thumbnail = thumbnail;
+		this.status = status;
+		this.cart = cart;
+	}
 
 	public int getProduct_no() {
 		return product_no;
@@ -300,6 +315,14 @@ public class Product {
 		this.hash_names = hash_names;
 	}
 
+	public List<Cart> getCart() {
+		return cart;
+	}
+
+	public void setCart(List<Cart> cart) {
+		this.cart = cart;
+	}
+
 	@Override
 	public String toString() {
 		return "Product [product_no=" + product_no + ", product_kname=" + product_kname + ", product_ename="
@@ -309,8 +332,23 @@ public class Product {
 				+ ", tip=" + tip + ", label_image=" + label_image + ", status=" + status + ", create_date="
 				+ create_date + ", modify_date=" + modify_date + ", variety_no=" + variety_no + ", type_no=" + type_no
 				+ ", country_no=" + country_no + ", country_name=" + country_name + ", type_name=" + type_name
-				+ ", variety_name=" + variety_name + ", hash_names=" + hash_names + "]";
+				+ ", variety_name=" + variety_name + ", hash_names=" + hash_names + ", cart=" + cart + "]";
 	}
+
+	
+	
+	
+//	@Override
+//	public String toString() {
+//		return "Product [product_no=" + product_no + ", product_kname=" + product_kname + ", product_ename="
+//				+ product_ename + ", cost_price=" + cost_price + ", sale_price=" + sale_price + ", product_count="
+//				+ product_count + ", winery=" + winery + ", thumbnail=" + thumbnail + ", capacity=" + capacity
+//				+ ", abv=" + abv + ", taste_graph=" + taste_graph + ", information=" + information + ", award=" + award
+//				+ ", tip=" + tip + ", label_image=" + label_image + ", status=" + status + ", create_date="
+//				+ create_date + ", modify_date=" + modify_date + ", variety_no=" + variety_no + ", type_no=" + type_no
+//				+ ", country_no=" + country_no + ", country_name=" + country_name + ", type_name=" + type_name
+//				+ ", variety_name=" + variety_name + ", hash_names=" + hash_names + "]";
+//	}
 
 
 //

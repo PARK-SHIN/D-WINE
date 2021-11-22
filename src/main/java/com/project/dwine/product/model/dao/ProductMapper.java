@@ -22,4 +22,12 @@ public interface ProductMapper {
 
 	Product selectProductByNo(int productNo);
 
+	int registProduct(Product product);
+
+	int selectLastSeqNo();
+
+	int registProductHash(int hashNo);
+
+	int deleteProduct(int productNo);
+
 }

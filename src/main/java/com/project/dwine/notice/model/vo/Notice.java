@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class Notice {
 	private int notice_no;
-	private int notice_category;
+	private String notice_category;
 	private String notice_title;
 	private String notice_context;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -18,7 +18,7 @@ public class Notice {
 	
 	public Notice() {}
 
-	public Notice(int notice_no, int notice_category, String notice_title, String notice_context, Date create_date,
+	public Notice(int notice_no, String notice_category, String notice_title, String notice_context, Date create_date,
 			Date modify_date, char status, int user_no) {
 		super();
 		this.notice_no = notice_no;
@@ -30,6 +30,16 @@ public class Notice {
 		this.status = status;
 		this.user_no = user_no;
 	}
+	
+	
+
+	public Notice(String notice_category, String notice_title, String notice_context, int user_no) {
+		super();
+		this.notice_category = notice_category;
+		this.notice_title = notice_title;
+		this.notice_context = notice_context;
+		this.user_no = user_no;
+	}
 
 	public int getNotice_no() {
 		return notice_no;
@@ -39,11 +49,11 @@ public class Notice {
 		this.notice_no = notice_no;
 	}
 
-	public int getNotice_category() {
+	public String getNotice_category() {
 		return notice_category;
 	}
 
-	public void setNotice_category(int notice_category) {
+	public void setNotice_category(String notice_category) {
 		this.notice_category = notice_category;
 	}
 
@@ -102,9 +112,6 @@ public class Notice {
 				+ ", modify_date=" + modify_date + ", status=" + status + ", user_no=" + user_no + "]";
 	}
 
-	
-	
-	
 	
 	
 }

@@ -8,8 +8,12 @@ public interface NoticeService {
 	
 	List<Notice> selectNoticeList();
 	
+	Notice selectNoticeByNo(int notice_no);
+
+	int registNewNotice(Notice notice);
+
+
+
 	
-	
-	int registNewNotice(Notice newNotice);
 
 }

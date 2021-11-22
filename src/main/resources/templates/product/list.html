@@ -90,11 +90,10 @@
 					<th>총 수량</th>
 					<th>등록일</th>
 					<th>수정일</th>
-					<th>상세보기</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="choose" th:each="product : ${ productList }">
+				<tr class="choose" th:each="product : ${ productList }" th:onclick="|location.href='@{/product/{productNo}(productNo=${product.productNo})}'|">
 					<td class="center"><input type="checkbox"></td>
 					<td class="center" th:text="${ product.productNo }"></td>
 					<td th:text="${ product.productKName }"></td>
@@ -102,7 +101,6 @@
 					<td class="center" th:text="${ product.productCount }"></td>
 					<td class="center" th:text="${#dates.format(product.createDate, 'yyyy-MM-dd')}"></td>
 					<td class="center" th:text="${#dates.format(product.modifyDate, 'yyyy-MM-dd')}"></td>
-					<td><a th:href="@{/product/{productNo}(productNo=${product.productNo})}">상세보기</a>
 				</tr>
 			</tbody>
 		</table>

@@ -2,15 +2,13 @@ package com.project.dwine.mypage.model.vo;
 
 import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 public class Review {
 	private int review_no;
 	private String review_text;
 	private String review_image;
 	private Date review_date;
 	private Date review_modify;
-	private int star;
+	private double star;
 	private String status;
 	private int user_no;
 	private int od_no;
@@ -19,7 +17,7 @@ public class Review {
 	public Review() {}
 
 	public Review(int review_no, String review_text, String review_image, Date review_date, Date review_modify,
-			int star, String status, int user_no, int od_no, String product_kname) {
+			double star, String status, int user_no, int od_no, String product_kname) {
 		super();
 		this.review_no = review_no;
 		this.review_text = review_text;
@@ -73,11 +71,11 @@ public class Review {
 		this.review_modify = review_modify;
 	}
 
-	public int getStar() {
+	public double getStar() {
 		return star;
 	}
 
-	public void setStar(int star) {
+	public void setStar(double star) {
 		this.star = star;
 	}
 

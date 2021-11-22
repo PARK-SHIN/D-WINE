@@ -48,6 +48,19 @@ public interface MypageMapper {
 
 	List<Purchase> purchaseList(int user_no);
 
+	int nicknameCheck(String user_nickname);
+
+	int insertReviewPoint(int user_no, int review_no);
+
+	int findReviewNo();
+
+	int insertWishToCart(int user_no, int product_no);
+
+	int reviewUpdate(int review_no, String review_text, String review_image);
+
+	int updateCancelPayment(int purchase_no);
+
+	
 
 
 	

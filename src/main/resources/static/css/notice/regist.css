@@ -1,0 +1,77 @@
+@charset "UTF-8";
+  .content {
+	margin : 50px auto;
+	height : auto;
+	min-height : 100%;
+	width: 900px;
+}
+
+    #noticeform{
+	    justify-content: center;
+	    align-items: center;   
+    }
+
+    #titleLabel{
+        margin-right: 38px;
+    }
+
+
+    label{
+        margin-right: 5px;
+    }
+
+    select{
+        width: 64px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    option{
+        width: 64px;
+        height: 20px;
+    }
+    
+   
+
+    #title{
+        height: 30px;
+        width: 600px;
+        margin-bottom: 15px;
+    }
+
+    #summernote{
+        text-align: center;
+        border: black 1px solid;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        width: 800px;
+        height: 350px;
+    }
+
+    .btnArea{
+        text-align: center;
+        border-top: 1px solid #282A35;
+        padding: 30px;
+        width: 900px;
+    }
+    #cancleBtn{
+            background: white ;
+            border: 1px solid #83131E ;
+            color: #83131E;
+            width:150px;
+            height: 25px;
+            border-radius: 8%;
+            margin-right: 30px;
+        }
+
+    #enrollBtn{
+          
+            background: #83131E ;
+            border: none;
+            color:white;
+            width:150px;
+            height: 25px;
+            border-radius: 8%;
+            margin-right: 30px;
+        }
+

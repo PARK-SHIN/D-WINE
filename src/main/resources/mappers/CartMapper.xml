@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dwine.cart.model.dao.CartMapper">
+	<resultMap id="productDetailResultMap" type="com.project.dwine.purchase.model.vo.Product">
+		<id property="product_no" column="PRODUCT_NO"/>
+		<result property="product_kname" column="PRODUCT_KNAME"/>
+		<result property="product_ename" column="PRODUCT_ENAME"/>
+		<result property="sale_price" column="SALE_PRICE"/>
+		<result property="product_count" column="PRODUCT_COUNT"/>
+		<result property="thumbnail" column="THUMBNAIL"/>
+		<result property="status" column="STATUS"/>
+		<collection property="cart" resultMap="cartAll"/>
+	</resultMap>
+	<resultMap type="com.project.dwine.cart.model.vo.Cart" id="cartAll">
+		<id property="cart_no" column="CART_NO"/>
+		<result property="cart_count" column="CART_COUNT"/>
+		<result property="user_no" column="USER_NO"/>
+		<result property="product_no" column="PRODUCT_NO"/>
+	</resultMap>
+	
+	
+<insert id="addCart" parameterType="com.project.dwine.cart.model.vo.Cart">
+		INSERT
+			INTO CART
+		(
+			CART_NO
+		  , CART_COUNT
+		  , USER_NO
+		  , PRODUCT_NO
+		)
+		VALUES
+		(
+			SEQ_CART_NO.NEXTVAL
+		  , #{cart_count}
+		  , #{user_no}
+		  , #{product_no}
+		)
+</insert>
+<!-- <select id="checkCart" parameterType="_int"  resultType="com.project.dwine.cart.model.vo.Cart">
+SELECT
+	CART_NO
+  , CART_COUNT
+  , USER_NO
+  , PRODUCT_NO
+  FROM CART
+  WHERE USER_NO = #{user_no}
+  AND PRODUCT_NO = #{product_no}
+</select>
+ -->
+<select id="checkCart" parameterType="_int"  resultType="com.project.dwine.cart.model.vo.Cart">
+		SELECT
+				CART_NO
+			  , CART_COUNT
+			  , USER_NO
+			  , PRODUCT_NO
+		  FROM CART
+		  WHERE USER_NO = #{user_no}
+		  AND PRODUCT_NO = #{product_no}
+</select>
+<!-- <select id="cartList" parameterType="_int"  resultType="com.project.dwine.cart.model.vo.Cart">
+		SELECT
+				CART_NO
+			  , CART_COUNT
+			  , USER_NO
+			  , PRODUCT_NO
+		FROM CART
+		WHERE USER_NO = #{user_no}
+</select> -->
+<select id="cartList" parameterType="_int"  resultMap="productDetailResultMap">
+	SELECT
+            P.PRODUCT_NO        
+          , PRODUCT_KNAME
+          , PRODUCT_ENAME
+          , SALE_PRICE
+          , PRODUCT_COUNT
+          , THUMBNAIL
+          , STATUS
+          , C.USER_NO
+          , C.PRODUCT_NO
+          ,	C.CART_NO
+		  , C.CART_COUNT
+		FROM CART C
+        LEFT JOIN PRODUCT P ON (C.PRODUCT_NO = P.PRODUCT_NO)
+		WHERE USER_NO = #{user_no}
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

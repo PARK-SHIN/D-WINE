@@ -26,11 +26,11 @@
                 <th>제목</th>
                 <th>등록일</th>
             </tr>
-            <tr th:each="notice : ${ noticeList }">
+            	<tr th:each="notice : ${ noticeList }" th:onclick="|location.href='@{/notice/detail/{noticeNo}(noticeNo=${notice.notice_no})}'|">
                 <td><input type="checkbox" class="checkbox"></td>
-                <td th:text="${ notice.notice_category}"></td>
-                <td th:text="${ notice.notice_title}"></td>
-                <td th:text="${ #dates.format(notice.create_date, 'yyyy-MM-dd')}"></td>
+                <td th:text="${notice.notice_category}"></td>
+                <td th:text="${notice.notice_title}"></td>
+                <td th:text="${ #dates.format(notice.create_date, 'yyyy-MM-dd')}"></td>    
             </tr>     
 
         </table>    

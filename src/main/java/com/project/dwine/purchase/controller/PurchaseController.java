@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.project.dwine.member.model.vo.UserImpl;
 import com.project.dwine.purchase.model.service.PurchaseService;
 import com.project.dwine.purchase.model.vo.Product;
 
@@ -42,7 +44,6 @@ public class PurchaseController {
 	@GetMapping("wine_list")
 	public ModelAndView getWineList(ModelAndView mv) {
 		List<Product> wineList = purchaseService.wineList();
-
 		mv.addObject("wineList", wineList);
 		mv.setViewName("purchase/wine_list");
 		return mv;
@@ -87,8 +88,7 @@ public class PurchaseController {
 		List<Product> lis = purchaseService.sortWineList(value);
 		System.out.println(lis);
 		
-		return null;
-				//purchaseService.filterWineList(type, price, country, variety, name);
+		return lis;
 	}
 	
 	/* 와인 디테일 페이지 */
@@ -102,6 +102,20 @@ public class PurchaseController {
 
 		return "purchase/wine_detail";
 	}
+	
+	/* 리뷰 신고 */
+	@GetMapping("/reviewReport")
+	public void reviewReport(Model model) {
+		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    int user_no = user.getUser_no();
+	    model.addAttribute("user_no", user_no);
+	}
+	
+	
+	
+	
+	
+	
 }
 
 

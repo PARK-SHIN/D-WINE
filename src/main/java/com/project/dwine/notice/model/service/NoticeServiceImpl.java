@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.dwine.notice.model.dao.NoticeMapper;
 import com.project.dwine.notice.model.vo.Notice;
+import com.project.dwine.product.model.vo.Product;
 
 @Service("NoticeService")
 public class NoticeServiceImpl implements NoticeService {
@@ -23,11 +24,20 @@ public class NoticeServiceImpl implements NoticeService {
 		
 		return noticeMapper.selectNoticeList();
 	}
+	
+	@Override
+	public Notice selectNoticeByNo(int notice_no) {
+		return noticeMapper.selectNoticeByno(notice_no);
+	}
+	
+
 
 	@Override
-	public int registNewNotice(Notice newNotice) {
+	public int registNewNotice(Notice notice) {
 		
-		return 0;
+		return noticeMapper.registNewNotice(notice);
 	}
+	
+
 
 }

@@ -106,6 +106,38 @@ public class MypageServiceImpl implements MypageService{
 		return mypageMapper.purchaseList(user_no);
 	}
 
+	@Override
+	public int nicknameCheck(String user_nickname) {
+		return mypageMapper.nicknameCheck(user_nickname);
+	}
+
+	@Override
+	public int insertReviewPoint(int user_no, int review_no) {
+		return mypageMapper.insertReviewPoint(user_no, review_no);
+	}
+
+	@Override
+	public int findReviewNo() {
+		return mypageMapper.findReviewNo();
+	}
+
+	@Override
+	public int insertWishToCart(int user_no, String product_no) {
+		return mypageMapper.insertWishToCart(user_no, Integer.parseInt(product_no));
+	}
+
+	@Override
+	public int reviewUpdate(int review_no, String review_text, String review_image) {
+		return mypageMapper.reviewUpdate(review_no, review_text, review_image);
+	}
+
+	@Override
+	public int updateCancelPayment(int purchase_no) {
+		return mypageMapper.updateCancelPayment(purchase_no);
+	}
+
+	
+
 
 
 	

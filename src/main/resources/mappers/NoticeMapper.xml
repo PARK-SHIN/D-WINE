@@ -28,7 +28,46 @@
       WHERE STATUS = 'Y'
       ORDER BY NOTICE_NO DESC
 	</select>
-
+	
+	<select id="selectNoticeByno" resultMap="noticeResultMap">
+	SELECT
+		   	 NOTICE_NO
+		   , NOTICE_CATEGORY	
+		   , NOTICE_TITLE
+		   , NOTICE_CONTEXT
+		   , CREATE_DATE
+		   , MODIFY_DATE
+		   , STATUS
+		   , USER_NO
+		
+	  FROM NOTICE
+    	 WHERE NOTICE_NO = #{notice_no}
+	
+	</select>
+	
+	
+	<insert id="registNewNotice" parameterType="com.project.dwine.notice.model.vo.Notice">
+		INSERT INTO NOTICE
+		(	 NOTICE_NO
+		   , NOTICE_CATEGORY	
+		   , NOTICE_TITLE
+		   , NOTICE_CONTEXT
+		   , CREATE_DATE
+		   , MODIFY_DATE
+		   , STATUS
+		   , USER_NO
+		)
+		VALUES
+		(	SEQ_NNO.NEXTVAL
+		   , #{ notice_category }
+		   , #{ notice_title }
+		   , #{ notice_context }
+		   , SYSDATE
+		   , SYSDATE
+		   , DEFAULT
+		   , #{ user_no }
+		)
+	</insert>
 
 
 

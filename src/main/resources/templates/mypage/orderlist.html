@@ -7,6 +7,13 @@
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/orderlist.css" rel="stylesheet">
+<script>
+	const successMessgae = '[[${ message }]]';
+	
+	if(successMessgae){
+		alert(successMessgae);
+	}
+</script>
 <title>주문목록</title>
 </head>
 <body>
@@ -27,38 +34,45 @@
                         <li class="sum csul">금액</li>
                         <li class="status stul">주문처리상태</li>
                     </ul>
-                    <div th:each="p : ${purchaseList}" class="rediv" style="display:inline-block; width: 796px;">
+                    <div th:each="p : ${purchaseList}" class="rediv" style="display:inline-block; width: 830px;">
                         <ul  class="order_ul openBtn" style="display: flex;justify-content: space-around; align-items: center;">
                             <li class="order_date"><p th:text="${#dates.format(p.purchase_date, 'yyyy-MM-dd')}"><p class="fsmall">[<label class="labelArea" th:text="${p.purchase_no}"></label>]</p></li>
-                            <li class="pname pnameSize" style="margin:0px; padding: 0px; text-align:center; word-break:break-all;">
-                              <strong th:text="${p.product_kname}"></strong> <br><p class="fsmall">[수령점 : <label class="labelArea" th:text=${p.pickup_place}></label>]</p>
+                            <li class="pname pnameSize" style="margin:0px; padding: 0px; text-align:center; word-break:break-all; ">
+                              <strong th:text="${p.product_kname}"></strong> <br><p class="fsmall labelp">[수령점 : <label class="labelArea" th:text=${p.pickup_place}></label>]</p>
                             </li>
                             <li class="count countSize" th:text="${p.od_count}"></li>
                             <li class="sum sumSize" th:text="${p.od_price}"></li>
-                            <li class="status statusli" style="margin-right: -50px;">
+                            <li class="status statusli" style="margin-right: -10px;">
                             	<th:block th:switch="${p.order_status}">
-								    <p class="addP" th:case="결제완료">
+								    <div class="addP" th:case="결제완료">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">결제완료</strong> <br>
-										<button>결제취소</button>&nbsp;
+										<form method="post" th:action="@{/mypage/updateCancelPayment}" style="display:inline;">
+	                               	 		<input type="hidden" name="purchase_no" th:value="${p.purchase_no}">
+	                               	 		<button class="cancelPayment">결제취소</button>&nbsp;
+                               	 		</form>
                                	 		<button class="modalButton" onclick="openModal(this)">픽업변경</button>
-									</p>
-								    <p th:case="픽업대기중">
+									</div>
+								    <div th:case="픽업대기중">
 								    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">픽업대기</strong> <br>
-										<button>환불요청</button>&nbsp;
-                               	 		<button onclick="openModal(this)">픽업변경</button>
-								    </p>
+										&nbsp;
+                               	 		<!-- <button onclick="openModal(this)">픽업변경</button> -->
+                               	 		<form method="post" th:action="@{/mypage/updateCancelPayment}" style="display:inline;">
+	                               	 		<input type="hidden" name="purchase_no" th:value="${p.purchase_no}">
+	                               	 		<button type="submit" class="cancelPayment" style="margin-left : 30px; margin-top:5px;">결제취소</button>
+                               	 		</form>
+								    </div>
 								    <p th:case="환불완료">
 								    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">환불완료</strong> <br>
 										<label class="labelArea" th:text="${#dates.format(p.refund_date, 'yyyy.MM.dd HH:mm:ss')}"></label>
 								    </p>
 								    <div th:case="픽업완료">
 								    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">픽업완료</strong> <br>
-										<button>환불요청</button>&nbsp;
+										&nbsp;
 										<form method="get" th:action="@{/mypage/reviewInsert}" style="display:inline;">
 											<input type="hidden" name="od_no" th:value="${p.od_no}">
 											<input type="hidden" name="product_no" th:value="${p.product_no}">
 											<input type="hidden" name="user_no" th:value="${p.user_no}">
-											<button type="submit">리뷰등록</button>
+											<button type="submit" style="margin-left : 30px; margin-top : 5px;">리뷰등록</button>
 										</form>
 										<!-- <button type="submit" onclick="reviewInsert()">리뷰등록</button> -->
 								    </div>
@@ -79,18 +93,18 @@
                                         <div class="labelSize">
                                         	<input type="hidden" name="purchase_no" th:value="${p.purchase_no}">
                                             <label for="">상품명 / 수량</label>
-                                            <input type="text" style="border: 0px; margin-left: 110px; width: 200px;" th:value="${p.product_kname}" readonly>
+                                            <input type="text" style="border: 0px; margin-left: 90px; width: 210px;" th:value="${p.product_kname}" readonly>
                                         	/<label class="labelArea" th:text="${p.od_count}"></label>
                                         </div>
                                         <hr style="width: 500px;">
                                         <div class="labelSize">
                                             <label for="">주문일자</label>
-                                             <input type="text" style="border: 0px; margin-left: 140px; width: 150px;" th:value="${#dates.format(p.purchase_date, 'yyyy-MM-dd')}" readonly>
+                                             <input type="text" style="border: 0px; margin-left: 120px; width: 150px;" th:value="${#dates.format(p.purchase_date, 'yyyy-MM-dd (E)')}" readonly>
                                         </div>
                                         <hr style="width: 500px;">
                                         <div class="labelSize">
                                             <label for="">수령점</label>
-                                            <select name="pickup_place" id="" style="margin-left: 150px; width:200px;height:30px;">
+                                            <select name="pickup_place" id="" style="margin-left: 130px; width:200px;height:30px;">
                                                 <option value="DWINE 역삼점" th:selected="${p.pickup_place}=='DWINE 역삼점'">DWINE 역삼점</option>
                                                 <option value="DWINE 논현점" th:selected="${p.pickup_place}=='DWINE 논현점'">DWINE 논현점</option>
                                                 <option value="DWINE 성수점" th:selected="${p.pickup_place}=='DWINE 성수점'">DWINE 성수점</option>
@@ -99,12 +113,12 @@
                                         <hr style="width: 500px;">
                                         <div class="labelSize">
                                             <label for="">수령날짜</label>
-                                            <input type="text" name="pickup_date" class="Date" th:value="${p.pickup_date}" style="border: 1px solid black; margin-left: 136px; width: 190px; height: 25px;" readonly>
+                                            <input type="text" name="pickup_date" class="Date" th:value="${p.pickup_date}" style="border: 1px solid black; margin-left: 116px; width: 190px; height: 25px;" readonly>
                                         </div>
                                         <hr style="width: 500px;">
                                         <div class="labelSize">
                                             <label for="">수령시간</label>
-                                            <select name="pickup_time" id="" style="margin-left: 135px; width:200px;height:30px;">
+                                            <select name="pickup_time" id="" style="margin-left: 115px; width:200px;height:30px;">
                                                 <option th:selected="${p.pickup_time}=='09:00~12:00'" value="09:00 ~ 12:00">09:00 ~ 12:00</option>
                                                 <option value="12:00 ~ 18:00" th:selected="${p.pickup_time}=='12:00 ~ 18:00'">12:00 ~ 18:00</option>
                                             </select>
@@ -168,8 +182,6 @@
             const order_list = document.querySelector(".order_list");
 
             order_list.addEventListener('mouseover', function(){
-                //console.log('mouseover');
-                //console.log(event.target);
                 
                 if(event.target.classList.contains('order_ul')) //ul이라면
                     event.target.classList.add('onmouseover');	//클래스 추가
@@ -178,8 +190,6 @@
             });
 
             order_list.addEventListener('mouseout', function(){
-                console.log('mouseout');
-                console.log(event.target);
                 
                 if(event.target.classList.contains('order_ul'))
                     event.target.classList.remove('onmouseover');
@@ -191,6 +201,8 @@
 
         <script>
         	/* $(function() { $( "#Date" ).datepicker({ }); }); */
+        	//datepicker.regional.ko
+        	$.datepicker.setDefaults( $.datepicker.regional[ "ko" ] );
             $(function() { 
                 $( ".Date" ).datepicker({
                     changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다. 
@@ -212,31 +224,6 @@
                 });
             }); 
             
-
-			/*
-            $("#Date").datepicker({ 
-                 showOn: "both", // 버튼과 텍스트 필드 모두 캘린더를 보여준다. 
-                 // buttonImage: "../5_PROJECT/resources/images/calendarBtn.png", // 버튼 이미지 
-                 buttonImageOnly: true, // 버튼에 있는 이미지만 표시한다. 
-                 changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다. 
-                 changeYear: true, // 년을 바꿀 수 있는 셀렉트 박스를 표시한다. 
-                 minDate: '-100y', // 현재날짜로부터 100년이전까지 년을 표시한다. 
-                 nextText: '다음 달', // next 아이콘의 툴팁. prevText: '이전 달', // prev 아이콘의 툴팁. 
-                 numberOfMonths: [1,1], // 한번에 얼마나 많은 월을 표시할것인가. [2,3] 일 경우, 2(행) x 3(열) = 6개의 월을 표시한다. 
-                 stepMonths: 3, // next, prev 버튼을 클릭했을때 얼마나 많은 월을 이동하여 표시하는가. 
-                 yearRange: 'c-100:c+10', // 년도 선택 셀렉트박스를 현재 년도에서 이전, 이후로 얼마의 범위를 표시할것인가. 
-                 showButtonPanel: true, // 캘린더 하단에 버튼 패널을 표시한다. 
-                 currentText: '오늘 날짜' , // 오늘 날짜로 이동하는 버튼 패널 
-                 closeText: '닫기', // 닫기 버튼 패널 
-                 dateFormat: "yy-mm-dd", // 텍스트 필드에 입력되는 날짜 형식. 
-                 showAnim: "slide", //애니메이션을 적용한다. 
-                 showMonthAfterYear: true , // 월, 년순의 셀렉트 박스를 년,월 순으로 바꿔준다. 
-                 dayNamesMin: ['월', '화', '수', '목', '금', '토', '일'], // 요일의 한글 형식. 
-                 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], // 월의 한글 형식. 
-                 yearRange: "2021:2022" //연도 범위 
-             });
-			*/
-
         </script>
         
         <script>
