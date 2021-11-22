@@ -90,6 +90,30 @@ public class Product {
 		this.type = type;
 		this.country = country;
 	}
+	
+	public Product(int productNo, String productKName, String productEName, int costPrice, int salePrice,
+			int productCount, String winery, String thumbnail, int capacity, double abv, String tasteGraph,
+			String information, String award, String tip, String labelImage, Variety variety, Type type, Country country) {
+		super();
+		this.productNo = productNo;
+		this.productKName = productKName;
+		this.productEName = productEName;
+		this.costPrice = costPrice;
+		this.salePrice = salePrice;
+		this.productCount = productCount;
+		this.winery = winery;
+		this.thumbnail = thumbnail;
+		this.capacity = capacity;
+		this.abv = abv;
+		this.tasteGraph = tasteGraph;
+		this.information = information;
+		this.award = award;
+		this.tip = tip;
+		this.labelImage = labelImage;
+		this.variety = variety;
+		this.type = type;
+		this.country = country;
+	}
 
 	public int getProductNo() {
 		return productNo;

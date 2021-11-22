@@ -2,8 +2,9 @@
 <html xmlns:th="http://http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>product Form</title>
+<title>product modify</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<link href="/css/common/common.css" rel="stylesheet">
 <style>
 	.input_area {
 		display: flex;
@@ -67,7 +68,7 @@
 		border-radius: 5px;
 	}
 	
-	#enroll_form {
+	#modifyForm {
 		width: 800px;
 	}
 	
@@ -89,13 +90,19 @@
 	.name_area {
 		width: 400px;
 	}
+	.img {
+		width: 350px;
+		height: 350px;
+	}
 </style>    
 </head>
 <body>
+	<header th:include="common/header :: header"></header>
     <h1>상품 수정</h1>
     <hr>
-    <form id="enrollForm" th:action="@{/product/regist(${_csrf.parameterName}=${_csrf.token})}" method="post" encType="multipart/form-data">
+    <form id="modifyForm" th:action="@{/product/modify(${_csrf.parameterName}=${_csrf.token})}" method="post" encType="multipart/form-data" onsubmit="return validate()">
         <h3>상품 기본 정보</h3>
+        <input type="hidden" name="productNo" th:value="${product.productNo}">
         <div class="input_area">
             <div class="label_area">카테고리</div>
             <div class="category">
@@ -107,40 +114,44 @@
         <div class="input_area">
             <div class="label_area">상품명</div>
             <div>
-                <input class="name_area" type="text" name="kname" placeholder="한글명" required><br>
-                <input class="name_area" type="text" name="ename" placeholder="영문명" required>
+                <input class="name_area" type="text" name="kname" placeholder="한글명" th:value="${product.productKName}" required><br>
+                <input class="name_area" type="text" name="ename" placeholder="영문명" th:value="${product.productEName}" required>
             </div>
         </div>
         <div class="input_area">
             <div class="label_area">원가</div>
-            <div><input type="number" name="costPrice" min="0" required></div>
+            <div><input type="number" name="costPrice" min="0" th:value="${product.costPrice}" required></div>
         </div>
         <div class="input_area">
             <div class="label_area">판매가</div>
-            <div><input type="number" name="salePrice" min="0" required></div>
+            <div><input type="number" name="salePrice" min="0" th:value="${product.salePrice}" required></div>
         </div>
         <div class="input_area">
             <div class="label_area">대표 이미지</div>
             <div>
                 <input name="thumbnail" type="file" accept=".gif, .jpg, .png" required>
-                <div class="image_area"></div>
+                <div class="image_area">
+                	<img class="img" th:src="${product.thumbnail}">
+                </div>
             </div>
         </div>
         <div class="input_area">
             <div class="label_area">수량</div>
-            <div><input type="number" name="productCount" required></div>
+            <div><input type="number" name="productCount" th:value="${product.productCount}" required></div>
         </div>
 
         <br>
         <h3>상품 상세설명</h3>
         <div class="input_area">
             <div class="label_area">와이너리</div>
-            <div><input type="text" name="winary" required></div>
+            <div><input type="text" name="winary" th:value="${product.winery}" required></div>
         </div>
         <div class="input_area">
             <div class="label_area">용량 / 도수</div>
-            <div><input type="number" name="capacity" min="0" required>ml / <input type="number" name="abv" min="0" required>%</div>
-        </div>
+            <div>
+	            <input type="number" name="capacity" min="0" th:value="${product.capacity}" required>ml / 
+	            <input type="number" name="abv" min="0" th:value="${product.abv}" required>%</div>
+        	</div>
         <div class="input_area">
             <div class="label_area">해시태그</div>
             <div>
@@ -148,44 +159,49 @@
                 <select name="mood2" id="mood2" required></select>
                 <select name="food1" id="food1" required></select>
                 <select name="food2" id="food2" required></select>
+                <input type="hidden" name="pre_hash">
             </div>
             <button id="hash_btn" onclick="location.href='/hashtag/form'">해시태그 관리</button>
         </div>
         <div class="input_area">
             <div class="label_area">맛 그래프</div>
             <div>
-                <label>당도</label><input type="range" name="sweetness" min="0" max="5" value="0" required><br>
-                <label>산도</label><input type="range" name="acidity" min="0" max="5" value="0" required><br>
-                <label>바디</label><input type="range" name="body" min="0" max="5" value="0" required><br>
-                <label>탄닌</label><input type="range" name="tannin" min="0" max="5" value="0" required>
-            </div>
+				<label>당도</label><input type="range" name="sweetness" min="0" max="5"><br> 
+				<label>산도</label><input type="range" name="acidity" min="0" max="5" ><br> 
+				<label>바디</label><input type="range" name="body" min="0" max="5" ><br>
+				<label>탄닌</label><input type="range" name="tannin" min="0" max="5">
+			</div>
         </div>
         <div class="input_area">
             <div class="label_area">INFORMATION</div>
-            <div><textarea class="text_area" name="information" required></textarea></div>
+            <div><textarea class="text_area" name="information" th:text="${product.information}" required></textarea></div>
         </div>
         <div class="input_area">
             <div class="label_area">AWARD</div>
-            <div><textarea class="text_area" name="award" required></textarea></div>
+            <div><textarea class="text_area" name="award" th:text="${product.award}" required></textarea></div>
         </div>
         <div class="input_area">
             <div class="label_area">TIP</div>
-            <div><textarea class="text_area" name="tip" required></textarea></div>
+            <div><textarea class="text_area" name="tip" th:text="${product.tip}" required></textarea></div>
         </div>
         <div class="input_area">
             <div class="label_area">LABEL IMAGE</div>
             <div>
                 <input name="labelImg" type="file" accept=".gif, .jpg, .png" required>
-                <div class="image_area"></div>
+                <div class="image_area">
+                	<img class="img" th:src="${product.labelImage}">
+                </div>
             </div>
         </div>
         <div id="btn_area">
-            <button class="cancle_btn btn" onclick="location.href='/product/list'">취소</button>
-            <button class="insert_btn btn">등록</button>
+            <button class="cancle_btn btn" th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|">취소</button>
+            <button class="insert_btn btn">수정</button>
         </div>
-    </form>
+    </form>             
+                
+    <footer th:include="common/footer :: footer"></footer>
 
-    <script>
+    <script th:inline="javascript">
         $('input[type=range]').on('input', function(){
             var val = $(this).val();
             $(this).css('background', 'linear-gradient(to right, #83131E 0%, #83131E '+ val*20 +'%, #c4c4c4 ' + val + '%, #c4c4c4 100%)');
@@ -193,12 +209,13 @@
         
         $(function(){
         	$.get("/product/category", function(map) {
-        		const type = $("#type");
-        		const country = $("#country");
-        		const variety = $("#variety");
+        		var type = $("#type");
+        		var country = $("#country");
+        		var variety = $("#variety");
         		
         		$.each(map['type'], function(index, value){
-        			type.append($("<option>").val(value.typeNo).text(value.typeName));
+        			// type.append($("<option>").val(value.typeNo).text(value.typeName));
+        			type.append("<option class='type_op' value='" + value.typeNo + "'>" + value.typeName + "</option>");
 					});
         		
         		$.each(map['country'], function(index, value){
@@ -208,25 +225,112 @@
         		$.each(map['variety'], function(index, value){
         			variety.append($("<option>").val(value.varietyNo).text(value.varietyName));
         		});
+        		
         	});
         	
         	$.get("/hashtag/category", function(map) {
-        		const mood1 = $("#mood1");
-        		const mood2 = $("#mood2");
-        		const food1 = $("#food1");
-        		const food2 = $("#food2");
+        		var mood1 = $("#mood1");
+        		var mood2 = $("#mood2");
+        		var food1 = $("#food1");
+        		var food2 = $("#food2");
         		
         		$.each(map['mood'], function(index, value){
-        			mood1.append($("<option>").val(value.hashNo).text(value.hashName));
-        			mood2.append($("<option>").val(value.hashNo).text(value.hashName));
+        			
+        			// mood1.append($("<option>").val(value.hashNo).text(value.hashName));
+        			mood1.append("<option class='mood1_val' value='" + value.hashNo + "'>" + value.hashName + "</option>");
+        			mood2.append("<option class='mood2_val' value='" + value.hashNo + "'>" + value.hashName + "</option>");
 				});
         		
         		$.each(map['food'], function(index, value){
-        			food1.append($("<option>").val(value.hashNo).text(value.hashName));
-        			food2.append($("<option>").val(value.hashNo).text(value.hashName));
+        			food1.append("<option class='food1_val' value='" + value.hashNo + "'>" + value.hashName + "</option>");
+        			food2.append("<option class='food2_val' value='" + value.hashNo + "'>" + value.hashName + "</option>");
 				});
         	});
         })
+        
+        $(function(){
+			/*<![CDATA[*/
+		    var tasteGraph = /*[[${product.tasteGraph}]]*/ '0/0/0/0';
+			/*]]>*/
+			
+			var arr = tasteGraph.split("/");
+			
+			var sweetness =  $("input[name=sweetness]");
+			sweetness.val(arr[0]);
+			var acidity = $("input[name=acidity]");
+			acidity.val(arr[1]);
+			var body = $("input[name=body]");
+			body.val(arr[2]);
+			var tannin = $("input[name=tannin]")
+			tannin.val(arr[3]);
+			
+			/* background: linear-gradient(to right, #83131E 0%, #83131E 50%, #c4c4c4 50%, #fff 100%); */
+			
+			sweetness.css('background', 'linear-gradient(to right, #83131E ' + sweetness.val() * 20 + '%, #c4c4c4 ' + sweetness.val() + '%, #c4c4c4 100%');
+			acidity.css('background', 'linear-gradient(to right, #83131E ' + acidity.val() * 20 + '%, #c4c4c4 ' + acidity.val() + '%, #c4c4c4 100%');
+			body.css('background','linear-gradient(to right, #83131E 0%, #83131E ' + body.val() * 20 + '%, #c4c4c4 ' + body.val() + '%, #c4c4c4 100%)');
+			tannin.css('background','linear-gradient(to right, #83131E 0%, #83131E ' + tannin.val() * 20 + '%, #c4c4c4 ' + tannin.val() + '%, #c4c4c4 100%)');
+		});
+				
+		// 수정 전 해시태그 보내기
+		/*<![CDATA[*/
+	    var hashtag = /*[[${product.HashtagList}]]*/ "";
+		/*]]>*/
+		var hash1 = hashtag[0].hashNo;
+		var hash2 = hashtag[1].hashNo;
+		var hash3 = hashtag[2].hashNo;
+		var hash4 = hashtag[3].hashNo;		
+		var pre_hash = hash1 + "/" + hash2 + "/" + hash3 + "/" + hash4;
+		$("input[name=pre_hash]").val(pre_hash);
+		
+		// selectbox seleted 속성 주기(카테고리, 해시태그)
+		/* $('#mood1 option:eq(' + hash1 + ')').prop('selected', true);
+		$('#mood2 option:eq(' + hash2 + ')').prop('selected', true);
+		$('#food1 option:eq(' + hash3 + ')').prop('selected', true);
+		$('#food2 option:eq(' + hash4 + ')').prop('selected', true); */
+		
+		/* $("#mood1 option[value="+hash1+"]").prop('selected', true);
+		$("#mood2 option[value="+ hash2+"]").prop('selected', true);
+		$("#food1 option[value="+ hash3+"]").prop('selected', true);
+		$("#food2 option[value="+ hash4+"]").prop('selected', true); */
+		
+		// 해시태그 중복 안되게 처리
+		function validate() {
+			var mood1 = $("#mood1");
+    		var mood2 = $("#mood2");
+    		var food1 = $("#food1");
+    		var food2 = $("#food2");
+			
+			if(mood1.val() == mood2.val()) {
+				alert("mood 해시태그가 중복됩니다.");
+				return false;
+			} else if(food1.val() == food2.val()) {
+				alert("food 해시태그가 중복됩니다.");
+				return false;
+			}
+			
+			return true;
+		}
+		
+		
+		
+		
+		// 이미지 프리뷰
+        let fileElements = document.querySelectorAll("[type=file]");
+		let imageArea = document.querySelectorAll(".image_area");
+		fileElements.forEach(item => item.addEventListener('change', preview));
+		function preview(){
+			
+			let index = Array.from(fileElements).indexOf(this);
+			//세개의 경로에서  파일이 어디서 첨부되었는지 알아야함
+			if(this.files&&this.files[0]){
+				let reader = new FileReader();
+				reader.readAsDataURL(this.files[0]);
+				reader.onload = function(){
+					imageArea[index].innerHTML = '<img class="img" src="' + reader.result + '">';
+				}
+			}
+		}
     </script>
 </body>
 </html>
