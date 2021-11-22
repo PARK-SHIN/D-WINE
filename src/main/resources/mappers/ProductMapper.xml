@@ -210,4 +210,76 @@
 		WHERE PRODUCT_NO = #{ productNo }
 	</update>
 	
+	<update id="modifyProduct">
+		UPDATE 
+   			PRODUCT
+   		  <trim prefix="SET" prefixOverrides=",">
+   		  <if test="productKName != null and productKName != ''">
+   		   		  PRODUCT_KNAME = #{ productKName }
+   		  </if>
+   		  <if test="productEName != null and productEName != ''">
+   		  		, PRODUCT_ENAME = #{ productEName }
+   		  </if>
+   		  <if test="costPrice != null and costPrice gt 0">
+   		  		, COST_PRICE = #{ costPrice }
+   		  </if>
+   		  <if test="salePrice != null and salePrice gt 0">
+   		  		, SALE_PRICE = #{ salePrice }
+   		  </if>
+   		  <if test="productCount != null and productCount gt 0">
+   		  		, PRODUCT_COUNT = #{ productCount }
+   		  </if>
+   		  <if test="winery != null and winery != ''">
+   		  		, WINERY = #{ winery }
+   		  </if>
+   		  <if test="thumbnail != null and thumbnail != ''">
+   		  		, THUMBNAIL = #{ thumbnail }
+   		  </if>
+   		  <if test="capacity != null and capacity gt 0">
+   		  		, CAPACITY = #{ capacity }
+   		  </if>
+   		  <if test="abv != null and abv gt 0">
+   		  		, ABV = #{ abv }
+   		  </if>
+   		  <if test="tasteGraph != null and tasteGraph != ''">
+   		  		, TASTE_GRAPH = #{ tasteGraph }
+   		  </if>
+   		  <if test="information != null and information != ''">
+   		  		, INFORMATION = #{ information }
+   		  </if>
+   		  <if test="award != null and award != ''">
+   		  		, AWARD = #{ award }
+   		  </if>
+   		  <if test="tip != null and tip != ''">
+   		  		, TIP = #{ tip }
+   		  </if>
+   		  <if test="labelImage != null and labelImage != ''">
+   		  		, LABEL_IMAGE = #{ labelImage }
+   		  </if>
+   		  <if test="variety.varietyNo != null and variety.varietyNo gt 0">
+   		  		, VARIETY_NO = #{ variety.varietyNo }
+   		  </if>
+   		  <if test="type.typeNo != null and type.typeNo gt 0">
+   		  		, TYPE_NO = #{ type.typeNo }
+   		  </if>
+   		  <if test="country.countryNo != null and country.countryNo gt 0">
+   		  		, COUNTRY_NO = #{ country.countryNo }
+   		  </if>
+   		  </trim>
+   		  	, MODIFY_DATE = SYSDATE
+   		    WHERE PRODUCT_NO = #{ productNo }	 
+	</update>
+	
+	<update id="modifyProductHash">
+		UPDATE PRODUCT_HASHTAG
+			SET HASH_NO = #{ hashNo }
+		 WHERE PRODUCT_NO = #{ productNo }
+		 AND HASH_NO = #{ preHashNo }
+	</update>
+	
+	<update id="deleteMultiProduct">
+		UPDATE PRODUCT
+			SET STATUS = 'N'
+		WHERE PRODUCT_NO = #{ productNo }
+	</update>
 </mapper>

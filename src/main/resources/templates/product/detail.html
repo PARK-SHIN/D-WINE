@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>detail View</title>
+<title>product detail</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<link href="/css/common/common.css" rel="stylesheet">
 <style>
 	.input_area {
 		display: flex;
@@ -74,10 +75,6 @@
 		border-radius: 5px;
 	}
 	
-	#enroll_form {
-		width: 800px;
-	}
-	
 	#btn_area {
 		width: 500px;
 		text-align: center;
@@ -101,12 +98,13 @@
 		width: 100px;
 		margin-right: 10px;
 	}
-	#productNoForm {
+	#deleteForm {
 		display: inline;
 	}
 </style>    
 </head>
 <body>
+	<header th:include="common/header :: header"></header>
     <h1>상품 상세 정보</h1>
     <div>
     	등록일 : <span th:text="${#dates.format(product.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
@@ -119,7 +117,7 @@
 		<div class="category">
 			<input class="category_area" type="text" th:value="${product.type.typeName}" readonly><br>
 			<input class="category_area" type="text" th:value="${product.country.countryName}" readonly><br>
-			<input class="category_area" type="text" th:value="${product.variety.varietyNo}" readonly> 
+			<input class="category_area" type="text" th:value="${product.variety.varietyName}" readonly> 
 		</div>
 	</div>
 	<div class="input_area">
@@ -180,8 +178,6 @@
 	<div class="input_area">
 		<div class="label_area">맛 그래프</div>
 		<div>
-		<!-- <div th:each="graph : ${#strings.arraySplit(product.tasteGraph,'/')}"> -->
-		<!-- <span th:text="${graph}"></span> -->
 			<label>당도</label><input type="range" name="sweetness" min="0" max="5" disabled><br> 
 			<label>산도</label><input type="range" name="acidity" min="0" max="5" disabled ><br> 
 			<label>바디</label><input type="range" name="body" min="0" max="5" disabled ><br>
@@ -216,12 +212,13 @@
 	</div>
 	<div id="btn_area">
 		<button class="cancle_btn btn" onclick="location.href='/product/list'">목록</button>
-		<button class="modify_btn btn" onclick="location.href='/product/modify'">수정</button>
-		<form id="productNoForm" th:action="@{/product/delete}" method="post" onsubmit="return checkConfirm()">
+		<button class="modify_btn btn" th:onclick="|location.href='@{/product/modify/{productNo}(productNo=${product.productNo})}'|">수정</button>
+		<form id="deleteForm" th:action="@{/product/delete}" method="post" onsubmit="return checkConfirm()">
 			<input type="hidden" name="productNo" th:value="${product.productNo}">
 			<button class="delete_btn btn">삭제</button>
 		</form>
 	</div>
+	<footer th:include="common/footer :: footer"></footer>
 
 	
 	<script th:inline="javascript">
