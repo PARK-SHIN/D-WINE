@@ -19,6 +19,7 @@ public class UserImpl extends User {
 	private int user_point;
 	private int reported_count;
 	private Authority authority;
+	private Date create_date;
 
 	public UserImpl(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
@@ -35,6 +36,7 @@ public class UserImpl extends User {
 		this.user_point = member.getUser_point();
 		this.reported_count = member.getReported_count();
 		this.authority = member.getAuthority();
+		this.create_date = member.getCreate_date();
 	}
 
 	public int getUser_no() {
@@ -75,6 +77,10 @@ public class UserImpl extends User {
 
 	public Authority getAuthority() {
 		return authority;
+	}
+
+	public Date getCreate_date() {
+		return create_date;
 	}
 
 }

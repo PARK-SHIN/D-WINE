@@ -16,12 +16,13 @@ public class Member {
 	private int user_point;
 	private int reported_count;
 	private Authority authority;
+	private Date create_date;
 
 	public Member() {
 	}
 
 	public Member(int user_no, String user_id, String user_pw, String user_name, Date user_birth, String user_phone,
-			String user_nickname, int user_point, int reported_count, Authority authority) {
+			String user_nickname, int user_point, int reported_count, Authority authority, Date create_date) {
 		this.user_no = user_no;
 		this.user_id = user_id;
 		this.user_pw = user_pw;
@@ -32,6 +33,7 @@ public class Member {
 		this.user_point = user_point;
 		this.reported_count = reported_count;
 		this.authority = authority;
+		this.create_date = create_date;
 	}
 
 	public int getUser_no() {
@@ -114,12 +116,20 @@ public class Member {
 		this.authority = authority;
 	}
 
+	public Date getCreate_date() {
+		return create_date;
+	}
+
+	public void setCreate_date(Date create_date) {
+		this.create_date = create_date;
+	}
+
 	@Override
 	public String toString() {
 		return "Member [user_no=" + user_no + ", user_id=" + user_id + ", user_pw=" + user_pw + ", user_name="
 				+ user_name + ", user_birth=" + user_birth + ", user_phone=" + user_phone + ", user_nickname="
 				+ user_nickname + ", user_point=" + user_point + ", reported_count=" + reported_count + ", authority="
-				+ authority + "]";
+				+ authority + ", create_date=" + create_date + "]";
 	}
 
 }

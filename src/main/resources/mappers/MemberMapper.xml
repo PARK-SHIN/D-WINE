@@ -77,7 +77,8 @@
 			user_point,
 			reported_count,
 			authority_no,
-			user_status
+			user_status,
+			create_date
 		) values(
 			seq_user_no.nextval,
 			#{member.user_id},
@@ -86,6 +87,7 @@
 			To_Date(#{birthday}, 'yy/mm/dd'),
 			#{member.user_phone},
 			#{member.user_nickname},
+			default,
 			default,
 			default,
 			default,

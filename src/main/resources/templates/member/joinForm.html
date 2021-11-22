@@ -244,24 +244,27 @@
 	    // 닉네임 중복 확인
 	    function nicknameCheck(){
 	    	var nickname = document.getElementById('user_nickname').value;
-	    	
-	    	$.ajax({
-    			type:"post",
-    			url:"/member/nicknameCheck",
-    			data:{nickName:nickname},
-    			success : function(data){
-    				if(data<1){
-						alert('사용 가능한 닉네임 입니다.');
-						nickname_check = true;
-						preNickname = nickname;
-    				}else{
-    					alert('사용중인 닉네임 입니다.');
-    				}
-    			},
-    			error : function(e){
-    				alert('다시 시도해주세요');
-    			}
-    		});
+	    	if(nickname == ""){
+	    		alert('닉네임을 입력해주세요.');
+	    	}else{
+		    	$.ajax({
+	    			type:"post",
+	    			url:"/member/nicknameCheck",
+	    			data:{nickName:nickname},
+	    			success : function(data){
+	    				if(data<1){
+							alert('사용 가능한 닉네임 입니다.');
+							nickname_check = true;
+							preNickname = nickname;
+	    				}else{
+	    					alert('사용중인 닉네임 입니다.');
+	    				}
+	    			},
+	    			error : function(e){
+	    				alert('다시 시도해주세요');
+	    			}
+	    		});
+	    	}
 	    }
 	    
 	    // 회원가입 
