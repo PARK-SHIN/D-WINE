@@ -33,9 +33,9 @@ public class NoticeServiceImpl implements NoticeService {
 
 
 	@Override
-	public int registNewNotice(int notice_category, String notice_title, String notice_context, int user_no) {
+	public int registNewNotice(Notice notice) {
 		
-		return noticeMapper.registNewNotice(notice_category, notice_title, notice_context, user_no);
+		return noticeMapper.registNewNotice(notice);
 	}
 	
 

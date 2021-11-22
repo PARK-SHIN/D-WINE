@@ -42,14 +42,13 @@ public class NoticeController {
    return mv;
    }
 
-   @GetMapping("{noticeNo}")
+   @GetMapping("detail/{notice_no}")
    public String selectProductByNo(@PathVariable int notice_no, Model model) {
       Notice notice = noticeService.selectNoticeByNo(notice_no);
-      model.addAttribute("Notice", notice);
+      model.addAttribute("notice", notice);
       
       return "notice/detail";
    }
-   
    
    @GetMapping("/regist")
    public void registPage(Model model) {
@@ -66,7 +65,6 @@ public class NoticeController {
 	   
 	   UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
        int user_no = user.getUser_no();
-       System.out.println("ㅇㅇ" + user_no);
        model.addAttribute("user_no", user_no);
    }
   
@@ -74,7 +72,7 @@ public class NoticeController {
    //@RequestMapping(value = "/regist", method = {RequestMethod.GET, RequestMethod.POST})
    @PostMapping("/regist")
    public String registNotice(Model model, HttpServletRequest request) {
-      int notice_category = Integer.parseInt(request.getParameter("notice_category"));
+	  String notice_category = request.getParameter("notice_category");
       String notice_title = request.getParameter("notice_title");
       String notice_context = request.getParameter("notice_context");
       UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -84,16 +82,19 @@ public class NoticeController {
 	  System.out.println(notice_title);
 	  System.out.println(notice_context);
 	  
-      //Notice notice = new Notice(notice_category, notice_title, notice_context, user_no);
+      Notice notice = new Notice(notice_category, notice_title, notice_context, user_no);
       
-		/*
-		 * int result = noticeService.registNewNotice(notice_category, notice_title,
-		 * notice_context, user_no); if(result > 0) {
-		 * System.out.println("게시글 등록에 성공하였습니다."); } else {
-		 * System.out.println("게시글 등록에 실패하였습니다."); }
-		 */
       
-      return "redirect:/notice/list";
+	  int result = noticeService.registNewNotice(notice);
+		 
+		 //System.out.println("결과 : " +result);
+		 
+			/*
+			 * if(result > 0) { System.out.println("게시글 등록에 성공하였습니다."); } else {
+			 * System.out.println("게시글 등록에 실패하였습니다."); }
+			 */
+		 
+      return "redirect:/notice/main";
    }
 
 }

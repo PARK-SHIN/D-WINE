@@ -46,7 +46,6 @@
 	</select>
 	
 	
-	
 	<insert id="registNewNotice" parameterType="com.project.dwine.notice.model.vo.Notice">
 		INSERT INTO NOTICE
 		(	 NOTICE_NO
@@ -60,13 +59,13 @@
 		)
 		VALUES
 		(	SEQ_NNO.NEXTVAL
-		   , #{NOTICE_CATEGORTY}
-		   , #{NOTICE_TITLE}
-		   , #{NOTICE_CONTEXT}
-			SYSDATE,
-			SYSDATE,
-			Y,
-			#{user_no},
+		   , #{ notice_category }
+		   , #{ notice_title }
+		   , #{ notice_context }
+		   , SYSDATE
+		   , SYSDATE
+		   , DEFAULT
+		   , #{ user_no }
 		)
 	</insert>
 

@@ -25,15 +25,12 @@
                 <th>카테고리</th>
                 <th>제목</th>
                 <th>등록일</th>
-                <th>상세보기</th>
             </tr>
-            	<tr th:each="notice : ${ noticeList }">
+            	<tr th:each="notice : ${ noticeList }" th:onclick="|location.href='@{/notice/detail/{noticeNo}(noticeNo=${notice.notice_no})}'|">
                 <td><input type="checkbox" class="checkbox"></td>
-                <div id="noticeArea"> <td th:text="${ notice.notice_category}"></td>
-                <td th:text="${ notice.notice_title}"></td>
-                <td th:text="${ #dates.format(notice.create_date, 'yyyy-MM-dd')}"></td>
-                <td th:href="@{'/notice/detail/' + ${notice.notice_no} }">상세보기연결</td>
-				</div>     
+                <td th:text="${notice.notice_category}"></td>
+                <td th:text="${notice.notice_title}"></td>
+                <td th:text="${ #dates.format(notice.create_date, 'yyyy-MM-dd')}"></td>    
             </tr>     
 
         </table>    
