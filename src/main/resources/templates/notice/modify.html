@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<title>공지사항 수정</title>
+<link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/notice/regist.css" rel="stylesheet"> 
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+<!-- include summernote css/js-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js"></script>
+<!-- include summernote-ko-KR -->
+<script src="/resources/js/summernote-ko-KR.js"></script>
+
+</head>
+<body>
+<header th:include="common/header :: header"></header>
+<div class="wrapper">
+   <div class=content>
+       <h2>공지사항 - 등록</h2>  
+    <hr>
+    <br>
+    <br>	
+      <form id="noticeForm" th:action="@{/notice/modify/${noticeNo}(noticeNo=${notice.notice_no})}(${_csrf.parameterName}=${_csrf.token})}" method="post">
+       <input type="hidden" name="user_no" th:value="${user_no}">
+       <input type="hidden" name="notice_no" th:value="${notice_no}">
+       <div class="categoryArea"><label>카테고리</label>
+          <select id="selectArea" name="notice_category">
+              <option value="일반">일반</option>
+              <option value="이벤트">이벤트</option>
+          </select>
+      </div>
+       <br>
+       <div class="titleArea"><label id="titleLabel">제목</label>
+          <input type="text" id="title" name="notice_title">
+       </div>
+
+          <textarea id="summernote" name="notice_context"></textarea>
+   	   <br>
+       <div class="btnArea">
+           <button id="cancleBtn">취소</button> 
+           <input id="enrollBtn" type="submit" value="수정">
+          
+       </div>
+      </form>
+   </div>
+
+</div>
+
+ <script>
+ 	
+     
+      // 글쓰기 api
+           $('#summernote').summernote({
+                   placeholder: '내용을 입력해주세요.',
+                   tabsize: 2,
+                   height: 350
+           });
+      
+           var token = $("meta[name='_csrf']").attr("content");
+           var header = $("meta[name='_csrf_header']").attr("content");
+           $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+          
+     </script>
+
+</body>
+</html>

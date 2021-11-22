@@ -11,6 +11,8 @@ public interface NoticeService {
 	Notice selectNoticeByNo(int notice_no);
 
 	int registNewNotice(Notice notice);
+	
+	
 
 
 
