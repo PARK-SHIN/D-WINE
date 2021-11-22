@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>Wine_Detail</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
   <link href="/css/common/common.css" rel="stylesheet">      
@@ -532,26 +534,57 @@
             </li>
         </ul>
     </div>
+	
+	<script>
+	
+	
+		var header = $("meta[name='_csrf_header']").attr('content');
+		var token = $("meta[name='_csrf']").attr('content');
+    
+		function submit(type)  {
+			let product_no = document.querySelector("#product_no").value;
+			let count = document.getElementById('count').innerText;
+	        let price = document.getElementById("tprice").innerText;
+	   
+			console.log(product_no);
+			console.log(count);
+			console.log(price);
+			
+			var param = {};
+			param.product_no = product_no;
+			param.cart_count = count;
+			// param.price = price;
+			
+			console.log(param);
+
+		if(type === 'cart'){
+		 	$.ajax({
+				url : "/cart/add",
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
+				data: JSON.stringify(param),
+				contentType : "application/json; charset=utf-8",
+				type : "POST",
+				success : function(data){
+					console.log("확인 : " + data);
+					alert(data.msg);
+					
+					if(data.msg == "로그인이 필요합니다."){
+						location.href="/member/login";
+					}
+				},
+				error : function(e){
+					console.log(e);
+				}
+			});
+		}
+	}
+	
+	</script>
 
 
     <script th:inline="javascript">
-    
-   		function submit(type)  {
-    		let product_no = document.querySelector("#product_no").value;
-    		let count = document.getElementById('count').innerText;
-            let price = document.getElementById("tprice").innerText;
-       
-    		console.log(product_no);
-    		console.log(count);
-    		console.log(price);
-    
-    	if(type === 'buy'){
-    		location.href = ""
-    	}
-    
-    
-   		}
-    
     
         function count(type)  {
             // 결과를 표시할 element

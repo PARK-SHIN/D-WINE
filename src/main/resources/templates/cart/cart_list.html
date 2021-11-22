@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Cart</title>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+<link href="/css/common/common.css" rel="stylesheet">      
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<style>
+    ul{
+        list-style: none;
+        padding: 0%;
+        margin: 0;
+    }
+
+    .cart{
+        width: 1000px;
+        margin: 0 auto;
+        
+    }
+    
+    .cart_main{
+        border-top: 3px solid black;
+    }
+
+    ul li{
+        display: flex;
+        padding: 15px;
+    }
+
+    .all_product{
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .all_selectBox{
+        width: 20px;
+        height: 20px;
+    }
+
+    .wine_info{
+        display: flex;
+        width: 45%;
+    }
+
+    .wine_img{
+        width: 90px;
+        height: 90px;
+    }
+
+    .product_checkbox{
+        position: absolute;
+        width: 20px;
+        height: 20px;
+    }
+
+    .wine_name{
+        padding-left: 20px;
+    }
+    .order_value{
+        line-height: 92px;
+        width: 25%;
+    }
+
+    .icons{
+        height: 92px;
+        line-height: 92px;
+        text-align: right;
+        padding-right: 50px;
+        width: 30%;
+    }
+
+    .icons .far{
+        font-size: 35px;
+        margin: 10px;
+    }
+
+    .price{
+        font-size: 20px;
+        padding: 0 0 0 15px;
+        height: 50px;
+        line-height: 50px;
+        font-weight: bold;
+    }
+
+
+    .price_count {
+        display: flex;
+    }
+
+    .price_count button {
+        background-color: #ffffff;
+        border: none;
+        font-size: 20px;
+        width: 40px;
+        height: 40px;
+        box-shadow: none;
+        display: block;
+    }
+
+
+    #count {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+     }
+
+     
+    .order{
+        margin: 100px 0 0 0;
+        float: right;
+    }
+
+    .order_info{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .payment_price{
+        font-size: 20px;
+        line-height: 40px;
+        color: rgb(255, 91, 89);
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .total_price{
+        font-size: 30px;
+        color: rgb(255, 91, 89);
+        margin: 0;
+        font-weight: 600;
+        
+    }
+
+    .order_btn button{
+        width: 300px;
+        height: 60px;
+        background-color: rgb(247, 81, 26);
+        border: none;
+        color: #ffff;
+        margin-top: 5px;
+    }
+     
+</style>
+<body>
+<header th:include="common/header :: header"></header>
+<div class="wrapper">
+<div class="cart">
+        <h2 class="cart_head">장바구니</h2>
+        <div class="all_product">
+            <input class="all_selectBox" type="checkbox" id="cbx_chkAll">
+            <span class="all_select">전체선택</span>
+        </div>
+        <div class="cart_main">
+            <div class="pickup_head">
+                <h3>매장픽업 상품 : 2개</h3>
+            </div>
+            <ul>
+                <li th:each="cList : ${cartList}">
+                    <div class="wine_info">
+                        <input class="product_checkbox" type="checkbox" name="chk">
+                        <img class="wine_img" th:src="${cList.thumbnail}">
+                        <div class="wine_name">
+                            <p th:text="${cList.product_kname}"></p>
+                            <p th:text="${cList.product_ename}"></p>
+                        </div>
+                    </div>
+                    <div class="order_value" th:each="product : ${cList.cart}">
+                        <div class="price" th:text="${cList.sale_price * product.cart_count}"></div>
+                        <div class="price_count">
+                            <button class="minus" onclick='count("minus")'><i class="fas fa-minus"></i></button>
+                            <div id='count' th:text="${product.cart_count}"></div>
+                            <button class="plus" onclick='count("plus")'><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="icons">
+                        <i class="far fa-heart"></i>
+                        <i class="far fa-trash-alt"></i>
+                    </div>
+                </li>
+            </ul>
+            <div class="order">
+                <div class="order_info">
+                    <p class="payment_price">결제예정금액</p>
+                    <p class="total_price">28,000원</p>
+                </div>
+                <div class="order_btn">
+                    <button>주문하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	</div>
+<div th:replace="common/footer :: footer"></div>
+
+            <script>
+                function count(type)  {
+                    // 결과를 표시할 element
+                    const resultElement = document.getElementById('count');
+                    
+                    // 현재 화면에 표시된 값
+                    let number = resultElement.innerText;
+                    
+                    // 더하기/빼기
+                    if(type === "plus") {
+                        number = parseInt(number) + 1;
+                    }else if(type === "minus")  {
+                        if(number == 1){
+                            alert('한개이상 주문해주세요.');
+                        } else{
+                            number = parseInt(number) - 1;
+                        }
+                    }
+                    
+                    // 결과 출력
+                    resultElement.innerText = number;
+                }
+            </script>
+
+
+
+    <script type="text/javascript">
+		$(document).ready(function() {
+			$("#cbx_chkAll").click(function() {
+				if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+				else $("input[name=chk]").prop("checked", false);
+			});
+			
+			$("input[name=chk]").click(function() {
+				var total = $("input[name=chk]").length;
+				var checked = $("input[name=chk]:checked").length;
+				
+				if(total != checked) $("#cbx_chkAll").prop("checked", false);
+				else $("#cbx_chkAll").prop("checked", true); 
+			});
+		});
+	</script>
+	<script>
+	
+	</script>
+</body>
+</html>
