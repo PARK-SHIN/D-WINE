@@ -2,7 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>productList</title>
+<title>product main list</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<link href="/css/common/common.css" rel="stylesheet">
 <style>
 	#header_area {
 		display: flex;
@@ -14,7 +16,7 @@
 		justify-content: space-between;
 	}
 	
-	#enroll_btn {
+	#open_regist_btn {
 		background: #83131E;
 		color: white;
 		width: 100px;
@@ -41,7 +43,7 @@
 		background: rgba(196, 196, 196, 0.3);
 	}
 	
-	#delete_btn {
+	#deleteMulti_btn {
 		background: white;
 		border-radius: 5px;
 		color: #525252;
@@ -62,52 +64,83 @@
 </style>
 </head>
 <body>
+	<header th:include="common/header :: header"></header>
 	<div id="header_area">
         <h1>상품관리</h1>
-        <button id="enroll_btn" onclick="location.href='/product/regist'">상품 등록</button>
+        <button id="open_regist_btn" onclick="location.href='/product/regist'">상품 등록</button>
     </div>
     <hr>
 	<div id="top_area">
 		<div>
-			<button id="delete_btn">선택 삭제</button>
+			<button id="deleteMulti_btn">선택 삭제</button>
 		</div>
 		<div>
 			<select>
 				<option value="no">상품번호</option>
 				<option value="name">상품명</option>
-			</select> <input type="text" name="search_product">
-			<button>검색</button>
+			</select> 
+			<input type="text" name="search_product">
+			<button id="search_btn">검색</button>
 		</div>
 	</div>
 	<div>
-		<table id="table_area">
-			<thead>
-				<tr>
-					<th><input type="checkbox"></th>
-					<th>상품번호</th>
-					<th>상품명</th>
-					<th>판매가</th>
-					<th>총 수량</th>
-					<th>등록일</th>
-					<th>수정일</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="choose" th:each="product : ${ productList }" th:onclick="|location.href='@{/product/{productNo}(productNo=${product.productNo})}'|">
-					<td class="center"><input type="checkbox"></td>
-					<td class="center" th:text="${ product.productNo }"></td>
-					<td th:text="${ product.productKName }"></td>
-					<td class="center" th:text="${ product.salePrice }"></td>
-					<td class="center" th:text="${ product.productCount }"></td>
-					<td class="center" th:text="${#dates.format(product.createDate, 'yyyy-MM-dd')}"></td>
-					<td class="center" th:text="${#dates.format(product.modifyDate, 'yyyy-MM-dd')}"></td>
-				</tr>
-			</tbody>
-		</table>
+		<form id="deleteMultiForm" th:action="@{/product/deleteMulti}" method="post" onsubmit="return checkConfirm()">
+			<table id="table_area">
+				<thead>
+					<tr>
+						<th><input type="checkbox" id="delete_all" name="delete_all"></th>
+						<th>상품번호</th>
+						<th>상품명</th>
+						<th>판매가</th>
+						<th>총 수량</th>
+						<th>등록일</th>
+						<th>수정일</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="choose" th:each="product : ${ productList }">
+						<td class="center"><input type="checkbox" name="delete_nums" th:value="${ product.productNo }"></td>
+						<td class="center" th:text="${ product.productNo }"></td>
+						<td th:text="${ product.productKName }" th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|"></td>
+						<td class="center" th:text="${ product.salePrice }"></td>
+						<td class="center" th:text="${ product.productCount }"></td>
+						<td class="center" th:text="${#dates.format(product.createDate, 'yyyy-MM-dd')}"></td>
+						<td class="center" th:text="${#dates.format(product.modifyDate, 'yyyy-MM-dd')}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form> 
 	</div>
-
+	<footer th:include="common/footer :: footer"></footer>
+	
 	<script>
+		// 선택 삭제 버튼 클릭 시 deleteMultiForm submit
+		$("#deleteMulti_btn").on("click", function(){
+			$("#deleteMultiForm").submit();
+		})
+		
+		// 삭제 확인 confirm 출력
+		function checkConfirm() {
+			if(confirm("정말 삭제하시겠습니까?")) return true
+			else return false;
+		}	
+		
+		// 체크박스 전체 선택, 전체 해제
+		$("#delete_all").click(function() {
+			if($("#delete_all").is(":checked")) $("input[name=delete_nums]").prop("checked", true);
+			else $("input[name=delete_nums]").prop("checked", false);
+		});
+
+		$("input[name=delete_nums]").click(function() {
+			var total = $("input[name=delete_nums]").length;
+			var checked = $("input[name=delete_nums]:checked").length;
+
+			if(total != checked) $("#delete_all").prop("checked", false);
+			else $("#delete_all").prop("checked", true); 
+		});
 		
 	</script>
+	
+	
 </body>
 </html>
