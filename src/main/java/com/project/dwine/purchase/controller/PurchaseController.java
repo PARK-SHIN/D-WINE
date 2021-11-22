@@ -44,7 +44,6 @@ public class PurchaseController {
 	@GetMapping("wine_list")
 	public ModelAndView getWineList(ModelAndView mv) {
 		List<Product> wineList = purchaseService.wineList();
-
 		mv.addObject("wineList", wineList);
 		mv.setViewName("purchase/wine_list");
 		return mv;
