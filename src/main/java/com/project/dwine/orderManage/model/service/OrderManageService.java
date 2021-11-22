@@ -9,4 +9,6 @@ public interface OrderManageService {
 	List<Purchase> selectOrderList();
 	
 	List<Purchase> stateChangeList(String state);
+	
+	// int updateOrderStatus(int purchaseNo, String orderStatus);
 }

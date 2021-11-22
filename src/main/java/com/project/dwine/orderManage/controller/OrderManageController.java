@@ -63,5 +63,14 @@ public class OrderManageController {
 		}
 		
 		return stateChangeList;
-		}
+	}
+	
+//	@PostMapping(value = "update", produces = "application/json charset=UTF-8")
+//	@ResponseBody
+//	public Purchase updateOrderStatus(@RequestParam("purchaseNo") int purchaseNo) {
+//		
+//		System.out.println(purchaseNo);
+//		return null;
+//	}
+
 }

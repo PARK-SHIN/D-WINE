@@ -127,7 +127,7 @@
 
                 <div id="modal2" class="modal-overlay">
                     <div class="modal-window">   
-                        <div class="close-area" id="closeBtn">X</div>
+                        <div class="close-area closeBtn">X</div>
                         <div class="content">
                             <h5>픽업정보</h5>
                             <hr>
@@ -223,15 +223,15 @@
             $("#modal").css("display", "none");
         });
 
-        $("#detailBtn").click(function(){
+        $(".detailBtn").click(function(){
             $("#modal2").css("display", "block");
         });
 
-        $("#closeBtn").click(function(){
+        $(".closeBtn").click(function(){
             $("#modal2").css("display", "none");
         });
         
-        // 주문 수 출력
+        // 주문 건수 출력
         $(function(){
         	$.ajax({
         		url : "/orderManage/totalCnt",
@@ -262,7 +262,7 @@
             return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
         }
        
-        // 주문상태 변경
+        // 주문상태 조회
         $("#orderState").change(function(){
         	 
         	$.ajax({
@@ -303,15 +303,33 @@
         						   + "<tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>";
         				$("#odList").html(tableHTML);
         			}
-        			        					
-        			
-        			
         		},
         		error : function(e){
         			console.log(e);
         		}
         	});
         });
+        
+        // 배송정보 수정
+        /* $(".applyBtn").click(function(){
+        	var applyBtn = $(this);
+        	var tr = applyBtn.parent().parent();
+        	var td = tr.children();
+        	
+        	var purchaseNo = td.eq(0).text();
+        	
+        	$.ajax({
+        		// url : "/orderManage/update",
+        		data : {purchaseNo : purchaseNo},
+        		type : "post",
+        		success : function(data){
+        			console.log(data);
+        		},
+        		error : function(e){
+        			console.log(e);
+        		}
+        	});
+        }); */
         
 
     </script>
