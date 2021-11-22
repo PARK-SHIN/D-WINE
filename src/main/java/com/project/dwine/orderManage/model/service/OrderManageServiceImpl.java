@@ -27,6 +27,12 @@ public class OrderManageServiceImpl implements OrderManageService {
 	public List<Purchase> stateChangeList(String state) {
 		return orderManageMapper.stateChangeList(state);
 	}
+
+	
+	 @Override public int updateOrderStatus(int purchaseNo, String orderStatus) {
+	 return orderManageMapper.updateOrderStatus(purchaseNo, orderStatus); 
+	 }
+	 
 	
 	
 	

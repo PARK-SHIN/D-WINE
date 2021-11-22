@@ -41,6 +41,7 @@
 		     , M.USER_NAME
 		  FROM PURCHASE P
 		  LEFT JOIN MEMBER M ON(P.USER_NO = M.USER_NO)
+		 WHERE STATUS = 'Y'
 		 ORDER BY P.PURCHASE_NO DESC
 	</select>
 	
@@ -61,7 +62,14 @@
 		  FROM PURCHASE P
 		  LEFT JOIN MEMBER M ON(P.USER_NO = M.USER_NO)
          WHERE P.ORDER_STATUS = #{ state }
+           AND STATUS = 'Y'
 		 ORDER BY P.PURCHASE_NO DESC
 	</select>
+	
+	<update id="updateOrderStatus" parameterType="com.project.dwine.orderManage.model.vo.Purchase">
+		UPDATE PURCHASE
+		   SET ORDER_STATUS = #{ orderStatus }
+		 WHERE PURCHASE_NO = #{ purchaseNo }
+	</update>
 
 </mapper>
