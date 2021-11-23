@@ -1,4 +1,4 @@
-package com.project.dwine.notice.Controller;
+package com.project.dwine.notice.controller;
 
 import java.util.List;
 
