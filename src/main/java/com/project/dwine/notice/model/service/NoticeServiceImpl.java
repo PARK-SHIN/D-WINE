@@ -41,11 +41,9 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public int modifyNotice(Notice notice) {
 		
-		System.out.println("service :" + notice);
 		return noticeMapper.modifyNotice(notice);
 	}
 
-	
 
 	@Override
 	public void deleteNotice(String notice_no) {

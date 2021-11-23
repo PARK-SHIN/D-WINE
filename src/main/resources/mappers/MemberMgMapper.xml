@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.dwine.manage.model.dao.MemberMgMapper">
 
-<resultMap type="com.project.dwine.member.model.vo.Member"
+	<resultMap type="com.project.dwine.member.model.vo.Member"
 		id="memberResultMap">
 		<id property="user_no" column="user_no" />
 		<result property="user_id" column="user_id" />
@@ -33,10 +33,34 @@
 		 ,  USER_STATUS
 		 ,  CREATE_DATE
 	FROM MEMBER
-	ORDER BY 'REPORTED_COUNT', '1'
-	
+	WHERE USER_STATUS = 'Y'
+	ORDER BY REPORTED_COUNT DESC, CREATE_DATE
 	
 	</select>
+	
+	<select id="selectMemberMgByNo" parameterType="_int" resultMap="memberResultMap">
+	SELECT
+			  USER_NO
+			, USER_ID
+			, USER_NAME
+			, USER_BIRTH
+			, USER_PHONE
+			, USER_NICKNAME
+			, USER_STATUS
+			, REPORTED_COUNT
+			, CREATE_DATE
+		FROM MEMBER
+		WHERE USER_NO = #{ user_no}
+		AND USER_STATUS = 'Y'
+	
+	</select>
+	
+	<update id="deleteMemberMg" parameterType="String">
+	UPDATE 	MEMBER 
+	SET		USER_STATUS = 'N'
+    WHERE USER_NO = #{ user_no }
+	
+	</update>
 
 
 
