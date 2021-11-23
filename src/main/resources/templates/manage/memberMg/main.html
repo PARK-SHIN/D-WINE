@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+ <title>회원관리</title>
+<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<link href="/css/common/common.css" rel="stylesheet">
+    <style>
+        .content {
+            margin : 50px auto;
+            height : auto;
+            min-height : 100%;
+            width: 900px;
+        }
+        #deleteBtn{
+            float: right;
+            background: #83131E ;
+            border: none;
+            color:white;
+            width:80px;
+            height: 25px;
+            border-radius: 10%;
+            
+        }
+
+        #searchArea{
+        float: right;
+        margin-right: 30px;
+        }  
+
+      .memberList{
+        text-align: center;
+        border: lightgray 1px solid;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        width: 900px;
+        height: 500px;
+      }
+   
+    .memberTable{
+        width: 900px;
+        border-collapse:collapse;
+        font-display: center;
+    }
+
+    .memberTable th{
+        border-left: none;
+        background: lightgray;
+        height: 35px;
+        font-size: 14px;
+    }
+
+    .memberTable td{
+        border-bottom:1px solid lightgray;
+        border-left: none;
+        text-align: center;
+        height: 35px;
+        font-size: 14px;
+    }
+
+    
+        /* 체크박스 색상 변경 */
+        input[type="checkbox"] {
+        cursor: pointer;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        outline: 1px solid gray;
+        background: white;
+        height: 12.8px;
+        width: 12.8px;
+        border: 1px solid white;
+        }
+
+        input[type="checkbox"]:checked {
+        background: #83131E;
+        }
+
+        input[type="checkbox"]:hover {
+        filter: brightness(90%);
+        }
+
+        input[type="checkbox"]:after {
+        content: '';
+        position: relative;
+        left: 40%;
+        top: 20%;
+        width: 15%;
+        height: 40%;
+        border: solid #fff;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+        display: none;
+        }
+
+
+    </style>
+</head>
+<body>
+<header th:include="common/header :: header"></header>
+<div class="content">
+    <h2>회원관리</h2>    
+    <hr>
+    <button id="deleteBtn">회원제명</button><br>
+    <label>정렬 : </label>
+    <select name="array">
+        <option value="latest">최신순</option>
+        <option value="report-count">신고누적수</option>
+    </select>
+    <div id="searchArea"><input type="text" id="searchTitle" > <button>검색</button> </div>
+    <div class="memberList">
+        <table class="memberTable">
+            <tr>
+                <th><input type="checkbox" class="allCheck"></th>
+                <th>회원번호</th>
+                <th>닉네임</th>
+                <th>아이디</th>
+                <th>가입일</th>
+                <th>총 신고수</th>
+       	   </tr>
+            <tr th:each="member: ${ memberList }">
+                <td><input type="checkbox" class="checkbox" name="checkbox" th:value="${ member.user_no }"></td>
+                <td th:text="${ member.user_no }"></td>
+                <td th:text="${ member.user_nickname }"></td>
+                <td th:text="${ member.user_id }"></td>
+                <td th:text="${ #dates.format(member.create_date, 'yyyy-MM-dd') }"></td>
+            	 <td th:text="${ member.reported_count }"></td>
+            </tr>
+         </table>    
+    </div>
+
+    
+    
+
+</div>
+<div th:replace="common/footer :: footer"></div>
+</body>
+</html>

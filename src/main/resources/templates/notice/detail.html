@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<link href="/css/common/common.css" rel="stylesheet">
  <title>공지사항 디테일</title>
     <style>
     .content {
@@ -82,8 +83,9 @@
     </style>
 </head>
 <body>
+<header th:include="common/header :: header"></header>
     <div class=content>
-    <h2>공지사항 - 등록</h2>   
+    <h2>공지사항 - 상세보기</h2>   
     <hr>
     <br>
      <div>
@@ -108,5 +110,6 @@
     </div>
 
 </div>
+<footer th:include="common/footer :: footer"></footer>
 </body>
 </html>
