@@ -1,8 +1,12 @@
 package com.project.dwine.orderManage.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +33,7 @@ public class OrderManageController {
 		this.orderManageService = orderManageService;
 	}
 	
+	// 주문리스트 조회
 	@GetMapping("list")
 	public ModelAndView orderList(ModelAndView mv) {
 		
@@ -40,7 +45,8 @@ public class OrderManageController {
 		return mv;
 	}
 	
-	@GetMapping(value = "totalCnt", produces = "application/json; charset=UTF-8")
+	// 총 주문건 수 불러오기
+	@GetMapping(value = "totalCnt")
 	@ResponseBody
 	public Map<String, Object> totalCnt(){
 		Map<String, Object> map = new HashMap<>();
@@ -51,29 +57,45 @@ public class OrderManageController {
 		return map;
 	}
 	
-	@PostMapping(value = "state", produces = "application/json; charset=UTF-8")
+	// 주문 상태 선택하여 조회
+	@PostMapping(value = "state")
 	@ResponseBody
 	public List<Purchase> stateChangeList(@RequestParam("state") String state){
-		
-		System.out.println(state);
-		
+				
 		List<Purchase> stateChangeList = orderManageService.stateChangeList(state);
-		
-		for(Purchase p : stateChangeList) {
-			System.out.println(p);
-		}
 		
 		return stateChangeList;
 	}
 	
-	@PostMapping(value = "update", produces = "application/json; charset=UTF-8")
+	// 주문 상태 변경
+	@PostMapping(value = "update")
 	@ResponseBody
-	public void updateOrderStatus(@RequestParam int purchaseNo, @RequestParam String odStatus, RedirectAttributes rttr) {
-		
-		System.out.println(purchaseNo);
-		System.out.println(odStatus);
+	public void updateOrderStatus(@RequestParam int purchaseNo, @RequestParam String odStatus) {
 		
 		int result = orderManageService.updateOrderStatus(purchaseNo, odStatus);
 	}
+	
+	// 주문 선택 삭제
+	@PostMapping(value = "delete")
+	@ResponseBody
+	public void deleteOrder(HttpServletResponse response, @RequestParam(value = "checkArr[]") List<String> checkArr) throws IOException {
+		
+		List<Integer> arr = new ArrayList<>();
+		
+		for(String s : checkArr) {
+			arr.add(Integer.parseInt(s));
+		}
+		
+		int results = 0;
+		for(int purchseNo : arr) {
+			results += orderManageService.deleteOrder(purchseNo);
+		}
+		
+		if(arr.size() == results) {
+			response.getWriter().print("success");
+		} else {
+			response.getWriter().print("fail");
+		}
 
+	}
 }

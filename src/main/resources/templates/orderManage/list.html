@@ -60,7 +60,7 @@
                 <div>
                     <div class="btnAndInfo">
                         <div class="btnArea">
-                            <button type="button" onclick="" class="deleteBtn">선택 삭제</button>
+                            <button type="button" class="deleteBtn">선택 삭제</button>
                             <button type="button" onclick="" class="changeBtn" id="changeBtn">상태 일괄 변경</button>
                         </div>
                         <div class="infoArea">총 주문 수 : <span id="totalCnt"></span>, 검색 주문 수 : <span id="searchCnt">10</span></div>    
@@ -78,7 +78,7 @@
                         </tr>
                         <tbody id="odList">
 	                        <tr th:each="orderList : ${ orderList }">
-	                            <td><input type="checkbox" name="" value=""></td>
+	                            <td><input type="checkbox" name="chk" th:value="${ orderList.purchaseNo }"></td>
 	                            <td th:text="${ orderList.purchaseNo }" class="purchaseNo"></td>
 	                            <td th:text="${#dates.format(orderList.purchaseDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 	                            <td th:text="${ orderList.userName }"></td>
@@ -99,6 +99,7 @@
 	                        </tr>
                         </tbody>
                     </table>
+                   
                 </div>
 
 				<!-- 상태 일괄 변경 모달 -->
@@ -311,30 +312,59 @@
         // 주문상태 수정
         $(".applyBtn").click(function(){
         	
-        	alert("주문상태를 변경하시겠습니까?");
-        	
         	var tr = $(this).parent().parent();
         	var td = tr.children();
 
         	var purchaseNo = td.eq(1).text();
         	var odStatus = td.eq(5).children().val();
         	
-        	$.ajax({
-        		url : "/orderManage/update",
-        		data : {purchaseNo : purchaseNo,
-        				odStatus : odStatus},
-        		type : "post",
-        		success : function(data){
-        			alert("주문상태가 변경되었습니다.");
-        		},
-        		error : function(e){
-        			console.log(e);
-        			alert("주문상태 변경에 실패하였습니다.");
-        		}
-        	});
+        	if(confirm("주문상태를 변경하시겠습니까?")){
+        		
+	        	$.ajax({
+	        		url : "/orderManage/update",
+	        		data : {purchaseNo : purchaseNo,
+	        				odStatus : odStatus},
+	        		type : "post",
+	        		success : function(data){
+	        			alert("주문상태가 변경되었습니다.");
+	        		},
+	        		error : function(e){
+	        			console.log(e);
+	        			alert("주문상태 변경에 실패하였습니다.");
+	        		}
+	        	});
+        	}
         });
         
+        // 선택삭제
+        $(".deleteBtn").click(function(){
+        	if(confirm("정말 삭제하시겠습니까?")){
+		        var checkArr = new Array();
+		        
+		        $("input[name=chk]:checked").each(function(){
+		        	checkArr.push(this.value);
+		        })
+		        
+		        $.ajax({
+		        	url : "/orderManage/delete",
+		        	type : "post",
+		        	data : {checkArr : checkArr},
+		        	success : function(data){
+		        		if(data == "success")
+		        			alert("정상적으로 삭제되었습니다.");
+		        		else
+		        			alert("삭제에 실패하였습니다.");
+		        		
+		        		location.reload();
+		        	},
+		        	error : function(e){
+		        		console.log(e);
+		        	}
+		        });
+        	}
+        });
         
+
         
         
 

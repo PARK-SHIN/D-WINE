@@ -32,7 +32,13 @@ public class OrderManageServiceImpl implements OrderManageService {
 	 @Override public int updateOrderStatus(int purchaseNo, String orderStatus) {
 	 return orderManageMapper.updateOrderStatus(purchaseNo, orderStatus); 
 	 }
-	 
+
+	@Override
+	public int deleteOrder(int purchaseNo) {
+		return orderManageMapper.deleteOrder(purchaseNo);
+	}
+
+	
 	
 	
 	
