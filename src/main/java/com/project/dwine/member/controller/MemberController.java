@@ -81,34 +81,6 @@ public class MemberController {
 
 		return "member/joinConfirm";
 	}
-//
-//	@GetMapping("/kakaojoin")
-//	public String kakaoJoin(@RequestParam(required = false) String code, HttpSession session,
-//			HttpServletRequest request) {
-//		String access_Token = kakaoAPI.getAccessToken(code);
-//		HashMap<String, Object> userInfo = kakaoAPI.getUserInfo(access_Token);
-//		String user_age = "";
-//		if (userInfo.get("age_range") == null) {
-//			kakaoAPI.kakaoLogout(access_Token);
-//			request.setAttribute("join", "unknownAge");
-//			return "member/joinConfirm";
-//		} else {
-//			user_age = (String) userInfo.get("age_range");
-//		}
-//		if (!userInfo.isEmpty()) {
-//			if (user_age.equals("0~9") || user_age.equals("10~19")) {
-//				request.setAttribute("join", "unableAge");
-//				return "member/joinForm";
-//			} else {
-//				session.setAttribute("access_Token", access_Token);
-//				session.setAttribute("user_nickname", userInfo.get("nickname"));
-//				session.setAttribute("age_range", userInfo.get("age_range"));
-//				kakaoAPI.kakaoLogout(access_Token);
-//			}
-//		}
-//
-//		return "redirect:/member/join";
-//	}
 
 	@GetMapping("/naverjoin")
 	public String naverJoin(@RequestParam(required = false) String code, HttpSession session,
@@ -121,16 +93,23 @@ public class MemberController {
 		HashMap<String, Object> userInfo = naverAPI.getUserInfo(access_Token);
 
 		if (userInfo != null) {
-			String age = (String) userInfo.get("age");
-			if (age.equals("0-9") || age.equals("10-19")) {
-				request.setAttribute("join", "unableAge");
+			int checkUser = memberService.checkUser((String) userInfo.get("name"), (String) userInfo.get("mobile"));
+			if (checkUser > 0) {
+				naverAPI.naverLogout(access_Token);
+				request.setAttribute("join", "alreadyJoin");
 				return "member/joinConfirm";
 			} else {
-				String birth = userInfo.get("birthyear") + "-" + userInfo.get("birthday");
-				session.setAttribute("name", userInfo.get("name"));
-				session.setAttribute("birth", birth);
-				session.setAttribute("mobile", userInfo.get("mobile"));
-				naverAPI.naverLogout(access_Token);
+				String age = (String) userInfo.get("age");
+				if (age.equals("0-9") || age.equals("10-19")) {
+					request.setAttribute("join", "unableAge");
+					return "member/joinConfirm";
+				} else {
+					String birth = userInfo.get("birthyear") + "-" + userInfo.get("birthday");
+					session.setAttribute("name", userInfo.get("name"));
+					session.setAttribute("birth", birth);
+					session.setAttribute("mobile", userInfo.get("mobile"));
+					naverAPI.naverLogout(access_Token);
+				}
 			}
 		} else {
 			naverAPI.naverLogout(access_Token);

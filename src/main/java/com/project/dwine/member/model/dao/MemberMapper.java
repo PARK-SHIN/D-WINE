@@ -23,4 +23,6 @@ public interface MemberMapper {
 
 	void updateTempPassword(String user_id, String user_pw);
 
+	int checkUser(String user_name, String user_phone);
+
 }

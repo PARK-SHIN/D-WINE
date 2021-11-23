@@ -34,6 +34,11 @@
 	width: 416px;
 	height: 254px;
 	line-height: 127px;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
 }
 
 .findId_box input[name^=user] {
@@ -64,4 +69,5 @@
 	border: none;
 	color: white;
 	background-color: #6B0E1F;
+	cursor: pointer;
 }
