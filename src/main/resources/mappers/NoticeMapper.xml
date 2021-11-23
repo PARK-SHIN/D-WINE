@@ -69,6 +69,24 @@
 		)
 	</insert>
 
+	<update id="modifyNotice" parameterType="com.project.dwine.notice.model.vo.Notice">
+	UPDATE NOTICE SET
+			NOTICE_CATEGORY	= #{ notice_category }
+		   , NOTICE_TITLE =   #{ notice_title }
+		   , NOTICE_CONTEXT = #{ notice_context }
+		   , MODIFY_DATE = SYSDATE
+		   , STATUS = DEFAULT
+		   , USER_NO = #{ user_no }
+		    WHERE NOTICE_NO = #{ notice_no }
+	
+	</update>
+	
+	<update id="deleteNotice" parameterType="String">
+	UPDATE 	NOTICE 
+	SET		STATUS = 'N'
+    WHERE NOTICE_NO = #{ notice_no }
+	
+	</update>
 
 
 

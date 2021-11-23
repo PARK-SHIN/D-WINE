@@ -32,7 +32,7 @@ public class Notice {
 	}
 	
 	
-
+	//regist용
 	public Notice(String notice_category, String notice_title, String notice_context, int user_no) {
 		super();
 		this.notice_category = notice_category;
@@ -40,6 +40,17 @@ public class Notice {
 		this.notice_context = notice_context;
 		this.user_no = user_no;
 	}
+	//modify용
+
+	public Notice(int notice_no, String notice_category, String notice_title, String notice_context, int user_no) {
+		super();
+		this.notice_no = notice_no;
+		this.notice_category = notice_category;
+		this.notice_title = notice_title;
+		this.notice_context = notice_context;
+		this.user_no = user_no;
+	}
+	
 
 	public int getNotice_no() {
 		return notice_no;

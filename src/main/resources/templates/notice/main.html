@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/notice/main.css" rel="stylesheet">    
 </head>
@@ -11,34 +14,104 @@
 <div class="wrapper">
   <div class="content">
     	<h2>공지사항</h2> 
-       
     <hr>
+   
     <button id="insertBtn" onclick="location.href='/notice/regist'">등록</button><br>
-    <button id="deleteBtn">선택삭제</button>
+   
+    <button id="deleteBtn" onclick="deleteValue();" >선택삭제</button>
     <div id=searchdiv><input type="text" id="searchTitle"> 
         <button>검색</button> 
     </div>
     <div class="noticeList">
         <table class="noticeTable">
             <tr>
-                <th><input type="checkbox" class="allCheck"></th>
+                <th><input type="checkbox" class="allCheck" name="allCheck"></th>
                 <th>카테고리</th>
                 <th>제목</th>
                 <th>등록일</th>
             </tr>
-            	<tr th:each="notice : ${ noticeList }" th:onclick="|location.href='@{/notice/detail/{noticeNo}(noticeNo=${notice.notice_no})}'|">
-                <td><input type="checkbox" class="checkbox"></td>
+            	<tr th:each="notice : ${ noticeList }">
+                <td><input type="checkbox" class="checkbox" name="checkbox" th:value="${ notice.notice_no }"></td>
                 <td th:text="${notice.notice_category}"></td>
-                <td th:text="${notice.notice_title}"></td>
-                <td th:text="${ #dates.format(notice.create_date, 'yyyy-MM-dd')}"></td>    
+                <td th:text="${notice.notice_title}" th:onclick="|location.href='@{/notice/detail/{noticeNo}(noticeNo=${notice.notice_no})}'|"></td>
+                <td th:text="${ #dates.format(notice.create_date, 'yyyy-MM-dd')}"></td>
+        
             </tr>     
-
         </table>    
-
-    </div>
-
+      </div>
+	
    </div>
 </div>
 <div th:replace="common/footer :: footer"></div>
+
+<script type="text/javascript">
+		//crsf토큰
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
+
+		//allCheck 
+		$(function(){
+			var checkboxes = document.getElementsByName("checkbox");
+			var checkCnt = checkboxes.length;
+			
+			$("input[name='allCheck']").click(function(){
+				var check_listArr = $("input[name='checkbox']");
+				for (var i=0; i<check_listArr.length; i++){
+					check_listArr[i].checked = this.checked;
+				}
+			});
+			$("input[name='checkbox']").click(function(){
+				if($("input[name='checkbox']:checked").length == checkCnt){
+					$("input[name='allCheck']")[0].checked = true;
+				}
+				else{
+					$("input[name='allCheck']")[0].checked = false;
+				}
+			});
+		});
+		
+		
+		function deleteValue(){
+			
+			var valueArr = new Array();
+		    var list = $("input[name='checkbox']");
+		    
+		    for(var i = 0; i < list.length; i++){
+		        if(list[i].checked){ 
+		            valueArr.push(list[i].value);
+		        // Array.push(), Array.unshift(), Array.splice() 
+		        //콘솔값 잘 나옴. 
+		        console.log(valueArr);
+		        console.log(valueArr.length);
+		        }
+		    }
+		    if (valueArr.length == 0){
+		    	alert("선택된 글이 없습니다.");
+		    }
+		    else{
+				var chk = confirm("정말 삭제하시겠습니까?");				 
+				$.ajax({
+				    url : "/notice/delete",                   
+				    type : 'POST',  
+				    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				    traditional : true,
+				    data : {
+				    	valueArr : valueArr        //403에러는왜뜨는거지? -> csrf때문
+				    },
+				    success : function(data){
+						alert("삭제에 성공했습니다.");
+						location.replace("main")
+					},
+					error : function(e){
+						consloe.log("삭제에 실패했습니다");
+					}
+	           
+				});
+			}
+		 }
+	</script>
+
 </body>
 </html>
