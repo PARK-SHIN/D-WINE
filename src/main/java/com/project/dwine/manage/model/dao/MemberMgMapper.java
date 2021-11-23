@@ -9,4 +9,8 @@ public interface MemberMgMapper {
 
 	List<Member> selectMemberMgList();
 
+	Member selectMemberMgByNo(int user_no);
+
+	void deleteMemberMg(String user_no);
+
 }
