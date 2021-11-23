@@ -18,4 +18,6 @@ public interface MemberService extends UserDetailsService {
 
 	void updateTempPassword(String user_id, String tempPassword);
 
+	int checkUser(String user_name, String user_phone);
+
 }

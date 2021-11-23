@@ -105,4 +105,9 @@ public class MemberServiceImpl implements MemberService {
 
 	}
 
+	@Override
+	public int checkUser(String user_name, String user_phone) {
+		return memberMapper.checkUser(user_name, user_phone);
+	}
+
 }

@@ -36,6 +36,12 @@
 			location.href = '/member/joinConfirm';
 		</script>
 	</th:block>
+	<th:block th:if="${#request.getAttribute('join') == 'alreadyJoin'}">
+		<script>
+			alert('가입 정보가 존재하는 회원입니다.')
+			location.href = '/member/login';
+		</script>
+	</th:block>
 </th:block>
 </head>
 <body>
