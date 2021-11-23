@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.project.dwine.member.model.sevice.CustomOAuth2UserService;
 import com.project.dwine.member.model.sevice.MemberService;
 
 @Configuration
@@ -19,10 +20,12 @@ import com.project.dwine.member.model.sevice.MemberService;
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private MemberService memberService;
+	private final CustomOAuth2UserService customOAuth2UserService;
 
 	@Autowired
-	public SpringSecurityConfiguration(MemberService memberService) {
+	public SpringSecurityConfiguration(MemberService memberService,CustomOAuth2UserService customOAuth2UserService) {
 		this.memberService = memberService;
+		this.customOAuth2UserService = customOAuth2UserService;
 	}
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -49,7 +52,11 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
 				.deleteCookies("JSESSIONID")
 				.invalidateHttpSession(true)
-				.logoutSuccessUrl("/");
+				.logoutSuccessUrl("/")
+			.and()
+				.oauth2Login()
+				.userInfoEndpoint()
+				.userService(customOAuth2UserService);
 	}
 	
 	@Override

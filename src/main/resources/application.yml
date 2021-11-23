@@ -29,7 +29,26 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
-
+  security:
+    oauth2:      client:        registration:          kakao:
+            client-id: fae29f41478653a98fe5c415e8f363f3
+            redirect-uri: http://localhost:8000/login/oauth2/code/kakao
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            scope: profile_nickname, age_range, account_email
+            client-name: Kakao
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id            
+  jpa:
+    show-sql: true
+    hibernate:      ddl-auto: create
+            
 # mybatis config
 mybatis:
   mapper-locations: mappers/**/*.xml
+
+
