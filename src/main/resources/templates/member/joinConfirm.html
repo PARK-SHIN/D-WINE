@@ -18,12 +18,6 @@
 	src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 
 <th:block th:if="${#request.getAttribute('join') != null}">
-	<th:block th:if="${#request.getAttribute('join') == 'unknownAge'}">
-		<script>
-			alert('연령대 항목에 동의해주세요.')
-			location.href = '/member/joinConfirm';
-		</script>
-	</th:block>
 	<th:block th:if="${#request.getAttribute('join') == 'disagreeInfo'}">
 		<script>
 			alert('모든 항목에 동의해주세요.')
@@ -72,10 +66,7 @@
 							 2. 재화 또는 서비스 제공 : 재화서비스 공급완료 및 요금결제 완료시까지
 				</textarea>
 				<p class="join_btn">
-					<a class="kakao_login"
-						href="https://kauth.kakao.com/oauth/authorize?client_id=fae29f41478653a98fe5c415e8f363f3&redirect_uri=http://localhost:8000/member/kakaojoin&response_type=code">
-						<img alt="" src="/images/member/kakao_login.png">
-					</a><br> <a class="naver_login"
+					<a class="naver_login"
 						href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=5LDpNfva7bgqFzmEnZCl&state=STATE_STRING&redirect_uri=http://localhost:8000/member/naverjoin">
 						<img alt="" src="/images/member/naver_login.png">
 					</a>
