@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.dwine.orderManage.model.service.OrderManageService;
 import com.project.dwine.orderManage.model.vo.Purchase;
@@ -63,5 +64,16 @@ public class OrderManageController {
 		}
 		
 		return stateChangeList;
-		}
+	}
+	
+	@PostMapping(value = "update", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public void updateOrderStatus(@RequestParam int purchaseNo, @RequestParam String odStatus, RedirectAttributes rttr) {
+		
+		System.out.println(purchaseNo);
+		System.out.println(odStatus);
+		
+		int result = orderManageService.updateOrderStatus(purchaseNo, odStatus);
+	}
+
 }
