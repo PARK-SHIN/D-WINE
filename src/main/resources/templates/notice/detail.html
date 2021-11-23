@@ -93,8 +93,8 @@
     <br>
     <div class="categoryArea"><label>카테고리</label>
     <select id="selectArea">
-        <option value="일반">일반</option>
-        <option value="이벤트">이벤트</option>
+        <option value="일반" th:selected="${notice.notice_category}=='일반'">일반</option>
+        <option value="이벤트" th:selected="${notice.notice_category}=='이벤트'">이벤트</option>
     </select></div><br>
     <div class="titleArea"><label id="titleLabel">제목</label>
     <input type="text" id="title" name="notice_title" th:value="${notice.notice_title}" readonly></div>
@@ -103,7 +103,7 @@
     <div id="summernote" th:utext="${notice.notice_context}" readonly></div>
 
     <div class="btnArea">
-        <button id="backBtn">뒤로</button> 
+        <button id="backBtn" th:onclick="history.back();">뒤로</button> 
         <input id="modifyBtn" type="submit" value="수정" th:onclick="|location.href='@{/notice/modify/{noticeNo}(noticeNo=${notice.notice_no})}'|">
     </div>
 

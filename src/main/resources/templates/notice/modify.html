@@ -22,28 +22,28 @@
 <header th:include="common/header :: header"></header>
 <div class="wrapper">
    <div class=content>
-       <h2>공지사항 - 등록</h2>  
+       <h2>공지사항 - 수정</h2>  
     <hr>
     <br>
     <br>	
-      <form id="noticeForm" th:action="@{/notice/modify/${noticeNo}(noticeNo=${notice.notice_no})}(${_csrf.parameterName}=${_csrf.token})}" method="post">
+      <form id="noticeForm" th:action="@{/notice/modify(${_csrf.parameterName}=${_csrf.token})}" method="post" encType="multipart/form-data" onsubmit="return validate()">
        <input type="hidden" name="user_no" th:value="${user_no}">
-       <input type="hidden" name="notice_no" th:value="${notice_no}">
+       <input type="hidden" name="notice_no" th:value="${notice.notice_no}">
        <div class="categoryArea"><label>카테고리</label>
-          <select id="selectArea" name="notice_category">
-              <option value="일반">일반</option>
-              <option value="이벤트">이벤트</option>
+          <select id="selectArea" name="notice_category" th:value="${notice.notice_category}">
+              <option value="일반" th:selected="${notice.notice_category}=='일반'">일반</option>
+              <option value="이벤트" th:selected="${notice.notice_category}=='이벤트'">이벤트</option>
           </select>
       </div>
        <br>
        <div class="titleArea"><label id="titleLabel">제목</label>
-          <input type="text" id="title" name="notice_title">
+          <input type="text" id="title" name="notice_title" th:value="${notice.notice_title}">
        </div>
 
-          <textarea id="summernote" name="notice_context"></textarea>
+          <textarea id="summernote" name="notice_context" th:utext="${notice.notice_context}"></textarea>
    	   <br>
        <div class="btnArea">
-           <button id="cancleBtn">취소</button> 
+           <button id="cancleBtn" th:onclick="history.back();">취소</button> 
            <input id="enrollBtn" type="submit" value="수정">
           
        </div>
@@ -51,6 +51,7 @@
    </div>
 
 </div>
+ <footer th:include="common/footer :: footer"></footer>
 
  <script>
  	

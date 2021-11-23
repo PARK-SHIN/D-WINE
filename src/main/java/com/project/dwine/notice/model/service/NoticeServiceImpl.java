@@ -37,6 +37,21 @@ public class NoticeServiceImpl implements NoticeService {
 		
 		return noticeMapper.registNewNotice(notice);
 	}
+
+	@Override
+	public int modifyNotice(Notice notice) {
+		
+		System.out.println("service :" + notice);
+		return noticeMapper.modifyNotice(notice);
+	}
+
+	
+
+	@Override
+	public void deleteNotice(String notice_no) {
+		noticeMapper.deleteNotice(notice_no);
+		
+	}
 	
 
 
