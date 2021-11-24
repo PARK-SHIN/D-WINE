@@ -16,7 +16,11 @@
 		<result property="userNo" column="USER_NO"/>
 		<result property="userName" column="USER_NAME"/>
 		<result property="userPhone" column="USER_PHONE"/>
-		<result property="productNo" column="PRODUCT_NO"/>
+		<collection property="orderDetail" resultMap="orderDetailResultMap"/>
+	</resultMap>
+	
+	<resultMap id="orderDetailResultMap" type="com.project.dwine.orderManage.model.vo.OrderDetail">
+		<id property="productNo" column="PRODUCT_NO"/>
 		<result property="typeName" column="TYPE_NAME"/>
 		<result property="productKname" column="PRODUCT_KNAME"/>
 		<result property="odCount" column="OD_COUNT"/>
@@ -43,7 +47,7 @@
 		 ORDER BY P.PURCHASE_NO DESC
 	</select>
 	
-	<!-- <select id="selectOrderDetail" parameterType="_int" resultMap="purchaseResultMap">
+	<select id="selectOrderDetail" parameterType="_int" resultMap="purchaseResultMap">
 		SELECT
 		       P.PURCHASE_NO
 		     , P.PURCHASE_DATE
@@ -68,9 +72,8 @@
 		  LEFT JOIN ORDER_DETAIL O ON(P.PURCHASE_NO = O.PURCHASE_NO)
 		  LEFT JOIN PRODUCT PR ON(O.PRODUCT_NO = PR.PRODUCT_NO)
 		  LEFT JOIN TYPE T ON(PR.TYPE_NO = T.TYPE_NO)
-		 WHERE P.PURCHASE_NO = #{ purchseNo }
-		 ORDER BY P.PURCHASE_NO DESC
-	</select> -->
+		 WHERE O.PURCHASE_NO = #{ purchaseNo }
+	</select>
 	
 	<select id="stateChangeList" parameterType="string" resultMap="purchaseResultMap">
 		SELECT

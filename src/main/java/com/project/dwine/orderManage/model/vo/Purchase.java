@@ -1,6 +1,7 @@
 package com.project.dwine.orderManage.model.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,36 +21,13 @@ public class Purchase {
 	private int userNo;				// 회원번호
 	private String userName;		// 회원이름
 	private String userPhone;		// 회원전화번호
-	private int productNo;			// 상품번호
-	private String typeName;		// 와인종류
-	private String productKname;	// 와인명
-	private int odCount;			// 주문수량
-	private int odPrice;			// 와인가격
+	private List<OrderDetail> orderDetail;
 	
 	public Purchase() {}
 
 	public Purchase(int purchaseNo, Date purchaseDate, int usePoint, int purchasePrice, String pickupDate,
 			String pickupPlace, String pickupTime, String orderStatus, String status, Date refundDate, int userNo,
-			String userName) {
-		super();
-		this.purchaseNo = purchaseNo;
-		this.purchaseDate = purchaseDate;
-		this.usePoint = usePoint;
-		this.purchasePrice = purchasePrice;
-		this.pickupDate = pickupDate;
-		this.pickupPlace = pickupPlace;
-		this.pickupTime = pickupTime;
-		this.orderStatus = orderStatus;
-		this.status = status;
-		this.refundDate = refundDate;
-		this.userNo = userNo;
-		this.userName = userName;
-	}
-
-	public Purchase(int purchaseNo, Date purchaseDate, int usePoint, int purchasePrice, String pickupDate,
-			String pickupPlace, String pickupTime, String orderStatus, String status, Date refundDate, int userNo,
-			String userName, String userPhone, int productNo, String typeName, String productKname, int odCount,
-			int odPrice) {
+			String userName, String userPhone, List<OrderDetail> orderDetail) {
 		super();
 		this.purchaseNo = purchaseNo;
 		this.purchaseDate = purchaseDate;
@@ -64,11 +42,7 @@ public class Purchase {
 		this.userNo = userNo;
 		this.userName = userName;
 		this.userPhone = userPhone;
-		this.productNo = productNo;
-		this.typeName = typeName;
-		this.productKname = productKname;
-		this.odCount = odCount;
-		this.odPrice = odPrice;
+		this.orderDetail = orderDetail;
 	}
 
 	public int getPurchaseNo() {
@@ -175,44 +149,12 @@ public class Purchase {
 		this.userPhone = userPhone;
 	}
 
-	public int getProductNo() {
-		return productNo;
+	public List<OrderDetail> getOrderDetail() {
+		return orderDetail;
 	}
 
-	public void setProductNo(int productNo) {
-		this.productNo = productNo;
-	}
-
-	public String getTypeName() {
-		return typeName;
-	}
-
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
-
-	public String getProductKname() {
-		return productKname;
-	}
-
-	public void setProductKname(String productKname) {
-		this.productKname = productKname;
-	}
-
-	public int getOdCount() {
-		return odCount;
-	}
-
-	public void setOdCount(int odCount) {
-		this.odCount = odCount;
-	}
-
-	public int getOdPrice() {
-		return odPrice;
-	}
-
-	public void setOdPrice(int odPrice) {
-		this.odPrice = odPrice;
+	public void setOrderDetail(List<OrderDetail> orderDetail) {
+		this.orderDetail = orderDetail;
 	}
 
 	@Override
@@ -221,8 +163,7 @@ public class Purchase {
 				+ ", purchasePrice=" + purchasePrice + ", pickupDate=" + pickupDate + ", pickupPlace=" + pickupPlace
 				+ ", pickupTime=" + pickupTime + ", orderStatus=" + orderStatus + ", status=" + status + ", refundDate="
 				+ refundDate + ", userNo=" + userNo + ", userName=" + userName + ", userPhone=" + userPhone
-				+ ", productNo=" + productNo + ", typeName=" + typeName + ", productKname=" + productKname
-				+ ", odCount=" + odCount + ", odPrice=" + odPrice + "]";
+				+ ", orderDetail=" + orderDetail + "]";
 	}
 
 }

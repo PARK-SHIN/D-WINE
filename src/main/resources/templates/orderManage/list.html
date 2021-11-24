@@ -66,7 +66,6 @@
                         <div class="infoArea">총 주문 수 : <span id="totalCnt"></span>, 검색 주문 수 : <span id="searchCnt">10</span></div>    
                     </div>
 			
-					<form th:action="@{/orderManage/detail}" method="post">
                     <table id="orderList">
                         <tr>
                             <th><input type="checkbox" id="checkBox" onclick="selectAll()"></th>
@@ -96,8 +95,7 @@
 	                            
 	                            <td>
 	                                <button type="button" class="applyBtn">적용</button>
-	                                <button type="submit" class="detailBtn">상세보기</button>
-	                                <input type="hidden" name="purchaseNo" th:value="${ o.purchaseNo }">
+	                                <button type="button" class="detailBtn">상세보기</button>
 	                            </td>  
 	                        </tr>
                         </tbody>
@@ -135,49 +133,19 @@
                         <div class="content">
                             <h5>픽업정보</h5>
                             <hr>
-                            <table>
-                                <tr>
-                                    <th>픽업매장</th>
-                                    <td>D.WINE 역삼점 (서울시 강남구 역삼동 KH정보교육원 7층)</td>
-                                </tr>
-                                <tr>
-                                    <th>픽업일시</th>
-                                    <td>2021.10.28(목) 12:00 ~ 18:00</td>
-                                </tr>
+                            <table id="pickupInfo">
+                                <!-- Ajax -->
                             </table>
 
                             <h5>주문정보</h5>
                             <hr>
-                            <table>
-                                <tr>
-                                    <th>주문번호</th>
-                                    <td>21112301</td>
-                                    <th>결제수단</th>
-                                    <td>신용카드</td>
-                                </tr>
-                                <tr>
-                                    <th>주문일시</th>
-                                    <td>2021.10.28 11:12:56</td>
-                                    <th>사용적립금</th>
-                                    <td>1,000원</td>
-                                </tr>
-                                <tr>
-                                    <th>주문자명</th>
-                                    <td>홍길동</td>
-                                    <th>결제금액</th>
-                                    <td>37,000원</td>
-                                </tr>
-                                <tr>
-                                    <th>연락처</th>
-                                    <td>010-1111-2222</td>
-                                    <th>환불일시</th>
-                                    <td style="text-align: center;">-</td>
-                                </tr>
+                            <table id="orderInfo">
+                                <!-- Ajax -->
                             </table>
 
                             <h5>상품정보</h5>
                             <hr>
-                            <table id="productInfo">
+                            <table>
                                 <tr>
                                     <th>상품번호</th>
                                     <th>카테고리</th>
@@ -185,18 +153,13 @@
                                     <th>수량</th>
                                     <th>상품금액</th>
                                 </tr>
-                                <tr th:each="o : ${ orderList }">
-                                    <td th:text="${ o.productNo }"></td>
-                                    <td th:text="${ o.typeName }"></td>
-                                    <td th:text="${ o.productKname }"></td>
-                                    <td th:text="${ o.odCount }"></td>
-                                    <td th:text="${ o.odPrice }">38,000</td>
-                                </tr>
+                                <tbody id="productInfo">
+                                    <!-- Ajax로 리스트 불러오기 -->
+                                </tbody>
                             </table>
                             <br>
                         </div>
                     </div>
-
                     <div class="modal_layer"></div>
                 </div>
                 
@@ -368,11 +331,86 @@
         });
         
 		// 상세보기
-		/* $(".detailBtn").click(function(){
+		$(".detailBtn").click(function(){
 			
-		}); */
-        
-        
+			var tr = $(this).parent().parent();
+        	var td = tr.children();
+
+        	var purchaseNo = td.eq(1).text();
+        	
+        	$.ajax({
+        		url : "/orderManage/detail",
+        		type : "post",
+        		data : {pNo : purchaseNo},
+        		success : function(data){
+        			
+        			// 픽업 정보
+        			var pickupHTML = '';
+				
+        			pickupHTML += '<tr><th>픽업매장</th>';
+        			pickupHTML += '<td>' + data.pickupPlace + '</td>';
+        			pickupHTML += '</tr><tr>';
+        			pickupHTML += '<th>픽업일시</th>';
+        			pickupHTML += '<td>' + data.pickupTime + '</td></tr>';
+        			
+        			$("#pickupInfo").html(pickupHTML);
+        			
+        			// 주문 정보
+        			var orderHTML = '';
+        			let date = new Date(data.purchaseDate);
+        			let refundDate = '';
+        			if(data.refundDate != null){
+        				refundDate = dateFormat(new Date(data.refundDate));
+        			} else {
+        				refundDate = '-';
+        			}
+        			
+        			orderHTML += '<tr><th>주문번호</th>';
+        			orderHTML += '<td>' + data.purchaseNo + '</td>';
+        			orderHTML += '<th>결제수단</th>';
+        			orderHTML += '<td>신용카드</td>';
+        			orderHTML += '</tr><tr>';
+        			orderHTML += '<th>주문일시</th>';
+        			orderHTML += '<td>' + dateFormat(date) + '</td>';
+        			orderHTML += '<th>사용적립금</th>';
+        			orderHTML += '<td>' + data.usePoint + '</td>';
+        			orderHTML += '</tr><tr>';
+        			orderHTML += '<th>주문자명</th>';
+        			orderHTML += '<td>' + data.userName + '</td>';
+        			orderHTML += '<th>결제금액</th>';
+        			orderHTML += '<td>' + (data.purchasePrice - data.usePoint) + '</td>';
+        			orderHTML += '</tr><tr>';
+        			orderHTML += '<th>연락처</th>';
+        			orderHTML += '<td>' + data.userPhone + '</td>';
+        			orderHTML += '<th>환불일시</th>';
+        			orderHTML += '<td style="text-align: center;">' + refundDate + '</td></tr>';
+        			
+        			$("#orderInfo").html(orderHTML);
+ 
+        			// 상품 정보
+        			$.each(data.orderDetail, function(index, item){
+        				productHTML = '';
+        				productHTML += '<tr><td>'+ item.productNo + '</td>';
+        				productHTML += '<td>' + item.typeName + '</td>';
+        				productHTML += '<td>' + item.productKname + '</td>';
+        				productHTML += '<td>' + item.odCount + '</td>';
+        				productHTML += '<td>' + (item.odPrice * item.odCount) + '</td></tr>';
+
+            			$("#productInfo").html(productHTML);
+        			})	
+        		},
+        		error : function(e){
+        			console.log(e);
+        		}
+        	});
+		});
+
+                        
+                        
+                        
+                        
+                        
+                    
 
     </script>
 </body>
