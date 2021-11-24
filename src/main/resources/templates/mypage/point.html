@@ -42,9 +42,9 @@
                     </ul>
                     <ul class="">
                         <li class="num">-</li>
-                        <li class="date">2002.20.20</li>
-                        <li class="point">2000</li>
-                        <li class="content">첫 가입 이벤트 적립</li>
+                        <li class="date"><label th:text="${#dates.format(m.create_date, 'yyyy.MM.dd')}"></label></li>
+                        <li class="point" th:text="${m.user_point}"></li>
+                        <li class="content">첫 회원가입 이벤트</li>
                     </ul>
                     <ul th:each="point,index : ${pointList}">
                         <!-- <li class="num" th:text="${#lists.sort(index.count, reverse)}"></li> -->
@@ -79,11 +79,11 @@
     	
     	var point = $("[type=number]").val();
     	console.log("point : " + point);
-    	if(point != null){
+    	/* if(point != null){
     		$(".result").val(point);
-    	}
+    	} */
     	var d = 2000;
-    	if(point = null){
+    	if(point == null){
     		point = 0;
     	} 
     	d += Number( test3.value ) - Number( point );

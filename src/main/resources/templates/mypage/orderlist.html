@@ -43,12 +43,13 @@
                             <li class="count countSize" th:text="${p.od_count}"></li>
                             <li class="sum sumSize" th:text="${p.od_price}"></li>
                             <li class="status statusli" style="margin-right: -10px;">
+                            <th:block th:if="${p.review_no} == 0">
                             	<th:block th:switch="${p.order_status}">
 								    <div class="addP" th:case="결제완료">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">결제완료</strong> <br>
 										<form method="post" th:action="@{/mypage/updateCancelPayment}" style="display:inline;">
 	                               	 		<input type="hidden" name="purchase_no" th:value="${p.purchase_no}">
-	                               	 		<button class="cancelPayment">결제취소</button>&nbsp;
+	                               	 		<button class="cancelPayment" onclick="cancelPay()">결제취소</button>&nbsp;
                                	 		</form>
                                	 		<button class="modalButton" onclick="openModal(this)">픽업변경</button>
 									</div>
@@ -58,7 +59,7 @@
                                	 		<!-- <button onclick="openModal(this)">픽업변경</button> -->
                                	 		<form method="post" th:action="@{/mypage/updateCancelPayment}" style="display:inline;">
 	                               	 		<input type="hidden" name="purchase_no" th:value="${p.purchase_no}">
-	                               	 		<button type="submit" class="cancelPayment" style="margin-left : 30px; margin-top:5px;">결제취소</button>
+	                               	 		<button type="submit" class="cancelPayment" style="margin-left : 30px; margin-top:5px;" onclick="cancelPay()">결제취소</button>
                                	 		</form>
 								    </div>
 								    <p th:case="환불완료">
@@ -74,17 +75,54 @@
 											<input type="hidden" name="user_no" th:value="${p.user_no}">
 											<button type="submit" style="margin-left : 30px; margin-top : 5px;">리뷰등록</button>
 										</form>
-										<!-- <button type="submit" onclick="reviewInsert()">리뷰등록</button> -->
 								    </div>
 								    <p th:case="결제취소">
 								    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">결제취소</strong> <br>
 										<label class="labelArea" th:text="${#dates.format(p.refund_date, 'yyyy.MM.dd HH:mm:ss')}"></label>
 								    </p>
 								</th:block>
-                           <!--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="labelArea" th:text="${p.order_status}">결제완료</label> <br>
-                                <button onclick="reviewInsert()">리뷰등록</button>
-                                <button>환불요청</button>&nbsp;
-                                <button onclick="openModal(this)">픽업변경</button> -->
+							</th:block>
+							<th:block th:if="${p.review_no} != 0">
+                            	<th:block th:switch="${p.order_status}">
+								    <div class="addP" th:case="결제완료">
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">결제완료</strong> <br>
+										<form method="post" th:action="@{/mypage/updateCancelPayment}" style="display:inline;">
+	                               	 		<input type="hidden" name="purchase_no" th:value="${p.purchase_no}">
+	                               	 		<button class="cancelPayment">결제취소</button>&nbsp;
+                               	 		</form>
+                               	 		<button class="modalButton" onclick="openModal(this)">픽업변경</button>
+									</div>
+								    <div th:case="픽업대기중">
+								    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">픽업대기</strong> <br>
+										&nbsp;
+                               	 		<!-- <button onclick="openModal(this)">픽업변경</button> -->
+                               	 		<form method="post" th:action="@{/mypage/updateCancelPayment}" style="display:inline;">
+	                               	 		<input type="hidden" name="purchase_no" th:value="${p.purchase_no}">
+	                               	 		<button type="submit" class="cancelPayment" style="margin-left : 30px; margin-top:5px;" onclick="cancelPay()">결제취소</button>
+                               	 		</form>
+								    </div>
+								    <p th:case="환불완료">
+								    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">환불완료</strong> <br>
+										<label class="labelArea" th:text="${#dates.format(p.refund_date, 'yyyy.MM.dd HH:mm:ss')}"></label>
+								    </p>
+								    <div th:case="픽업완료" style="margin-top:16px;">
+								    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">구매확정</strong> <br>
+										&nbsp;
+								    	<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">픽업완료</strong> <br>
+										&nbsp;
+										<form method="get" th:action="@{/mypage/reviewInsert}" style="display:inline;">
+											<input type="hidden" name="od_no" th:value="${p.od_no}">
+											<input type="hidden" name="product_no" th:value="${p.product_no}">
+											<input type="hidden" name="user_no" th:value="${p.user_no}">
+											<button type="submit" style="margin-left : 30px; margin-top : 5px;">리뷰등록</button>
+										</form> -->
+								    </div>
+								    <p th:case="결제취소">
+								    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">결제취소</strong> <br>
+										<label class="labelArea" th:text="${#dates.format(p.refund_date, 'yyyy.MM.dd HH:mm:ss')}"></label>
+								    </p>
+								</th:block>
+							</th:block>
                             </li></ul>
                         <div class="modalArea"><form th:action="@{/mypage/pickupModify}" method="post" name="pickupModifyForm" class="test"><div class="modal hidden"><div class="bg"></div><div class="modalBox"><div class="closeArea"><img src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px"></div>
                                         
@@ -231,6 +269,26 @@
         		locaion.href = "/mypage/reviewInsert"
         	}
         </script>
+        
+        <!-- 결제 취소 api 관련 script -->
+        <script>
+        var price = $(".sum").val;
+        
+		  function cancelPay() {
+		    $.ajax({
+		      url: "{환불요청을 받을 서비스 URL}", // 예: http://www.myservice.com/payments/cancel
+		      type: "POST",
+		      contentType: "application/json",
+		      data: JSON.stringify({
+				        merchant_uid: "{결제건의 주문번호}", // 예: ORD20180131-0000011
+				        cancel_request_amount: Number(price), // 환불금액
+				        reason: "테스트 결제 환불" // 환불사유
+		      }),
+		      dataType: "json"
+		    });
+		  }
+		</script>
+        
 <footer th:include="common/footer :: footer"></footer>
 </body>
 </html>

@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,19 +13,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -39,12 +37,10 @@ import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
 import com.project.dwine.mypage.model.vo.Wish;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
-
 @Transactional
 @Controller
 //@RequestMapping("/mypage")
-public class MypageController {
+public class MypageController{
 	
 	private MypageService mypageService;
 	
@@ -219,7 +215,8 @@ public class MypageController {
 	public ModelAndView reviewList(ModelAndView mv) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
-		List<Review> reviewList = mypageService.findAllReview(user_no);
+	    
+	    List<Review> reviewList = mypageService.findAllReview(user_no);
 		mv.addObject("reviewList", reviewList);
 		mv.setViewName("mypage/review");
 		return mv;
@@ -236,24 +233,15 @@ public class MypageController {
 	public String reviewInserForm(@RequestParam MultipartFile singleFile, @RequestParam int od_no, @RequestParam int user_no ,
 			@RequestParam double star, @RequestParam String review_text, HttpServletRequest request, Model model, RedirectAttributes rttr) {
 	      String currentDir = System.getProperty("user.dir");
-	      System.out.println("currentDir" + currentDir); // currentDirC:\Users\OWNER\git\DWine
-	      // System.getProperty("user.dir"); => 현재 작업중인 디렉터리 가져오는 메소드
 	      
-	      // 사진이 저장되어야 할 경로
 	      String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\review";
-	      System.out.println("filePath : " + filePath); 
-	    //filePath : C:\Users\OWNER/\/git/\/DWine/\/src/\main\resources\static\images/\/uploadFiles\review
 	      
-	      // 이미지가 저장 될 폴더 생성
 	      File mkdir = new File(filePath);
-	      // 폴더가 없으면 폴더 생성해라
 	      if(!mkdir.exists()) mkdir.mkdirs();
 	      
 	      String originFileName = singleFile.getOriginalFilename();
-	      System.out.println("originFileName : " + originFileName);
 	      String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 추출
 	      String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-	      System.out.println("savedName : " + savedName);
 	      
 	      String review_image = "/images/uploadFiles/review/" + savedName;
 	      
@@ -340,10 +328,8 @@ public class MypageController {
 	public String reviewDelete(@PathVariable int review_no, RedirectAttributes rttr) {
 		int result = mypageService.reviewDelete(review_no);
 		if(result > 0) {
-			System.out.println("성공");
 			rttr.addFlashAttribute("message", "리뷰가 삭제되었습니다.");
 		} else {
-			System.out.println("실패");
 			rttr.addFlashAttribute("message", "리뷰 삭제에 실패하였습니다.");
 		}
 		return "redirect:/mypage/review";
@@ -393,12 +379,10 @@ public class MypageController {
             result = mypageService.insertWishToCart(user_no, product_no);
         }
 		if(result > 0) {
-        	System.out.println("성공");
         	out.println("<script>alert('장바구니 담기에 성공하였습니다.'); location.href='/mypage/wish' </script>");
 			out.flush();
 			return "/mypage/wish";
         } else {
-        	System.out.println("실패");
         	out.println("<script>alert('장바구니 담기에 실패하였습니다.'); location.href='/mypage/wish' </script>");
 			out.flush();
 			return "/mypage/wish";
@@ -408,16 +392,13 @@ public class MypageController {
 	
 	// 내 포인트 확인
 	@GetMapping("/mypage/point")
-	public ModelAndView pointListPage(ModelAndView mv) {
+	public ModelAndView pointListPage(ModelAndView mv, Model model) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
 	    List<Point> pointList = mypageService.pointList(user_no);
-	    List<Integer> renum = new ArrayList<>();
-	    
-	    for(int i = pointList.size(); i>=1; i--) {
-	    	renum.add(i);
-	    }
-	    mv.addObject("num", renum);
+	    Member m = mypageService.selectMemberPoint(user_no);
+	    model.addAttribute("m", m);
+	    System.out.println(m);
 	    List<Purchase> purchaseList = mypageService.purchaseList(user_no);
 	    mv.addObject("purchaseList", purchaseList);
 	    mv.addObject("pointList", pointList);
