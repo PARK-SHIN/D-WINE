@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +97,18 @@ public class OrderManageController {
 		} else {
 			response.getWriter().print("fail");
 		}
-
 	}
+	
+	// 주문 상세 보기
+	@PostMapping(value = "detail")
+	@ResponseBody
+	public Purchase selectOrderDetail(@RequestParam String pNo) {
+	
+		int purchaseNo = Integer.parseInt(pNo);
+		
+		Purchase detail = orderManageService.selectOrderDetail(purchaseNo);
+		
+		return detail;
+	}
+	
 }

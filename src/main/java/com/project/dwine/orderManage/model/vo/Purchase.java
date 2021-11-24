@@ -1,6 +1,7 @@
 package com.project.dwine.orderManage.model.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,12 +20,14 @@ public class Purchase {
 	private Date refundDate;		// 환불일시
 	private int userNo;				// 회원번호
 	private String userName;		// 회원이름
+	private String userPhone;		// 회원전화번호
+	private List<OrderDetail> orderDetail;
 	
 	public Purchase() {}
 
 	public Purchase(int purchaseNo, Date purchaseDate, int usePoint, int purchasePrice, String pickupDate,
 			String pickupPlace, String pickupTime, String orderStatus, String status, Date refundDate, int userNo,
-			String userName) {
+			String userName, String userPhone, List<OrderDetail> orderDetail) {
 		super();
 		this.purchaseNo = purchaseNo;
 		this.purchaseDate = purchaseDate;
@@ -38,6 +41,8 @@ public class Purchase {
 		this.refundDate = refundDate;
 		this.userNo = userNo;
 		this.userName = userName;
+		this.userPhone = userPhone;
+		this.orderDetail = orderDetail;
 	}
 
 	public int getPurchaseNo() {
@@ -136,12 +141,29 @@ public class Purchase {
 		this.userName = userName;
 	}
 
+	public String getUserPhone() {
+		return userPhone;
+	}
+
+	public void setUserPhone(String userPhone) {
+		this.userPhone = userPhone;
+	}
+
+	public List<OrderDetail> getOrderDetail() {
+		return orderDetail;
+	}
+
+	public void setOrderDetail(List<OrderDetail> orderDetail) {
+		this.orderDetail = orderDetail;
+	}
+
 	@Override
 	public String toString() {
 		return "Purchase [purchaseNo=" + purchaseNo + ", purchaseDate=" + purchaseDate + ", usePoint=" + usePoint
 				+ ", purchasePrice=" + purchasePrice + ", pickupDate=" + pickupDate + ", pickupPlace=" + pickupPlace
 				+ ", pickupTime=" + pickupTime + ", orderStatus=" + orderStatus + ", status=" + status + ", refundDate="
-				+ refundDate + ", userNo=" + userNo + ", userName=" + userName + "]";
+				+ refundDate + ", userNo=" + userNo + ", userName=" + userName + ", userPhone=" + userPhone
+				+ ", orderDetail=" + orderDetail + "]";
 	}
-	
+
 }

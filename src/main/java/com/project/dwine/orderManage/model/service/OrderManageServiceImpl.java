@@ -38,6 +38,11 @@ public class OrderManageServiceImpl implements OrderManageService {
 		return orderManageMapper.deleteOrder(purchaseNo);
 	}
 
+	@Override
+	public Purchase selectOrderDetail(int purchaseNo) {
+		return orderManageMapper.selectOrderDetail(purchaseNo);
+	}
+
 	
 	
 	

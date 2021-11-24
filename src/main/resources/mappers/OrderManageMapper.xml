@@ -15,14 +15,16 @@
 		<result property="refundDate" column="REFUND_DATE"/>
 		<result property="userNo" column="USER_NO"/>
 		<result property="userName" column="USER_NAME"/>
+		<result property="userPhone" column="USER_PHONE"/>
+		<collection property="orderDetail" resultMap="orderDetailResultMap"/>
 	</resultMap>
 	
 	<resultMap id="orderDetailResultMap" type="com.project.dwine.orderManage.model.vo.OrderDetail">
-		<id property="odNo" column="OD_NO"/>
+		<id property="productNo" column="PRODUCT_NO"/>
+		<result property="typeName" column="TYPE_NAME"/>
+		<result property="productKname" column="PRODUCT_KNAME"/>
 		<result property="odCount" column="OD_COUNT"/>
 		<result property="odPrice" column="OD_PRICE"/>
-		<result property="purchaseNo" column="PURCHASE_NO"/>
-		<result property="productNo" column="PRODUCT_NO"/>
 	</resultMap>
 	
 	<select id="selectOrderList" resultMap="purchaseResultMap">
@@ -41,8 +43,36 @@
 		     , M.USER_NAME
 		  FROM PURCHASE P
 		  LEFT JOIN MEMBER M ON(P.USER_NO = M.USER_NO)
-		 WHERE STATUS = 'Y'
+		 WHERE P.STATUS = 'Y'
 		 ORDER BY P.PURCHASE_NO DESC
+	</select>
+	
+	<select id="selectOrderDetail" parameterType="_int" resultMap="purchaseResultMap">
+		SELECT
+		       P.PURCHASE_NO
+		     , P.PURCHASE_DATE
+		     , P.USE_POINT
+		     , P.PURCHASE_PRICE
+		     , P.PICKUP_DATE
+		     , P.PICKUP_PLACE
+		     , P.PICKUP_TIME
+		     , P.ORDER_STATUS
+		     , P.STATUS
+		     , P.REFUND_DATE
+		     , P.USER_NO
+		     , M.USER_NAME
+		     , M.USER_PHONE
+		     , O.PRODUCT_NO
+		     , T.TYPE_NAME
+		     , PR.PRODUCT_KNAME
+		     , O.OD_COUNT
+		     , O.OD_PRICE
+		  FROM PURCHASE P
+		  LEFT JOIN MEMBER M ON(P.USER_NO = M.USER_NO)
+		  LEFT JOIN ORDER_DETAIL O ON(P.PURCHASE_NO = O.PURCHASE_NO)
+		  LEFT JOIN PRODUCT PR ON(O.PRODUCT_NO = PR.PRODUCT_NO)
+		  LEFT JOIN TYPE T ON(PR.TYPE_NO = T.TYPE_NO)
+		 WHERE O.PURCHASE_NO = #{ purchaseNo }
 	</select>
 	
 	<select id="stateChangeList" parameterType="string" resultMap="purchaseResultMap">

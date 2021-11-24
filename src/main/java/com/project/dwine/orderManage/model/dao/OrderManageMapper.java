@@ -16,5 +16,7 @@ public interface OrderManageMapper {
 	int updateOrderStatus(int purchaseNo, String orderStatus);
 
 	int deleteOrder(int purchaseNo);
+
+	Purchase selectOrderDetail(int purchaseNo);
 	
 }
