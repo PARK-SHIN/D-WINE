@@ -32,6 +32,7 @@ public class MemberMgController {
 	public ModelAndView memberList(ModelAndView mv) {
 		List<Member> memberList = memberMgService.selectMemberMgList();
 		mv.addObject("memberList", memberList);
+		 
 		mv.setViewName("manage/memberMg/main");
 		return mv;
 	}
