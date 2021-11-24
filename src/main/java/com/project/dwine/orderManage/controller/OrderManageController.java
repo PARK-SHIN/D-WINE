@@ -96,6 +96,9 @@ public class OrderManageController {
 		} else {
 			response.getWriter().print("fail");
 		}
-
 	}
+	
+	// 주문 상세 보기
+	// @PostMapping("detail")
+	
 }
