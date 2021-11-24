@@ -136,10 +136,9 @@ public class MypageServiceImpl implements MypageService{
 		return mypageMapper.updateCancelPayment(purchase_no);
 	}
 
-	
-
-
-
-	
+	@Override
+	public Member selectMemberPoint(int user_no) {
+		return mypageMapper.selectMemberPoint(user_no);
+	}
 
 }
