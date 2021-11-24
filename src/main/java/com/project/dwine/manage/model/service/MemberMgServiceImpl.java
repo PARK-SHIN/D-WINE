@@ -24,4 +24,15 @@ public class MemberMgServiceImpl implements MemberMgService {
 		return memberMgMapper.selectMemberMgList();
 	}
 
+	@Override
+	public Member selectMemberMgByNo(int user_no) {
+		return memberMgMapper.selectMemberMgByNo(user_no);
+	}
+
+	@Override
+	public void deleteMemberMg(String user_no) {
+		memberMgMapper.deleteMemberMg(user_no);
+
+	}
+
 }

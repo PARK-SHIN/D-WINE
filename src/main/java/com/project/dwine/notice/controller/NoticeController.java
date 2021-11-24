@@ -41,7 +41,7 @@ public class NoticeController {
    }
 
    @GetMapping("detail/{notice_no}")
-   public String selectProductByNo(@PathVariable int notice_no, Model model) {
+   public String selectNoticeByNo(@PathVariable int notice_no, Model model) {
       Notice notice = noticeService.selectNoticeByNo(notice_no);
       model.addAttribute("notice", notice);
       
