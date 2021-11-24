@@ -26,12 +26,7 @@
 	
 	<select id="selectMemberMgList" resultMap="memberResultMap">
 	SELECT
-			USER_NO
-		 ,  USER_ID
-		 ,  USER_NICKNAME
-		 ,  REPORTED_COUNT
-		 ,  USER_STATUS
-		 ,  CREATE_DATE
+			*
 	FROM MEMBER
 	WHERE USER_STATUS = 'Y'
 	ORDER BY REPORTED_COUNT DESC, CREATE_DATE
