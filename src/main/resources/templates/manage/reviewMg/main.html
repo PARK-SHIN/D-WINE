@@ -139,18 +139,18 @@ var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
 
-//디테일로 새창
- var reviewNo = "${review.review_no}".val
-	console.log(reviewNo); 
- 
-var review_no = document.querySelector("#review_no").value;
-	
-function openDetail(){  
-	console.log(reviewNo);
-	//console.log(review_no);
-	window.open("/mypage/review/" + reviewNo, "상세보기창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );  
-	}  
 
+//
+$("tr").click(function(){
+    var no = $(this).children().eq(0).children().val();
+    
+    openDetail(no);
+ });
+
+ function openDetail(no){  
+
+    window.open("/mypage/review/" + no, "상세보기창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );  
+ }  
 
 
 
