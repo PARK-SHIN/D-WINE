@@ -114,24 +114,98 @@
                 <th>신고날짜</th>
                 <th>신고 수</th>
             </tr>
-            <tr  th:each="report: ${ reviewMgList }">
-                <td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ report.report_no }"></td>
+            <tr th:each="report: ${ reviewMgList }" th:style="${report.count == 0 ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}">
+                <td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ report.review_no }" onclick="event.cancelBubble=true"></td>  
                 <td th:text="${ report.user_id2 }"/>
                 <td th:text="${ report.review_text }"></td>
                 <td th:text="${ #dates.format(report.review_date, 'yyyy-MM-dd') }"></td>
                 <td th:text="${ report.reason_context }"></td>
                 <td th:text="${ report.user_id1 }"></td>
                 <td th:text="${ #dates.format(report.report_date, 'yyyy-MM-dd') }"></td>
-                <td th:text="${ report.count }"></td>
+                <td th:text="${ report.count }">
             </tr>  
         </table>    
         
     </div>
 
-    
-    
-
 </div>
 <div th:replace="common/footer :: footer"></div>
+
+
+<script>
+//crsf토큰
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
+
+//allCheck 
+$(function(){
+	var checkboxes = document.getElementsByName("checkbox");
+	var checkCnt = checkboxes.length;
+	
+	$("input[name='allCheck']").click(function(){
+		var check_listArr = $("input[name='checkbox']");
+		for (var i=0; i<check_listArr.length; i++){
+			check_listArr[i].checked = this.checked;
+		}
+	});
+	$("input[name='checkbox']").click(function(){
+		if($("input[name='checkbox']:checked").length == checkCnt){
+			$("input[name='allCheck']")[0].checked = true;
+		}
+		else{
+			$("input[name='allCheck']")[0].checked = false;
+		}
+	});
+});
+
+
+function deleteValue(){
+	
+	var valueArr = new Array();
+    var list = $("input[name='checkbox']");
+    
+    console.log("리뷰넘버값: " + list);
+    
+    for(var i = 0; i < list.length; i++){
+        if(list[i].checked){ 
+            valueArr.push(list[i].value);
+        // Array.push(), Array.unshift(), Array.splice() 
+        //콘솔값 잘 나옴. 
+        //console.log(valueArr);
+        //console.log(valueArr.length);
+        }
+    }
+    if (valueArr.length == 0){
+    	alert("선택된 회원이 없습니다.");
+    }
+    else{
+		var chk = confirm("정말 삭제하시겠습니까?");				 
+		$.ajax({
+		    url : "/manage/reviewMg/delete",                   
+		    type : 'POST',  
+		    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		    traditional : true,
+		    data : {
+		    	valueArr : valueArr        //403에러는왜뜨는거지? -> csrf때문
+		    },
+		    success : function(data){
+				alert("삭제에 성공했습니다.");
+				location.replace("main")
+			},
+			error : function(e){
+				consloe.log("삭제에 실패했습니다");
+			}
+       
+		});
+	}
+ }
+
+
+
+</script>  
+
+
 </body>
 </html>

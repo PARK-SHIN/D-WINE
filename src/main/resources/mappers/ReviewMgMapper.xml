@@ -23,7 +23,7 @@
 		<result property="name" column="authority_name" />
 	</resultMap>
 	
-	<resultMap type="com.project.dwine.mypage.model.vo.Review"
+	<resultMap type="com.project.dwine.manage.model.vo.Review"
 		id="ReviewResultMap">
 		<id property="review_no" column="review_no" />
 		<result property="review_text" column="REVIEW_TEXT" />
@@ -54,28 +54,40 @@
 	</resultMap>
 	
 	
-	
-	<select id="selectReviewList" resultMap="reviewMgResultMap">
-	SELECT
-		       RP.REPORT_NO
-		     , M2.USER_ID as user_id2
-		     , RR.REASON_CONTEXT
-		     , (SELECT 
+	<select id="selectReviewList" resultMap="ReviewResultMap">
+	 SELECT
+                R.REVIEW_NO
+              , RP.REPORT_NO 
+              , M2.USER_ID as user_id2
+              , REASON_CONTEXT
+              , (SELECT 
 		            COUNT(*)
 		            FROM REPORT
 		            WHERE REVIEW_NO = RP.REVIEW_NO)COUNT
-		     , R.REVIEW_TEXT
-     		 , R.REVIEW_DATE
-		     , M1.USER_ID as user_id1
-		     , RP.REPORT_DATE
-		FROM REPORT RP, REVIEW R, REPORTREASON RR, MEMBER M1, MEMBER M2
-		WHERE M2.USER_ID IN (SELECT USER_ID FROM MEMBER , REVIEW WHERE REVIEW.USER_NO = MEMBER.USER_NO) 
-		AND RP.REASON_NO = RR.REASON_NO
-		AND RP.REVIEW_NO = R.REVIEW_NO
-		AND RP.REPORTER_NO = M1.USER_NO
-		AND R.USER_NO = M2.USER_NO
-
+              , R.REVIEW_TEXT
+              , R.REVIEW_DATE
+              , RP.REPORT_DATE
+              , R.REVIEW_NO 
+              , M1.USER_ID AS user_id1
+        FROM REVIEW R
+        LEFT JOIN REPORT RP ON R.REVIEW_NO = RP.REVIEW_NO
+        LEFT JOIN REPORTREASON USING(REASON_NO)
+        LEFT JOIN MEMBER M1 ON (REPORTER_NO = M1.USER_NO)
+        LEFT JOIN MEMBER M2 ON R.USER_NO = M2.USER_NO
+        ORDER BY COUNT DESC, R.REVIEW_NO
+	
 	</select>
+	
+	
+	
+	
+	<update id="deleteReviewMg" parameterType="String">
+	
+	UPDATE 	REVIEW 
+	SET		STATUS = 'N'
+    WHERE REVIEW_NO = #{ review_no }
+    
+	</update>
 	
 	
 

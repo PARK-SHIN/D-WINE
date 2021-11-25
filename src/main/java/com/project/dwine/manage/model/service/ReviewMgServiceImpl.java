@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.dwine.manage.model.dao.ReviewMgMapper;
-import com.project.dwine.manage.model.vo.Report;
+import com.project.dwine.manage.model.vo.Review;
 
 
 @Service("ReviewMgService")
@@ -19,9 +19,19 @@ public class ReviewMgServiceImpl implements ReviewMgService {
 		this.reviewMgMapper = reviewMgMapper;
 	}
 	
+	
 	@Override
-	public List<Report> selectReviewList() {
+	public List<Review> selectReviewList() {
 		return reviewMgMapper.selectReviewList();
 	}
+	
+
+	@Override
+	public void deleteReviewMg(String review_no) {
+		reviewMgMapper.deleteReviewMg(review_no);
+		
+	}
+
+	
 
 }
