@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dwine.manage.model.dao.InventoryMgMapper">
+	<!-- product reasultMap -->
+	<resultMap id="productResultMap" type="com.project.dwine.product.model.vo.Product">
+		<id property="productNo" column="PRODUCT_NO"/>
+		<result property="productKName" column="PRODUCT_KNAME"/>
+		<result property="productEName" column="PRODUCT_ENAME"/>
+		<result property="costPrice" column="COST_PRICE"/>
+		<result property="salePrice" column="SALE_PRICE"/>
+		<result property="productCount" column="PRODUCT_COUNT"/>
+		<result property="winery" column="WINERY"/>
+		<result property="thumbnail" column="THUMBNAIL"/>
+		<result property="capacity" column="CAPACITY"/>
+		<result property="abv" column="ABV"/>
+		<result property="tasteGraph" column="TASTE_GRAPH"/>
+		<result property="information" column="INFORMATION"/>
+		<result property="award" column="AWARD"/>
+		<result property="tip" column="TIP"/>
+		<result property="labelImage" column="LABEL_IMAGE"/>
+		<result property="status" column="STATUS"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<association property="variety" resultMap="varietyResultMap"/>
+		<association property="type" resultMap="typeResultMap"/>
+		<association property="country" resultMap="countryResultMap"/>
+		<collection property="hashtagList" resultMap="hashtagResultMap"/>
+	</resultMap>
+	
+	<resultMap id="countryResultMap" type="com.project.dwine.product.model.vo.Country">
+		<id property="countryNo" column="COUNTRY_NO"/>
+		<result property="countryName" column="COUNTRY_NAME"/>
+	</resultMap> 
+	
+	<resultMap id="typeResultMap" type="com.project.dwine.product.model.vo.Type">
+		<id property="typeNo" column="TYPE_NO"/>
+		<result property="typeName" column="TYPE_NAME"/>
+	</resultMap> 
+	
+	<resultMap id="varietyResultMap" type="com.project.dwine.product.model.vo.Variety">
+		<id property="varietyNo" column="VARIETY_NO"/>
+		<result property="varietyName" column="VARIETY_NAME"/>
+	</resultMap> 
+	
+	<resultMap id="hashtagResultMap" type="com.project.dwine.hashtag.model.vo.Hashtag">
+		<id property="hashNo" column="HASH_NO"/>
+		<result property="hashType" column="HASH_TYPE"/>
+		<result property="hashName" column="HASH_NAME"/>
+	</resultMap>
+	
+	<resultMap id="productListResultMap" type="com.project.dwine.product.model.vo.Product">
+		<id property="productNo" column="PRODUCT_NO"/>
+		<result property="productKName" column="PRODUCT_KNAME"/>
+		<result property="salePrice" column="SALE_PRICE"/>
+		<result property="productCount" column="PRODUCT_COUNT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+	</resultMap>
+	
+	<!-- inventory reasultMap -->
+	<resultMap id="inventoryResultMap" type="com.project.dwine.manage.model.vo.Inventory">
+	<id property="inven_no" column="inven_no"/>
+	<result property="inven_count" column="inven_count"/>
+	<result property="inven_date" column="inven_date"/>
+	<result property="status" column="status"/>
+	<result property="product_no" column="product_no"/>
+	<result property="totalStock" column="totalStock"/>
+	<result property="totalShop" column="totalShop"/>
+	<result property="todayReceiving" column="todayReceiving"/>
+	</resultMap>
+	
+	<select id="selectInvenMgList" resultMap="inventoryResultMap">
+		SELECT
+			        I.INVEN_NO
+			      , I.INVEN_COUNT
+			      , I.INVEN_DATE
+			      , I.STATUS
+			      , I.PRODUCT_NO
+			      , P.COST_PRICE
+			      , P.SALE_PRICE
+			      , P.PRODUCT_COUNT 
+			      , P.PRODUCT_KNAME      
+			      , (SELECT
+			                P.COST_PRICE * I.INVEN_COUNT
+			                FROM PRODUCT P
+			                WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS INVEN_PRICE
+			      , (SELECT
+			                P.PRODUCT_COUNT + I.INVEN_COUNT
+			                 FROM PRODUCT P
+			                WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS ALL_COUNT
+		FROM INVENTORY I, PRODUCT P
+		WHERE I.PRODUCT_NO = P.PRODUCT_NO
+		ORDER BY INVEN_DATE DESC
+	</select>
+	
+	<select id="selectTotalStock" resultMap="inventoryResultMap">
+	SELECT
+	        COUNT(DISTINCT PRODUCT_NO)AS TOTALSTOCK 
+	FROM INVENTORY 
+	WHERE STATUS = 'Y'
+	</select>
+	
+	<select id="selectTotalShop" resultMap="inventoryResultMap">
+	SELECT
+	        COUNT(PRODUCT_NO)AS TOTALSHOP 
+	FROM PRODUCT 
+	WHERE STATUS = 'Y'
+	</select>
+	
+	<select id="selectTotalReceiving" resultMap="inventoryResultMap">
+	SELECT  
+			COUNT(INVEN_NO)AS TODAYRECEIVING   
+	FROM INVENTORY 
+	WHERE TO_CHAR(INVEN_DATE, 'YYYYMMDD') = TO_CHAR(SYSDATE, 'YYYYMMDD')
+	</select>
+
+
+
+
+
+
+
+</mapper>

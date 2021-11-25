@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>재고관리</title>
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<link href="/css/common/common.css" rel="stylesheet">
+
+    <style>
+        .content {
+            margin : 50px auto;
+            height : auto;
+            min-height : 100%;
+            width: 900px;
+        }
+
+        .totalList{
+            border: black 1px solid;
+            width: 850px;
+            height: 120px;
+            display: flex;
+            list-style: none;
+            text-align: center;
+            margin-bottom: 10px;
+           
+            
+        }
+        #totalStock{
+            margin-right: 200px;
+            margin-left: 160px;
+        }
+
+        #totalShop {
+            margin-right: 200px;
+        }
+        
+        #todayReceiving{
+            margin-right: 150px;
+        }
+        span#count{
+           font-size: 45px;
+           font-weight: bolder;
+           color: #83131E;   
+        }
+        span#counts{
+           font-size: 45px;
+           font-weight: bolder;
+           color: black;  
+        }
+        span#countTitle{
+           width: 70px;
+        }
+        .dayArrayBtn{
+           margin: 5px;
+           background: white ;
+           border: 1px solid #83131E ;
+           color: #83131E;
+           width: 50px;
+           height: 25px;
+           border-radius: 5px; 
+        }
+
+        .dayArrayBtn:hover {
+            cursor: pointer;
+            transform:scale(1.1);
+            background:  #83131E;
+            color: white;  
+        }
+       
+
+        #serarchBtn{
+           margin: 5px;
+           background: white ;
+           border: 1px solid #83131E ;
+           color: #83131E;
+           width: 45px;
+           height: 25px;
+           border-radius: 5px;
+        }
+        #serarchBtn:hover {
+            cursor: pointer;
+            transform:scale(1.1);
+            background:  #83131E;
+            color: white;  
+        }
+        
+
+        #registBtn{
+            float: right;
+            background: #83131E ;
+            border: none;
+            color:white;
+            width:80px;
+            height: 30px;
+            border-radius: 5px;
+            margin-right: 50px;
+            margin-top: 10px;
+        }
+
+      .reviewList{
+        border: lightgray 1px solid;
+        margin-top: 20px;
+        margin-bottom: 30px;
+        width: 850px;
+        height: 500px;
+      }
+
+      .arrayArea{
+        display: right; 
+      }
+
+      .stockList{
+        border-collapse:collapse;
+        font-display: center;  
+        }
+
+      .stockList th{
+        border-left: none;
+        background: lightgray;
+        height: 35px;
+        
+      }
+
+      .stockList td{
+        border:1px solid lightgray;
+        text-align: center;
+        height: 35px;
+        padding: 1px;
+        font-size: 14px;
+      }
+      #cancleBtn{
+        background: white ;
+        border: 1px solid #83131E ;
+        color: #83131E;
+        width: 50px;
+        height: 25px;
+        border-radius: 8%;  
+      }
+      
+
+
+    </style>
+</head>
+<body>
+<header th:include="common/header :: header"></header>
+<div class="content">
+   <h2>재고관리</h2>    
+    <hr>
+    <div class="totalList">
+     <input type="hidden" name="totalStock" th:value="${totalStock.totalStock}">
+     <input type="hidden" name="totalShop" th:value="${totalShop.totalShop}">
+     <input type="hidden" name="todayReceiving" th:value="${todayReceiving.todayReceiving}">
+  
+        <div id="totalStock">
+            <span id="count"  th:text="${totalStock.totalStock}"></span> 
+            <span id="countTitle">Total Stock</span>
+        </div>
+        <div id="totalShop">
+            <span id="counts" th:text="${totalShop.totalShop}"></span> 
+            <span id="countTitle">Total Shop</span>
+        </div>
+        <div id="todayReceiving">
+            <span id="count" th:text="${todayReceiving.todayReceiving}">9</span>
+            <span id="countTitle">Today Receiving</span>
+        </div>
+    </div> 
+    
+    <div class="searchArea">
+        <label>기간 조회 : </label>
+        <input type="date"> ~ <input type="date">
+        <button class="dayArrayBtn">오늘</button>
+        <button class="dayArrayBtn">1주일</button>
+        <button class="dayArrayBtn">1개월</button>
+        <div class="searchArea"><label>조건 검색 : </label>
+            <select name="selectCategory">
+                <option value="productName">상품명</option>
+                <option value="productNo">상품번호</option>
+            </select>
+            <input type="text" id="searchTitle"> 
+            <button id="serarchBtn">검색</button> 
+        </div>
+
+    </div>
+
+        <button id="registBtn">입고</button><br>
+        <div class="arrayArea">
+        <label>정렬 : </label>
+        <select id="array">
+            <option value="latest">최신순</option>
+            <option value="low-quantity">수량낮은순</option>
+        </select>
+        </div>
+
+        <div class="reviewList">
+            <table class="stockList" width=850px;>
+                <tr>
+                <th>입고번호</th>
+                <th>상품번호</th>
+                <th>상품명</th>
+                <th>판매가격</th>
+                <th>입고수량</th>
+                <th>단가</th>
+                <th>입고가</th>
+                <th>입고날짜</th>
+                <th>총수량</th>
+                <th>기능</th>
+                </tr>
+
+                <tr th:each="inven: ${ invenList }">
+                    <td th:text="${ inven.inven_no }"/>
+                    <td th:text="${ inven.product_no }"/>
+                    <td th:text="${ inven.product_kname }"/>
+                    <td th:text="${ inven.sale_price}"/>
+                    <td th:text="${ inven.inven_count}"/>
+                    <td th:text="${ inven.cost_price}"/>
+                    <td th:text="${ inven.inven_price}"/>
+                    <td th:text="${ #dates.format(inven.inven_date, 'yyyy-MM-dd') }"/>
+                    <td th:text="${ inven.all_count}"/>
+                    <td><button id="cancleBtn">취소</button></td>
+                </tr>
+                
+            </table>
+        </div>
+</div>
+
+    
+
+<div th:replace="common/footer :: footer"></div>
+<script>
+//crsf토큰
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
+</script>
+</body>
+</html>
