@@ -61,7 +61,7 @@
                     <div class="btnAndInfo">
                         <div class="btnArea">
                             <button type="button" class="deleteBtn">선택 삭제</button>
-                            <button type="button" onclick="" class="changeBtn" id="changeBtn">상태 일괄 변경</button>
+                            <button type="button" onclick="" class="changeBtn" id="changeBtn" disabled>상태 일괄 변경</button>
                         </div>
                         <div class="infoArea">총 주문 수 : <span id="totalCnt"></span>, 검색 주문 수 : <span id="searchCnt">10</span></div>    
                     </div>
@@ -110,8 +110,8 @@
                             <h4>상태 일괄 변경</h4>
                         </div>   
                         <div class="content">
-                            결제완료&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;
-                            <select>
+                            <span id="beforeStatus">결제완료</span>&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;
+                            <select id="afterStatus">
                                 <option value="결제완료">결제완료</option>
                                 <option value="결제취소">결제취소</option>
                                 <option value="픽업대기중">픽업대기중</option>
@@ -120,7 +120,7 @@
                             </select>
 
                             <button type="button" class="cancleBtn" id="cancleBtn">취소</button>
-                            <button type="submit" class="applyBtn">적용</button>
+                            <button type="submit" class="allApplyBtn">적용</button> 
                         </div>
                     </div>
 
@@ -246,7 +246,7 @@
             				let date = new Date(item.purchaseDate);
             				
            					tableHTML += "<tr><td><input type='checkbox'></td>"
-   		                	 	   	   + "<td>" + item.purchaseNo + "</td>"
+   		                	 	   	   + "<td class='purchaseNo'>" + item.purchaseNo + "</td>"
    		                 		       + "<td>" + dateFormat(date) + "</td>"
    		                 		       + "<td>" + item.userName + "</td>"
    		                 		       + "<td>" + item.purchasePrice + "</td>"
@@ -405,12 +405,43 @@
         	});
 		});
 
+		// 상태 일괄 변경 활성화
+		$("#orderState").change(function(){
+			
+			$("#changeBtn").attr("disabled", false);
+			$("#changeBtn").css("color", "black");
+			
+			let beforeStatus = $("#orderState").val();
+			
+			$("#beforeStatus").text(beforeStatus);
+		});             
                         
-                        
-                        
-                        
-                        
-                    
+		// 상태 일괄 변경
+        $(".allApplyBtn").click(function(){
+        	let afterStatus = $("#afterStatus").val();
+	        
+        	let pNoArr = new Array();
+	        $(".purchaseNo").each(function(index){
+	        	pNoArr.push($(this).text());
+	        });
+	        	                	
+	        $.ajax({
+        		url : "/orderManage/allChange",
+        		type : "post",
+        		data : {odStatus : afterStatus,
+        				pNoArr : pNoArr},
+        		success : function(data){
+        			if(data == "success"){
+        				alert("상태 일괄 변경에 성공하였습니다.");
+        				location.reload();
+        			} else
+        				alert("상태 일괄 변경에 실패하였습니다.");
+        		},
+        		error : function(e){ 
+        			console.log(e);
+        		}
+        	});
+        });          
 
     </script>
 </body>

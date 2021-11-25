@@ -43,6 +43,11 @@ public class OrderManageServiceImpl implements OrderManageService {
 		return orderManageMapper.selectOrderDetail(purchaseNo);
 	}
 
+	@Override
+	public int updateAllChange(int purchaseNo, String orderStatus) {
+		return orderManageMapper.updateAllChange(purchaseNo, orderStatus);
+	}
+
 	
 	
 	
