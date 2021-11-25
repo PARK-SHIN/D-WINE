@@ -8,6 +8,7 @@ public class Review {
 	private int review_no;
 	private String review_text;
 	private String review_image;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date review_date;
 	private Date review_modify;
 	private double star;

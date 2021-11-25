@@ -141,12 +141,10 @@ $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, to
   
 $("tr").click(function(){
     var no = $(this).children().eq(0).children().val();
-    
     openDetail(no);
  });
 
  function openDetail(no){  
-
     window.open("/mypage/review/" + no, "상세보기창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );  
  }  
 
