@@ -96,7 +96,7 @@
 <div class="content">
     <h2>리뷰관리</h2>    
     <hr>
-    <button id="deleteBtn" onclick="deleteValue();">리뷰삭제</button><br>
+    <button id="deleteBtn" onclick="deleteValue();">삭제</button><br>
     <label>정렬 : </label>
     <select name="array">
         <option value="latest">최신순</option>
@@ -114,7 +114,7 @@
                 <th>신고날짜</th>
                 <th>신고 수</th>
             </tr>
-            <tr th:each="report: ${ reviewMgList }" th:style="${report.count == 0 ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}">
+            <tr th:each="report: ${ reviewMgList }" onclick="openDetail()" th:style="${report.count == 0 ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}">
                 <td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ report.review_no }" onclick="event.cancelBubble=true"></td>  
                 <td th:text="${ report.user_id2 }"/>
                 <td th:text="${ report.review_text }"></td>
@@ -125,7 +125,7 @@
                 <td th:text="${ report.count }">
             </tr>  
         </table>    
-        
+   
     </div>
 
 </div>
@@ -133,10 +133,27 @@
 
 
 <script>
+
 //crsf토큰
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
+//디테일로 새창
+ var reviewNo = "${review.review_no}".val
+	console.log(reviewNo); 
+ 
+//var review_no = document.querySelector("#review_no").value;
+	
+function openDetail(){  
+	console.log(reviewNo);
+	//console.log(review_no);
+	window.open("/mypage/review/" + reviewNo, "상세보기창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );  
+	}  
+
+
+
+
 
 
 //allCheck 
