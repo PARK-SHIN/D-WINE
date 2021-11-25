@@ -132,4 +132,15 @@ public class OrderManageController {
 		return detail;
 	}
 	
+	// 검색
+	@PostMapping(value = "search")
+	@ResponseBody
+	public List<Purchase> selectSearchList(@RequestParam String searchStatus, 
+										@RequestParam String searchCondition, @RequestParam String searchValue){
+		
+		List<Purchase> searchList = orderManageService.selectSearchList(searchStatus, searchCondition, searchValue);
+		
+		return searchList;
+	}
+	
 }

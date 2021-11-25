@@ -45,17 +45,15 @@
                     </div>
                 </form>
 
-                <form method="get" action="">
-                    <div class="searchBox">
-                        <label>조건 검색</label>
-                        <select name="searchCondition">
-                            <option value="orderName">주문자명</option>
-                            <option value="orderNumber">주문번호</option>
-                        </select>
-                        <input type="search" name="searchValue">
-                        <button type="submit" class="searchBtn">이미지</button>
-                    </div>
-                </form>
+                <div class="searchBox">
+                    <label>조건 검색</label>
+                    <select name="searchCondition">
+                        <option value="orderName">주문자명</option>
+                        <option value="orderNumber">주문번호</option>
+                    </select>
+                    <input type="search" name="searchValue">
+                    <button type="submit" class="searchBtn">이미지</button>
+                </div>
 
                 <div>
                     <div class="btnAndInfo">
@@ -182,19 +180,19 @@
        		}
         }
 
-        $("#changeBtn").click(function(){
+        $(document).on("click","#changeBtn", function(){
             $("#modal").css("display", "block");
         });
 
-        $("#cancleBtn").click(function(){
+        $(document).on("click","#cancleBtn", function(){
             $("#modal").css("display", "none");
         });
 
-        $(".detailBtn").click(function(){
+        $(document).on("click",".detailBtn", function(){
             $("#modal2").css("display", "block");
         });
 
-        $(".closeBtn").click(function(){
+        $(document).on("click",".closeBtn", function(){
             $("#modal2").css("display", "none");
         });
         
@@ -257,7 +255,7 @@
    		                               + "<option value='픽업완료'>픽업완료</option>"
    		                               + "<option value='환불완료'>환불완료</option></select></td>"
    		                   		       + "<td><button type='button' class='applyBtn'>적용</button>"
-   		                 		       + "<button type='button' class='detailBtn' id='detailBtn'>상세보기</button></td></tr>";
+   		                 		       + "<button type='button' class='detailBtn'>상세보기</button></td></tr>";
    		           		
         					$("#odList").html(tableHTML);
    		                	$(".odStatus").val(item.orderStatus).prop("selected", true);
@@ -276,7 +274,7 @@
         });
         
         // 주문상태 수정
-        $(".applyBtn").click(function(){
+        $(document).on("click",".applyBtn", function(){
         	
         	var tr = $(this).parent().parent();
         	var td = tr.children();
@@ -303,7 +301,7 @@
         });
         
         // 선택삭제
-        $(".deleteBtn").click(function(){
+        $(document).on("click",".deleteBtn", function(){
         	if(confirm("정말 삭제하시겠습니까?")){
 		        var checkArr = new Array();
 		        
@@ -331,13 +329,13 @@
         });
         
 		// 상세보기
-		$(".detailBtn").click(function(){
+		$(document).on("click",".detailBtn", function(){
 			
 			var tr = $(this).parent().parent();
         	var td = tr.children();
 
         	var purchaseNo = td.eq(1).text();
-        	
+        	        	
         	$.ajax({
         		url : "/orderManage/detail",
         		type : "post",
@@ -418,9 +416,10 @@
                         
 		// 상태 일괄 변경
         $(".allApplyBtn").click(function(){
-        	let afterStatus = $("#afterStatus").val();
-	        
-        	let pNoArr = new Array();
+        	
+        	var afterStatus = $("#afterStatus").val();
+        	
+        	var pNoArr = new Array();
 	        $(".purchaseNo").each(function(index){
 	        	pNoArr.push($(this).text());
 	        });
@@ -441,7 +440,57 @@
         			console.log(e);
         		}
         	});
-        });          
+        });
+		
+		// 조건 검색
+		$(document).on("click",".searchBtn", function(){
+			var searchCondition = $("select[name=searchCondition]").val();
+			var searchValue = $("input[name=searchValue]").val();
+			var searchStatus = $("#orderState").val();
+			
+			$.ajax({
+				url : "/orderManage/search",
+				type : "post",
+				data : {searchStatus : searchStatus,
+						searchCondition : searchCondition,
+						searchValue : searchValue},
+						
+				success : function(data){
+					tableHTML = '';
+					
+					if(data.length != 0) {
+        				$.each(data, function(index, item){
+            				
+            				let date = new Date(item.purchaseDate);
+            				
+           					tableHTML += "<tr><td><input type='checkbox'></td>"
+   		                	 	   	   + "<td class='purchaseNo'>" + item.purchaseNo + "</td>"
+   		                 		       + "<td>" + dateFormat(date) + "</td>"
+   		                 		       + "<td>" + item.userName + "</td>"
+   		                 		       + "<td>" + item.purchasePrice + "</td>"
+   		                 	           + "<td><select class='odStatus'>"
+   		                               + "<option value='결제완료'>결제완료</option>"
+   		                               + "<option value='결제취소'>결제취소</option>"
+   		                               + "<option value='픽업대기중'>픽업대기중</option>"
+   		                               + "<option value='픽업완료'>픽업완료</option>"
+   		                               + "<option value='환불완료'>환불완료</option></select></td>"
+   		                   		       + "<td><button type='button' class='applyBtn'>적용</button>"
+   		                 		       + "<button type='button' class='detailBtn'>상세보기</button></td></tr>";
+   		           		
+        					$("#odList").html(tableHTML);
+   		                	$(".odStatus").val(item.orderStatus).prop("selected", true);
+            			});	
+        			} else {
+        				tableHTML += "<tr><td colspan='7' rowspan='7'>검색 결과가 존재하지 않습니다.</td></tr>"
+        						   + "<tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>";
+        				$("#odList").html(tableHTML);
+        			}
+				},
+				error : function(e){
+					console.log(e);
+				}
+			});		
+		});
 
     </script>
 </body>
