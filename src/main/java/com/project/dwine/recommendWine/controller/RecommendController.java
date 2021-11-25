@@ -69,7 +69,6 @@ public class RecommendController {
 			model.addAttribute("message", "검색하시는 해시태그의 상품이 없습니다.");
 		}
 		
-		
 		return "/recommendWine/list"; 
 	}
 	
