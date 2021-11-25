@@ -102,6 +102,12 @@
 		 WHERE PURCHASE_NO = #{ purchaseNo }
 	</update>
 	
+	<update id="updateAllChange" parameterType="com.project.dwine.orderManage.model.vo.Purchase">
+		UPDATE PURCHASE
+		   SET ORDER_STATUS = #{ orderStatus }
+		 WHERE PURCHASE_NO = #{ purchaseNo }
+	</update>
+	
 	<update id="deleteOrder" parameterType="_int">
 		UPDATE PURCHASE
 		   SET STATUS = 'N'
