@@ -65,4 +65,11 @@
 			SET STATUS = 'N'
 		WHERE HASH_NO = #{hashNo}
 	</update>
+	
+	<select id="checkDeleteHash" resultType="_int">
+		SELECT
+			COUNT(PRODUCT_NO)
+		 FROM PRODUCT_HASHTAG
+		 WHERE HASH_NO = #{hashNo}
+	</select>
 </mapper>

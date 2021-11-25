@@ -48,4 +48,9 @@ public class HashtagServiceImpl implements HashtagService{
 	public int deleteHashtag(int hashNo) {
 		return hashtagMapper.deleteHashtag(hashNo);
 	}
+
+	@Override
+	public int checkDeleteHash(int hashNo) {
+		return hashtagMapper.checkDeleteHash(hashNo);
+	}
 }

@@ -17,4 +17,6 @@ public interface HashtagService {
 	int modifyHashtag(int hashNo, String hashName, int hashType);
 
 	int deleteHashtag(int hashNo);
+
+	int checkDeleteHash(int parseInt);
 }

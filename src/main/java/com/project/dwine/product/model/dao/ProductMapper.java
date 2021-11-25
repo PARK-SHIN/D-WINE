@@ -36,4 +36,8 @@ public interface ProductMapper {
 
 	int deleteMultiProduct(int productNo);
 
+	List<Product> searchProductList(String searchStandard, String searchValue);
+
+	int productNameCheck(String kname);
+
 }

@@ -2,7 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>product main list</title>
+<script>
+	const successMessgae = '[[${ message }]]';
+	
+	if(successMessgae){
+		alert(successMessgae);
+	}
+</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <style>
@@ -61,6 +70,16 @@
 		background:  rgba(196, 196, 196, 0.1);
 		cursor : pointer;
 	}
+	#deleteMulti_btn {
+		margin-left: 5px;
+	}
+	#hash_btn {
+		background: #83131E;
+		color: white;
+		margin-left: 5px;
+		border-radius: 5px;
+		border: 1px solid #83131E;
+	}
 </style>
 </head>
 <body>
@@ -73,9 +92,10 @@
 	<div id="top_area">
 		<div>
 			<button id="deleteMulti_btn">선택 삭제</button>
+			<button id="hash_btn" onclick="openHashForm()">해시태그 관리</button>
 		</div>
 		<div>
-			<select>
+			<select name="search_select">
 				<option value="no">상품번호</option>
 				<option value="name">상품명</option>
 			</select> 
@@ -97,11 +117,11 @@
 						<th>수정일</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr class="choose" th:each="product : ${ productList }">
+				<tbody id="productList">
+					<tr th:each="product : ${ productList }">
 						<td class="center"><input type="checkbox" name="delete_nums" th:value="${ product.productNo }"></td>
 						<td class="center" th:text="${ product.productNo }"></td>
-						<td th:text="${ product.productKName }" th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|"></td>
+						<td class="choose" th:text="${ product.productKName }" th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|"></td>
 						<td class="center" th:text="${ product.salePrice }"></td>
 						<td class="center" th:text="${ product.productCount }"></td>
 						<td class="center" th:text="${#dates.format(product.createDate, 'yyyy-MM-dd')}"></td>
@@ -111,33 +131,99 @@
 			</table>
 		</form> 
 	</div>
+
 	<footer th:include="common/footer :: footer"></footer>
 	
 	<script>
+
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
+
 		// 선택 삭제 버튼 클릭 시 deleteMultiForm submit
-		$("#deleteMulti_btn").on("click", function(){
+		$("#deleteMulti_btn").on("click", function() {
 			$("#deleteMultiForm").submit();
 		})
-		
+
 		// 삭제 확인 confirm 출력
 		function checkConfirm() {
-			if(confirm("정말 삭제하시겠습니까?")) return true
-			else return false;
-		}	
-		
+			if (confirm("정말 삭제하시겠습니까?"))
+				return true
+			else
+				return false;
+		}
+
 		// 체크박스 전체 선택, 전체 해제
 		$("#delete_all").click(function() {
-			if($("#delete_all").is(":checked")) $("input[name=delete_nums]").prop("checked", true);
-			else $("input[name=delete_nums]").prop("checked", false);
+			if ($("#delete_all").is(":checked"))
+				$("input[name=delete_nums]").prop("checked", true);
+			else
+				$("input[name=delete_nums]").prop("checked", false);
 		});
 
 		$("input[name=delete_nums]").click(function() {
 			var total = $("input[name=delete_nums]").length;
 			var checked = $("input[name=delete_nums]:checked").length;
 
-			if(total != checked) $("#delete_all").prop("checked", false);
-			else $("#delete_all").prop("checked", true); 
+			if (total != checked)
+				$("#delete_all").prop("checked", false);
+			else
+				$("#delete_all").prop("checked", true);
 		});
+
+		function dateFormat(date) {
+			let month = date.getMonth() + 1;
+			let day = date.getDate();
+
+			month = month >= 10 ? month : '0' + month;
+			day = day >= 10 ? day : '0' + day;
+
+			return date.getFullYear() + '-' + month + '-' + day;
+		}
+
+		// 상품 검색
+		$("#search_btn").on("click", function() {
+			var searchStandard = $("select[name=search_select]").val();
+			var searchValue = $("input[name=search_product]").val();
+
+			var tableHTML;
+			$.ajax({
+				url : "/product/search",
+				data : {searchStandard : searchStandard, searchValue : searchValue},
+				type : "post",
+				success : function(data) {
+					if (data.length == 0) {
+						alert("검색 결과가 없습니다.");
+					} else {
+						$.each(data, function(index, item) {
+
+						let createDate = new Date(item.createDate);
+						let modifyDate = new Date(item.modifyDate);
+
+						tableHTML += "<tr><td class='center'><input type='checkbox' name='delete_nums' value='" + item.productNo + "'></td>"
+									+ "<td class='center'>"+ item.productNo+ "</td>"
+									+ "<td class=\"choose\" onclick=\"location.href='/product/detail/" + item.productNo + "'\">"+ item.productKName+ "</td>"
+									+ "<td class='center'>"+ item.salePrice + "</td>"
+									+ "<td class='center'>"+ item.productCount+ "</td>"
+									+ "<td class='center'>"+ dateFormat(createDate)+ "</td>"
+									+ "<td class='center'>"+ dateFormat(modifyDate)+ "</td></tr>"
+
+									$("#productList").html(tableHTML);
+						});
+					}
+				},
+				error : function(e) {
+					console.log(e);
+				}						
+			});
+		});
+		
+		// 해시태그 관리 팝업
+        function openHashForm(){
+            window.open("/hashtag/form", "popup", "width=800, height=600");
+        }
 		
 	</script>
 	

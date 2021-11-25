@@ -113,7 +113,8 @@
         <div class="input_area">
             <div class="label_area">상품명</div>
             <div>
-                <input class="name_area" type="text" name="kname" placeholder="한글명" required><br>
+                <input class="name_area" type="text" name="kname" placeholder="한글명" required>
+                <button type="button" id="nameCheck" onclick="return productNameCheck()">중복확인</button><br>
                 <input class="name_area" type="text" name="ename" placeholder="영문명" required>
             </div>
         </div>
@@ -155,7 +156,7 @@
                 <select name="food1" id="food1" required></select>
                 <select name="food2" id="food2" required></select>
             </div>
-            <button id="hash_btn" onclick="location.href='/hashtag/form'">해시태그 관리</button>
+            <button id="hash_btn" onclick="openHashForm()">해시태그 관리</button> <!-- onclick="location.href='/hashtag/form'" -->
         </div>
         <div class="input_area">
             <div class="label_area">맛 그래프</div>
@@ -186,10 +187,11 @@
             </div>
         </div>
         <div id="btn_area">
-            <button class="cancle_btn btn" onclick="location.href='/product/list'">취소</button>
+            <button class="cancle_btn btn" type="button" onclick="location.href='/product/list'">취소</button>
             <button class="regist_btn btn">등록</button>
         </div>
     </form>
+	
     <footer th:include="common/footer :: footer"></footer>
 
     <script>
@@ -206,9 +208,9 @@
     	// 와인 종류, 포도 품종, 국가 카테고리 가져오기
         $(function(){
         	$.get("/product/category", function(map) {
-        		const type = $("#type");
-        		const country = $("#country");
-        		const variety = $("#variety");
+        		var type = $("#type");
+        		var country = $("#country");
+        		var variety = $("#variety");
         		
         		$.each(map['type'], function(index, value){
         			type.append($("<option>").val(value.typeNo).text(value.typeName));
@@ -224,11 +226,11 @@
         	});
         	
         	// 해시태그 가져오기
-        	$.get("/hashtag/category", function(map) {
-        		const mood1 = $("#mood1");
-        		const mood2 = $("#mood2");
-        		const food1 = $("#food1");
-        		const food2 = $("#food2");
+        	$.get("/hashtag/hashList", function(map) {
+        		var mood1 = $("#mood1");
+        		var mood2 = $("#mood2");
+        		var food1 = $("#food1");
+        		var food2 = $("#food2");
         		
         		$.each(map['mood'], function(index, value){
         			mood1.append($("<option>").val(value.hashNo).text(value.hashName));
@@ -242,12 +244,13 @@
         	});
         })
     	
-     	// 해시태그 중복 안되게 처리
+     	
 		function validate() {
+        	// 해시태그 중복 안되게 처리
 			var mood1 = $("#mood1");
-    		var mood2 = $("#mood2");
-    		var food1 = $("#food1");
-    		var food2 = $("#food2");
+			var mood2 = $("#mood2");
+			var food1 = $("#food1");
+			var food2 = $("#food2");
 			
     		if(mood1.val() == mood2.val() && food1.val() == food2.val()) {
 				alert("mood와 food 해시태그가 중복됩니다.");
@@ -260,9 +263,70 @@
 				return false;
 			}
 			
+    		// 한글명, 영문명 데이터 유효성 체크 
+    		let regExp1 = /^[가-힣\d]+$/;
+    		if(!regExp1.test($("input[name=kname]").val())) {
+    			alert("한글명은 한글, 숫자만 입력 가능합니다.");
+    			$("input[name=kname]").focus();
+    			return false;
+    		}
+    		
+    		let regExp2 = /^[a-zA-Z\d]+$/;
+    		if(!regExp2.test($("input[name=ename]").val())) {
+    			alert("영문명은 대소문자, 숫자만 입력 가능합니다.");
+    			$("input[name=ename]").focus();
+    			return false;
+    		}
+    		
 			return true;
 		}
     	
+    	$(".regist_btn").attr("disabled", true);
+    	
+    	function productNameCheck(){
+    		var kname = $("input[name=kname]").val();
+    		console.log(kname);
+    		isUsable = false;
+    		
+    		if(!kname) {
+    			$("input[name=kname]").focus();
+    			alert("상품명을 입력해주세요.");
+    		} else {
+    			$.ajax({
+    				url : "/product/productNameCheck",
+    				data : {kname :  kname},
+    				type : "post",
+    				success : function(result) {
+    					if(result > 0) {
+    						alert("중복 된 상품명이 있습니다.");
+    						$("input[name=kname]").focus();
+    					} else {
+    						if(confirm('사용 가능한 상품명입니다. 사용하시겠습니까?')) {
+    							$("input[name=kname]").attr('readonly', true);
+    							isUsable = true; // 사용 가능한 아이디라는 flag 값
+    						} else {
+    							$("input[name=kname]").attr('readonly', false);
+    							isUsable = false;
+    						}
+    					}
+    					if(isUsable) {
+    						$(".regist_btn").removeAttr("disabled");
+    					} else {
+    						$(".regist_btn").attr("disabled", true);
+    					}
+    				}, 
+    				error : function(e) {
+    					console.log(e);
+    				}
+    			});
+    		}
+    	}
+    	
+    	
+    	// 해시태그 관리 팝업
+        function openHashForm(){
+            window.open("/hashtag/form", "popup", "width=800, height=600");
+        }
       
         // 이미지 프리뷰
         let fileElements = document.querySelectorAll("[type=file]");

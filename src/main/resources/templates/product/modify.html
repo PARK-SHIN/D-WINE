@@ -5,6 +5,8 @@
 <title>product modify</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <style>
 	.input_area {
 		display: flex;
@@ -53,7 +55,7 @@
 		color: #83131E;
 	}
 	
-	.insert_btn {
+	.modify_btn {
 		border: 1px solid #83131E;
 		border-radius: 5px;
 		background: #83131E;
@@ -103,6 +105,8 @@
     <form id="modifyForm" th:action="@{/product/modify(${_csrf.parameterName}=${_csrf.token})}" method="post" encType="multipart/form-data" onsubmit="return validate()">
         <h3>상품 기본 정보</h3>
         <input type="hidden" name="productNo" th:value="${product.productNo}">
+        <input type="hidden" id="old_thumbPath" name="old_thumbPath" th:value="${product.thumbnail}">
+        <input type="hidden" id="old_labelPath" name="old_labelPath" th:value="${product.labelImage}">
         <div class="input_area">
             <div class="label_area">카테고리</div>
             <div class="category">
@@ -114,7 +118,8 @@
         <div class="input_area">
             <div class="label_area">상품명</div>
             <div>
-                <input class="name_area" type="text" name="kname" placeholder="한글명" th:value="${product.productKName}" required><br>
+                <input class="name_area" type="text" name="kname" placeholder="한글명" th:value="${product.productKName}" required>
+                <button type="button" id="nameCheck" onclick="return productNameCheck()">중복확인</button><br>
                 <input class="name_area" type="text" name="ename" placeholder="영문명" th:value="${product.productEName}" required>
             </div>
         </div>
@@ -129,9 +134,9 @@
         <div class="input_area">
             <div class="label_area">대표 이미지</div>
             <div>
-                <input name="thumbnail" type="file" accept=".gif, .jpg, .png" required>
+                <input name="thumbnail" type="file" accept=".gif, .jpg, .png">
                 <div class="image_area">
-                	<img class="img" th:src="${product.thumbnail}">
+                	<img id="thumbImg_area"class="img" th:src="${product.thumbnail}">
                 </div>
             </div>
         </div>
@@ -161,7 +166,7 @@
                 <select name="food2" id="food2" required></select>
                 <input type="hidden" name="pre_hash">
             </div>
-            <button id="hash_btn" onclick="location.href='/hashtag/form'">해시태그 관리</button>
+            <button id="hash_btn" onclick="openHashForm()">해시태그 관리</button>
         </div>
         <div class="input_area">
             <div class="label_area">맛 그래프</div>
@@ -187,73 +192,110 @@
         <div class="input_area">
             <div class="label_area">LABEL IMAGE</div>
             <div>
-                <input name="labelImg" type="file" accept=".gif, .jpg, .png" required>
+                <input name="labelImg" type="file" accept=".gif, .jpg, .png">
                 <div class="image_area">
-                	<img class="img" th:src="${product.labelImage}">
+                	<img id="labelImg_area" class="img" th:src="${product.labelImage}">
                 </div>
             </div>
         </div>
         <div id="btn_area">
-            <button class="cancle_btn btn" th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|">취소</button>
-            <button class="insert_btn btn">수정</button>
+            <button class="cancle_btn btn" type="button" th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|">취소</button>
+            <button class="modify_btn btn">수정</button>
         </div>
     </form>             
                 
     <footer th:include="common/footer :: footer"></footer>
 
     <script th:inline="javascript">
+	    var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+    
+    
         $('input[type=range]').on('input', function(){
-            var val = $(this).val();
+        	let val = $(this).val();
             $(this).css('background', 'linear-gradient(to right, #83131E 0%, #83131E '+ val*20 +'%, #c4c4c4 ' + val + '%, #c4c4c4 100%)');
         });
         
         $(function(){
         	$.get("/product/category", function(map) {
-        		var type = $("#type");
-        		var country = $("#country");
-        		var variety = $("#variety");
-        		
+        	
         		$.each(map['type'], function(index, value){
         			// type.append($("<option>").val(value.typeNo).text(value.typeName));
-        			type.append("<option class='type_op' value='" + value.typeNo + "'>" + value.typeName + "</option>");
+        			$("#type").append($("<option>").val(value.typeNo).text(value.typeName));
 					});
         		
         		$.each(map['country'], function(index, value){
-        			country.append($("<option>").val(value.countryNo).text(value.countryName));
+        			$("#country").append($("<option>").val(value.countryNo).text(value.countryName));
 					});
         		
         		$.each(map['variety'], function(index, value){
-        			variety.append($("<option>").val(value.varietyNo).text(value.varietyName));
+        			$("#variety").append($("<option>").val(value.varietyNo).text(value.varietyName));
         		});
+        		
+        		/*<![CDATA[*/
+        	    var type = /*[[${product.type.typeNo}]]*/ "";
+        		/*]]>*/
+        	    /*<![CDATA[*/
+        	    var country = /*[[${product.country.countryNo}]]*/ "";
+        		/*]]>*/
+        	    /*<![CDATA[*/
+        	    var variety = /*[[${product.variety.varietyNo}]]*/ "";
+        		/*]]>*/
+        		
+        	    $("#type").val(type).prop("selected", true);
+        	    $("#country").val(country).prop("selected", true);
+        	    $("#variety").val(variety).prop("selected", true);
         		
         	});
         	
-        	$.get("/hashtag/category", function(map) {
-        		var mood1 = $("#mood1");
-        		var mood2 = $("#mood2");
-        		var food1 = $("#food1");
-        		var food2 = $("#food2");
+        	$.get("/hashtag/hashList", function(map) {
         		
         		$.each(map['mood'], function(index, value){
         			
-        			// mood1.append($("<option>").val(value.hashNo).text(value.hashName));
-        			mood1.append("<option class='mood1_val' value='" + value.hashNo + "'>" + value.hashName + "</option>");
-        			mood2.append("<option class='mood2_val' value='" + value.hashNo + "'>" + value.hashName + "</option>");
+        			// mood1.append("<option class='mood1_val' value='" + value.hashNo + "'>" + value.hashName + "</option>");
+        			$("#mood1").append($("<option>").val(value.hashNo).text(value.hashName));
+        			$("#mood2").append($("<option>").val(value.hashNo).text(value.hashName));
 				});
         		
         		$.each(map['food'], function(index, value){
-        			food1.append("<option class='food1_val' value='" + value.hashNo + "'>" + value.hashName + "</option>");
-        			food2.append("<option class='food2_val' value='" + value.hashNo + "'>" + value.hashName + "</option>");
+        			$("#food1").append($("<option>").val(value.hashNo).text(value.hashName));
+        			$("#food2").append($("<option>").val(value.hashNo).text(value.hashName));
 				});
+        		
+        		/*<![CDATA[*/
+        	    let hashtag = /*[[${product.HashtagList}]]*/ "";
+        		/*]]>*/
+        		
+        		var hash1 = hashtag[0].hashNo;
+        		var hash2 = hashtag[1].hashNo;
+        		var hash3 = hashtag[2].hashNo;
+        		var hash4 = hashtag[3].hashNo;	
+        		
+        		// 수정 전 해시태그 전송
+        		let pre_hash = hash1 + "/" + hash2 + "/" + hash3 + "/" + hash4;
+        		$("input[name=pre_hash]").val(pre_hash);
+        		
+        		// selected 설정
+        		$("#mood1").val(hash1).prop("selected", true);
+        		$("#mood2").val(hash2).prop("selected", true);
+        		$("#food1").val(hash3).prop("selected", true);
+        		$("#food2").val(hash4).prop("selected", true);
+        	
         	});
+        	
+        	// 수정 전 이미지 패스 보내기
+        	var old_thumbImg = $('#thumbImg_area').attr("src");
+        	var old_labelImg = $('#labelImg_area').attr("src");
+      
         })
         
         $(function(){
 			/*<![CDATA[*/
-		    var tasteGraph = /*[[${product.tasteGraph}]]*/ '0/0/0/0';
+		    let tasteGraph = /*[[${product.tasteGraph}]]*/ '0/0/0/0';
 			/*]]>*/
 			
-			var arr = tasteGraph.split("/");
+			let arr = tasteGraph.split("/");
 			
 			var sweetness =  $("input[name=sweetness]");
 			sweetness.val(arr[0]);
@@ -272,36 +314,17 @@
 			tannin.css('background','linear-gradient(to right, #83131E 0%, #83131E ' + tannin.val() * 20 + '%, #c4c4c4 ' + tannin.val() + '%, #c4c4c4 100%)');
 		});
 				
-		// 수정 전 해시태그 보내기
-		/*<![CDATA[*/
-	    var hashtag = /*[[${product.HashtagList}]]*/ "";
-		/*]]>*/
-		var hash1 = hashtag[0].hashNo;
-		var hash2 = hashtag[1].hashNo;
-		var hash3 = hashtag[2].hashNo;
-		var hash4 = hashtag[3].hashNo;		
-		var pre_hash = hash1 + "/" + hash2 + "/" + hash3 + "/" + hash4;
-		$("input[name=pre_hash]").val(pre_hash);
-		
-		// selectbox seleted 속성 주기(카테고리, 해시태그)
-		/* $('#mood1 option:eq(' + hash1 + ')').prop('selected', true);
-		$('#mood2 option:eq(' + hash2 + ')').prop('selected', true);
-		$('#food1 option:eq(' + hash3 + ')').prop('selected', true);
-		$('#food2 option:eq(' + hash4 + ')').prop('selected', true); */
-		
-		/* $("#mood1 option[value="+hash1+"]").prop('selected', true);
-		$("#mood2 option[value="+ hash2+"]").prop('selected', true);
-		$("#food1 option[value="+ hash3+"]").prop('selected', true);
-		$("#food2 option[value="+ hash4+"]").prop('selected', true); */
-		
 		// 해시태그 중복 안되게 처리
 		function validate() {
 			var mood1 = $("#mood1");
-    		var mood2 = $("#mood2");
-    		var food1 = $("#food1");
-    		var food2 = $("#food2");
+			var mood2 = $("#mood2");
+			var food1 = $("#food1");
+			var food2 = $("#food2");
 			
-			if(mood1.val() == mood2.val()) {
+    		if(mood1.val() == mood2.val() && food1.val() == food2.val()) {
+				alert("mood와 food 해시태그가 중복됩니다.");
+				return false;
+			} else if(mood1.val() == mood2.val()) {
 				alert("mood 해시태그가 중복됩니다.");
 				return false;
 			} else if(food1.val() == food2.val()) {
@@ -309,11 +332,69 @@
 				return false;
 			}
 			
+			// 한글명, 영문명 데이터 유효성 체크 
+    		let regExp1 = /^[가-힣\d]+$/;
+    		if(!regExp1.test($("input[name=kname]").val())) {
+    			alert("한글명은 한글, 숫자만 입력 가능합니다.");
+    			$("input[name=kname]").focus();
+    			return false;
+    		}
+    		
+    		let regExp2 = /^[a-zA-Z\d]+$/;
+    		if(!regExp2.test($("input[name=ename]").val())) {
+    			alert("영문명은 대소문자, 숫자만 입력 가능합니다.");
+    			$("input[name=ename]").focus();
+    			return false;
+    		}
+			
 			return true;
 		}
 		
+		$(".modify_btn").attr("disabled", true);
+    	
+    	function productNameCheck(){
+    		var kname = $("input[name=kname]").val();
+    		console.log(kname);
+    		isUsable = false;
+    		
+    		if(!kname) {
+    			$("input[name=kname]").focus();
+    			alert("상품명을 입력해주세요.");
+    		} else {
+    			$.ajax({
+    				url : "/product/productNameCheck",
+    				data : {kname :  kname},
+    				type : "post",
+    				success : function(result) {
+    					if(result > 0) {
+    						alert("중복 된 상품명이 있습니다.");
+    						$("input[name=kname]").focus();
+    					} else {
+    						if(confirm('사용 가능한 상품명입니다. 사용하시겠습니까?')) {
+    							$("input[name=kname]").attr('readonly', true);
+    							isUsable = true; // 사용 가능한 아이디라는 flag 값
+    						} else {
+    							$("input[name=kname]").attr('readonly', false);
+    							isUsable = false;
+    						}
+    					}
+    					if(isUsable) {
+    						$(".modify_btn").removeAttr("disabled");
+    					} else {
+    						$(".modify_btn").attr("disabled", true);
+    					}
+    				}, 
+    				error : function(e) {
+    					console.log(e);
+    				}
+    			});
+    		}
+    	}
 		
-		
+		// 해시태그 관리 팝업
+        function openHashForm(){
+            window.open("/hashtag/form", "popup", "width=800, height=600");
+		}
 		
 		// 이미지 프리뷰
         let fileElements = document.querySelectorAll("[type=file]");

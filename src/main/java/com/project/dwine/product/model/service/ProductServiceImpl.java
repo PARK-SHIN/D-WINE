@@ -83,6 +83,16 @@ public class ProductServiceImpl implements ProductService{
 		return productMapper.deleteMultiProduct(productNo);
 	}
 
+	@Override
+	public List<Product> searchProductList(String searchStandard, String searchValue) {
+		return productMapper.searchProductList(searchStandard, searchValue);
+	}
+
+	@Override
+	public int productNameCheck(String kname) {
+		return productMapper.productNameCheck(kname);
+	}
+
 	
 
 }
