@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
+<title>Insert title here</title>
+<link rel="icon" type="image/png" href="http://example.com/myicon.png">
+<link href="/css/common/common.css" rel="stylesheet">      
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+</head>
+<style>
+    ul{
+        list-style: none;
+        padding: 0%;
+        margin: 0;
+    }
+
+    .payment{
+        width: 800px;
+        margin: 0 auto;
+        padding : 100px 0;
+        
+    }
+    
+    .line{
+        border-top: 3px solid black;
+        
+    }
+
+    ul li{
+        display: flex;
+    }
+
+    .payment_member_head{
+        display: flex;
+    }
+
+    .payement_member{
+        margin-bottom: 20px;
+    }
+
+    .payement_member p{
+        font-size: 20px;
+        color: #83131E;
+        font-weight: bold;
+    }
+  
+    
+   
+  
+     
+    
+
+  
+
+    .order_btn button{
+        width: 100%;
+        height: 60px;
+        background-color: rgb(247, 81, 26);
+        border: none;
+        color: #ffff;
+        font-size: 20px;
+        margin-top: 50px;
+    }
+
+
+    /* ----------------------  */
+
+    .point_head{
+        margin-top: 60px;
+    }
+
+    .point_main{
+        padding-top: 30px;
+    }
+
+    .point{
+        font-size: 13px;
+        margin-right: 40px;
+        font-weight: bold;
+    }
+
+    .member_point{
+        font-size: 11px;
+    }
+
+    .point_value{
+        width: 200px;
+        height: 33px;
+        padding: 0 20px;
+        border: none;
+        text-align: right;
+    }
+    
+    .point_main button{
+        width: 98px;
+        height: 35px;
+        border: none;
+    }
+    /****************************/
+
+
+    .block{
+        background: #535455;
+        width: 100%;
+        height: 40px;
+        margin-bottom: 10px;
+    }
+
+    .order_info{
+        display: flex;
+    }
+    
+    .order_pickUp{
+    	margin-top: 60px;
+    }
+
+    .wine_info{
+        display: flex;
+        width: 650px;
+    }
+    
+  /*   .price{
+    	font-size: 20px;
+    }
+    
+    .order_value .count{
+    	font-size: 20px;
+    } */
+
+    .order_value{
+        text-align: center;
+        padding-top: 10px;
+    }
+
+    .order_value .price{
+        font-size: 22px;
+        font-weight: 500;
+    }
+
+    .order_value .count{
+    	width:50px;
+        font-size: 15px
+    }
+    
+    .wine_img{
+        width: 90px;
+        height: 90px;
+    }
+
+    .pickUp_value{
+        height: 70px;
+        text-align: center;
+        line-height: 70px;
+        background-color: rgb(249, 249, 249);
+    }
+
+    .pickUp{
+        font-size: 13px;
+        font-weight: 700;
+        margin: 10px;
+    }
+
+    select{
+        width: 160px;
+        height: 35px;
+        /* padding: 20px; */
+    }
+
+    .place_info{
+        width: 80px;
+        height: 35px;
+        background: #fff;
+        border-color: #d1d1d1;
+    }
+
+    .deliver_head{
+        display: flex;
+        height: 50px;
+    }
+
+    .deliver_head h3{
+        margin-left: 10px;
+    }
+
+    .map_icon{
+        line-height: 62px;
+    }
+
+    .deliver_head .fas{
+        font-size: 24px;
+    }
+
+    .deliver_info{
+        margin: 0;
+        font-size: 13px;
+    }
+
+
+    
+    
+    /* ----------------------  */
+    .finalPayment_info{
+        border: 5px solid rgb(238, 238, 238);
+        margin: 100px 0 20px 0;
+        padding: 50px 20px;
+        text-align: center;
+    }
+    
+    .final_price_info{
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+    .final_price{
+        color: rgb(255, 91, 89);
+        font-weight: bold;
+        font-size: 22px;
+    }
+
+    .clauses label{
+        font-size: 13px;
+    }
+
+    .clause_all span{
+        font-weight: bold;
+    }
+
+    .clause span{
+        text-decoration: underline;
+        font-size: 13px;
+        cursor: pointer;
+    }
+</style>
+<body>
+    <header th:include="common/header :: header"></header>
+	<div class="wrapper">
+    <div class="payment">
+        <h2 class="head">회원 정보</h2>
+        <div class="payement_member line">
+            <div class="payment_member_head">
+                <div class="member_info">
+                    <p class="nick" th:text="|ID : ${member.user_id}|"></p>
+                    <p class="nick" th:text="|NICKNAME : ${member.user_nickname}님|"></p>
+                </div>
+                
+            </div>
+        </div>
+  
+
+        <div class="order_pickUp">
+            <h2>상품  매장픽업 매장 / 일자 선택</h3>
+            <div class="block"></div>
+            <div class="main">
+            <ul>
+            	<li th:each="orderList : ${purchaseList}" style="padding : 30px 0">
+            		<div class="order_info">
+                    <div class="wine_info">
+                        <img class="wine_img" th:src="${orderList.thumbnail}">
+                        <div class="wine_name">
+                            <p class="product_kname" th:text="${orderList.product_kname}"></p>
+                            <p th:text="${orderList.product_ename}"></p>
+                        </div>
+                    </div>
+                    <div class="order_value" th:each="orderValue : ${orderList.cart}">
+                        <span class="price" th:text="${orderList.sale_price * orderValue.cart_count}"></span>원
+                        <p class="count" th:text="|${orderValue.cart_count}개|"></p>
+                    </div>
+                </div>
+            	</li>
+            </ul>
+                
+                
+                <!-- <form id="purchaseForm" method="post" onsubmit="return checkForm();"> -->
+                <div class="pickUp_value">
+                    <span class="pickUp">매장</span>
+                    <select id="shop">
+                        <option value="">매장을 선택하세요.</option>
+                        <option value="강남">강남</option>
+                        <option value="당산">당산</option>
+                        <option value="종로">종로</option>
+                    </select>
+                    <button class="place_info" onclick="shopInfo();" type="button">매장정보</button>
+                    <span class="pickUp">일자</span>
+                    <select id="pickupDate">
+     					<option value="">일자를 선택하세요.</option>
+                    </select>
+                    <span class="pickUp">시간</span>
+                    <select id="time">
+                        <option value="">픽업시간을 선택하세요.</option>
+                        <option value="12:00~17:00">12:00 ~ 17:00</option>
+                        <option value="17:00~21:00">17:00 ~ 21:00</option>
+                    </select>
+                </div>
+
+            </div>
+            
+            <p class="shop_info"></p>
+            
+            <div class="deliver_head">
+                <div class="map_icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>배송방법 : 매장픽업</h3>
+            </div>
+            
+            <p class="deliver_info">&emsp;해당 매장을 방문하셔서 주문하신 상품을 직접 픽업하세요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- --------------------    -->
+        <h2 class="point_head head">포인트 사용</h2>
+        <div class="point_main line">
+            <span class="point">적립금</span>
+            <input class="point_value" type="number" onchange='usePoints()'  placeholder="사용할 적립금을 입력해주세요." />
+            <button id="usePoint" type="button">사용</button>
+            <input type="hidden" class="hiddenPoint" th:value="${member.user_point}">
+            <span class="member_point" th:text="|보유 : ( ${member.user_point} Point )|"></span>
+        </div>
+
+        <!---------------- -->
+
+        <div class="finalPayment_info">
+            <span class="final_price_info">주문금액 <span class="allPrice"></span>원 - 포인트사용 <span class="pointUse">0</span>원 =
+            <span class="final_price fp"></span><span class="final_price">원</span>
+        </div>
+
+        <div class="clauses">
+            <div class="clause_all">
+                <input id="cbx_chkAll" type="checkbox">
+                <label for="cbx_chkAll">주문 상품정보 및 서비스 이용약관에 모두 동의하십니까?</label>
+            </div>
+            <div class="clause">
+                <input id="check1" type="checkbox" name="chk">
+                <label for="check1">주문할 상품정보(상품명,상품가격,배송정보)에 동의 하십니까?(전자상거래법 제8조 2항)</label>
+            </div>
+            <div class="clause">
+                <input id="check2" type="checkbox" name="chk">
+                <label for="check2">전자금융거래 이용약관 동의&emsp;</label>
+                <span onclick="clause()">약관보기</span>
+            </div>
+        </div>
+
+        <div class="order_btn">
+            <button type="submit" onclick="return checkForm()"><span class="ofp"></span>원 결제하기</button>
+        </div>
+     </div>
+    <!-- </form> -->
+    <input type="hidden" class="username" th:value="${member.user_name}">
+    <input type="hidden" class="phone" th:value="${member.user_phone}">
+    <input type="hidden" class="userId" th:value="${member.user_id}">
+    </div> 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     <script>
+     
+     
+      var header = $("meta[name='_csrf_header']").attr('content');
+  	  var token = $("meta[name='_csrf']").attr('content');
+     
+     
+        
+		var allProductPrice = 0;
+       
+		/* 페이지 로드시 총상품 금액 보여주기*/
+        window.onload = function(){
+			purchasePrice();
+        /* 총 상품 금액 (포인트 적용 전 )*/
+		function purchasePrice(){
+		
+				const plusElem = document.querySelectorAll(".price");
+			
+				
+				for(const elem of plusElem){
+					 allProductPrice = allProductPrice + Number(elem.innerText);
+		           }
+				 
+				 
+				document.querySelector(".allPrice").innerText = allProductPrice;
+
+				document.querySelector(".fp").innerText = allProductPrice;
+				document.querySelector(".ofp").innerText = allProductPrice;
+			}
+        
+		}
+            
+        
+        
+        var havePoint = Number(document.querySelector(".hiddenPoint").value);
+     	var usePoint = Number(document.querySelector(".point_value").innerText);
+        var userPointBtn = document.getElementsByClassName("userPoint");
+
+			/* 주문자가 작성한 Point 값 넣기 */
+			 function usePoints()  {
+				  const pv = Number(document.querySelector(".point_value").value);
+				  usePoint = pv;
+			}
+			 
+			 
+			 /* 포인트 사용버튼 눌렀을때 처리 */
+			 
+			document.getElementById("usePoint").addEventListener('click',function(){
+				if(havePoint < usePoint){
+					alert(havePoint + 'Point 이하로 사용해주세요.');
+					
+				} else if(usePoint == 0 ){
+					alert('사용할 포인트를 입력해주세요.')
+				} else{
+					alert('사용가능합니다.');
+					document.querySelector(".pointUse").innerText = usePoint;
+					/* 총 결제해야할 금액 */
+			        document.querySelector(".fp").innerText = (allProductPrice - usePoint);
+			        document.querySelector(".ofp").innerText = (allProductPrice - usePoint);
+				}
+			});
+			
+
+			 
+			 
+			 
+			 
+
+		    var product_kname = document.querySelectorAll(".product_kname");
+		    var orderNames = "";
+		    
+		    	for(const elem of product_kname){
+		  			  console.log(elem.innerText);
+		  			orderNames = orderNames + "," + elem.innerText;
+		        }
+		    	
+		    var username = document.querySelector(".username").value;
+		    var phone = document.querySelector(".phone").value;
+		    var userId = document.querySelector(".userId").value;
+		    orderNames = orderNames.substring(1); 
+		    console.log(orderNames);
+		    console.log(document.querySelector(".username").value);
+		    
+			 
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    function checkForm(){
+				var shop = document.getElementById("shop");
+				var pickupDate = document.getElementById("pickupDate");
+				var time = document.getElementById("time");
+				var cbx_chkAll = document.getElementById("cbx_chkAll");
+				
+				
+				
+				if(shop.options[shop.selectedIndex].value == ""){
+					alert('지점을 선택해주세요.');
+					return false;
+				}
+				
+				else if(pickupDate.options[pickupDate.selectedIndex].value == ""){
+					alert('픽업일자를 선택해주세요.');
+					return false;
+				}
+				
+				else if(time.options[time.selectedIndex].value == ""){
+					alert('픽업시간을 선택해주세요.');
+					return false;
+				}
+				
+				else if(cbx_chkAll.checked == false){
+					alert('약관에 동의해주세요.');
+					return false;
+				} 
+				
+				iamport();
+				
+				function iamport(){
+					//가맹점 식별코드
+					IMP.init('imp88153348');
+					IMP.request_pay({
+				    pg : 'kcp',
+				    pay_method : 'card',
+				    merchant_uid : 'merchant_' + new Date().getTime(),
+				    name : orderNames , //결제창에서 보여질 이름
+				    amount : 100, //실제 결제되는 가격
+				    buyer_email : userId,	// 구매자 이메일
+				    buyer_name : username,	// 구매자 이름
+				    buyer_tel : phone,		// 구매자 번호
+				    buyer_postcode : '123-456'
+					}, function(rsp) {
+						console.log(rsp);
+						// 결제검증
+						$.ajax({
+				        	type : "POST",
+				        	beforeSend: function(xhr){
+		    			        xhr.setRequestHeader(header, token);
+		    			    },
+				        	url : "/verifyIamport/" + rsp.imp_uid
+				        }).done(function(data) {
+				        	
+				        	console.log(data);
+				        	
+				        	// 위의 rsp.paid_amount 와 data.response.amount를 비교한후 로직 실행 (import 서버검증)
+				        	if(rsp.paid_amount == data.response.amount){
+					        	alert("결제가 완료되었습니다.");
+					        	
+					        	
+					        	
+				        	} else {
+				        		alert("결제 실패");
+				        	}
+				        });
+					});
+				}
+				
+				
+				/* function iamport(){
+				//가맹점 식별코드
+				IMP.init('imp88153348');
+				IMP.request_pay({
+				    pg : 'kcp',
+				    pay_method : 'card',
+				    merchant_uid : 'merchant_' + new Date().getTime(),
+				    name : orderNames , //결제창에서 보여질 이름
+				    amount : 10, //실제 결제되는 가격
+				    buyer_email : userId,	// 구매자 이메일
+				    buyer_name : username,	// 구매자 이름
+				    buyer_tel : phone,		// 구매자 번호
+				    buyer_postcode : '123-456'
+				}, function(rsp) {
+					console.log(rsp);
+				    if ( rsp.success ) {
+				    	var msg = '결제가 완료되었습니다.';
+				        msg += '고유ID : ' + rsp.imp_uid;
+				        msg += '상점 거래ID : ' + rsp.merchant_uid;
+				        msg += '결제 금액 : ' + rsp.paid_amount;
+				        msg += '카드 승인번호 : ' + rsp.apply_num;
+				    } else {
+				    	 var msg = '결제에 실패하였습니다.';
+				         msg += '에러내용 : ' + rsp.error_msg;
+				    }
+				    alert(msg);
+				});
+			} */
+		    
+		    }
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+			 
+/* 			 
+			 
+			document.querySelector(".ofp").addEventListener('click',function(){
+			
+				
+			}); */
+			 
+			  /* 아임포트 결제 API */ 
+		   
+        </script>
+     
+     <!-- 매장 정보 출력 -->
+     <script>
+                function shopInfo(){
+                	const shop_info = document.querySelector("shop_info");
+                	var shop = document.getElementById("shop");
+                	
+                	if(shop.options[shop.selectedIndex].value == "강남"){ 
+                		document.querySelector(".shop_info").innerHTML = 
+                			"<p style='color : #83131E'> 도로명 : 서울특별시 강남구 테헤란로14길 6 남도빌딩 2층, 3층, 4층 <br>지 번 : 서울특별시 강남구 역삼동 823-25 </p>"; 
+                	}else if(shop.options[shop.selectedIndex].value == "당산"){ 
+                		document.querySelector(".shop_info").innerHTML = 
+                			"<p style='color : #83131E'> 도로명 : 서울특별시 영등포구 선유동2로 57 이레빌딩 <br>지 번 : 서울특별시 영등포구 양평동4가 2 </p>"; 
+               		}else if(shop.options[shop.selectedIndex].value == "종로"){ 
+               			document.querySelector(".shop_info").innerHTML = 
+               				"<p style='color : #83131E'> 도로명 : 서울특별시 중구 남대문로 120 대일빌딩 2층, 3층 <br>지 번 : 서울특별시 중구 남대문로1가 18 </p>";
+                	} else{
+                		alert('매장을 선택해주세요.');
+                	}
+
+   
+                }
+     </script>
+     
+
+     <script type="text/javascript">
+     
+     function clause(){
+         window.open("/purchase/clause", "popup1", "width=500, height=600");
+     }
+     
+     /* 오늘부터 +7일 출력하기 */
+     var currentDay = new Date();  
+     var theYear = currentDay.getFullYear();
+     var theMonth = currentDay.getMonth();
+     var theDate  = currentDay.getDate();
+     var theDayOfWeek = currentDay.getDay();
+
+     
+     const WEEKDAY = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
+     
+     var thisWeek = [];
+      
+     for(var i=0; i<7; i++) {
+       var resultDay = new Date(theYear, theMonth, theDate + i, theDayOfWeek);
+       var mm = Number(resultDay.getMonth()) + 1;
+       var dd = resultDay.getDate();
+       var day = resultDay.getDay();
+       
+       
+       mm = String(mm).length === 1 ? '0' + mm : mm;
+       dd = String(dd).length === 1 ? '0' + dd : dd;
+       
+       thisWeek[i] =  mm + '-' + dd + WEEKDAY[day];
+     }
+
+	var optionIndex = 0;
+
+	for(var i=0;i<6;i++){
+
+	let selectbox = document.querySelector("#pickupDate");
+	var objOption = document.createElement("option"); 
+	objOption.text = thisWeek[i];
+	objOption.value = thisWeek[i];
+	selectbox.options.add(objOption);
+
+	}
+	
+	/* checkbox All Check*/
+		$(document).ready(function() {
+			$("#cbx_chkAll").click(function() {
+				if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+				else $("input[name=chk]").prop("checked", false);
+			});
+			
+			$("input[name=chk]").click(function() {
+				var total = $("input[name=chk]").length;
+				var checked = $("input[name=chk]:checked").length;
+				
+				if(total != checked) $("#cbx_chkAll").prop("checked", false);
+				else $("#cbx_chkAll").prop("checked", true); 
+			});
+		});
+	
+	
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	</script>
+<div th:replace="common/footer :: footer"></div>
+
+</body>
+</html>
