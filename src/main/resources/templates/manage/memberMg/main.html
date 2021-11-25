@@ -161,7 +161,7 @@
                 <th>가입일</th>
                 <th>총 신고수</th>
        	   </tr>
-            <tr class="trClass" th:each="member: ${ memberList }"><td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ member.user_no }"></td><td id="userNO" th:text="${ member.user_no }"></td><td th:text="${ member.user_nickname }"></td><td th:text="${ member.user_id }" class="openBtn" onclick="openModal(this)"></td><td th:text="${ #dates.format(member.create_date, 'yyyy-MM-dd') }"></td><td th:text="${ member.reported_count }"></td><td class="modal hidden tdCss"><div class="bg"></div><div class="modalBox"><img style="margin-left: 578px;"src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px">
+            <tr th:each="member: ${ memberList }"><td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ member.user_no }"></td><td id="userNO" th:text="${ member.user_no }"></td><td th:text="${ member.user_nickname }"></td><td th:text="${ member.user_id }" class="openBtn" onclick="openModal(this)"></td><td th:text="${ #dates.format(member.create_date, 'yyyy-MM-dd') }"></td><td th:text="${ member.reported_count }"></td><td class="modal hidden tdCss"><div class="bg"></div><div class="modalBox"><img style="margin-left: 578px;"src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px">
 			    <h1>회원 정보 창</h1>
             <div class="memberDetailArea">
              <div class="memberNo"><label>회원 번호 : </label> <span th:text="${member.user_no}" readonly/></div><br>

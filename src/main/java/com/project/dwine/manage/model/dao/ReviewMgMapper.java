@@ -5,10 +5,16 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.project.dwine.manage.model.vo.Report;
+import com.project.dwine.manage.model.vo.Review;
 
 @Mapper
 public interface ReviewMgMapper {
 
-	List<Report> selectReviewList();
+
+	List<Review> selectReviewList();
+
+	void deleteReviewMg(String user_no);
+
+	
 
 }
