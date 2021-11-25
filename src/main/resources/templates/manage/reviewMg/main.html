@@ -141,15 +141,15 @@ $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, to
 
 //디테일로 새창
  var reviewNo = "${review.review_no}".val
-	console.log(reviewNo); 
+   console.log(reviewNo); 
  
 var review_no = document.querySelector("#review_no").value;
-	
+   
 function openDetail(){  
-	console.log(reviewNo);
-	//console.log(review_no);
-	window.open("/mypage/review/" + reviewNo, "상세보기창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );  
-	}  
+   console.log(reviewNo);
+   //console.log(review_no);
+   window.open("/mypage/review/" + reviewNo, "상세보기창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );  
+   }  
 
 
 
@@ -158,29 +158,29 @@ function openDetail(){
 
 //allCheck 
 $(function(){
-	var checkboxes = document.getElementsByName("checkbox");
-	var checkCnt = checkboxes.length;
-	
-	$("input[name='allCheck']").click(function(){
-		var check_listArr = $("input[name='checkbox']");
-		for (var i=0; i<check_listArr.length; i++){
-			check_listArr[i].checked = this.checked;
-		}
-	});
-	$("input[name='checkbox']").click(function(){
-		if($("input[name='checkbox']:checked").length == checkCnt){
-			$("input[name='allCheck']")[0].checked = true;
-		}
-		else{
-			$("input[name='allCheck']")[0].checked = false;
-		}
-	});
+   var checkboxes = document.getElementsByName("checkbox");
+   var checkCnt = checkboxes.length;
+   
+   $("input[name='allCheck']").click(function(){
+      var check_listArr = $("input[name='checkbox']");
+      for (var i=0; i<check_listArr.length; i++){
+         check_listArr[i].checked = this.checked;
+      }
+   });
+   $("input[name='checkbox']").click(function(){
+      if($("input[name='checkbox']:checked").length == checkCnt){
+         $("input[name='allCheck']")[0].checked = true;
+      }
+      else{
+         $("input[name='allCheck']")[0].checked = false;
+      }
+   });
 });
 
 
 function deleteValue(){
-	
-	var valueArr = new Array();
+   
+   var valueArr = new Array();
     var list = $("input[name='checkbox']");
     
     console.log("리뷰넘버값: " + list);
@@ -195,28 +195,28 @@ function deleteValue(){
         }
     }
     if (valueArr.length == 0){
-    	alert("선택된 회원이 없습니다.");
+       alert("선택된 회원이 없습니다.");
     }
     else{
-		var chk = confirm("정말 삭제하시겠습니까?");				 
-		$.ajax({
-		    url : "/manage/reviewMg/delete",                   
-		    type : 'POST',  
-		    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		    traditional : true,
-		    data : {
-		    	valueArr : valueArr        //403에러는왜뜨는거지? -> csrf때문
-		    },
-		    success : function(data){
-				alert("삭제에 성공했습니다.");
-				location.replace("main")
-			},
-			error : function(e){
-				consloe.log("삭제에 실패했습니다");
-			}
+      var chk = confirm("정말 삭제하시겠습니까?");             
+      $.ajax({
+          url : "/manage/reviewMg/delete",                   
+          type : 'POST',  
+          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+          traditional : true,
+          data : {
+             valueArr : valueArr        //403에러는왜뜨는거지? -> csrf때문
+          },
+          success : function(data){
+            alert("삭제에 성공했습니다.");
+            location.replace("main")
+         },
+         error : function(e){
+            consloe.log("삭제에 실패했습니다");
+         }
        
-		});
-	}
+      });
+   }
  }
 
 

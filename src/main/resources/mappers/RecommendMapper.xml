@@ -8,6 +8,46 @@
 		<result property="status" column="STATUS"/>
 	</resultMap>
 	
+	<resultMap id="productResultMap" type="com.project.dwine.product.model.vo.Product">
+		<id property="productNo" column="PRODUCT_NO"/>
+		<result property="productKName" column="PRODUCT_KNAME"/>
+		<result property="productEName" column="PRODUCT_ENAME"/>
+		<result property="costPrice" column="COST_PRICE"/>
+		<result property="salePrice" column="SALE_PRICE"/>
+		<result property="productCount" column="PRODUCT_COUNT"/>
+		<result property="winery" column="WINERY"/>
+		<result property="thumbnail" column="THUMBNAIL"/>
+		<result property="capacity" column="CAPACITY"/>
+		<result property="abv" column="ABV"/>
+		<result property="tasteGraph" column="TASTE_GRAPH"/>
+		<result property="information" column="INFORMATION"/>
+		<result property="award" column="AWARD"/>
+		<result property="tip" column="TIP"/>
+		<result property="labelImage" column="LABEL_IMAGE"/>
+		<result property="status" column="STATUS"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<association property="variety" resultMap="varietyResultMap"/>
+		<association property="type" resultMap="typeResultMap"/>
+		<association property="country" resultMap="countryResultMap"/>
+		<collection property="hashtagList" resultMap="hashtagResultMap"/>
+	</resultMap>
+	
+	<resultMap id="countryResultMap" type="com.project.dwine.product.model.vo.Country">
+		<id property="countryNo" column="COUNTRY_NO"/>
+		<result property="countryName" column="COUNTRY_NAME"/>
+	</resultMap> 
+	
+	<resultMap id="typeResultMap" type="com.project.dwine.product.model.vo.Type">
+		<id property="typeNo" column="TYPE_NO"/>
+		<result property="typeName" column="TYPE_NAME"/>
+	</resultMap> 
+	
+	<resultMap id="varietyResultMap" type="com.project.dwine.product.model.vo.Variety">
+		<id property="varietyNo" column="VARIETY_NO"/>
+		<result property="varietyName" column="VARIETY_NAME"/>
+	</resultMap> 
+	
 	<select id="selectHashtagList" resultMap="hashtagResultMap" parameterType="_int">
 		SELECT
 			  HASH_NO
@@ -16,5 +56,83 @@
 		 FROM HASHTAG
 		 WHERE HASH_TYPE = #{hashType}
 		 AND STATUS = 'Y'
+	</select>
+	
+	<select id="selectWineList" resultMap="productResultMap" parameterType="_int">
+		SELECT
+		      P.PRODUCT_NO
+		    , P.PRODUCT_KNAME
+		    , P.PRODUCT_ENAME
+		    , P.COST_PRICE
+		    , P.SALE_PRICE
+		    , P.PRODUCT_COUNT
+		    , P.WINERY
+		    , P.THUMBNAIL
+		    , P.CAPACITY
+		    , P.ABV
+		    , P.TASTE_GRAPH
+		    , P.INFORMATION
+		    , P.AWARD
+		    , P.TIP
+		    , P.LABEL_IMAGE
+		    , P.STATUS
+		    , P.CREATE_DATE
+		    , P.MODIFY_DATE
+		    , V.VARIETY_NO
+		    , V.VARIETY_NAME
+		    , T.TYPE_NO
+		    , T.TYPE_NAME
+		    , C.COUNTRY_NO
+		    , C.COUNTRY_NAME
+		    , H.HASH_NO
+		    , H.HASH_TYPE
+		    , H.HASH_NAME
+		    , H.STATUS
+		 FROM PRODUCT P
+		 LEFT JOIN VARIETY V ON(P.VARIETY_NO = V.VARIETY_NO)
+		 LEFT JOIN TYPE T ON(P.TYPE_NO = T.TYPE_NO)
+		 LEFT JOIN COUNTRY C ON(P.COUNTRY_NO = C.COUNTRY_NO)
+		 LEFT JOIN PRODUCT_HASHTAG PH ON(P.PRODUCT_NO = PH.PRODUCT_NO)
+		 LEFT JOIN HASHTAG H ON(H.HASH_NO = PH.HASH_NO)
+		 WHERE PH.HASH_NO = #{ hashNo }
+	</select>
+	
+	<select id="searchWineList" resultMap="productResultMap" parameterType="string">
+		SELECT
+		      P.PRODUCT_NO
+		    , P.PRODUCT_KNAME
+		    , P.PRODUCT_ENAME
+		    , P.COST_PRICE
+		    , P.SALE_PRICE
+		    , P.PRODUCT_COUNT
+		    , P.WINERY
+		    , P.THUMBNAIL
+		    , P.CAPACITY
+		    , P.ABV
+		    , P.TASTE_GRAPH
+		    , P.INFORMATION
+		    , P.AWARD
+		    , P.TIP
+		    , P.LABEL_IMAGE
+		    , P.STATUS
+		    , P.CREATE_DATE
+		    , P.MODIFY_DATE
+		    , V.VARIETY_NO
+		    , V.VARIETY_NAME
+		    , T.TYPE_NO
+		    , T.TYPE_NAME
+		    , C.COUNTRY_NO
+		    , C.COUNTRY_NAME
+		    , H.HASH_NO
+		    , H.HASH_TYPE
+		    , H.HASH_NAME
+		    , H.STATUS
+		 FROM PRODUCT P
+		 LEFT JOIN VARIETY V ON(P.VARIETY_NO = V.VARIETY_NO)
+		 LEFT JOIN TYPE T ON(P.TYPE_NO = T.TYPE_NO)
+		 LEFT JOIN COUNTRY C ON(P.COUNTRY_NO = C.COUNTRY_NO)
+		 LEFT JOIN PRODUCT_HASHTAG PH ON(P.PRODUCT_NO = PH.PRODUCT_NO)
+		 LEFT JOIN HASHTAG H ON(H.HASH_NO = PH.HASH_NO)
+		 WHERE H.HASH_NAME = #{ hashName }
 	</select>
 </mapper>

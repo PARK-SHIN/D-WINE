@@ -6,9 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.dwine.hashtag.model.vo.Hashtag;
+import com.project.dwine.product.model.vo.Product;
 import com.project.dwine.recommendWine.model.service.RecommendService;
 
 @Controller
@@ -34,6 +38,39 @@ public class RecommendController {
 		return "/recommendWine/main";
 		
 	}
+	
+	@PostMapping("list")
+	public String wineList(@RequestParam String hashNo, @RequestParam String hashName, Model model) {
+		
+		List<Product> wineList = recommendService.selectWineList(Integer.parseInt(hashNo));
+		model.addAttribute("wineList", wineList);
+		model.addAttribute("hashName", hashName);
+		
+		return "/recommendWine/list"; 
+	}
 
+	@PostMapping("search")
+	public String searchWineList(@RequestParam String search_hash, Model model) {
+		String hashName = "";
+		
+		if(search_hash.contains("#")) {
+			hashName = search_hash.substring(1);
+			model.addAttribute("hashName", search_hash);
+		} else {
+			hashName = search_hash;
+			model.addAttribute("hashName", "#" + search_hash);
+		}
+		
+		List<Product> wineList = recommendService.searchWineList(hashName);
+		
+		if(!wineList.isEmpty()) {
+			model.addAttribute("wineList", wineList);			
+		} else {
+			model.addAttribute("message", "검색하시는 해시태그의 상품이 없습니다.");
+		}
+		
+		
+		return "/recommendWine/list"; 
+	}
 	
 }

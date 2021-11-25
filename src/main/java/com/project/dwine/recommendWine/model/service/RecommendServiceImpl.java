@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.dwine.hashtag.model.vo.Hashtag;
+import com.project.dwine.product.model.vo.Product;
 import com.project.dwine.recommendWine.model.dao.RecommendMapper;
 
 @Service
@@ -21,6 +22,16 @@ public class RecommendServiceImpl implements RecommendService{
 	@Override
 	public List<Hashtag> selectHashtagList(int hashType) {
 		return recommendMapper.selectHashtagList(hashType);
+	}
+
+	@Override
+	public List<Product> selectWineList(int hashNo) {
+		return recommendMapper.selectWineList(hashNo);
+	}
+
+	@Override
+	public List<Product> searchWineList(String hashName) {
+		return recommendMapper.searchWineList(hashName);
 	}
 
 }
