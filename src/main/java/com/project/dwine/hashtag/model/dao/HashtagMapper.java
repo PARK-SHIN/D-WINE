@@ -20,4 +20,6 @@ public interface HashtagMapper {
 	int modifyHashtag(int hashNo, String hashName, int hashType);
 
 	int deleteHashtag(int hashNo);
+
+	int checkDeleteHash(int hashNo);
 }

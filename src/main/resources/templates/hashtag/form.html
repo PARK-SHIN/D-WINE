@@ -9,7 +9,6 @@
 <style>
     #content {
         display: flex;
-        border: 1px solid #c4c4c4;
         width: fit-content;
         padding: 20px;
     }
@@ -53,9 +52,13 @@
     li:hover {
     	background: #c4c4c4;
     }
+    .btn_area {
+    	margin-top: 20px;
+    }
 </style>
 </head>
 <body>
+	<h1 class="center">해시태그 관리</h1>
 	<div id="content">
         <div id="left_box">
             <div class="center">
@@ -77,19 +80,19 @@
 	        	<label class="label">해시태그 번호</label>
 		        <input type="number" id="hashNo" name="hashNo" readonly><br>
 		        <label  class="label">해시태그명</label>
-		        <input type="text" id="hashName" name="hashName" required="required"><input id="hashNameCheck" type="button" onclick="return hashNameCheck()" value="중복확인"><br>
+		        <input type="text" id="hashName" name="hashName" required><button type="button" id="hashNameCheck" onclick="return hashNameCheck()">중복확인</button><br>
 		        <label  class="label">해시태그 타입</label>
-		        <label for="mood">mood</label><input type="radio" id="mood" name="hashType" value="1" required="required">
+		        <label for="mood">mood</label><input type="radio" id="mood" name="hashType" value="1" required>
 		        <label for="food">food</label><input type="radio" id="food" name="hashType" value="2">
 	        </div>
 	        <div class="center btn_area">
-	        	<button id='deleteBtn' class="btn" onclick='deleteHash()'>삭제</button>
-	        	<button id='registBtn' class="btn" onclick='registHash()'>등록</button>
-	        	<button id='modifyBtn' class="btn" onclick='modifyHash()'>수정</button>
+	        	<button id='deleteBtn' type="button" class="btn" onclick='deleteHash()'>삭제</button>
+	        	<button id='registBtn' type="button" class="btn" onclick='registHash()'>등록</button>
+	        	<button id='modifyBtn' type="button" class="btn" onclick='modifyHash()'>수정</button>
 	        </div>
-	        	
         </div>
     </div>
+	<div class="center"><button id='closeBtn' type="button" onclick='window.close()'>닫기</button></div>
     
     <script>
     var token = $("meta[name='_csrf']").attr("content");
@@ -100,7 +103,7 @@
     $(".btn").attr("disabled", true);
     
     /* 해시태그 list 보여주는 <ul>에 해시태그 <li> 추가 */
-    $.get("/hashtag/category", function(map) {
+    $.get("/hashtag/hashList", function(map) {
 		const mood = $("#mood");
 		const food = $("#food");
 
@@ -122,7 +125,6 @@
     function hashNameCheck() {
 		var hashName = $("#hashName").val();
 		var isUsable = false;
-		console.log(hashName);
 		
 		if(!hashName) {
 			$("#hashName").focus();
@@ -137,7 +139,7 @@
 						alert("중복 된 해시태그명이 있습니다.");
 						$("#hashName").focus();
 					} else {
-						if(confirm('사용 가능한 닉네임입니다. 사용하시겠습니까?')) {
+						if(confirm('사용 가능한 해시태그명입니다. 사용하시겠습니까?')) {
 							$("#hashName").attr('readonly', true);
 							isUsable = true; // 사용 가능한 아이디라는 flag 값
 						} else {
@@ -206,18 +208,29 @@
 	function registHash() {
 		var hashName = $("#hashName").val();
 		var hashType = $("input[name=hashType]:checked").val();
-		$.ajax({
-			url : "/hashtag/regist",
-			data : {hashName:hashName, hashType:hashType},
-			type : "post",
-			success : function(data) {
-				console.log(data);
-				window.location.href = "/hashtag/form";
-			}, 
-			error : function(e) {
-				console.log(e);
-			}
-		});
+		
+		if(!hashType) {
+			alert("해시태그 타입을 선택해 주세요.");
+			$("input[name=hashType]").focus();
+		} else {
+			$.ajax({
+				url : "/hashtag/regist",
+				data : {hashName:hashName, hashType:hashType},
+				type : "post",
+				success : function(data) {
+					if(data == "success") {
+						alert("해시태그 등록에 성공하였습니다.");
+						location.reload();
+					} else {
+						alert("해시태그 등록에 실패하였습니다.");
+					}
+				}, 
+				error : function(e) {
+					console.log(e);
+				}
+			});
+		}
+		
 	}
 	
     /* 해시태그 수정 */
@@ -225,26 +238,37 @@
 		var hashNo = $("#hashNo").val();
 		var hashName = $("#hashName").val();
 		var hashType = $("input[name=hashType]:checked").val();
-		$.ajax({
-			url : "/hashtag/modify",
-			data : {hashNo:hashNo, hashName:hashName, hashType:hashType},
-			type : "post",
-			success : function(data) {
-				console.log(data);
-				window.location.href = "/hashtag/form";
-			}, 
-			error : function(e) {
-				console.log(e);
-			}
-		});
+		
+		if(!hashNo) {
+			alert("수정하실 해시태그를 선택해 주세요.");
+		} else {
+			$.ajax({
+				url : "/hashtag/modify",
+				data : {hashNo:hashNo, hashName:hashName, hashType:hashType},
+				type : "post",
+				success : function(data) {
+					if(data == "success") {
+						alert("해시태그 수정에 성공하였습니다.");
+						location.reload();
+					} else {
+						alert("해시태그 수정에 실패하였습니다.");
+					}
+				}, 
+				error : function(e) {
+					console.log(e);
+				}
+			});
+		}
+		
 	}
 	
+    
     /* 해시태그 삭제 */
     function deleteHash() {
     	var hashNo = $("#hashNo").val();
     	
-    	if(hashNo == null) {
-    		alert("해시태그를 선택해주세요.");
+    	if(!hashNo) {
+    		alert("삭제하실 해시태그를 선택해 주세요.");
     	} else {
     		$.ajax({
     			url : "/hashtag/delete",
@@ -252,7 +276,14 @@
     			type : "post",
     			success : function(data) {
     				console.log(data);
-    				window.location.href = "/hashtag/form";
+    				if(data == "success") {
+    					alert("해시태그 삭제에 성공하였습니다.");
+    					location.reload();
+    				} else if(data == "fail") {
+    					alert("해시태그 삭제에 실패하였습니다.");
+    				} else {
+    					alert("해당 해시태그를 참조하는 상품이 있어 삭제 할 수 없습니다.");
+    				}
     			}, 
     			error : function(e) {
     				console.log(e);
@@ -273,6 +304,9 @@
 					$('#hashNo').val(data.hashNo);
 					$("#hashName").val(data.hashName);
 					$('input:radio[name=hashType][value=' + data.hashType + ']').prop('checked', true);
+				} 
+				if($('input[name=function]:checked').val() == "delete") {
+					$(".btn").removeAttr("disabled");
 				}
 			}, 
 			error : function(e) {

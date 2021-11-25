@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<link href="/css/common/common.css" rel="stylesheet">
+<title>recommend wine main</title>
+<style>
+	.wrapper {
+		width: 1300px;
+		margin: 0 auto;
+	}
+    .content {
+        text-align: center;
+    }
+    #content_area {
+        display: flex;
+        justify-content: space-between;
+    }
+    .img {
+        width: 80%;
+        height: 300px;
+        border-radius: 3px;
+    }
+    .wine_area {
+        width: 50%;
+    }
+    #search_area {
+        margin-top: 1em;
+        margin-bottom: 1.5em;
+    }
+    #search_icon {
+        padding: 1px 2px;
+        width: 22px;
+        height: 22px;
+    }
+    #input_box {
+        border: none;
+        border-bottom: #83131E 1px solid;
+        width: 400px;
+        text-align: center;
+    }
+    ul {
+    	list-style: none;
+    	padding-left: 70px;
+    }
+    
+    li {
+    	text-align: left;
+    }
+    li:hover {
+    	cursor: pointer;
+    	text-decoration: underline;
+    }
+    .list_area1, .list_area2 {
+    	display: flex;
+    }
+</style>
+</head>
+<body>
+	<header th:include="common/header :: header"></header>
+	<div class="wrapper">
+		<h1>#해시태그 와인 추천</h1>
+	    <hr>
+	    <div class="content">	
+	        <div id="search_area">
+	            <form action="post">
+	                <input id="input_box" type="text" placeholder="#해시태그를 입력하세요."><button type="button">검색</button>
+	            </form>
+	        </div>
+	       
+	        <div id="content_area">
+	            <div class="wine_area">
+	                <img class="img" src="/images/recommendWine/mood.webp">
+	                <div class="list_area1">
+	                	<ul>
+	                		<li th:each="mood : ${ moodList }" th:value="${ mood.hashNo }" th:text="|#${ mood.hashName }|">
+	                	</ul>
+	                </div>
+	            </div>
+	            <div class="wine_area">
+	                <img class="img" src="/images/recommendWine/food.webp">
+	                <div class="list_area2">
+		                <ul>
+		                	<li th:each="food : ${ foodList }" th:value="${ food.hashNo }" th:text="|#${ food.hashName }|">	                
+		                </ul>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    
+    <footer th:include="common/footer :: footer"></footer>
+    
+    <script>
+	    var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
+		
+		/*
+		var targets1 = $(".list_area1").children();
+		for(var i=0; i<targets1.length; i+=10){
+		$("<ul></ul>").append(targets1.slice(i, i+10)).appendTo(".list_area1");
+		}
+		
+		var targets2 = $(".list_area2").children();
+		for(var i=0; i<targets2.length; i+=10){
+		$("<ul></ul>").append(targets2.slice(i, i+10)).appendTo(".list_area2");
+		}
+		*/
+    </script>
+
+</body>
+</html>

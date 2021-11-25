@@ -31,10 +31,10 @@ private HashtagService hashtagService;
 		this.hashtagService = hashtagService;
 	}
 	
-	@GetMapping("/form")
+	@GetMapping("form")
 	public void hashtagForm() {}
 	
-	@GetMapping(value="category", produces = "application/json; charset=UTF-8")
+	@GetMapping("hashList")
 	@ResponseBody
 	public Map<String, Object> selectHashtagList(){
 		Map<String, Object> map = new HashMap<>();
@@ -47,7 +47,7 @@ private HashtagService hashtagService;
 		return map;
 	}
 	
-	@PostMapping("/hashNameCheck") 
+	@PostMapping("hashNameCheck") 
 	public void hashNameCheck(HttpServletResponse response, @RequestParam String hashName) throws IOException {
 		
 		int result = hashtagService.hashNameCheck(hashName);
@@ -69,7 +69,7 @@ private HashtagService hashtagService;
 		}
 	}
 	
-	@PostMapping("/modify")
+	@PostMapping("modify")
 	public void modifyHashtag(HttpServletResponse response, @RequestParam String hashNo, @RequestParam String hashName, @RequestParam String hashType) throws IOException {
 		response.setCharacterEncoding("UTF-8");
 		
@@ -82,20 +82,26 @@ private HashtagService hashtagService;
 		}
 	}
 	
-	@PostMapping("/delete")
+	@PostMapping("delete")
 	public void deleteHashtag(HttpServletResponse response, @RequestParam String hashNo) throws IOException {
 		response.setCharacterEncoding("UTF-8");
 		
-		int result = hashtagService.deleteHashtag(Integer.parseInt(hashNo));
+		int result1 = hashtagService.checkDeleteHash(Integer.parseInt(hashNo));
 		
-		if(result > 0) {
-			response.getWriter().print("success");
+		if(result1 > 0) {
+			response.getWriter().print("impossible");
 		} else {
-			response.getWriter().print("fail");
+			int result2 = hashtagService.deleteHashtag(Integer.parseInt(hashNo));
+			
+			if(result2 > 0) {
+				response.getWriter().print("success");	
+			} else {
+				response.getWriter().print("fail");				
+			}
 		}
 	}
 	
-	@PostMapping(value="selectByHashNo", produces = "application/json; charset=UTF-8")
+	@PostMapping("selectByHashNo")
 	@ResponseBody
 	public Hashtag selectByHashNo(@RequestParam int hashNo) {
 		return hashtagService.selectByHashNo(hashNo);
