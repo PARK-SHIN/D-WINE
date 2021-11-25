@@ -68,7 +68,7 @@ SELECT
 </select> -->
 <select id="cartList" parameterType="_int"  resultMap="productDetailResultMap">
 	SELECT
-            P.PRODUCT_NO        
+            P.PRODUCT_NO
           , PRODUCT_KNAME
           , PRODUCT_ENAME
           , SALE_PRICE
@@ -84,10 +84,55 @@ SELECT
 		WHERE USER_NO = #{user_no}
 </select>
 
+<update id="updateCart" parameterType="com.project.dwine.cart.model.vo.Cart">
+	UPDATE CART
+	   SET CART_COUNT = #{cart_count}
+	WHERE CART_NO = #{cart_no}
+	  AND USER_NO = #{user_no}
+</update>
+<delete id="deleteCart" parameterType="com.project.dwine.cart.model.vo.Cart">
+	DELETE FROM CART
+	WHERE PRODUCT_NO = #{product_no}
+	  AND USER_NO = #{user_no}
+</delete>
 
-
-
-
+<select id="purchaseList" parameterType="hashmap" resultMap="productDetailResultMap">
+	SELECT
+            P.PRODUCT_NO
+          , PRODUCT_KNAME
+          , PRODUCT_ENAME
+          , SALE_PRICE
+          , PRODUCT_COUNT
+          , THUMBNAIL
+          , STATUS
+          , C.USER_NO
+          , C.PRODUCT_NO
+          ,	C.CART_NO
+		  , C.CART_COUNT
+		FROM CART C
+        LEFT JOIN PRODUCT P ON (C.PRODUCT_NO = P.PRODUCT_NO)
+        <if test="cart_no!=null">
+				WHERE
+				<foreach collection="cart_no" item="cartno" separator="or">
+				CART_NO = #{cartno}
+				</foreach>
+		</if>
+</select>
+	<select id="selectMember" parameterType="_int"  resultType="com.project.dwine.member.model.vo.Member">
+		SELECT
+			USER_NO,
+			USER_ID,
+			USER_PW,
+			USER_NAME,
+			USER_BIRTH,
+			USER_PHONE,
+			USER_NICKNAME,
+			USER_POINT,
+			USER_STATUS
+		FROM MEMBER
+		WHERE USER_NO = #{user_no}
+		AND USER_STATUS = 'Y'
+	</select>
 
 
 

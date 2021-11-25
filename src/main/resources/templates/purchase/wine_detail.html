@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -12,6 +13,7 @@
         .wine_detail_view{
             width: 1000px;
             margin : 0 auto;
+            padding-top: 100px;
         }
 
         ul {
@@ -25,19 +27,6 @@
         button{
             cursor: pointer;
         }
-
-        .search{
-            margin: 50px 0;
-        }
-
-
-        .search .wine_name{
-            margin: 10px 0;
-            width: 80%;
-            height: 50px;
-            padding: 0 10px;
-            border-right: none;
-          }
 
         .search button{
             background-color: #83131E;
@@ -189,7 +178,14 @@
             border: none;
             color: #fff
         }
-
+		
+		.noStock{
+			width: 170px;
+            height: 53px;
+            background-color:red;
+            border: none;
+            color: #fff
+		}
         .fa-heart {
             font-size: 44px;
             margin-left: 10px;
@@ -457,9 +453,6 @@
 <header th:include="common/header :: header"></header>
 <div class="wrapper">
     <div class="wine_detail_view">
-    <div class="search">
-        <input class="wine_name" type="text"><button>와인 검색하기</button>
-    </div>
     <div class="product_view">
         <div class="img_score">
             <div class="img">
@@ -524,11 +517,19 @@
             </li>
 
             <li class="btns">
-                <div>
+            <div th:if="${product.product_count == 0}">
+            		<button class="noStock">품 절</button>
+            </div>
+			<div th:unless="${product.product_count == 0}"> 
                     <button class="btn1" onclick='submit("cart");'>장바구니</button>
                     <button class="btn2" onclick='submit("buy");'>구매하기</button>
+			</div>
                     <input type="hidden" id="product_no" name="product_no" th:value="${product.product_no}">
-                </div>
+                	<input type="hidden" id="product_count" name="product_count" th:value="${product.product_count}">
+  <!--               <div th:if="${not #strings.isEmpty(wish)}">
+                <input type="hidden" id="wish_no" name="wish_no" th:value="${wish.wish_no}">
+                </div> -->
+                <input type="hidden" id="wish_no" name="wish_no" th:value="${wish.wish_no}">
                 <i class="far fa-heart" id="heard" onclick="wishbutton()"></i>
                 <!-- <a href="#"><i class="far fa-heart" id="heard"></i></a> -->
             </li>
@@ -568,11 +569,58 @@
 				type : "POST",
 				success : function(data){
 					console.log("확인 : " + data);
-					alert(data.msg);
+					if(data.msg == "등록 성공"){
+						var confirmflag = confirm("장바구니에 등록되었습니다. 장바구니로 이동하시겠습니까?");
+						
+						if(confirmflag){
+							location.href="/cart/list";
+				           }
+						
+					} else{
+						
+						alert(data.msg);
+					}
 					
 					if(data.msg == "로그인이 필요합니다."){
 						location.href="/member/login";
+					} 
+					
+					/*
+					var confirmflag = confrim("data.msg");
+					if(confirmflag){
+
+			              //확인 버튼 클릭 true 
+
+			           }else{
+
+			             //취소 버튼 클릭 false
+
+			           }
+					*/	
+				},
+				error : function(e){
+					console.log(e);
+				}
+			});
+		} else if(type === 'buy'){
+			$.ajax({
+				url : "/cart/add",
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
+				data: JSON.stringify(param),
+				contentType : "application/json; charset=utf-8",
+				type : "POST",
+				success : function(data){
+					console.log("확인 : " + data);
+					if(data.msg == "등록 성공" || data.msg == "장바구니에 이미 있는 상품입니다."){
+						location.href="/cart/list";
 					}
+					
+					if(data.msg == "로그인이 필요합니다."){
+						location.href="/member/login";
+					} 
+					
 				},
 				error : function(e){
 					console.log(e);
@@ -580,33 +628,114 @@
 			});
 		}
 	}
-	
+
 	</script>
 
 
+
+
+
+
+	<!-- 찜 등록 삭제 -->
+	<script>
+	const wish_no = document.querySelector("#wish_no").value;
+    const heart = document.getElementsByClassName("fa-heart")[0];
+    let product_no = document.querySelector("#product_no").value;
+ 
+	if(wish_no == 0){
+		console.log('비로그인이거나 위시리스트가 없는것');
+		heart.style.color= "black";
+	}else{
+		console.log('로그인면서 위시리스트가 있는것');
+		heart.style.color= "red";
+			
+	}
+
+   function wishbutton(){
+
+        if(heart.style.color == "red"){
+        	 $.ajax({
+ 				url : "/wish/delete",
+ 				beforeSend: function(xhr){
+ 			        xhr.setRequestHeader(header, token);
+ 			    },
+ 				data: JSON.stringify(product_no),
+ 				contentType : "application/json; charset=utf-8",
+ 				type : "POST",
+ 				success : function(data){
+ 					console.log(data);
+ 					if(data.msg == "로그인이 필요합니다."){
+ 						alert(data.msg);
+ 						location.href = "/member/login";	
+ 					} else if(data.msg == "찜 삭제되었습니다."){
+ 						heart.style.color= "black";
+ 					}
+ 				},
+ 				error : function(e){
+ 					console.log(e);
+ 					return;
+ 				}
+ 			});	
+            heart.style.color= "black";
+        } else{
+            $.ajax({
+				url : "/wish/add",
+				beforeSend: function(xhr){
+			        xhr.setRequestHeader(header, token);
+			    },
+				data: JSON.stringify(product_no),
+				contentType : "application/json; charset=utf-8",
+				type : "POST",
+				success : function(data){
+					console.log(data);
+					if(data.msg == "로그인이 필요합니다."){
+						alert(data.msg);
+						location.href = "/member/login";	
+					} else if(data.msg == "찜 등록되었습니다."){
+						heart.style.color= "red";
+					}
+				},
+				error : function(e){
+					console.log(e);
+					return;
+				}
+			});	 
+        }
+    }	
+
+	</script>
+	<!-- 와인 수량 변경 -->
     <script th:inline="javascript">
-    
+ 
         function count(type)  {
             // 결과를 표시할 element
             const resultElement = document.getElementById('count');
+            const product_count = Number(document.getElementById('product_count').value);
             const tpElement = document.getElementById("tprice");
           
             // 현재 화면에 표시된 값
-            let number = resultElement.innerText;
+            let number = Number(resultElement.innerText);
             let total_price = tpElement.innerText;
-           
+            console.log("구매원하는 수량 : " + number);
+            console.log("재고수량 : " + product_count);
             
             total_price = parseInt(total_price);
             let price = /*[[${product.sale_price}]]*/  'default';
             
             // 더하기/빼기
             if(type === "plus") {
+            	console.log('plus');
+            	if((number+1) == product_count){
+					alert('재고가 부족합니다.');
+					return;
+            	}
+
                 number = parseInt(number) + 1;
-                total_price += price;
+            	total_price += price;
                 
             }else if(type === "minus")  {
                 if(number == 1){
-                    alert('한개이상 주문해주세요.');
+                    alert('1개이상 주문해주세요.');
                 } else{
                     number = parseInt(number) - 1;
                     total_price -= price;
@@ -617,24 +746,6 @@
             resultElement.innerText = number;
             tpElement.innerText = total_price;
         }
-        
-        function wishbutton(){
-            const heart = document.getElementsByClassName("fa-heart")[0];
-            const heart_color = heart.style.color;
-
-            if(heart_color == "red"){
-                heart.style.color= "black";
-            } else{
-                heart.style.color= "red";
-
-            }
-
-        }
-        
-        
-        
-      
-
     </script>
 
 

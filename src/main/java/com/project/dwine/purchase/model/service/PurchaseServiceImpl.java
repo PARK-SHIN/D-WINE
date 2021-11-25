@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.project.dwine.purchase.model.dao.PurchaseMapper;
 import com.project.dwine.purchase.model.vo.Hashtag;
 import com.project.dwine.purchase.model.vo.Product;
+import com.project.dwine.wish.model.vo.Wish;
 
 @Service("purchaseService")
 public class PurchaseServiceImpl implements PurchaseService {
@@ -48,6 +49,12 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public List<Product> sortWineList(String val) {
 		return purchaseMapper.sortWineList(val);
+	}
+
+	/* 찜여부 확인 */
+	@Override
+	public Wish checkWish(int user_no, int product_no) {
+		return purchaseMapper.checkWish(user_no, product_no);
 	}
 
 }

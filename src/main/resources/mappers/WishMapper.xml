@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dwine.wish.model.dao.WishMapper">
+
+<insert id="addWish" parameterType="com.project.dwine.wish.model.vo.Wish">
+	INSERT 
+	INTO WISH
+	(
+		WISH_NO
+	  , WISH_DATE
+	  , USER_NO
+	  , PRODUCT_NO
+	)
+	VALUES
+	(
+		SEQ_WNO.NEXTVAL
+	  , SYSDATE
+	  , #{user_no}
+	  , #{product_no}
+	  )
+</insert>
+<delete id="deleteWish" parameterType="com.project.dwine.wish.model.vo.Wish">
+	DELETE
+	FROM WISH
+	WHERE USER_NO = #{user_no}
+	AND PRODUCT_NO = #{product_no}
+</delete>
+</mapper>
