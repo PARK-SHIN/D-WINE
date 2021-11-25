@@ -342,7 +342,7 @@
 					success : function(data){
 						console.log(data);
 						
-						let html = '';				
+						let html = '';
 						for(let index in data){
 							 html += '<li><div class="product_explain"><div class="product_img"><a href="/purchase/' + data[index].product_no + '"><img src="' + data[index].thumbnail + '"></a></div>'
 							+ '<div class="product_explain"><div class="product_KoreaName"}>' + data[index].product_kname + '</div><div class="product_foreignName">'
@@ -371,8 +371,8 @@
             </div>
             <div class="product_explain">
                 <div class="product_KoreaName" th:text="${product.product_kname}"></div>
-                <div class="product_foreignName"  th:text="${product.product_ename}"></div>
-                <span class="product_price"  th:text="${product.sale_price}"></span>&nbsp;원<br>
+                <div class="product_foreignName" th:text="${product.product_ename}"></div>
+                <span class="product_price" th:text="${product.sale_price}"></span>&nbsp;원<br>
                 <div class="product_score">
                     ★★★★★
                     <span class="review_count"> 25개</span>

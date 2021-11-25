@@ -18,5 +18,9 @@ public interface OrderManageMapper {
 	int deleteOrder(int purchaseNo);
 
 	Purchase selectOrderDetail(int purchaseNo);
+
+	int updateAllChange(int purchaseNo, String orderStatus);
+
+	List<Purchase> selectSearchList(String searchStatus, String searchCondition, String searchValue);
 	
 }

@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.project.dwine.member.model.vo.UserImpl;
 import com.project.dwine.purchase.model.service.PurchaseService;
 import com.project.dwine.purchase.model.vo.Product;
+import com.project.dwine.wish.model.vo.Wish;
+
 
 @Controller
 @RequestMapping("/purchase")
@@ -30,15 +34,7 @@ public class PurchaseController {
 	public PurchaseController(PurchaseService purchaseService) {
 		this.purchaseService = purchaseService;
 	}
-	
-	/* 모든 와인 리스트 조회 */
-//	@GetMapping("/wine_list")
-//	public void getWineList(Model model) {
-//		model.addAttribute("wineList", purchaseService.wineList());
-//	}
-//	
 
-		
 	
 	/* 모든 와인 리스트 조회 */
 	@GetMapping("wine_list")
@@ -49,6 +45,7 @@ public class PurchaseController {
 		return mv;
 	}
 	
+	/* 와인 검색 필터 */
 	@ResponseBody
 	@RequestMapping(value = "/filterWineList", method = { RequestMethod.POST })
 	public List<Product> filterWineList(@RequestBody Map<String, String> param){
@@ -77,7 +74,7 @@ public class PurchaseController {
 		return purchaseService.filterWineList(type, price, country, variety, name);
 	}
 	
-	
+	/* 와인 정렬 */
 	@ResponseBody
 	@RequestMapping(value = "/sortWineList", method = { RequestMethod.POST })
 	public List<Product> sortWineList(@RequestBody String val){
@@ -93,13 +90,29 @@ public class PurchaseController {
 	
 	/* 와인 디테일 페이지 */
 	@GetMapping("{id}")
-	public String room(@PathVariable String id, Model model) {
+	public String wineDetail(@PathVariable String id, Model model, @AuthenticationPrincipal User loginCheck) {
+		
+		Wish wish = null;
+		if(loginCheck != null) {
+			System.out.println("로그인한상태로 찜목록");
+			UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			int user_no = user.getUser_no();
+			int product_no = Integer.parseInt(id);			
+
+			wish = purchaseService.checkWish(user_no, product_no);
+			System.out.println(wish);
+		}
+		
+		if (wish == null) {
+			wish = new Wish();
+		}
 		
 		Product product = purchaseService.wineDetail(id);
-		System.out.println(product);
 		
+		model.addAttribute("wish", wish);
 		model.addAttribute("product", product);
 
+		
 		return "purchase/wine_detail";
 	}
 	
@@ -110,6 +123,24 @@ public class PurchaseController {
 	    int user_no = user.getUser_no();
 	    model.addAttribute("user_no", user_no);
 	}
+	
+	/* 약관 보여주기 */
+	@GetMapping("/clause")
+	public void clause(Model model) {
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

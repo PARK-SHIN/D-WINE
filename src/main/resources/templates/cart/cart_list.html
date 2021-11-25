@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <title>Cart</title>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
 <link href="/css/common/common.css" rel="stylesheet">      
@@ -14,6 +16,11 @@
         margin: 0;
     }
 
+	a{
+    	text-decoration : none;
+    	color:black;
+    }
+    
     .cart{
         width: 1000px;
         margin: 0 auto;
@@ -22,11 +29,18 @@
     
     .cart_main{
         border-top: 3px solid black;
+        padding-top: 20px;
     }
+	
+	.pickUp_count{
+		font-size : 20px;
 
+		font-weight: bold;
+	}
+	
     ul li{
         display: flex;
-        padding: 15px;
+        padding: 25px 15px;
     }
 
     .all_product{
@@ -41,7 +55,7 @@
 
     .wine_info{
         display: flex;
-        width: 45%;
+        width: 80%;
     }
 
     .wine_img{
@@ -60,15 +74,14 @@
     }
     .order_value{
         line-height: 92px;
-        width: 25%;
+        width: 45%;
     }
 
     .icons{
         height: 92px;
         line-height: 92px;
         text-align: right;
-        padding-right: 50px;
-        width: 30%;
+        width: 20%;
     }
 
     .icons .far{
@@ -99,8 +112,15 @@
         display: block;
     }
 
-
-    #count {
+	.soldout{
+		color: red;
+		font-size: 20px;
+		height:50px;
+		line-height: 50px;
+		font-weight:bold;
+		padding-left: 40px;
+	}
+    .pCount {
         width: 40px;
         height: 40px;
         text-align: center;
@@ -109,13 +129,14 @@
 
      
     .order{
-        margin: 100px 0 0 0;
-        float: right;
+        margin: 50px 0 100px;
+        width: 300px;
+        margin-left: 700px;
     }
 
     .order_info{
+   		text-align:right;
         display: flex;
-        justify-content: space-between;
     }
 
     .payment_price{
@@ -142,6 +163,13 @@
         color: #ffff;
         margin-top: 5px;
     }
+
+    .p_price{
+        margin-left: 100px;
+        width: 300px;
+        line-height: 92px;
+    }
+    
      
 </style>
 <body>
@@ -151,73 +179,333 @@
         <h2 class="cart_head">장바구니</h2>
         <div class="all_product">
             <input class="all_selectBox" type="checkbox" id="cbx_chkAll">
-            <span class="all_select">전체선택</span>
+            <span class="all_select" label="cbx_chkAll">전체선택</span>
         </div>
         <div class="cart_main">
             <div class="pickup_head">
-                <h3>매장픽업 상품 : 2개</h3>
+                <span class="pickUp_count">매장픽업 상품 :</span>&emsp;<span class="pickUp_count pu_count">0</span>&emsp;<span class="pickUp_count">개</span>
             </div>
+           <!--  --> 
+           <form th:action="@{/cart/detail}" method="post" onsubmit="return orderCheck()">
+       
             <ul>
                 <li th:each="cList : ${cartList}">
-                    <div class="wine_info">
-                        <input class="product_checkbox" type="checkbox" name="chk">
+	 				<div class="wine_info">
+                
+                <div th:if="${cList.product_count == 0}" style="pointer-events: none;">   
+	            </div>
+	            <div th:unless="${cList.product_count == 0}"> 
+	   					<input class="product_checkbox" type="checkbox" name="chk" th:value="${cList.cart.get(0).cart_no}">
+				</div>     
+				
+				
+				           
                         <img class="wine_img" th:src="${cList.thumbnail}">
+                        <a th:href="@{'/purchase/' + ${cList.product_no} }">
                         <div class="wine_name">
-                            <p th:text="${cList.product_kname}"></p>
+                            <p class = "product_kname" th:text="${cList.product_kname}"></p>
                             <p th:text="${cList.product_ename}"></p>
                         </div>
+              			</a>
                     </div>
+					<div class="price p_price" th:text="${cList.sale_price}"></div>
+					<!-- <div class="price p_price"><fmt:formatNumber value="${cList.sale_price}" pattern="#,###,###"></div> -->
                     <div class="order_value" th:each="product : ${cList.cart}">
-                        <div class="price" th:text="${cList.sale_price * product.cart_count}"></div>
-                        <div class="price_count">
-                            <button class="minus" onclick='count("minus")'><i class="fas fa-minus"></i></button>
-                            <div id='count' th:text="${product.cart_count}"></div>
-                            <button class="plus" onclick='count("plus")'><i class="fas fa-plus"></i></button>
-                        </div>
+                        <input class="product_count" type="hidden" th:value="${cList.product_count}">
+                        <input class="product_no" type="hidden" th:value="${cList.product_no}">
+                        <input class="cart_no" type="hidden" th:value="${product.cart_no}">
+                        
+                        
+                        
+                        
+                 <div th:if="${cList.product_count == 0}" style="pointer-events: none;">
+                  <div class="price_count">
+                      <p class="soldout">품절</p>
+                  </div>
+     			</div>
+     			<div th:unless="${cList.product_count == 0}"> 
+                        <div class="price t_price" th:text="${cList.sale_price * product.cart_count}"></div>
+					<div class="price_count">
+	                      <button class="minus" type="button"><i class="fas fa-minus"></i></button>
+	                      <div class='pCount' th:text="${product.cart_count}"></div>
+	                      <button class="plus" type="button"><i class="fas fa-plus"></i></button>
+	                </div>
+				</div> 
+				
+				
+				
+				
+				
                     </div>
                     <div class="icons">
-                        <i class="far fa-heart"></i>
                         <i class="far fa-trash-alt"></i>
                     </div>
+	            
+				
+			
+                    
                 </li>
             </ul>
             <div class="order">
                 <div class="order_info">
-                    <p class="payment_price">결제예정금액</p>
-                    <p class="total_price">28,000원</p>
+                    <p class="payment_price">결제예정금액</p>&emsp;
+                    <p class="total_price allPrice">0</p><span class="total_price">원</span>
                 </div>
                 <div class="order_btn">
-                    <button>주문하기</button>
+                    <button class="productOrder">주문하기</button>
                 </div>
             </div>
+            </form>
         </div>
     </div>
 	</div>
 <div th:replace="common/footer :: footer"></div>
 
-            <script>
-                function count(type)  {
-                    // 결과를 표시할 element
-                    const resultElement = document.getElementById('count');
-                    
-                    // 현재 화면에 표시된 값
-                    let number = resultElement.innerText;
-                    
-                    // 더하기/빼기
-                    if(type === "plus") {
-                        number = parseInt(number) + 1;
-                    }else if(type === "minus")  {
-                        if(number == 1){
-                            alert('한개이상 주문해주세요.');
-                        } else{
-                            number = parseInt(number) - 1;
-                        }
-                    }
-                    
-                    // 결과 출력
-                    resultElement.innerText = number;
-                }
+	
+
+
+
+
+          <script>
+	   	  var header = $("meta[name='_csrf_header']").attr('content');
+	   	  var token = $("meta[name='_csrf']").attr('content');
+    		
+			/* 상품 개수 plus, minus */
+            const plusElem = document.querySelectorAll(".plus");
+            const minusElem = document.querySelectorAll(".minus");
+            
+            
+            for(const elem of plusElem){
+            	elem.addEventListener('click', count);
+            }
+            
+            for(const elem of minusElem){
+            	elem.addEventListener('click', count);
+            }
+            
+            /* 전체상품 선택*/
+            const allSelectBox =  document.getElementsByClassName("all_selectBox")[0];
+            const all =  document.getElementsByClassName("t_price");
+      
+            allSelectBox.addEventListener('click',function(){
+	            var count = 0;
+            	var order_price = 0;
+            	if(allSelectBox.checked == true){
+		            for(const elem of all){
+		            	order_price = order_price + Number(elem.innerText);
+		            }
+		            
+	            	 const pCount = document.querySelectorAll(".pCount");
+	            	 for(const elem of pCount){
+	 	                count = count + (Number(elem.innerText));
+	            	 }
+	            	 
+            	} 
+            	 document.getElementsByClassName("pu_count")[0].innerText = count;
+            	 document.getElementsByClassName("allPrice")[0].innerText = order_price;
+
+            });
+            
+            
+            
+            
+            
+            
+            /* 선택된 상품 */
+            const cboxElem = document.querySelectorAll(".product_checkbox");
+            for(const elem of cboxElem){
+            	elem.addEventListener('change', check);
+            }
+            
+            function check(){
+            	var checkbox = this.closest("li").querySelector(".product_checkbox");
+           		var pickup_count = Number(document.querySelector(".pu_count").innerText);
+           		var product_count = Number(this.closest("li").querySelector(".pCount").innerText);
+            	var product_price = Number(this.closest("li").querySelector(".t_price").innerText);
+            	var order_price = Number(document.getElementsByClassName("allPrice")[0].innerText);
+            	
+           		
+            	if(checkbox.checked == true){
+            		pickup_count = pickup_count + product_count;
+            		document.querySelector(".pu_count").innerText = pickup_count;
+            		order_price = order_price + product_price;
+            		document.getElementsByClassName("allPrice")[0].innerText = order_price;
+            	} else{
+            		pickup_count = pickup_count - product_count;
+            		document.querySelector(".pu_count").innerText = pickup_count;
+            		order_price = order_price - product_price;
+            		document.getElementsByClassName("allPrice")[0].innerText = order_price;
+            	}
+            }
+            
+            
+            
+            
+            /* 장바구니 삭제 */
+			const delBtn = document.querySelectorAll(".fa-trash-alt");
+            
+            for(const elem of delBtn){
+            	elem.addEventListener('click', deleteCart);
+            }
+            
+            	
+           	/* 장바구니 삭제 */
+           	function deleteCart(){
+				var del = this.closest("li").querySelector(".fa-trash-alt");
+
+    	       	var product_no = this.closest("li").querySelector(".product_no").value;
+        
+    	       	$.ajax({
+    				url : "/cart/delete",
+    				beforeSend: function(xhr){
+    			        xhr.setRequestHeader(header, token);
+    			    },
+    				data: JSON.stringify(product_no),
+    				contentType : "application/json; charset=utf-8",
+    				type : "POST",
+    				success : function(data){
+    					console.log(data);
+    					alert(data.msg);
+    					location.reload();
+    				},
+    				error : function(e){
+    					console.log(e);
+    					return;
+    				}
+    			});	 	
+           	}
+           	
+           	/* 상품 개수 plus, minus */
+            function count()  {
+            	
+            	console.log(this);
+            	console.log(this.getAttribute('class'));
+            	console.log(this.closest("li"));
+            	console.log(this.closest("li").querySelector(".p_price").innerText);
+            	console.log(this.closest("li").querySelector(".pCount"));
+            	console.log("총가격 " + this.closest("li").querySelector(".t_price").innerText);
+              	console.log(" 재고 : " + this.closest("li").querySelector(".product_count").value);
+            	
+              	var Product_Price = Number(this.closest("li").querySelector(".p_price").innerText);
+            	var val = Number(this.closest("li").querySelector(".pCount").innerText);
+            	var product_count = this.closest("li").querySelector(".product_count").value;
+            	var t_price = Number(this.closest("li").querySelector(".t_price").innerText);
+				var product_no = this.closest("li").querySelector(".product_no").value;
+				var cart_no = this.closest("li").querySelector(".cart_no").value;
+            
+
+            	if(this.getAttribute('class') == 'plus'){
+            		
+            		if(product_count <= val ){
+            			alert('재고가 부족합니다.');
+            			return;
+            		}else{
+            			
+            			var param = {};
+            			param.cart_no = cart_no;
+            			param.cart_count = val+1;
+            			param.product_no = product_no;
+ 
+
+             			$.ajax({
+            				url : "/cart/update",
+            				beforeSend: function(xhr){
+            			        xhr.setRequestHeader(header, token);
+            			    },
+            				data: JSON.stringify(param),
+            				contentType : "application/json; charset=utf-8",
+            				type : "POST",
+            				success : function(data){
+            					console.log(data);
+            					alert(data.msg);
+            					location.reload();
+            				},
+            				error : function(e){
+            					console.log(e);
+            					return;
+            				}
+            			});	
+
+	            		val = val + 1;
+
+            			this.closest("li").querySelector(".t_price").innerText = val * Product_Price;
+	            		this.closest("li").querySelector(".pCount").innerText = (val);
+
+            		}
+            	  }else{
+ 
+            		if(val == 1){
+            			alert('1개이상 구매해주세요.');
+            			return;
+            		} else{
+            			
+            			var param = {};
+            			param.cart_no = cart_no;
+            			param.cart_count = val-1;
+            			param.product_no = product_no;
+            			
+            			$.ajax({
+            				url : "/cart/update",
+            				beforeSend: function(xhr){
+            			        xhr.setRequestHeader(header, token);
+            			    },
+            				data: JSON.stringify(param),
+            				contentType : "application/json; charset=utf-8",
+            				type : "POST",
+            				success : function(data){
+            					console.log(data);
+            					alert(data.msg);
+            					location.reload();
+            				},
+            				error : function(e){
+            					console.log(e);
+            					return;
+            				}
+            			});
+            			
+                		val = val - 1;
+	        			this.closest("li").querySelector(".t_price").innerText = t_price - Product_Price;
+	            		this.closest("li").querySelector(".pCount").innerText = (val);	
+            		}
+                  }
+                } 
+
+           	
+           	/* 결제하기 버튼을 눌렀을때 재고확인 후 결제 화면으로 넘기기 */
+          	
+           	function orderCheck(){
+           		
+           		const product_checkbox = document.querySelectorAll(".product_checkbox");
+           		 for(const elem of product_checkbox){
+           		    	if(elem.checked){
+           		    		var pkname = elem.closest("li").querySelector(".product_kname").innerText;
+           		    		var count = elem.closest("li").querySelector(".product_count").value;
+           		    		var pCount = Number(elem.closest("li").querySelector(".pCount").innerText);
+           		    		
+           		    		console.log("재고 : " + count);
+           		    		console.log("구매원하는 수량 : " + pCount);
+           		    		
+           		    		
+           		    		 if(count < pCount){
+           		    			alert(pkname + "의 재고가 부족합니다. " + count + "개 이하로 구매해주시기 바랍니다.");
+           		 				return false;
+           		    		} 
+           		    		
+           		    	}
+           		     }
+           		return true;
+           	}
+           		
+				
             </script>
+
+
+
+   		
+		
+		
+		
+	
 
 
 

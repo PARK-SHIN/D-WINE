@@ -11,14 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.dwine.orderManage.model.service.OrderManageService;
 import com.project.dwine.orderManage.model.vo.Purchase;
@@ -76,6 +74,29 @@ public class OrderManageController {
 		int result = orderManageService.updateOrderStatus(purchaseNo, odStatus);
 	}
 	
+	// 일괄 상태 변경
+	@PostMapping(value = "allChange")
+	@ResponseBody
+	public void updateAllChange(HttpServletResponse response, @RequestParam(value = "pNoArr[]") List<String> pNoArr, @RequestParam String odStatus) throws IOException {
+		
+		List<Integer> arr = new ArrayList<>();
+		
+		for(String s : pNoArr) {
+			arr.add(Integer.parseInt(s));
+		}
+		
+		int results = 0;
+		for(int purchaseNo : arr) {
+			results += orderManageService.updateAllChange(purchaseNo, odStatus);
+		}
+		
+		if(arr.size() == results) {
+			response.getWriter().print("success");
+		} else {
+			response.getWriter().print("fail");
+		}
+	}
+	
 	// 주문 선택 삭제
 	@PostMapping(value = "delete")
 	@ResponseBody
@@ -109,6 +130,17 @@ public class OrderManageController {
 		Purchase detail = orderManageService.selectOrderDetail(purchaseNo);
 		
 		return detail;
+	}
+	
+	// 검색
+	@PostMapping(value = "search")
+	@ResponseBody
+	public List<Purchase> selectSearchList(@RequestParam String searchStatus, 
+										@RequestParam String searchCondition, @RequestParam String searchValue){
+		
+		List<Purchase> searchList = orderManageService.selectSearchList(searchStatus, searchCondition, searchValue);
+		
+		return searchList;
 	}
 	
 }

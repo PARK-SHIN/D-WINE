@@ -43,6 +43,16 @@ public class OrderManageServiceImpl implements OrderManageService {
 		return orderManageMapper.selectOrderDetail(purchaseNo);
 	}
 
+	@Override
+	public int updateAllChange(int purchaseNo, String orderStatus) {
+		return orderManageMapper.updateAllChange(purchaseNo, orderStatus);
+	}
+
+	@Override
+	public List<Purchase> selectSearchList(String searchStatus, String searchCondition, String searchValue) {
+		return orderManageMapper.selectSearchList(searchStatus, searchCondition, searchValue);
+	}
+
 	
 	
 	

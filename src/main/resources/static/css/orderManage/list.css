@@ -86,7 +86,7 @@
 	    background: #FFFFFF;
 	    border-radius: 5px;
 	    font-size: 14px;
-	    color: #525252;
+	    color: #C4C4C4;
 	    width: 120px;
 	    height: 30px;
 	    margin-bottom: 20px;
@@ -186,7 +186,7 @@
 	    text-align: center;
 	}
 	
-	#modal .cancleBtn, #modal .applyBtn {
+	#modal .cancleBtn, #modal .allApplyBtn {
 	    width: 125px;
 	    height: 30px;
 	    border-radius: 5px;
@@ -201,7 +201,7 @@
 	    margin-left: 8px;
 	}
 	
-	#modal .applyBtn {
+	#modal .allApplyBtn {
 	    background: #6B0E1F;
 	    color: #FFFFFF;
 	}
