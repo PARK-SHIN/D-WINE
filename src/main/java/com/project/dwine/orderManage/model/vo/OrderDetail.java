@@ -2,44 +2,22 @@ package com.project.dwine.orderManage.model.vo;
 
 public class OrderDetail {
 
-	private int odNo;		// 주문상세번호
-	private int odCount;	// 주문수량
-	private int odPrice;	// 주문금액
-	private int purchaseNo;	// 주문번호
-	private int productNo;	// 판매상품번호
+	private int purchaseNo;
+	private int productNo;			// 상품번호
+	private String typeName;		// 와인종류
+	private String productKname;	// 와인명
+	private int odCount;			// 주문수량
+	private int odPrice;			// 와인가격
 	
 	public OrderDetail() {}
 
-	public OrderDetail(int odNo, int odCount, int odPrice, int purchaseNo, int productNo) {
+	public OrderDetail(int purchaseNo, int productNo, String typeName, String productKname, int odCount, int odPrice) {
 		super();
-		this.odNo = odNo;
-		this.odCount = odCount;
-		this.odPrice = odPrice;
 		this.purchaseNo = purchaseNo;
 		this.productNo = productNo;
-	}
-
-	public int getOdNo() {
-		return odNo;
-	}
-
-	public void setOdNo(int odNo) {
-		this.odNo = odNo;
-	}
-
-	public int getOdCount() {
-		return odCount;
-	}
-
-	public void setOdCount(int odCount) {
+		this.typeName = typeName;
+		this.productKname = productKname;
 		this.odCount = odCount;
-	}
-
-	public int getOdPrice() {
-		return odPrice;
-	}
-
-	public void setOdPrice(int odPrice) {
 		this.odPrice = odPrice;
 	}
 
@@ -59,10 +37,43 @@ public class OrderDetail {
 		this.productNo = productNo;
 	}
 
-	@Override
-	public String toString() {
-		return "OrderDetail [odNo=" + odNo + ", odCount=" + odCount + ", odPrice=" + odPrice + ", purchaseNo="
-				+ purchaseNo + ", productNo=" + productNo + "]";
+	public String getTypeName() {
+		return typeName;
 	}
 
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public String getProductKname() {
+		return productKname;
+	}
+
+	public void setProductKname(String productKname) {
+		this.productKname = productKname;
+	}
+
+	public int getOdCount() {
+		return odCount;
+	}
+
+	public void setOdCount(int odCount) {
+		this.odCount = odCount;
+	}
+
+	public int getOdPrice() {
+		return odPrice;
+	}
+
+	public void setOdPrice(int odPrice) {
+		this.odPrice = odPrice;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderDetail [purchaseNo=" + purchaseNo + ", productNo=" + productNo + ", typeName=" + typeName
+				+ ", productKname=" + productKname + ", odCount=" + odCount + ", odPrice=" + odPrice + "]";
+	}
+
+	
 }

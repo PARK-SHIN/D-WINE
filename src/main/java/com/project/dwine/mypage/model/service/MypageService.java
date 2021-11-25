@@ -56,11 +56,6 @@ public interface MypageService {
 
 	int updateCancelPayment(int purchase_no);
 
-	
-
-
-	
-	
-	
+	Member selectMemberPoint(int user_no);
 
 }

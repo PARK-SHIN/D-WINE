@@ -15,6 +15,9 @@ public interface NoticeMapper {
 	
 	int registNewNotice(Notice notice);
 
+	int modifyNotice(Notice notice);
+
+	void deleteNotice(String notice_no);
 
 
 }

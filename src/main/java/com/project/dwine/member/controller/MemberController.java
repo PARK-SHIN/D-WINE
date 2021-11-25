@@ -1,24 +1,31 @@
 package com.project.dwine.member.controller;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.project.dwine.member.dto.CustomOath2User;
 import com.project.dwine.member.dto.MailDto;
-import com.project.dwine.member.model.sevice.GetKakaoAccessToken;
 import com.project.dwine.member.model.sevice.GetNaverAccessToken;
 import com.project.dwine.member.model.sevice.MemberService;
 import com.project.dwine.member.model.sevice.SendEmailService;
@@ -30,20 +37,36 @@ public class MemberController {
 
 	private MemberService memberService;
 	private SendEmailService sendEmailService;
-	private GetKakaoAccessToken kakaoAPI;
 	private GetNaverAccessToken naverAPI;
 
 	@Autowired
 	public MemberController(MemberService memberService, SendEmailService sendEmailService,
-			GetKakaoAccessToken kakaoAPI, GetNaverAccessToken naverAPI) {
+			GetNaverAccessToken naverAPI) {
 		this.memberService = memberService;
 		this.sendEmailService = sendEmailService;
-		this.kakaoAPI = kakaoAPI;
 		this.naverAPI = naverAPI;
 	}
 
 	@GetMapping("/login")
 	public void loginForm() {
+	}
+
+	@GetMapping("/kakaologout")
+	public String kakaoLogout(HttpSession session, HttpServletResponse response) {
+		String accessToken = (String) session.getAttribute("accessToken");
+		String reqURL = "https://kapi.kakao.com/v1/user/unlink";
+		try {
+			URL url = new URL(reqURL);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+			conn.getResponseCode();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return "redirect:/member/logout";
 	}
 
 	@GetMapping("/joinConfirm")
@@ -59,34 +82,6 @@ public class MemberController {
 		return "member/joinConfirm";
 	}
 
-	@GetMapping("/kakaojoin")
-	public String kakaoJoin(@RequestParam(required = false) String code, HttpSession session,
-			HttpServletRequest request) {
-		String access_Token = kakaoAPI.getAccessToken(code);
-		HashMap<String, Object> userInfo = kakaoAPI.getUserInfo(access_Token);
-		String user_age = "";
-		if (userInfo.get("age_range") == null) {
-			kakaoAPI.kakaoLogout(access_Token);
-			request.setAttribute("join", "unknownAge");
-			return "member/joinConfirm";
-		} else {
-			user_age = (String) userInfo.get("age_range");
-		}
-		if (!userInfo.isEmpty()) {
-			if (user_age.equals("0~9") || user_age.equals("10~19")) {
-				request.setAttribute("join", "unableAge");
-				return "member/joinForm";
-			} else {
-				session.setAttribute("access_Token", access_Token);
-				session.setAttribute("user_nickname", userInfo.get("nickname"));
-				session.setAttribute("age_range", userInfo.get("age_range"));
-				kakaoAPI.kakaoLogout(access_Token);
-			}
-		}
-
-		return "redirect:/member/join";
-	}
-
 	@GetMapping("/naverjoin")
 	public String naverJoin(@RequestParam(required = false) String code, HttpSession session,
 			HttpServletRequest request) throws ParseException {
@@ -98,16 +93,23 @@ public class MemberController {
 		HashMap<String, Object> userInfo = naverAPI.getUserInfo(access_Token);
 
 		if (userInfo != null) {
-			String age = (String) userInfo.get("age");
-			if (age.equals("0-9") || age.equals("10-19")) {
-				request.setAttribute("join", "unableAge");
+			int checkUser = memberService.checkUser((String) userInfo.get("name"), (String) userInfo.get("mobile"));
+			if (checkUser > 0) {
+				naverAPI.naverLogout(access_Token);
+				request.setAttribute("join", "alreadyJoin");
 				return "member/joinConfirm";
 			} else {
-				String birth = userInfo.get("birthyear") + "-" + userInfo.get("birthday");
-				session.setAttribute("name", userInfo.get("name"));
-				session.setAttribute("birth", birth);
-				session.setAttribute("mobile", userInfo.get("mobile"));
-				naverAPI.naverLogout(access_Token);
+				String age = (String) userInfo.get("age");
+				if (age.equals("0-9") || age.equals("10-19")) {
+					request.setAttribute("join", "unableAge");
+					return "member/joinConfirm";
+				} else {
+					String birth = userInfo.get("birthyear") + "-" + userInfo.get("birthday");
+					session.setAttribute("name", userInfo.get("name"));
+					session.setAttribute("birth", birth);
+					session.setAttribute("mobile", userInfo.get("mobile"));
+					naverAPI.naverLogout(access_Token);
+				}
 			}
 		} else {
 			naverAPI.naverLogout(access_Token);

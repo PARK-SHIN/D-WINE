@@ -60,10 +60,7 @@ public interface MypageMapper {
 
 	int updateCancelPayment(int purchase_no);
 
-	
-
-
-	
+	Member selectMemberPoint(int user_no);
 	
 
 }

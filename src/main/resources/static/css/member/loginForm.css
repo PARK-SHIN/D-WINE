@@ -68,7 +68,7 @@ input[type="checkbox"]:checked+label span {
 	outline: 1px solid black;
 }
 
-input[type="submit"] {
+#loginbtn {
 	width: 416px;
 	height: 80px;
 	border-radius: 12px;
@@ -87,6 +87,7 @@ input[type="submit"] {
 	background-color: #FFD400;
 	font-size: 30px;
 	color: white;
+	cursor: pointer;
 }
 
 .login_subMenu a {

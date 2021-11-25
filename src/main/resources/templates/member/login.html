@@ -9,6 +9,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap"
 	rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+	crossorigin="anonymous"></script>
 <link href="/css/member/loginForm.css" rel="stylesheet">
 <link href="/css/common/common.css" rel="stylesheet">
 </head>
@@ -19,31 +22,107 @@
 		</div>
 		<section class="loginForm_main">
 			<div class="loginForm_box">
-				<form th:action="@{/member/login}" method="post">
+				<form name="loginForm" th:action="@{/member/login}" method="post">
 					<p>
-						<input type="text" name="username" placeholder="이메일">
+						<input type="text" id="username" name="username" placeholder="이메일">
+
 					</p>
 					<p>
-						<input type="password" name="password" placeholder="비밀번호">
+						<input type="password" id="password" name="password"
+							placeholder="비밀번호">
 					</p>
 					<p class="remember_id">
 						<input type="checkbox" id="rememberId"> <label
 							for="rememberId"><span></span>&nbsp;아이디 기억하기</label>
 					</p>
 					<p>
-						<input type="submit" value="로그인">
+						<input type="button" id="loginbtn" value="로그인" onclick="login()">
 					</p>
 				</form>
 				<p>
-					<input type="button" id="kakaoLogin" value="카카오톡 로그인">
+					<input type="button" id="kakaoLogin" value="카카오톡 로그인"
+						onclick="location.href='/oauth2/authorization/kakao'">
 				</p>
 				<p class="login_subMenu">
-					<a href="/member/findId">아이디 찾기</a> | <a href="/member/findPw">비밀번호 찾기</a> | <a
-						href="/member/joinConfirm">회원가입</a>
+					<a href="/member/findId">아이디 찾기</a> | <a href="/member/findPw">비밀번호
+						찾기</a> | <a href="/member/joinConfirm">회원가입</a>
 				</p>
 			</div>
 		</section>
 	</div>
 	<div th:replace="common/footer :: footer"></div>
+
+	<script>
+		$(function(){
+			var username = getCookie("rememberId");
+			if(username){
+				$("#username").val(username);
+				$("#rememberId").attr("checked", true);
+			}
+		});
+	
+		function login() {
+
+			var username = $('#username').val();
+			var password = $('#password').val();
+			var rememberId = $('#rememberId').is(":checked");
+			console.log(rememberId)
+
+			if (username == "") {
+				alert('이메일을 입력하세요.')
+				username.focus()
+			} else if (!isEmail(username)) {
+				alert('이메일 형식에 맞게 입력하세요')
+				username.focus()
+			} else if (password == "") {
+				alert('비밀번호를 입력하세요')
+				password.focus()
+			}else{
+				if(rememberId){
+					setCookie("rememberId", username, 1);
+				}else{
+					deleteCookie("rememberId");
+				}
+				loginForm.submit();
+			}
+		}
+
+		function isEmail(clientEmail) {
+			var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+			return regExp.test(clientEmail)
+		}
+
+		// 쿠키 생성
+		function setCookie(name, value, exdays){
+			var exdate = new Date();
+			exdate.setDate(exdate.getDate() + exdays);
+			var cookieValue = escape(value) + ((exdays==null) ? "" : "; expires=" + exdate.toGMTString());
+			console.log(cookieValue);
+			document.cookie = name + "=" + cookieValue
+		}
+		
+		// 쿠키 가져오기
+		function getCookie(cookieName) { 
+			cookieName = cookieName + '='; 
+			var cookieData = document.cookie; 
+			var start = cookieData.indexOf(cookieName); 
+			var cookieValue = ''; 
+			if(start != -1){ 
+				start += cookieName.length; 
+				var end = cookieData.indexOf(';', start);
+				if(end == -1)end = cookieData.length; 
+				cookieValue = cookieData.substring(start, end); 
+			} 
+			return unescape(cookieValue); 
+		}
+
+		// 쿠키 제거
+		function deleteCookie(cookieName){ 
+			var expireDate = new Date(); 
+			expireDate.setDate(expireDate.getDate() - 1); 
+			document.cookie = cookieName + "=" + "; expires=" + expireDate.toGMTString(); 
+		}
+
+	</script>
 </body>
 </html>

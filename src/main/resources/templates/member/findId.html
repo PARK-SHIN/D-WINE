@@ -51,7 +51,11 @@
 			<th:block th:if="${#request.getAttribute('userId') != null}"
 				class="findId_box">
 				<div class="after_findId">
-					<p>
+					<p style="-ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;">
 						회원님의 아이디는 <b th:text="${#request.getAttribute('userId')}"></b>
 						입니다.
 					</p>

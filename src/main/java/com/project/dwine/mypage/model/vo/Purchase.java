@@ -19,12 +19,13 @@ public class Purchase {
 	private int od_price;
 	private int product_no;
 	private String product_kname;
+	private int review_no;
 	
 	public Purchase() {}
 
 	public Purchase(int purchase_no, Date purchase_date, double use_point, String pickup_date, String pickup_place,
 			String pickup_time, String order_status, String status, Date refund_date, int user_no, int od_no,
-			int od_count, int od_price, int product_no, String product_kname) {
+			int od_count, int od_price, int product_no, String product_kname, int review_no) {
 		super();
 		this.purchase_no = purchase_no;
 		this.purchase_date = purchase_date;
@@ -41,6 +42,7 @@ public class Purchase {
 		this.od_price = od_price;
 		this.product_no = product_no;
 		this.product_kname = product_kname;
+		this.review_no = review_no;
 	}
 
 	public int getPurchase_no() {
@@ -163,13 +165,21 @@ public class Purchase {
 		this.product_kname = product_kname;
 	}
 
+	public int getReview_no() {
+		return review_no;
+	}
+
+	public void setReview_no(int review_no) {
+		this.review_no = review_no;
+	}
+
 	@Override
 	public String toString() {
 		return "Purchase [purchase_no=" + purchase_no + ", purchase_date=" + purchase_date + ", use_point=" + use_point
 				+ ", pickup_date=" + pickup_date + ", pickup_place=" + pickup_place + ", pickup_time=" + pickup_time
 				+ ", order_status=" + order_status + ", status=" + status + ", refund_date=" + refund_date
 				+ ", user_no=" + user_no + ", od_no=" + od_no + ", od_count=" + od_count + ", od_price=" + od_price
-				+ ", product_no=" + product_no + ", product_kname=" + product_kname + "]";
+				+ ", product_no=" + product_no + ", product_kname=" + product_kname + ", review_no=" + review_no + "]";
 	}
 
 	

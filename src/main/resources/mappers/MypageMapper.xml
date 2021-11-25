@@ -13,6 +13,7 @@
 		<result property="user_nickname" column="user_nickname" />
 		<result property="user_point" column="user_point" />
 		<result property="reported_count" column="reported_count" />
+		<result property="create_date" column="create_date" />
 		<association property="authority"
 			resultMap="authorityResultMap" />
 	</resultMap>
@@ -211,14 +212,16 @@
 		    p.status,
 		    refund_date,
 		    p.user_no,
-		    od_no,
+		    od.od_no,
 		    od_count,
 		    od_price,
 		    od.product_no,
-		    pro.product_kname
+		    pro.product_kname,
+		    r.review_no
 		from purchase p
-		join order_detail od on(p.purchase_no = od.purchase_no)
-		join product pro on(pro.product_no = od.product_no)
+		left join order_detail od on(p.purchase_no = od.purchase_no)
+		left join product pro on(pro.product_no = od.product_no)
+		left join review r on (r.od_no = od.od_no)
 		where p.user_no = #{user_no}
 		order by p.purchase_no DESC
 	</select>
@@ -302,6 +305,25 @@
 			REVIEW_MODIFY = SYSDATE
 		WHERE REVIEW_NO = #{review_no}
 	</update>
+	
+	<select id="selectMemberPoint" resultMap="memberResultMap">
+		SELECT 
+			USER_NO,
+			USER_ID,
+			USER_PW,
+			USER_NAME,
+			USER_BIRTH,
+			USER_PHONE,
+			USER_NICKNAME,
+			USER_POINT,
+			REPORTED_COUNT,
+			USER_STATUS,
+			CREATE_DATE
+		FROM MEMBER
+		WHERE USER_NO = #{user_no}
+	</select>
+	
+	
 	
 
 </mapper>

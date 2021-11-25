@@ -57,6 +57,14 @@
 		and user_id = #{ user_id }
 	</select>
 	
+	<select id="checkUser" parameterType="String" resultType="_int">
+		select
+			COUNT(*)
+		from member
+		where user_name = #{ user_name }
+		or user_phone = #{ user_phone }
+	</select>
+	
 	<select id="checkId" resultType="_int">
 		select COUNT(*) from member where user_id = #{ userEmail }
 	</select>

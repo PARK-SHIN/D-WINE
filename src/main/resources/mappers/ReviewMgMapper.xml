@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dwine.manage.model.dao.ReviewMgMapper">
+	
+	<resultMap type="com.project.dwine.member.model.vo.Member"
+		id="memberResultMap">
+		<id property="user_no" column="user_no" />
+		<result property="user_id" column="user_id" />
+		<result property="user_pw" column="user_pw" />
+		<result property="user_name" column="user_name" />
+		<result property="user_birth" column="user_birth" />
+		<result property="user_phone" column="user_phone" />
+		<result property="user_nickname" column="user_nickname" />
+		<result property="user_point" column="user_point" />
+		<result property="reported_count" column="reported_count" />
+		<association property="authority"
+			resultMap="authorityResultMap" />
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.member.model.vo.Authority"
+		id="authorityResultMap">
+		<id property="code" column="authority_no" />
+		<result property="name" column="authority_name" />
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.mypage.model.vo.Review"
+		id="ReviewResultMap">
+		<id property="review_no" column="review_no" />
+		<result property="review_text" column="REVIEW_TEXT" />
+		<result property="review_image" column="review_image" />
+		<result property="review_date" column="review_date" />
+		<result property="review_modify" column="review_modify" />
+		<result property="star" column="star" />
+		<result property="status" column="status" />
+		<result property="od_no" column="od_no" />
+		<result property="user_no" column="user_no" />
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.manage.model.vo.Report"
+		id="reviewMgResultMap">
+		<id property="report_no" column="report_no" />
+		<result property="user_no" column="user_no" />
+		<result property="reason_no" column="reason_no" />
+		<result property="review_no" column="review_no" />
+		<result property="reporter_no" column="reporter_no" />
+		<result property="count" column="count" />
+		<result property="report_date" column="report_date" />
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.manage.model.vo.ReportReason"
+		id="reportReasonResultMap">
+		<id property="reason_no" column="reason_no" />
+		<result property="reason_context" column="reason_context" />
+	</resultMap>
+	
+	
+	
+	<select id="selectReviewList" resultMap="reviewMgResultMap">
+	SELECT
+		       RP.REPORT_NO
+		     , M2.USER_ID as user_id2
+		     , RR.REASON_CONTEXT
+		     , (SELECT 
+		            COUNT(*)
+		            FROM REPORT
+		            WHERE REVIEW_NO = RP.REVIEW_NO)COUNT
+		     , R.REVIEW_TEXT
+     		 , R.REVIEW_DATE
+		     , M1.USER_ID as user_id1
+		     , RP.REPORT_DATE
+		FROM REPORT RP, REVIEW R, REPORTREASON RR, MEMBER M1, MEMBER M2
+		WHERE M2.USER_ID IN (SELECT USER_ID FROM MEMBER , REVIEW WHERE REVIEW.USER_NO = MEMBER.USER_NO) 
+		AND RP.REASON_NO = RR.REASON_NO
+		AND RP.REVIEW_NO = R.REVIEW_NO
+		AND RP.REPORTER_NO = M1.USER_NO
+		AND R.USER_NO = M2.USER_NO
+
+	</select>
+	
+	
+
+
+</mapper>
+	

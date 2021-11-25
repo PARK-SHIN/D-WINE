@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dwine.manage.model.dao.MemberMgMapper">
+
+	<resultMap type="com.project.dwine.member.model.vo.Member"
+		id="memberResultMap">
+		<id property="user_no" column="user_no" />
+		<result property="user_id" column="user_id" />
+		<result property="user_pw" column="user_pw" />
+		<result property="user_name" column="user_name" />
+		<result property="user_birth" column="user_birth" />
+		<result property="user_phone" column="user_phone" />
+		<result property="user_nickname" column="user_nickname" />
+		<result property="user_point" column="user_point" />
+		<result property="reported_count" column="reported_count" />
+		<result property="create_date" column="create_date"/>
+		<association property="authority"
+			resultMap="authorityResultMap" />
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.member.model.vo.Authority"
+		id="authorityResultMap">
+		<id property="code" column="authority_no" />
+		<result property="name" column="authority_name" />
+	</resultMap>
+	
+	<select id="selectMemberMgList" resultMap="memberResultMap">
+	SELECT
+			*
+	FROM MEMBER
+	WHERE USER_STATUS = 'Y'
+	ORDER BY REPORTED_COUNT DESC, CREATE_DATE
+	
+	</select>
+	
+	<select id="selectMemberMgByNo" parameterType="_int" resultMap="memberResultMap">
+	SELECT
+			  USER_NO
+			, USER_ID
+			, USER_NAME
+			, USER_BIRTH
+			, USER_PHONE
+			, USER_NICKNAME
+			, USER_STATUS
+			, REPORTED_COUNT
+			, CREATE_DATE
+		FROM MEMBER
+		WHERE USER_NO = #{ user_no}
+		AND USER_STATUS = 'Y'
+	
+	</select>
+	
+	<update id="deleteMemberMg" parameterType="String">
+	UPDATE 	MEMBER 
+	SET		USER_STATUS = 'N'
+    WHERE USER_NO = #{ user_no }
+	
+	</update>
+
+
+
+
+
+
+
+
+
+</mapper>

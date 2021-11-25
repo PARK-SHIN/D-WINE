@@ -26,13 +26,14 @@
                 <hr style="width: 700px; padding-right: 130px;">
                 	<input id="userNo" type="hidden" name="user_no" value=${sessionScope.user_no}>
                 <div class="review_list">
-                    <ul style="height: 100px;" th:each="review : ${ reviewList }">
+                    <ul style="height: 100px;" th:each="review : ${reviewList}">
                         <li class="title">
                             <p class="pname" th:text="${review.product_kname}"></p>
                             <p style="text-align: left;" th:text="${review.review_text}"></p>
                         </li>
                         <li class="review_date">
-                        	작성일 : <span th:text="${#dates.format(review.review_modify, 'yyyy-MM-dd')}"></span>
+                        	작성일 : <span th:text="${#dates.format(review.review_date, 'yyyy-MM-dd')}"></span>
+                        	수정일 : <span th:text="${#dates.format(review.review_modify, 'yyyy-MM-dd')}"></span>
                         </li>
                         <li class="del">
                              <!-- <span><button class="modifybtn" type="submit" th:href="@{/mypage/reviewUpdate/{review_no}(review_no=${review.review_no})}">수정</button></span> -->

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원관리</title>
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<link href="/css/common/common.css" rel="stylesheet">
+    <style>
+        .content {
+            margin : 50px auto;
+            height : auto;
+            min-height : 100%;
+            width: 900px;
+        }
+        #deleteBtn{
+            float: right;
+            background: #83131E ;
+            border: none;
+            color:white;
+            width:80px;
+            height: 25px;
+            border-radius: 10%;
+            
+        }
+
+        #searchArea{
+        float: right;
+        margin-right: 30px;
+        }  
+
+      .memberList{
+        text-align: center;
+        border: lightgray 1px solid;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        width: 900px;
+        height: 500px;
+      }
+   
+    .memberTable{
+        width: 900px;
+        border-collapse:collapse;
+        font-display: center;
+    }
+
+    .memberTable th{
+        border-left: none;
+        background: lightgray;
+        height: 35px;
+        font-size: 14px;
+    }
+
+    .memberTable td{
+        border-bottom:1px solid lightgray;
+        border-left: none;
+        text-align: center;
+        height: 35px;
+        font-size: 14px;
+    }
+
+    
+        /* 체크박스 색상 변경 */
+        input[type="checkbox"] {
+        cursor: pointer;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        outline: 1px solid gray;
+        background: white;
+        height: 12.8px;
+        width: 12.8px;
+        border: 1px solid white;
+        }
+
+        input[type="checkbox"]:checked {
+        background: #83131E;
+        }
+
+        input[type="checkbox"]:hover {
+        filter: brightness(90%);
+        }
+
+        input[type="checkbox"]:after {
+        content: '';
+        position: relative;
+        left: 40%;
+        top: 20%;
+        width: 15%;
+        height: 40%;
+        border: solid #fff;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+        display: none;
+        }
+
+		
+
+        .modal {
+        position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    margin-left: 300px;
+	    display: block;
+	    justify-content: center;
+	    align-items: center;
+	    margin-top: 200px;
+        }
+
+       	/*.modal .bg {
+          width: 200%;
+          height: 200%;
+          background-color: rgba(0, 0, 0, 0.6);
+        }*/
+
+        .modalBox {
+          position: absolute;
+          background-color: #fff;
+          width: 600px;
+          height: 600px;
+          padding: 15px;
+          border: 1px solid black;
+        }
+
+        .modalBox button {
+          display: block;
+          width: 80px;
+          margin: 0 auto;
+        }
+
+        .hidden {
+          display: none;
+        }
+        
+        
+
+    </style>
+</head>
+<body>
+<header th:include="common/header :: header"></header>
+<div class="content">
+    <h2>회원관리</h2>    
+    <hr>
+    <button id="deleteBtn" onclick="deleteValue();">회원제명</button><br>
+    <label>정렬 : </label>
+    <select name="array">
+        <option value="latest">최신순</option>
+        <option value="report-count">신고누적수</option>
+    </select>
+    <div id="searchArea"><input type="text" id="searchTitle" > <button>검색</button> </div>
+    <div class="memberList">
+        <table class="memberTable">
+            <tr>
+                <th><input type="checkbox" class="allCheck" name="allCheck" ></th>
+                <th>회원번호</th>
+                <th>닉네임</th>
+                <th>아이디</th>
+                <th>가입일</th>
+                <th>총 신고수</th>
+       	   </tr>
+            <tr class="trClass" th:each="member: ${ memberList }"><td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ member.user_no }"></td><td id="userNO" th:text="${ member.user_no }"></td><td th:text="${ member.user_nickname }"></td><td th:text="${ member.user_id }" class="openBtn" onclick="openModal(this)"></td><td th:text="${ #dates.format(member.create_date, 'yyyy-MM-dd') }"></td><td th:text="${ member.reported_count }"></td><td class="modal hidden tdCss"><div class="bg"></div><div class="modalBox"><img style="margin-left: 578px;"src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px">
+			    <h1>회원 정보 창</h1>
+            <div class="memberDetailArea">
+             <div class="memberNo"><label>회원 번호 : </label> <span th:text="${member.user_no}" readonly/></div><br>
+            <div class="detailArea">      
+                <div class="memberDetailList"><label  class="label_area">아이디</label> <span th:text="${member.user_id}" readonly/> </div><br>
+                <hr>
+                <div class="memberDetailList"><label class="label_area">닉네임</label> <span th:text="${member.user_nickname}" readonly/></div><br>
+                <hr>
+                <div class="memberDetailList"><label class="label_area">이름</label> <span th:text="${member.user_name}" readonly/></div><br>
+                <hr>
+                <div class="memberDetailList"><label class="label_area">핸드폰</label> <span th:text="${member.user_phone}" readonly/></div><br>
+                <hr>
+                <div class="memberDetailList"><label class="label_area">생년월일</label> <span th:text="${#dates.format(member.user_birth, 'yyyy-MM-dd')}" readonly/></div><br>
+                <hr>																						
+                <div class="memberDetailList"><label class="label_area">가입일</label> <span th:text="${#dates.format(member.create_date, 'yyyy-MM-dd')}" readonly/></div><br>
+                <hr>																				
+                <div class="memberDetailList"><label class="label_area">신고 당한 수</label> <span th:text="${member.reported_count}" readonly/></div><br>
+                <hr>
+            </div>
+            
+        </div>
+			    
+			   
+			  </div>
+			</td>
+            </tr>
+            
+         </table>    
+    </div>
+</div>
+<div th:replace="common/footer :: footer"></div>
+<script>   
+
+function openModal(elem){
+	console.log(elem);
+	console.log(elem.className);
+	
+	var trClass = elem.parentNode
+	console.log(trClass);
+	
+	var children = trClass.firstChild;
+	console.log(children);
+	
+	var test = children.nextSibling.nextSibling.nextSibling
+	console.log(test);
+	
+	var modaltest = test.nextSibling.nextSibling.nextSibling
+	console.log(modaltest);
+	
+	modaltest.classList.remove("hidden");
+	
+	var closetest= modaltest.firstChild.nextSibling.firstChild
+	console.log(closetest)
+	
+	 const open = () => {
+	document.querySelector(".modal").classList.remove("hidden");
+	}
+	
+	
+	const close =()=> {
+		modaltest.classList.add("hidden");
+	}
+	
+	closetest.addEventListener("click", close);
+	//t3.addEventListener("click", close);
+}
+	
+	
+	
+	
+	//var user_no = document.getElementById("checkbox").value;
+	//
+	//function openDetail(){  
+	  //  window.open("manage/memberMg/detail/" + user_no, "상세보기창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );  
+	//}  
+	
+	//crsf토큰
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
+
+	//allCheck 
+	$(function(){
+		var checkboxes = document.getElementsByName("checkbox");
+		var checkCnt = checkboxes.length;
+		
+		$("input[name='allCheck']").click(function(){
+			var check_listArr = $("input[name='checkbox']");
+			for (var i=0; i<check_listArr.length; i++){
+				check_listArr[i].checked = this.checked;
+			}
+		});
+		$("input[name='checkbox']").click(function(){
+			if($("input[name='checkbox']:checked").length == checkCnt){
+				$("input[name='allCheck']")[0].checked = true;
+			}
+			else{
+				$("input[name='allCheck']")[0].checked = false;
+			}
+		});
+	});
+	
+	
+	function deleteValue(){
+		
+		var valueArr = new Array();
+	    var list = $("input[name='checkbox']");
+	    
+	    for(var i = 0; i < list.length; i++){
+	        if(list[i].checked){ 
+	            valueArr.push(list[i].value);
+	        // Array.push(), Array.unshift(), Array.splice() 
+	        //콘솔값 잘 나옴. 
+	        //console.log(valueArr);
+	        //console.log(valueArr.length);
+	        }
+	    }
+	    if (valueArr.length == 0){
+	    	alert("선택된 회원이 없습니다.");
+	    }
+	    else{
+			var chk = confirm("정말 삭제하시겠습니까?");				 
+			$.ajax({
+			    url : "/manage/memberMg/delete",                   
+			    type : 'POST',  
+			    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			    traditional : true,
+			    data : {
+			    	valueArr : valueArr        //403에러는왜뜨는거지? -> csrf때문
+			    },
+			    success : function(data){
+					alert("삭제에 성공했습니다.");
+					location.replace("main")
+				},
+				error : function(e){
+					consloe.log("삭제에 실패했습니다");
+				}
+           
+			});
+		}
+	 }
+
+
+  
+</script>  
+</body>
+</html>
