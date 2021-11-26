@@ -145,7 +145,7 @@
 <body>
 <header th:include="common/header :: header"></header>
 <div class="content">
-   <h2>재고관리</h2>    
+   <h2>입고관리</h2>    
     <hr>
     <div class="totalList">
      <input type="hidden" name="totalStock" th:value="${totalStock.totalStock}">
@@ -183,7 +183,7 @@
 
     </div>
 
-        <button id="registBtn">입고</button><br>
+        <button id="registBtn"  onclick="location.href='/manage/inventoryMg/regist'">입고</button><br>
        <!--  <div class="arrayArea">
         <label>정렬 : </label>
         <select id="array">
@@ -201,8 +201,8 @@
                 <th>상품명(영어)</th>
                 <th>판매 가</th>
                 <th>입고량</th>
-                <th>단가</th>
-                <th>입고 가</th>
+                <th>입고단가</th>
+                <th>지불 금액</th>
                 <th>입고일</th>
                 <th>기능</th>
                 </tr>

@@ -43,4 +43,10 @@ public class InventoryMgServiceImpl implements InventoryMgService {
 		return inventoryMgMapper.selectTotalReceiving();
 	}
 
+
+	@Override
+	public int insertInventory(Inventory inven) {
+		return inventoryMgMapper.insertInventory(inven);
+	}
+
 }

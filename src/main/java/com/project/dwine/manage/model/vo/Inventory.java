@@ -14,13 +14,14 @@ public class Inventory {
 	//inven
 	private int inven_no;	//입고번호
 	private int inven_count; 	//입고수량
+	private int inven_cost;		//입고단가
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date inven_date;	//입고날짜
 	private char status; 		//입고상태	
 	private int product_no;		//상품번호
 	
 	//count들 
-	private int inven_price; //입고가 = 단가 * 입고수량
+	private int inven_price; //지불금액 = 입고단가 * 입고수량
 	
 	//join product
 	private int cost_price; //상품원가
@@ -35,15 +36,16 @@ public class Inventory {
 
 
 
-	public Inventory(int totalStock, int totalShop, int todayReceiving, int inven_no, int inven_count, Date inven_date,
-			char status, int product_no, int inven_price, int cost_price, int sale_price, int product_count,
-			String product_kname, String product_ename) {
+	public Inventory(int totalStock, int totalShop, int todayReceiving, int inven_no, int inven_count, int inven_cost,
+			Date inven_date, char status, int product_no, int inven_price, int cost_price, int sale_price,
+			int product_count, String product_kname, String product_ename) {
 		super();
 		this.totalStock = totalStock;
 		this.totalShop = totalShop;
 		this.todayReceiving = todayReceiving;
 		this.inven_no = inven_no;
 		this.inven_count = inven_count;
+		this.inven_cost = inven_cost;
 		this.inven_date = inven_date;
 		this.status = status;
 		this.product_no = product_no;
@@ -53,6 +55,15 @@ public class Inventory {
 		this.product_count = product_count;
 		this.product_kname = product_kname;
 		this.product_ename = product_ename;
+	}
+
+
+
+	public Inventory(int inven_count, int inven_cost, int product_no) {
+		super();
+		this.inven_count = inven_count;
+		this.inven_cost = inven_cost;
+		this.product_no = product_no;
 	}
 
 
@@ -113,6 +124,18 @@ public class Inventory {
 
 	public void setInven_count(int inven_count) {
 		this.inven_count = inven_count;
+	}
+
+
+
+	public int getInven_cost() {
+		return inven_cost;
+	}
+
+
+
+	public void setInven_cost(int inven_cost) {
+		this.inven_cost = inven_cost;
 	}
 
 
@@ -228,10 +251,10 @@ public class Inventory {
 	@Override
 	public String toString() {
 		return "Inventory [totalStock=" + totalStock + ", totalShop=" + totalShop + ", todayReceiving=" + todayReceiving
-				+ ", inven_no=" + inven_no + ", inven_count=" + inven_count + ", inven_date=" + inven_date + ", status="
-				+ status + ", product_no=" + product_no + ", inven_price=" + inven_price + ", cost_price=" + cost_price
-				+ ", sale_price=" + sale_price + ", product_count=" + product_count + ", product_kname=" + product_kname
-				+ ", product_ename=" + product_ename + "]";
+				+ ", inven_no=" + inven_no + ", inven_count=" + inven_count + ", inven_cost=" + inven_cost
+				+ ", inven_date=" + inven_date + ", status=" + status + ", product_no=" + product_no + ", inven_price="
+				+ inven_price + ", cost_price=" + cost_price + ", sale_price=" + sale_price + ", product_count="
+				+ product_count + ", product_kname=" + product_kname + ", product_ename=" + product_ename + "]";
 	}
 
 

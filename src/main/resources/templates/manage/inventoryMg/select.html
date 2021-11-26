@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상품검색</title>
+    <style>
+
+        .mcontent {
+            margin : 50px auto;
+            height : auto;
+            min-height : 100%;
+            width: 900px;
+            text-align: center;
+        }
+
+        .searchContext{
+            border: 1px solid black;
+            width: 500px;
+            height: 300px;
+            margin-top: 20px;
+            margin-left: 200px;
+        }
+        
+       .mbtnArea{
+            text-align: center;        
+        }
+
+        #mcancleBtn{
+            background: white ;
+            border: 1px solid #83131E ;
+            color: #83131E;
+            width:150px;
+            height: 25px;
+            border-radius: 5px;
+            margin-right: 30px;
+        }
+
+        #mapplyBtn{
+            background: #83131E ;
+            border: none;
+            color:white;
+            width:150px;
+            height: 25px;
+            border-radius: 5px;
+            margin-right: 30px;
+        }
+
+
+    </style>
+</head>
+<body>
+ <div class="content">
+    <h1>상품 검색</h1>
+    
+    <div class="searchArea">
+        <select id="selectCategory">
+            <option value="productName">상품명</option>
+            <option value="productNo">상품번호</option>
+        </select>
+        <input type="text" id="searchTitle"> 
+        <button>검색</button>
+
+    <div class="msearchContext">
+
+    </div>
+    </div>
+    <br>
+
+    <div class="mbtnArea">
+        <button id="mcancleBtn">취소</button>
+        <button id="mapplyBtn">적용</button>
+    </div>
+
+
+ </div>
+    
+</body>
+</html>
