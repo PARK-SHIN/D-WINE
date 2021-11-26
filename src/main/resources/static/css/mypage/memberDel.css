@@ -49,10 +49,10 @@
         margin-bottom: 17px;
     }
 
-    .snb_inner>ul>li {
+    /* .snb_inner>ul>li {
         margin-bottom: 20px;
         list-style: none;
-    }
+    } */
     #userId{
         border: 0;
         background-color: lightgray;

@@ -67,6 +67,13 @@
 		<result property="product_no" column="PRODUCT_NO" />
 	</resultMap>
 	
+	<resultMap type="com.project.dwine.mypage.model.vo.Payment" id="paymentResultMap">
+		<id property="pay_no" column="PAY_NO" />
+		<result property="pay_date" column="PAY_DATE" />
+		<result property="pay_method" column="PAY_METHOD" />
+		<result property="purchase_no" column="PURCHASE_NO" />
+	</resultMap>
+	
 	
 	<!-- <resultMap type="com.project.dwine.mypage.model.vo.Authority"
 		id="">
@@ -217,9 +224,14 @@
 		    od_price,
 		    od.product_no,
 		    pro.product_kname,
-		    r.review_no
-		from purchase p
-		left join order_detail od on(p.purchase_no = od.purchase_no)
+		    r.review_no,
+            pay_no,
+            pay_method,
+            pay_date,
+            pay.purchase_no
+		from order_detail od
+        left join purchase p on (p.purchase_no = od.purchase_no)
+        left join payment pay on (p.purchase_no = pay.purchase_no)
 		left join product pro on(pro.product_no = od.product_no)
 		left join review r on (r.od_no = od.od_no)
 		where p.user_no = #{user_no}
@@ -323,7 +335,12 @@
 		WHERE USER_NO = #{user_no}
 	</select>
 	
+	<select id="orderListCnt" resultType="_int">
+		SELECT COUNT(*) FROM PURCHASE WHERE USER_NO = #{user_no}
+	</select>
 	
-	
-
+	<update id="updateAddMemberPoint" parameterType="com.project.dwine.member.model.vo.Member">
+		UPDATE MEMBER SET USER_POINT = USER_POINT + 300 
+		WHERE USER_NO = #{user_no}
+	</update>
 </mapper>

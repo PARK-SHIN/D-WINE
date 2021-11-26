@@ -24,6 +24,13 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
 	<div id="container">
         <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
         </nav>
+        <script>
+        $(document).ready(function () { 
+            $('.memberM').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
+            $('.memberM').css('color', 'rgb(131,19,30)'); 
+            $('.memberM').css('font-weight', 'bold'); 
+        });
+        </script>
         <div class="contents">
             <div class="inner">
                 

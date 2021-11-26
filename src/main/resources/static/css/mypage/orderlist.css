@@ -48,11 +48,11 @@
             margin-bottom: 17px;
         }
 
-        .snb_inner>ul>li {
+        /* .snb_inner>ul>li {
             margin-bottom: 20px;
             list-style: none;
             cursor : pointer;
-        }
+        } */
         ul > li {
             list-style: none;
             

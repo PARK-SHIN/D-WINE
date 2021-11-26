@@ -5,99 +5,100 @@
 <title>Insert title here</title>
 <style>
 #container {
-            width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-            /* border: 1px solid red; */
-        }
+	width: 1100px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+}
 
-        .snb {
-            width: 200px;
-            /* height: 2500px; */
-            height: 100%;
-            /* border: 1px solid blue; */
-        }
+.snb {
+	width: 200px;
+	height: 100%;
+}
 
-        .contents {
-            width: 888px;
-            height: 100%;
-            /*2500px -> 100%*/
-            /* border: 1px solid black; */
-        }
+.contents {
+	width: 888px;
+	height: 100%;
+}
 
-        .inner {
-            margin-top: 30px;
-            margin-left: 27px;
-            width: 836px;
-            height: 100%;
-        }
-		a {
-            text-decoration: none;
-            color: #000;
-        }
+.inner {
+	margin-top: 30px;
+	margin-left: 27px;
+	width: 836px;
+	height: 100%;
+}
 
-        .snb {
-            width: 210px;
-        }
-		.snb_inner {
-          width: 170px;
-          margin: 30px auto 0;
-      }
+.sub_inner>ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 200px;
+}
 
-      .snb_inner>h2 {
-          font-size: 20px;
-          font-weight: 700;
-          margin-bottom: 17px;
-      }
+.sub_ul>li a {
+	display: block;
+	color: #000;
+	padding: 14px 16px;
+	text-decoration: none;
+}
 
-      .snb_inner>ul>li {
-          margin-bottom: 20px;
-          list-style: none;
-      }
+/* Change the link color on hover */
+.ahover:hover {
+	background-color: rgba(131, 19, 30, 0.2);
+	color: #83131E;
+	font-weight: bold;
+}
 
-      .snb_inner>ul>li span {
-          background: no-repeat 0 0/20px url(/images/mypage/order.png);
-          /*주문목록*/
-          padding-left: 30px;
-          font-size: 14px;
-      }
+.snb_inner>ul>li span {
+	background: no-repeat 0 0/20px url(/images/mypage/order.png);
+	/*주문목록*/
+	padding-left: 30px;
+	font-size: 14px;
+}
 
-      .snb_inner>ul>li:nth-child(2) span {
-          background-image: url(/images/mypage/wish.png);
-          /*찜*/
-      }
+.snb_inner>ul>li:nth-child(2) span {
+	background-image: url(/images/mypage/wish.png);
+	/*찜*/
+}
 
-      .snb_inner>ul>li:nth-child(3) span {
-          background-image: url(/images/mypage/sub_review.png);
-          /*리뷰관리*/
-      }
+.snb_inner>ul>li:nth-child(3) span {
+	background-image: url(/images/mypage/sub_review.png);
+	/*리뷰관리*/
+}
 
-      .snb_inner>ul>li:nth-child(4) span {
-          background-image: url(/images/mypage/point.png);
-      }
+.snb_inner>ul>li:nth-child(4) span {
+	background-image: url(/images/mypage/point.png);
+}
 
-      .snb_inner>ul>li:nth-child(5) span {
-          background-image: url(/images/mypage/member.png);
-      }
+.snb_inner>ul>li:nth-child(5) span {
+	background-image: url(/images/mypage/member.png);
+}
 
-      .snb_inner>ul>li:nth-child(6) span {
-          background-image: url(/images/mypage/member.png);
-      }
+.snb_inner>ul>li:nth-child(6) span {
+	background-image: url(/images/mypage/member.png);
+}
+
+.sub_ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 200px;
+	margin-top:10px;
+}
 </style>
 </head>
 <body>
 	<div class="snb_inner">
-        <span style="padding-left: 45px; font-size: 15px;">MYPAGE</span>
-        <ul class="">
-            <li class=""><a href="/mypage/orderlist"><span>주문목록</span></a></li>
-            <li class=""><a href="/mypage/wish"><span>찜리스트</span></a></li>
-            <li><a href="/mypage/review"><span>나의리뷰</span></a></li>
-            <li><a href="/mypage/point"><span>내 포인트</span></a></li>
-            <li><a href="/mypage/memberModify"><span>회원정보수정</span></a></li>
-            <li><a href="/mypage/memberDel"><span>회원탈퇴</span></a></li>
-        </ul>
-    </div>
+		<span style="padding-left: 17px; font-size: 19px;">MYPAGE</span>
+		<ul class="sub_ul">
+			<li><a class="ahover" href="/mypage/orderlist"><span>주문목록</span></a></li>
+			<li><a class="ahover mywish" href="/mypage/wish"><span>찜리스트</span></a></li>
+			<li><a class="ahover myreview" href="/mypage/review"><span>나의리뷰</span></a></li>
+			<li><a class="ahover mypoint" href="/mypage/point"><span>내 포인트</span></a></li>
+			<li><a class="ahover memberM"  href="/mypage/memberModify"><span>회원정보수정</span></a></li>
+            <li><a class="ahover memberD" href="/mypage/memberDel"><span>회원탈퇴</span></a></li>
+		</ul>
+	</div>
 </body>
 </html>

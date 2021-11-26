@@ -1,8 +1,12 @@
 package com.project.dwine.mypage.model.service;
 
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.domain.Page;
 
 import com.project.dwine.member.model.vo.Member;
+import com.project.dwine.mypage.model.vo.Payment;
 import com.project.dwine.mypage.model.vo.Point;
 import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
@@ -26,7 +30,7 @@ public interface MypageService {
 
 	List<Purchase> selectOrderList(int user_no);
 
-	int pickupModify(int purchase_no, String pickup_place, String pickup_date, String pickup_time);
+	int pickupModify(String purchase_no, String pickup_place, String pickup_date, String pickup_time);
 
 	int reviewInsert(String review_text, String review_image, double star, int user_no, int od_no);
 
@@ -54,8 +58,17 @@ public interface MypageService {
 
 	int reviewUpdate(int review_no, String review_text, String review_image);
 
-	int updateCancelPayment(int purchase_no);
+	int updateCancelPayment(String purchase_no);
 
 	Member selectMemberPoint(int user_no);
+
+	int orderListCnt(int user_no);
+
+	int updateAddMemberPoint(int user_no);
+
+
+
+
+	
 
 }

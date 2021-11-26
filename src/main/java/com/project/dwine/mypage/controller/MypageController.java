@@ -3,8 +3,6 @@ package com.project.dwine.mypage.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,11 +24,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.dwine.member.model.vo.Member;
 import com.project.dwine.member.model.vo.UserImpl;
 import com.project.dwine.mypage.model.service.MypageService;
+import com.project.dwine.mypage.model.vo.Pagination;
+import com.project.dwine.mypage.model.vo.Payment;
 import com.project.dwine.mypage.model.vo.Point;
 import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
@@ -162,6 +162,9 @@ public class MypageController{
 	public ModelAndView orderList(ModelAndView mv) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
+	    // 전체 글 개수
+	    int orderListCnt = mypageService.orderListCnt(user_no);
+	    
 	    List<Purchase> purchaseList = mypageService.selectOrderList(user_no);
 	    mv.addObject("purchaseList", purchaseList);
 	    mv.setViewName("mypage/orderlist");
@@ -171,7 +174,7 @@ public class MypageController{
 	@PostMapping("/mypage/pickupModify")
 	public String pickupModify(@RequestParam Map<String, String> parameters, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html; charset=euc-kr");
-		int purchase_no = Integer.parseInt(parameters.get("purchase_no"));
+		String purchase_no = parameters.get("purchase_no");
 		String pickup_place = parameters.get("pickup_place");
 		String pickup_date = parameters.get("pickup_date");
 		String pickup_time = parameters.get("pickup_time");
@@ -193,7 +196,7 @@ public class MypageController{
 	
 	// 결제취소 
 	@PostMapping("/mypage/updateCancelPayment")
-	public String CancelPaymentForm(int purchase_no, RedirectAttributes rttr) {
+	public String CancelPaymentForm(String purchase_no, RedirectAttributes rttr) {
 		int result = mypageService.updateCancelPayment(purchase_no);
 		if(result > 0) {
 			System.out.println("성공");
@@ -250,13 +253,13 @@ public class MypageController{
 	    	  System.out.println("성공");
 				int result = mypageService.reviewInsert(review_text, review_image, star, user_no, od_no);
 				if(result > 0) {
-					System.out.println("insert 성공");
 					int review_no = mypageService.findReviewNo();
-					
 					int result2 = mypageService.insertReviewPoint(user_no, review_no); // 리뷰작성 후 포인트테이블에 insert
-					
 					if(result2 > 0) {
-						System.out.println("result2 성공");
+						int result3 = mypageService.updateAddMemberPoint(user_no);
+						if(result3> 0) {
+							System.out.println("success");
+						}
 					}
 					rttr.addFlashAttribute("message", "리뷰가 등록되었습니다.");
 				} else {

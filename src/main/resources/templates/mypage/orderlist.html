@@ -7,6 +7,66 @@
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/orderlist.css" rel="stylesheet">
+<style>
+.sub_inner>ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 200px;
+}
+
+.sub_ul>li a {
+	display: block;
+	color: #000;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+/* Change the link color on hover */
+.ahover:hover {
+	background-color: rgba(131, 19, 30, 0.2);
+	color: #83131E;
+	font-weight: bold;
+}
+
+.snb_inner>ul>li span {
+	background: no-repeat 0 0/20px url(/images/mypage/order.png);
+	/*주문목록*/
+	padding-left: 30px;
+	font-size: 14px;
+	
+}
+
+.snb_inner>ul>li:nth-child(2) span {
+	background-image: url(/images/mypage/wish.png);
+	/*찜*/
+}
+
+.snb_inner>ul>li:nth-child(3) span {
+	background-image: url(/images/mypage/sub_review.png);
+	/*리뷰관리*/
+}
+
+.snb_inner>ul>li:nth-child(4) span {
+	background-image: url(/images/mypage/point.png);
+}
+
+.snb_inner>ul>li:nth-child(5) span {
+	background-image: url(/images/mypage/member.png);
+}
+
+.snb_inner>ul>li:nth-child(6) span {
+	background-image: url(/images/mypage/member.png);
+}
+
+.sub_ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 200px;
+	margin-top:10px;
+}
+</style>
 <script>
 	const successMessgae = '[[${ message }]]';
 	
@@ -19,7 +79,20 @@
 <body>
 <header th:include="common/header :: header"></header>
 	<div id="container">
-        <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
+        <!-- <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
+        </nav> -->
+        <nav class="snb">
+        	<div class="snb_inner">
+				<span style="padding-left: 17px; font-size: 19px;">MYPAGE</span>
+				<ul class="sub_ul">
+					<li><a style="background-color: rgba(131, 19, 30, 0.2); color:rgb(131,19,30); font-weight:bold;" class="ahover" href="/mypage/orderlist"><span>주문목록</span></a></li>
+					<li><a class="ahover" href="/mypage/wish"><span>찜리스트</span></a></li>
+					<li><a class="ahover" href="/mypage/review"><span>나의리뷰</span></a></li>
+					<li><a class="ahover" href="/mypage/point"><span>내 포인트</span></a></li>
+					<li><a class="ahover" href="/mypage/memberModify"><span>회원정보수정</span></a></li>
+		            <li><a class="ahover" href="/mypage/memberDel"><span>회원탈퇴</span></a></li>
+				</ul>
+			</div>
         </nav>
         <div class="contents">
             <div class="inner">
@@ -49,7 +122,7 @@
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="labelArea">결제완료</strong> <br>
 										<form method="post" th:action="@{/mypage/updateCancelPayment}" style="display:inline;">
 	                               	 		<input type="hidden" name="purchase_no" th:value="${p.purchase_no}">
-	                               	 		<button class="cancelPayment" onclick="cancelPay()">결제취소</button>&nbsp;
+	                               	 		<button class="cancelPayment">결제취소</button>&nbsp;
                                	 		</form>
                                	 		<button class="modalButton" onclick="openModal(this)">픽업변경</button>
 									</div>
@@ -151,13 +224,16 @@
                                         <hr style="width: 500px;">
                                         <div class="labelSize">
                                             <label for="">수령날짜</label>
-                                            <input type="text" name="pickup_date" class="Date" th:value="${p.pickup_date}" style="border: 1px solid black; margin-left: 116px; width: 190px; height: 25px;" readonly>
+                                           <!--  <input type="text" name="pickup_date" class="Date" th:value="${p.pickup_date}" style="border: 1px solid black; margin-left: 116px; width: 190px; height: 25px;" readonly> -->
+                                        	<select id="pickupDate" name="pickup_date" style="margin-left: 116px; width:200px;height:30px;">
+                                        		<option>[[${p.pickup_date}]]</option>
+                                        	</select>
                                         </div>
                                         <hr style="width: 500px;">
                                         <div class="labelSize">
                                             <label for="">수령시간</label>
-                                            <select name="pickup_time" id="" style="margin-left: 115px; width:200px;height:30px;">
-                                                <option th:selected="${p.pickup_time}=='09:00~12:00'" value="09:00 ~ 12:00">09:00 ~ 12:00</option>
+                                            <select name="pickup_time" style="margin-left: 115px; width:200px; height:30px;">
+                                            	<option th:selected="${p.pickup_time}=='09:00~12:00'" value="09:00 ~ 12:00">09:00 ~ 12:00</option>
                                                 <option value="12:00 ~ 18:00" th:selected="${p.pickup_time}=='12:00 ~ 18:00'">12:00 ~ 18:00</option>
                                             </select>
                                         </div> 
@@ -236,6 +312,45 @@
             });
 
         </script>
+        
+        <script>
+	        /* 오늘부터 +7일 출력하기 */
+	        var currentDay = new Date();  
+	        var theYear = currentDay.getFullYear();
+	        var theMonth = currentDay.getMonth();
+	        var theDate  = currentDay.getDate();
+	        var theDayOfWeek = currentDay.getDay();
+	
+	        
+	        const WEEKDAY = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
+	        
+	        var thisWeek = [];
+	         
+	        for(var i=0; i<7; i++) {
+	          var resultDay = new Date(theYear, theMonth, theDate + i, theDayOfWeek);
+	          var mm = Number(resultDay.getMonth()) + 1;
+	          var dd = resultDay.getDate();
+	          var day = resultDay.getDay();
+	          
+	          
+	          mm = String(mm).length === 1 ? '0' + mm : mm;
+	          dd = String(dd).length === 1 ? '0' + dd : dd;
+	          
+	          thisWeek[i] =  mm + '-' + dd + WEEKDAY[day];
+	        }
+	
+	      var optionIndex = 0;
+	
+	      for(var i=0;i<7;i++){
+	
+	      let selectbox = document.querySelector("#pickupDate");
+	      var objOption = document.createElement("option"); 
+	      objOption.text = thisWeek[i];
+	      objOption.value = thisWeek[i];
+	      selectbox.options.add(objOption);
+	
+	      }
+        </script>
 
         <script>
         	/* $(function() { $( "#Date" ).datepicker({ }); }); */
@@ -274,14 +389,14 @@
         <script>
         var price = $(".sum").val;
         
-		  function cancelPay() {
+		  function cancelPay(pay_no, purchase_price) {
 		    $.ajax({
 		      url: "{환불요청을 받을 서비스 URL}", // 예: http://www.myservice.com/payments/cancel
 		      type: "POST",
 		      contentType: "application/json",
 		      data: JSON.stringify({
-				        merchant_uid: "{결제건의 주문번호}", // 예: ORD20180131-0000011
-				        cancel_request_amount: Number(price), // 환불금액
+				        merchant_uid: pay_no, // 예: ORD20180131-0000011
+				        cancel_request_amount: purchase_price, // 환불금액
 				        reason: "테스트 결제 환불" // 환불사유
 		      }),
 		      dataType: "json"

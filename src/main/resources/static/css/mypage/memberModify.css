@@ -49,10 +49,10 @@
             margin-bottom: 17px;
         }
 
-        .snb_inner>ul>li {
+        /* .snb_inner>ul>li {
             margin-bottom: 20px;
             list-style: none;
-        }
+        } */
         button {
             padding: 10px 15px;
             border-radius: 5px;
