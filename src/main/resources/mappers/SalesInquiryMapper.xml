@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dwine.salesInquiry.model.dao.SalesInquiryMapper">
+
+	<resultMap id="purchaseResultMap" type="com.project.dwine.orderManage.model.vo.Purchase">
+		<id property="purchaseNo" column="PURCHASE_NO"/>
+		<result property="purchaseDate" column="PURCHASE_DATE"/>
+		<result property="usePoint" column="USE_POINT"/>
+		<result property="purchasePrice" column="PURCHASE_PRICE"/>
+		<result property="pickupDate" column="PICKUP_DATE"/>
+		<result property="pickupPlace" column="PICKUP_PLACE"/>
+		<result property="pickupTime" column="PICKUP_TIME"/>
+		<result property="orderStatus" column="ORDER_STATUS"/>
+		<result property="status" column="STATUS"/>
+		<result property="refundDate" column="REFUND_DATE"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userPhone" column="USER_PHONE"/>
+		<collection property="orderDetail" resultMap="orderDetailResultMap"/>
+	</resultMap>
+	
+	<resultMap id="orderDetailResultMap" type="com.project.dwine.orderManage.model.vo.OrderDetail">
+		<id property="productNo" column="PRODUCT_NO"/>
+		<result property="typeName" column="TYPE_NAME"/>
+		<result property="productKname" column="PRODUCT_KNAME"/>
+		<result property="odCount" column="OD_COUNT"/>
+		<result property="odPrice" column="OD_PRICE"/>
+	</resultMap>
+	
+	<select id="selectTodayStatus" resultType="com.project.dwine.salesInquiry.model.vo.Total">
+		SELECT DISTINCT
+		       (SELECT 
+		               COUNT(PURCHASE_NO) 
+		          FROM PURCHASE 
+		         WHERE PURCHASE_DATE = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalOrder
+		     , (SELECT 
+		               COUNT(PURCHASE_NO)
+		          FROM PURCHASE 
+		         WHERE ORDER_STATUS = '픽업완료' 
+		           AND PURCHASE_DATE = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalPickup
+		     , (SELECT SUM(PURCHASE_PRICE) 
+		          FROM PURCHASE 
+		         WHERE PURCHASE_DATE = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalPrice          
+		     , (SELECT 
+		               SUM(PURCHASE_PRICE)
+		          FROM PURCHASE 
+		         WHERE REFUND_DATE IS NOT NULL
+		           AND REFUND_DATE = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalRefund
+		  FROM PURCHASE
+		 WHERE PURCHASE_DATE = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')
+		 GROUP BY PURCHASE_PRICE
+	</select>
+	
+	<select id="dailyList" resultType="com.project.dwine.salesInquiry.model.vo.Total">
+		SELECT
+		       P1.PURCHASE_DATE daily
+		     , COUNT(P1.PURCHASE_NO) totalOrder
+		     , SUM(P1.PURCHASE_PRICE) totalPrice
+		     , SUM(P1.USE_POINT) point
+		     , (SUM(P1.PURCHASE_PRICE)-SUM(P1.USE_POINT)) totalPrice
+		     , (SELECT
+		               SUM(P2.PURCHASE_PRICE)
+		          FROM PURCHASE P2
+		         WHERE TO_CHAR(P2.REFUND_DATE, 'yy/MM/dd') = TO_CHAR(P1.PURCHASE_DATE, 'yy/MM/dd')) totalRefund
+		 FROM PURCHASE P1
+		 GROUP BY PURCHASE_DATE
+		 ORDER BY P1.PURCHASE_DATE DESC
+	</select>
+
+</mapper>

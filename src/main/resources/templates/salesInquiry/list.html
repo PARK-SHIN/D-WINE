@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <title>매출조회</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="/css/common/common.css" rel="stylesheet">
+    <!-- <link href="/css/orderManage/list.css" rel="stylesheet"> -->
+<style>
+        #container {
+            width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            border: 1px solid red;
+            height: 1400px;
+        }
+
+        .snb {
+            width: 200px;
+            /* height: 2500px; */
+            height: 100%;
+            border: 1px solid blue;
+        }
+
+        .contents {
+            width: 888px;
+            height: 100%;
+            /*2500px -> 100%*/
+            border: 1px solid black;
+        }
+
+        .inner {
+            margin-top: 30px;
+            margin-left: 27px;
+            width: 795px;
+            /* height: 100%; */
+            border: 1px solid green;
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .snb {
+            width: 210px;
+        }
+
+        .snb_inner {
+            width: 170px;
+            margin: 30px auto 0;
+        }
+
+        [class $= "Area"] {
+            width: 793px;
+            height: 250px;
+            border: 1px solid #C4C4C4;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .detailBtn {
+            float: right;
+            background-color: white;
+            border-color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 3px;
+        }
+
+        .areas {
+            display: flex;
+            margin-top: 40px;
+            margin-left: 40px;
+            text-align: center;
+        }
+
+        .area1 {
+            width: 160px;
+            height: 180px;
+            background: #96C8E6;
+            color: white;
+        }
+
+        .area2 {
+            width: 160px;
+            height: 180px;
+            background: #C8AAD9;
+            color: white;
+            margin-left: 20px;
+        }
+
+        .area3 {
+            width: 160px;
+            height: 180px;
+            background: #FFB428;
+            color: white;
+            margin-left: 20px;
+        }
+
+        .area4 {
+            width: 160px;
+            height: 180px;
+            background: #AAC87B;
+            color: white;
+            margin-left: 20px;
+        }
+
+        p {
+            margin-top: 50px;
+            font-size: 14px;
+        }
+
+        b {
+            font-size: 25px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container">
+        <nav class="snb">
+            <!-- <div class="snb_inner">
+            </div> -->
+        </nav>
+        <div class="contents">
+            <div class="inner">
+                <div>
+                    <h3 style="font-size: 24px;">매출 조회</h3>
+                </div>
+                <hr style="padding-right: 130px;">
+
+                <label>TOP5 현황</label>
+                <div class="top5Area">
+					<span>2021.09.01</span> ~ <span>2021.10.27</span>
+                </div>
+
+                <label>연도별 현황</label>
+                <div class="yearArea">
+                	<select>
+                        <option>2021</option>
+                        <option>2020</option>
+                    </select>
+                </div>
+
+                <label>일별 현황</label>
+                <div class="dailyArea">
+                    <button type="button" class="detailBtn" onclick="location.href='/salesInquiry/daily'">전체보기 ></button>
+
+                    <div class="areas">
+                        <div class="area1">
+                            <p>주문접수</p>
+                            <b th:text="${total.totalOrder}"></b> 건
+                        </div>
+                        <div class="area2">
+                            <p>픽업완료</p>
+                            <b th:text="${total.totalPickup}"></b> 건
+                        </div>
+                        <div class="area3">
+                            <p>구매합계</p>
+                            <b th:text="${#numbers.formatInteger(total.totalPrice, 3, 'COMMA')}"></b> 원
+                        </div>
+                        <div class="area4">
+                            <p>총매출액</p>
+                            <b th:text="${#numbers.formatInteger((total.totalPrice - total.totalRefund), 3, 'COMMA')}"></b> 원
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+	    var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+    </script>
+</body>
+</html>
