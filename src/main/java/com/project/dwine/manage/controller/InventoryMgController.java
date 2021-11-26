@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.dwine.hashtag.model.vo.Hashtag;
 import com.project.dwine.manage.model.service.InventoryMgService;
@@ -68,10 +69,12 @@ public class InventoryMgController {
 		return mv;
 	}
 	
+	
+	
 	//입고를 공지사항과 다르게 적용해보기
 	
 	@PostMapping("/inventoryMg/regist") //동일url이지만 전송버튼을 눌렀을때 하는 것. 
-	public String registInven(Model model, HttpServletRequest request) {
+	public String registInven(Model model, HttpServletRequest request, RedirectAttributes rttr) {
 	
 	    int inven_count = Integer.parseInt(request.getParameter("inven_count"));
 		int inven_cost = Integer.parseInt(request.getParameter("inven_cost"));
@@ -79,9 +82,10 @@ public class InventoryMgController {
 		
 		Inventory inven = new Inventory(inven_count, inven_cost, product_no);
 		
-		int result = inventoryMgService.insertInventory(inven);
+		int result = inventoryMgService.registInventory(inven);
 		
-		return "redirect:mamage/inventoryMg/regist";
+	
+		return "redirect:main";
 	}
 	
 	

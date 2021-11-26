@@ -45,8 +45,8 @@ public class InventoryMgServiceImpl implements InventoryMgService {
 
 
 	@Override
-	public int insertInventory(Inventory inven) {
-		return inventoryMgMapper.insertInventory(inven);
+	public int registInventory(Inventory inven) {
+		return inventoryMgMapper.registInventory(inven);
 	}
 
 }

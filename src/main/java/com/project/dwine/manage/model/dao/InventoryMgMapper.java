@@ -16,7 +16,7 @@ public interface InventoryMgMapper {
 
 	Inventory selectTotalReceiving();
 
-	int insertInventory(Inventory inven);
+	int registInventory(Inventory inven);
 
 	
 }
