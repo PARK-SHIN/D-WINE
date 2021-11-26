@@ -9,13 +9,13 @@ public class Point {
 	private int point;
 	private Date pdate;
 	private int review_no;
-	private int purchase_no;
+	private String purchase_no;
 	private int use_point;
 	private int total;
 	
 	public Point() {}
 
-	public Point(int point_no, String content, int point, Date pdate, int review_no, int purchase_no, int use_point,
+	public Point(int point_no, String content, int point, Date pdate, int review_no, String purchase_no, int use_point,
 			int total) {
 		super();
 		this.point_no = point_no;
@@ -68,11 +68,11 @@ public class Point {
 		this.review_no = review_no;
 	}
 
-	public int getPurchase_no() {
+	public String getPurchase_no() {
 		return purchase_no;
 	}
 
-	public void setPurchase_no(int purchase_no) {
+	public void setPurchase_no(String purchase_no) {
 		this.purchase_no = purchase_no;
 	}
 
@@ -98,4 +98,6 @@ public class Point {
 				+ ", review_no=" + review_no + ", purchase_no=" + purchase_no + ", use_point=" + use_point + ", total="
 				+ total + "]";
 	}
+
+	
 }

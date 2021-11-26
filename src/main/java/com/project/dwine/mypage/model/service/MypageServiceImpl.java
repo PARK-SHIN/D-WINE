@@ -1,12 +1,15 @@
 package com.project.dwine.mypage.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.project.dwine.member.model.vo.Member;
 import com.project.dwine.mypage.model.dao.MypageMapper;
+import com.project.dwine.mypage.model.vo.Payment;
 import com.project.dwine.mypage.model.vo.Point;
 import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
@@ -65,7 +68,7 @@ public class MypageServiceImpl implements MypageService{
 	}
 
 	@Override
-	public int pickupModify(int purchase_no, String pickup_place, String pickup_date, String pickup_time) {
+	public int pickupModify(String purchase_no, String pickup_place, String pickup_date, String pickup_time) {
 		return mypageMapper.pickupModify(purchase_no, pickup_place, pickup_date, pickup_time);
 	}
 
@@ -132,7 +135,7 @@ public class MypageServiceImpl implements MypageService{
 	}
 
 	@Override
-	public int updateCancelPayment(int purchase_no) {
+	public int updateCancelPayment(String purchase_no) {
 		return mypageMapper.updateCancelPayment(purchase_no);
 	}
 
@@ -140,5 +143,20 @@ public class MypageServiceImpl implements MypageService{
 	public Member selectMemberPoint(int user_no) {
 		return mypageMapper.selectMemberPoint(user_no);
 	}
+
+	@Override
+	public int orderListCnt(int user_no) {
+		return mypageMapper.orderListCnt(user_no);
+	}
+
+	@Override
+	public int updateAddMemberPoint(int user_no) {
+		return mypageMapper.updateAddMemberPoint(user_no);
+	}
+
+
+
+
+	
 
 }

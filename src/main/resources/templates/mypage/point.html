@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="UTF-8">
 <title>내 포인트</title>
@@ -12,6 +13,13 @@
 	<div id="container">
         <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
         </nav>
+        <script>
+        $(document).ready(function () { 
+            $('.mypoint').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
+            $('.mypoint').css('color', 'rgb(131,19,30)'); 
+            $('.mypoint').css('font-weight', 'bold'); 
+        });
+        </script>
         <div class="contents">
             <div class="inner">
                 <div>
@@ -40,12 +48,14 @@
                         <li class="point">사용 / 적립</li>
                         <li class="content">내용</li>
                     </ul>
-                    <ul class="">
+                    <th:block sec:authorize="hasRole('MEMBER')">
+						<ul class="">
                         <li class="num">-</li>
                         <li class="date"><label th:text="${#dates.format(m.create_date, 'yyyy.MM.dd')}"></label></li>
-                        <li class="point" th:text="${m.user_point}"></li>
+                        <li class="point">2000</li>
                         <li class="content">첫 회원가입 이벤트</li>
-                    </ul>
+                    </ul>	
+					</th:block>
                     <ul th:each="point,index : ${pointList}">
                         <!-- <li class="num" th:text="${#lists.sort(index.count, reverse)}"></li> -->
                         <li class="num" th:text="${index.count}">

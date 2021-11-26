@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Purchase {
 	
-	private int purchase_no;
+	private String purchase_no;
 	private Date purchase_date;
 	private double use_point;
 	private String pickup_date;
@@ -20,12 +20,16 @@ public class Purchase {
 	private int product_no;
 	private String product_kname;
 	private int review_no;
+	private int pay_no;
+	private String pay_method;
+	private Date pay_date;
 	
 	public Purchase() {}
 
-	public Purchase(int purchase_no, Date purchase_date, double use_point, String pickup_date, String pickup_place,
+	public Purchase(String purchase_no, Date purchase_date, double use_point, String pickup_date, String pickup_place,
 			String pickup_time, String order_status, String status, Date refund_date, int user_no, int od_no,
-			int od_count, int od_price, int product_no, String product_kname, int review_no) {
+			int od_count, int od_price, int product_no, String product_kname, int review_no, int pay_no,
+			String pay_method, Date pay_date) {
 		super();
 		this.purchase_no = purchase_no;
 		this.purchase_date = purchase_date;
@@ -43,13 +47,16 @@ public class Purchase {
 		this.product_no = product_no;
 		this.product_kname = product_kname;
 		this.review_no = review_no;
+		this.pay_no = pay_no;
+		this.pay_method = pay_method;
+		this.pay_date = pay_date;
 	}
 
-	public int getPurchase_no() {
+	public String getPurchase_no() {
 		return purchase_no;
 	}
 
-	public void setPurchase_no(int purchase_no) {
+	public void setPurchase_no(String purchase_no) {
 		this.purchase_no = purchase_no;
 	}
 
@@ -173,13 +180,38 @@ public class Purchase {
 		this.review_no = review_no;
 	}
 
+	public int getPay_no() {
+		return pay_no;
+	}
+
+	public void setPay_no(int pay_no) {
+		this.pay_no = pay_no;
+	}
+
+	public String getPay_method() {
+		return pay_method;
+	}
+
+	public void setPay_method(String pay_method) {
+		this.pay_method = pay_method;
+	}
+
+	public Date getPay_date() {
+		return pay_date;
+	}
+
+	public void setPay_date(Date pay_date) {
+		this.pay_date = pay_date;
+	}
+
 	@Override
 	public String toString() {
 		return "Purchase [purchase_no=" + purchase_no + ", purchase_date=" + purchase_date + ", use_point=" + use_point
 				+ ", pickup_date=" + pickup_date + ", pickup_place=" + pickup_place + ", pickup_time=" + pickup_time
 				+ ", order_status=" + order_status + ", status=" + status + ", refund_date=" + refund_date
 				+ ", user_no=" + user_no + ", od_no=" + od_no + ", od_count=" + od_count + ", od_price=" + od_price
-				+ ", product_no=" + product_no + ", product_kname=" + product_kname + ", review_no=" + review_no + "]";
+				+ ", product_no=" + product_no + ", product_kname=" + product_kname + ", review_no=" + review_no
+				+ ", pay_no=" + pay_no + ", pay_method=" + pay_method + ", pay_date=" + pay_date + "]";
 	}
 
 	

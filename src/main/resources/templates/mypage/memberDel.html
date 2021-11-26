@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/memberDel.css" rel="stylesheet">
 <title>회원탈퇴</title>
@@ -11,6 +12,13 @@
 	<div id="container">
         <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
         </nav>
+        <script>
+        $(document).ready(function () { 
+            $('.memberD').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
+            $('.memberD').css('color', 'rgb(131,19,30)'); 
+            $('.memberD').css('font-weight', 'bold'); 
+        });
+        </script>
         <div class="contents">
             <div class="inner">
                 <div>
