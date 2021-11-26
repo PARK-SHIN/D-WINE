@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.project.dwine.manage.model.vo.Inventory;
 
+
 public interface InventoryMgService {
 
 	List<Inventory> selectInvenMgList();
@@ -13,6 +14,8 @@ public interface InventoryMgService {
 	Inventory selectTotalShop();
 
 	Inventory selectTodayReceiving();
+
+	int insertInventory(Inventory inven);
 	
 	
 

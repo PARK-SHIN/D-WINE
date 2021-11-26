@@ -64,6 +64,7 @@
 	<result property="inven_date" column="inven_date"/>
 	<result property="status" column="status"/>
 	<result property="product_no" column="product_no"/>
+	<result property="inven_cost" column="inven_cost"/>
 	<result property="totalStock" column="totalStock"/>
 	<result property="totalShop" column="totalShop"/>
 	<result property="todayReceiving" column="todayReceiving"/>
@@ -90,6 +91,7 @@
 		ORDER BY INVEN_DATE DESC
 	</select>
 	
+	<!-- 카운트 3개 -->
 	<select id="selectTotalStock" resultMap="inventoryResultMap">
 	SELECT
 	        COUNT(DISTINCT PRODUCT_NO)AS TOTALSTOCK 
@@ -111,7 +113,18 @@
 	WHERE TO_CHAR(INVEN_DATE, 'YYYYMMDD') = TO_CHAR(SYSDATE, 'YYYYMMDD')
 	</select>
 
-
+	<!-- 입고주문 -->
+	<insert id="registInventory" parameterType="com.project.dwine.manage.model.vo.Inventory">
+	INSERT INTO INVENTORY 
+	VALUES (
+				SEQ_INO.NEXTVAL
+				, #{inven_count}
+				, DEFAULT
+				, DEFAULT
+				, #{product_no}
+				, #{inven_cost}
+			)
+	</insert>
 
 
 
