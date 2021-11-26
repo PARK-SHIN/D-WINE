@@ -76,7 +76,7 @@
 		 ORDER BY P.PURCHASE_NO DESC
 	</select>
 	
-	<select id="selectOrderDetail" parameterType="_int" resultMap="purchaseResultMap">
+	<select id="selectOrderDetail" parameterType="string" resultMap="purchaseResultMap">
 		SELECT
 		       P.PURCHASE_NO
 		     , P.PURCHASE_DATE
@@ -137,7 +137,7 @@
 		 WHERE PURCHASE_NO = #{ purchaseNo }
 	</update>
 	
-	<update id="deleteOrder" parameterType="_int">
+	<update id="deleteOrder" parameterType="string">
 		UPDATE PURCHASE
 		   SET STATUS = 'N'
 		 WHERE PURCHASE_NO = #{ purchaseNo }

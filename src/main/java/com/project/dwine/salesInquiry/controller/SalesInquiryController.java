@@ -27,7 +27,7 @@ public class SalesInquiryController {
 	public ModelAndView selectTodayStatus(ModelAndView mv) {
 		
 		Total total = salesInquiryService.selectTodayStatus();
-				
+
 		mv.addObject("total", total);
 		mv.setViewName("salesInquiry/list");
 		

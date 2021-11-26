@@ -29,22 +29,22 @@ public class OrderManageServiceImpl implements OrderManageService {
 	}
 
 	
-	 @Override public int updateOrderStatus(int purchaseNo, String orderStatus) {
+	 @Override public int updateOrderStatus(String purchaseNo, String orderStatus) {
 	 return orderManageMapper.updateOrderStatus(purchaseNo, orderStatus); 
 	 }
 
 	@Override
-	public int deleteOrder(int purchaseNo) {
+	public int deleteOrder(String purchaseNo) {
 		return orderManageMapper.deleteOrder(purchaseNo);
 	}
 
 	@Override
-	public Purchase selectOrderDetail(int purchaseNo) {
+	public Purchase selectOrderDetail(String purchaseNo) {
 		return orderManageMapper.selectOrderDetail(purchaseNo);
 	}
 
 	@Override
-	public int updateAllChange(int purchaseNo, String orderStatus) {
+	public int updateAllChange(String purchaseNo, String orderStatus) {
 		return orderManageMapper.updateAllChange(purchaseNo, orderStatus);
 	}
 

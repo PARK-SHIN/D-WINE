@@ -13,13 +13,13 @@ public interface OrderManageMapper {
 
 	List<Purchase> stateChangeList(String state);
 	
-	int updateOrderStatus(int purchaseNo, String orderStatus);
+	int updateOrderStatus(String purchaseNo, String orderStatus);
 
-	int deleteOrder(int purchaseNo);
+	int deleteOrder(String purchaseNo);
 
-	Purchase selectOrderDetail(int purchaseNo);
+	Purchase selectOrderDetail(String purchaseNo);
 
-	int updateAllChange(int purchaseNo, String orderStatus);
+	int updateAllChange(String purchaseNo, String orderStatus);
 
 	List<Purchase> selectSearchList(String searchStatus, String searchCondition, String searchValue);
 	
