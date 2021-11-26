@@ -79,15 +79,12 @@
 			      , P.COST_PRICE
 			      , P.SALE_PRICE
 			      , P.PRODUCT_COUNT 
-			      , P.PRODUCT_KNAME      
+			      , P.PRODUCT_KNAME 
+			      , P.PRODUCT_ENAME      
 			      , (SELECT
 			                P.COST_PRICE * I.INVEN_COUNT
 			                FROM PRODUCT P
 			                WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS INVEN_PRICE
-			      , (SELECT
-			                P.PRODUCT_COUNT + I.INVEN_COUNT
-			                 FROM PRODUCT P
-			                WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS ALL_COUNT
 		FROM INVENTORY I, PRODUCT P
 		WHERE I.PRODUCT_NO = P.PRODUCT_NO
 		ORDER BY INVEN_DATE DESC

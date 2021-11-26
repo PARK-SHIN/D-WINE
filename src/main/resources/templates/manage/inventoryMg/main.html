@@ -96,21 +96,20 @@
             height: 30px;
             border-radius: 5px;
             margin-right: 50px;
-            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
       .reviewList{
-        border: lightgray 1px solid;
         margin-top: 20px;
         margin-bottom: 30px;
         width: 850px;
         height: 500px;
       }
 
-      .arrayArea{
+      /* .arrayArea{
         display: right; 
       }
-
+ */
       .stockList{
         border-collapse:collapse;
         font-display: center;  
@@ -185,26 +184,26 @@
     </div>
 
         <button id="registBtn">입고</button><br>
-        <div class="arrayArea">
+       <!--  <div class="arrayArea">
         <label>정렬 : </label>
         <select id="array">
             <option value="latest">최신순</option>
             <option value="low-quantity">수량낮은순</option>
         </select>
-        </div>
+        </div>  필요없을듯-->
 
         <div class="reviewList">
             <table class="stockList" width=850px;>
                 <tr>
-                <th>입고번호</th>
+                <th>NO</th>
                 <th>상품번호</th>
-                <th>상품명</th>
-                <th>판매가격</th>
-                <th>입고수량</th>
+                <th>상품명(한글)</th>
+                <th>상품명(영어)</th>
+                <th>판매 가</th>
+                <th>입고량</th>
                 <th>단가</th>
-                <th>입고가</th>
-                <th>입고날짜</th>
-                <th>총수량</th>
+                <th>입고 가</th>
+                <th>입고일</th>
                 <th>기능</th>
                 </tr>
 
@@ -212,12 +211,12 @@
                     <td th:text="${ inven.inven_no }"/>
                     <td th:text="${ inven.product_no }"/>
                     <td th:text="${ inven.product_kname }"/>
-                    <td th:text="${ inven.sale_price}"/>
+                    <td th:text="${ inven.product_ename }"/>
+                    <td th:text="${#numbers.formatDecimal(inven.sale_price, 0, 'COMMA', 0, 'POINT')}"/>
                     <td th:text="${ inven.inven_count}"/>
-                    <td th:text="${ inven.cost_price}"/>
-                    <td th:text="${ inven.inven_price}"/>
+                    <td th:text="${#numbers.formatDecimal(inven.cost_price, 0, 'COMMA', 0, 'POINT')}"/>
+                    <td th:text="${#numbers.formatDecimal(inven.inven_price, 0, 'COMMA', 0, 'POINT')}"/>
                     <td th:text="${ #dates.format(inven.inven_date, 'yyyy-MM-dd') }"/>
-                    <td th:text="${ inven.all_count}"/>
                     <td><button id="cancleBtn">취소</button></td>
                 </tr>
                 
