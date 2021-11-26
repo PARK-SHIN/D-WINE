@@ -22,7 +22,7 @@ public class Purchase {
 	private String userName;		// 회원이름
 	private String userPhone;		// 회원전화번호
 	private List<OrderDetail> orderDetail;
-	
+
 	public Purchase() {}
 
 	public Purchase(int purchaseNo, Date purchaseDate, int usePoint, int purchasePrice, String pickupDate,
