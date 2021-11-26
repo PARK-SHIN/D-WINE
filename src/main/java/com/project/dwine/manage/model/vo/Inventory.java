@@ -21,7 +21,6 @@ public class Inventory {
 	
 	//count들 
 	private int inven_price; //입고가 = 단가 * 입고수량
-	private int all_count; // 상품의 현재수량 + 입고수량  =  총수량
 	
 	//join product
 	private int cost_price; //상품원가
@@ -37,24 +36,23 @@ public class Inventory {
 
 
 	public Inventory(int totalStock, int totalShop, int todayReceiving, int inven_no, int inven_count, Date inven_date,
-			char status, int product_no, int inven_price, int all_count, int cost_price, int sale_price,int product_count, 
+			char status, int product_no, int inven_price, int cost_price, int sale_price, int product_count,
 			String product_kname, String product_ename) {
-			super();
-			this.totalStock = totalStock;
-			this.totalShop = totalShop;
-			this.todayReceiving = todayReceiving;
-			this.inven_no = inven_no;
-			this.inven_count = inven_count;
-			this.inven_date = inven_date;
-			this.status = status;
-			this.product_no = product_no;
-			this.inven_price = inven_price;
-			this.all_count = all_count;
-			this.cost_price = cost_price;
-			this.sale_price = sale_price;
-			this.product_count = product_count;
-			this.product_kname = product_kname;
-			this.product_ename = product_ename;
+		super();
+		this.totalStock = totalStock;
+		this.totalShop = totalShop;
+		this.todayReceiving = todayReceiving;
+		this.inven_no = inven_no;
+		this.inven_count = inven_count;
+		this.inven_date = inven_date;
+		this.status = status;
+		this.product_no = product_no;
+		this.inven_price = inven_price;
+		this.cost_price = cost_price;
+		this.sale_price = sale_price;
+		this.product_count = product_count;
+		this.product_kname = product_kname;
+		this.product_ename = product_ename;
 	}
 
 
@@ -167,18 +165,6 @@ public class Inventory {
 
 
 
-	public int getAll_count() {
-		return all_count;
-	}
-
-
-
-	public void setAll_count(int all_count) {
-		this.all_count = all_count;
-	}
-
-
-
 	public int getCost_price() {
 		return cost_price;
 	}
@@ -243,10 +229,13 @@ public class Inventory {
 	public String toString() {
 		return "Inventory [totalStock=" + totalStock + ", totalShop=" + totalShop + ", todayReceiving=" + todayReceiving
 				+ ", inven_no=" + inven_no + ", inven_count=" + inven_count + ", inven_date=" + inven_date + ", status="
-				+ status + ", product_no=" + product_no + ", inven_price=" + inven_price + ", all_count=" + all_count
-				+ ", cost_price=" + cost_price + ", sale_price=" + sale_price + ", product_count=" + product_count
-				+ ", product_kname=" + product_kname + ", product_ename=" + product_ename + "]";
+				+ status + ", product_no=" + product_no + ", inven_price=" + inven_price + ", cost_price=" + cost_price
+				+ ", sale_price=" + sale_price + ", product_count=" + product_count + ", product_kname=" + product_kname
+				+ ", product_ename=" + product_ename + "]";
 	}
+
+
+
 	
 
 
