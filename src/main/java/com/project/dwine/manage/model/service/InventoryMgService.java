@@ -15,7 +15,7 @@ public interface InventoryMgService {
 
 	Inventory selectTodayReceiving();
 
-	int insertInventory(Inventory inven);
+	int registInventory(Inventory inven);
 	
 	
 

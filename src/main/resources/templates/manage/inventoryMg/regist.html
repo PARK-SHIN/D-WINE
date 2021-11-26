@@ -284,7 +284,7 @@
         </div>
     </div> 
     
-            <form class="registArea">
+            <form class="registArea" th:action="@{/manage/inventoryMg/regist(${_csrf.parameterName}=${_csrf.token})}" method="post">
                 <div class="receivingArea">
                 <div class="receivingInput" id="selectArea">
                 
@@ -295,7 +295,7 @@
                 </select>
                 <input type="text" id="searchTitle" readonly> 
                 <button type="button" class="openBtn" id="selectBtn">검색</button></div><br>
-                
+                <input type="hidden" id="product_no" name="product_no">
                 <div class="receivingInput"><span class="label_area"><label>상품명(한글) : </label></span>
                 <input type="text" id="productNameK" readonly></div>
                 <div class="receivingInput"><span class="label_area"><label>상품명(영어) : </label></span> 
@@ -424,8 +424,7 @@
 		});
 	});
 	
-	//product_no 검색값을 받았다. 
-	
+		
 	var productNo = null;
 	
 	$(document).on("click", ".selectPno li", function() {
@@ -445,7 +444,8 @@
 						  $('#productNameK').attr('value',data.productKName);
 						  $('#productNameE').attr('value',data.productEName);
 						  $('#productPrice').attr('value',data.salePrice);
-						  $('#currentCount').attr('value',data.productCount);						
+						  $('#currentCount').attr('value',data.productCount);
+						  $('#product_no').attr('value',data.productNo);
 				},
 				error : function(e) {
 					console.log(e);
