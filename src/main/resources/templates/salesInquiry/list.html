@@ -158,19 +158,23 @@
                     <div class="areas">
                         <div class="area1">
                             <p>주문접수</p>
-                            <b th:text="${total.totalOrder}"></b> 건
+                            <b th:if="${total != null}" th:text="${total.totalOrder}"></b>
+                            <b th:unless="${total != null}" th:text="0"></b> 건
                         </div>
                         <div class="area2">
                             <p>픽업완료</p>
-                            <b th:text="${total.totalPickup}"></b> 건
+                            <b th:if="${total != null}" th:text="${total.totalPickup}"></b>
+                            <b th:unless="${total != null}" th:text="0"></b> 건
                         </div>
                         <div class="area3">
                             <p>구매합계</p>
-                            <b th:text="${#numbers.formatInteger(total.totalPrice, 3, 'COMMA')}"></b> 원
+                            <b th:if="${total != null}" th:text="${#numbers.formatInteger(total.totalPrice, 3, 'COMMA')}"></b>
+                            <b th:unless="${total != null}" th:text="0"></b> 원
                         </div>
                         <div class="area4">
                             <p>총매출액</p>
-                            <b th:text="${#numbers.formatInteger((total.totalPrice - total.totalRefund), 3, 'COMMA')}"></b> 원
+                            <b th:if="${total != null}" th:text="${#numbers.formatInteger((total.totalPrice - total.totalRefund), 3, 'COMMA')}"></b>
+                            <b th:unless="${total != null}" th:text="0"></b> 원
                         </div>
                     </div>
                 </div>

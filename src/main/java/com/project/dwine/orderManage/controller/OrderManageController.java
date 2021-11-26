@@ -69,7 +69,7 @@ public class OrderManageController {
 	// 주문 상태 변경
 	@PostMapping(value = "update")
 	@ResponseBody
-	public void updateOrderStatus(@RequestParam int purchaseNo, @RequestParam String odStatus) {
+	public void updateOrderStatus(@RequestParam String purchaseNo, @RequestParam String odStatus) {
 		
 		int result = orderManageService.updateOrderStatus(purchaseNo, odStatus);
 	}
@@ -79,18 +79,12 @@ public class OrderManageController {
 	@ResponseBody
 	public void updateAllChange(HttpServletResponse response, @RequestParam(value = "pNoArr[]") List<String> pNoArr, @RequestParam String odStatus) throws IOException {
 		
-		List<Integer> arr = new ArrayList<>();
-		
-		for(String s : pNoArr) {
-			arr.add(Integer.parseInt(s));
-		}
-		
 		int results = 0;
-		for(int purchaseNo : arr) {
+		for(String purchaseNo : pNoArr) {
 			results += orderManageService.updateAllChange(purchaseNo, odStatus);
 		}
 		
-		if(arr.size() == results) {
+		if(pNoArr.size() == results) {
 			response.getWriter().print("success");
 		} else {
 			response.getWriter().print("fail");
@@ -102,18 +96,12 @@ public class OrderManageController {
 	@ResponseBody
 	public void deleteOrder(HttpServletResponse response, @RequestParam(value = "checkArr[]") List<String> checkArr) throws IOException {
 		
-		List<Integer> arr = new ArrayList<>();
-		
-		for(String s : checkArr) {
-			arr.add(Integer.parseInt(s));
-		}
-		
 		int results = 0;
-		for(int purchseNo : arr) {
+		for(String purchseNo : checkArr) {
 			results += orderManageService.deleteOrder(purchseNo);
 		}
 		
-		if(arr.size() == results) {
+		if(checkArr.size() == results) {
 			response.getWriter().print("success");
 		} else {
 			response.getWriter().print("fail");
@@ -123,10 +111,8 @@ public class OrderManageController {
 	// 주문 상세 보기
 	@PostMapping(value = "detail")
 	@ResponseBody
-	public Purchase selectOrderDetail(@RequestParam String pNo) {
-	
-		int purchaseNo = Integer.parseInt(pNo);
-		
+	public Purchase selectOrderDetail(@RequestParam String purchaseNo) {
+			
 		Purchase detail = orderManageService.selectOrderDetail(purchaseNo);
 		
 		return detail;

@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class Purchase {
 	
-	private int purchaseNo;			// 주문번호
+	private String purchaseNo;		// 주문번호
 	@DateTimeFormat(pattern = "yyyy.MM.dd HH:mm:ss")
 	private Date purchaseDate;		// 주문일시
 	private int usePoint;			// 사용포인트
@@ -25,7 +25,7 @@ public class Purchase {
 
 	public Purchase() {}
 
-	public Purchase(int purchaseNo, Date purchaseDate, int usePoint, int purchasePrice, String pickupDate,
+	public Purchase(String purchaseNo, Date purchaseDate, int usePoint, int purchasePrice, String pickupDate,
 			String pickupPlace, String pickupTime, String orderStatus, String status, Date refundDate, int userNo,
 			String userName, String userPhone, List<OrderDetail> orderDetail) {
 		super();
@@ -45,11 +45,11 @@ public class Purchase {
 		this.orderDetail = orderDetail;
 	}
 
-	public int getPurchaseNo() {
+	public String getPurchaseNo() {
 		return purchaseNo;
 	}
 
-	public void setPurchaseNo(int purchaseNo) {
+	public void setPurchaseNo(String purchaseNo) {
 		this.purchaseNo = purchaseNo;
 	}
 
