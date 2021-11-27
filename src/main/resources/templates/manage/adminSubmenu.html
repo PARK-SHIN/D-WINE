@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+#container {
+	width: 1100px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+}
+
+.snb {
+	width: 200px;
+	height: 100%;
+}
+
+.contents {
+	width: 888px;
+	height: 100%;
+}
+
+.inner {
+	margin-top: 30px;
+	margin-left: 27px;
+	width: 836px;
+	height: 100%;
+}
+
+.sub_inner>ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 200px;
+}
+
+.sub_ul>li a {
+	display: block;
+	color: #000;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+/* Change the link color on hover */
+.ahover:hover {
+	background-color: rgba(131, 19, 30, 0.2);
+	color: #83131E;
+	font-weight: bold;
+}
+
+.snb_inner>ul>li span {
+	background: no-repeat 0 0/20px url(/images/mypage/order.png);
+	/*주문목록*/
+	padding-left: 30px;
+	font-size: 14px;
+}
+
+.snb_inner>ul>li:nth-child(2) span {
+	background-image: url(/images/admin/salesInquir.png);
+	/*매출*/
+}
+
+.snb_inner>ul>li:nth-child(3) span {
+	background-image: url(/images/admin/inventory.png);
+	/*입고*/
+}
+
+.snb_inner>ul>li:nth-child(4) span {
+	background-image: url(/images/admin/product.png);
+	/*상품d*/
+}
+
+.snb_inner>ul>li:nth-child(5) span {
+	/*리뷰관리d*/
+	background-image: url(/images/admin/sub_review.png);
+}
+
+.snb_inner>ul>li:nth-child(6) span {
+/*회원관리d*/
+	background-image: url(/images/admin/member.png);
+}
+.snb_inner>ul>li:nth-child(7) span {
+/*faqd*/
+	background-image: url(/images/admin/faq.png);
+}
+.snb_inner>ul>li:nth-child(8) span {
+/*1:1??*/
+	background-image: url(/images/mypage/member.png);
+}
+
+.sub_ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 200px;
+	margin-top:10px;
+}
+</style>
+</head>
+<body>
+	<div class="snb_inner">
+		<span style="padding-left: 17px; font-size: 19px;">AdminPage</span>
+		<ul class="sub_ul">
+			<li><a class="ahover" href="/orderManage/list"><span>주문관리</span></a></li>
+			<li><a class="ahover mywish" href="/salesInquiry/list"><span>매출조회</span></a></li>
+			<li><a class="ahover myreview" href="/manage/inventoryMg/main"><span>입고관리</span></a></li>
+			<li><a class="ahover mypoint" href="/product/list"><span>상품관리</span></a></li>
+			<li><a class="ahover memberM"  href="/manage/reviewMg/main"><span>리뷰관리</span></a></li>
+            <li><a class="ahover memberD" href="/manage/memberMg/main"><span>회원관리</span></a></li>
+            <li><a class="ahover memberD" href="/faq/list"><span>FAQ관리</span></a></li>
+            <li><a class="ahover memberD" href=""><span>1:1문의관리</span></a></li>
+		</ul>
+	</div>
+</body>
+</html>

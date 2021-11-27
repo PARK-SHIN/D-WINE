@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.project.dwine.hashtag.model.vo.Hashtag;
 import com.project.dwine.manage.model.service.InventoryMgService;
 import com.project.dwine.manage.model.vo.Inventory;
 import com.project.dwine.product.model.service.ProductService;
@@ -69,8 +69,6 @@ public class InventoryMgController {
 		return mv;
 	}
 	
-	
-	
 	//입고를 공지사항과 다르게 적용해보기
 	
 	@PostMapping("/inventoryMg/regist") //동일url이지만 전송버튼을 눌렀을때 하는 것. 
@@ -81,10 +79,9 @@ public class InventoryMgController {
 		int product_no = Integer.parseInt(request.getParameter("product_no"));
 		
 		Inventory inven = new Inventory(inven_count, inven_cost, product_no);
-		
 		int result = inventoryMgService.registInventory(inven);
 		
-	
+		
 		return "redirect:main";
 	}
 	
@@ -94,9 +91,7 @@ public class InventoryMgController {
 	@PostMapping("/inventoryMg/search")
 	@ResponseBody
 	public List<Product> seachProduct(@RequestParam String searchStandard, @RequestParam String searchValue) throws IOException {
-		
 		List<Product> searchList = productService.searchProductList(searchStandard, searchValue);
-		
 		return searchList;
 	}
 	
@@ -104,10 +99,20 @@ public class InventoryMgController {
 	@PostMapping("/inventoryMg/searchByProductNo")
 	@ResponseBody
 	public Product selectProductByNo(@RequestParam int productNo) {
-				
 		return productService.selectProductByNo(productNo);
 	}
 	
+	
+	// 입고 주문 취소 cancle /manage/inventoryMg/cancle
+	
+	@PostMapping("/inventoryMg/cancle")
+	public String cancleInventory(@RequestParam int inven_no){
+		int test =  inventoryMgService.cancleInventory(inven_no);
+		  
+	    System.out.println(test);
+		return "redirect:/manage/inventotyMg/main";
+	   }
+
 	
 	
 	

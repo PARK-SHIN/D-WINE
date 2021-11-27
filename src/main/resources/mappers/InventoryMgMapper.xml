@@ -125,6 +125,15 @@
 				, #{inven_cost}
 			)
 	</insert>
+	
+	<!-- 입고 취소 cancleInventory -->
+	<update id="cancleInventory" parameterType="_int">
+	UPDATE INVENTORY 
+	SET 
+			STATUS = 'N' 
+	WHERE INVEN_NO = #{inven_no}
+	
+	</update>
 
 
 

@@ -9,6 +9,44 @@
 <link href="/css/common/common.css" rel="stylesheet">
 
     <style>
+    #container {
+            width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            height: 1400px;
+        }
+
+        .snb {
+            width: 200px;
+            /* height: 2500px; */
+            height: 100%;
+        }
+    .contents {
+            width: 888px;
+            height: 100%;
+        }
+
+        .inner {
+            margin-top: 30px;
+            margin-left: 27px;
+            width: 836px;
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .snb {
+            width: 210px;
+        }
+
+        .snb_inner {
+            width: 170px;
+            margin: 30px auto 0;
+        }
+       /* 여기서부터 */
         .content {
             margin : 50px auto;
             height : auto;
@@ -113,6 +151,7 @@
       .stockList{
         border-collapse:collapse;
         font-display: center;  
+        width : 850px;
         }
 
       .stockList th{
@@ -144,7 +183,12 @@
 </head>
 <body>
 <header th:include="common/header :: header"></header>
-<div class="content">
+<div id="container"> 
+<nav class="snb" th:replace="/manage/adminSubmenu.html">
+        </nav>
+        
+ <div class="content">
+       
    <h2>입고관리</h2>    
     <hr>
     <div class="totalList">
@@ -184,18 +228,11 @@
     </div>
 
         <button id="registBtn"  onclick="location.href='/manage/inventoryMg/regist'">입고</button><br>
-       <!--  <div class="arrayArea">
-        <label>정렬 : </label>
-        <select id="array">
-            <option value="latest">최신순</option>
-            <option value="low-quantity">수량낮은순</option>
-        </select>
-        </div>  필요없을듯-->
-
+      <form id="cancleForm" th:action="@{/manage/inventoryMg/cancle}" method="post" onsubmit="return checkConfirm()">
         <div class="reviewList">
-            <table class="stockList" width=850px;>
+            <table class="stockList">
                 <tr>
-                <th>NO</th>
+                <th>입고번호</th>
                 <th>상품번호</th>
                 <th>상품명(한글)</th>
                 <th>상품명(영어)</th>
@@ -208,7 +245,7 @@
                 </tr>
 
                 <tr th:each="inven: ${ invenList }">
-                    <td th:text="${ inven.inven_no }"/>
+                    <td id="inven_no"  th:text="${ inven.inven_no }"/>
                     <td th:text="${ inven.product_no }"/>
                     <td th:text="${ inven.product_kname }"/>
                     <td th:text="${ inven.product_ename }"/>
@@ -217,21 +254,38 @@
                     <td th:text="${#numbers.formatDecimal(inven.cost_price, 0, 'COMMA', 0, 'POINT')}"/>
                     <td th:text="${#numbers.formatDecimal(inven.inven_price, 0, 'COMMA', 0, 'POINT')}"/>
                     <td th:text="${ #dates.format(inven.inven_date, 'yyyy-MM-dd') }"/>
-                    <td><button id="cancleBtn">취소</button></td>
+                    <td><button id="cancleBtn" >취소</button></td>
                 </tr>
                 
             </table>
         </div>
+        </form>
+</div>
 </div>
 
     
 
 <div th:replace="common/footer :: footer"></div>
 <script>
-//crsf토큰
-var token = $("meta[name='_csrf']").attr("content");
-var header = $("meta[name='_csrf_header']").attr("content");
-$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+	//crsf토큰
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+	
+	
+	// 선택 삭제 버튼 클릭 시 deleteMultiForm submit
+	$("#cancleBtn").on("click", function() {
+		$("#cancleForm").submit();
+	});
+
+	// 삭제 confirm
+	function checkConfirm() {
+		if (confirm("정말 삭제하시겠습니까?"))
+			return true
+		else
+			return false;
+	}
+
 
 </script>
 </body>
