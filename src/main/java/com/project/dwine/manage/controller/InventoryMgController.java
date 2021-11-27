@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,7 +71,6 @@ public class InventoryMgController {
 	}
 	
 	//입고를 공지사항과 다르게 적용해보기
-	
 	@PostMapping("/inventoryMg/regist") //동일url이지만 전송버튼을 눌렀을때 하는 것. 
 	public String registInven(Model model, HttpServletRequest request, RedirectAttributes rttr) {
 	
@@ -80,6 +80,12 @@ public class InventoryMgController {
 		
 		Inventory inven = new Inventory(inven_count, inven_cost, product_no);
 		int result = inventoryMgService.registInventory(inven);
+		
+		if(result > 1) {
+			rttr.addFlashAttribute("message", "입고등록에 성공하였습니다.");
+		} else {
+			rttr.addFlashAttribute("message", "입고등록에 실패하였습니다. ");
+		}
 		
 		
 		return "redirect:main";
@@ -106,11 +112,17 @@ public class InventoryMgController {
 	// 입고 주문 취소 cancle /manage/inventoryMg/cancle
 	
 	@PostMapping("/inventoryMg/cancle")
-	public String cancleInventory(@RequestParam int inven_no){
-		int test =  inventoryMgService.cancleInventory(inven_no);
-		  
-	    System.out.println(test);
-		return "redirect:/manage/inventotyMg/main";
+	public String cancleInventory(RedirectAttributes rttr, @RequestParam int inven_no){
+		int result =  inventoryMgService.cancleInventory(inven_no);
+		
+		if(result > 1) {
+			rttr.addFlashAttribute("message", "입고취소가 성공하였습니다.");
+		} else {
+			rttr.addFlashAttribute("message", "입고취소가 실패하였습니다. ");
+		}
+	    
+		
+	    return "redirect:main";
 	   }
 
 	
