@@ -30,7 +30,7 @@
             width: 888px;
             height: 100%;
             /*2500px -> 100%*/
-            border: 1px solid black;
+            /* border: 1px solid black; */
         }
 
         .inner {
@@ -109,11 +109,9 @@
     </style>
 </head>
 <body>
+	<header th:include="common/header :: header"></header>
     <div id="container">
-        <nav class="snb">
-            <!-- <div class="snb_inner">
-            </div> -->
-        </nav>
+        <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
         <div class="contents">
             <div class="inner">
                 <div>
@@ -186,7 +184,7 @@
             </div>
         </div>
     </div>
-
+	<footer th:include="common/footer :: footer"></footer>
 
     <script>
 	    var token = $("meta[name='_csrf']").attr("content");
