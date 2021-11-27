@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dwine.faq.model.dao.FaqMapper">
+
+	<resultMap id="faqResultMap" type="com.project.dwine.faq.model.vo.Faq">
+		<id property="faqNo" column="FAQ_NO"/>
+		<result property="faqTitle" column="FAQ_TITLE"/>
+		<result property="faqContent" column="FAQ_CONTENT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="updateDate" column="UPDATE_DATE"/>
+		<result property="status" column="STATUS"/>
+		<result property="userNo" column="USER_NO"/>
+	</resultMap>
+	
+	<select id="selectFaqList" resultMap="faqResultMap">
+		SELECT
+		       FAQ_NO
+		     , FAQ_TITLE
+		     , FAQ_CONTENT
+		     , CREATE_DATE
+		     , UPDATE_DATE
+		     , USER_NO
+		  FROM FAQ
+		 WHERE STATUS = 'Y'
+		 ORDER BY FAQ_NO DESC
+	</select>
+	
+	<update id="deleteFaq" parameterType="_int">
+		UPDATE FAQ
+		   SET STATUS = 'N'
+		 WHERE FAQ_NO = #{ faqNo }
+	</update>
+
+</mapper>
