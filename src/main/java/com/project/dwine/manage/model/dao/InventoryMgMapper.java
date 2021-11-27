@@ -18,5 +18,7 @@ public interface InventoryMgMapper {
 
 	int registInventory(Inventory inven);
 
+	int cancleInventory(int inven_no);
+
 	
 }

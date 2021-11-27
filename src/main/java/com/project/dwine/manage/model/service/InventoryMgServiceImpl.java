@@ -49,4 +49,10 @@ public class InventoryMgServiceImpl implements InventoryMgService {
 		return inventoryMgMapper.registInventory(inven);
 	}
 
+
+	@Override
+	public int cancleInventory(int inven_no) {
+		return inventoryMgMapper.cancleInventory(inven_no);	
+	}
+
 }
