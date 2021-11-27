@@ -196,36 +196,23 @@
 								    </p>
 								</th:block>
 							</th:block>
-                            </li></ul>
-                        <div class="modalArea"><form th:action="@{/mypage/pickupModify}" method="post" name="pickupModifyForm" class="test"><div class="modal hidden"><div class="bg"></div><div class="modalBox"><div class="closeArea"><img src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px"></div>
-                                        
-                                <h2 align="center" style="margin-top: 20px;">픽업 변경</h2>
+                            </li></ul><div class="modalArea"><form th:action="@{/mypage/pickupModify}" method="post" name="pickupModifyForm" class="test"><div class="modal hidden"><div class="bg"></div><div class="modalBox"><div class="closeArea"><img src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px"></div><h2 align="center" style="margin-top: 20px;">픽업 변경</h2>
                                         <hr style="width: 500px;">
                                         <div class="labelSize">
                                         	<input type="hidden" name="purchase_no" th:value="${p.purchase_no}">
                                             <label for="">상품명 / 수량</label>
                                             <input type="text" style="border: 0px; margin-left: 90px; width: 210px;" th:value="${p.product_kname}" readonly>
                                         	/<label class="labelArea" th:text="${p.od_count}"></label>
-                                        </div>
-                                        <hr style="width: 500px;">
-                                        <div class="labelSize">
-                                            <label for="">주문일자</label>
-                                             <input type="text" style="border: 0px; margin-left: 120px; width: 150px;" th:value="${#dates.format(p.purchase_date, 'yyyy-MM-dd (E)')}" readonly>
-                                        </div>
-                                        <hr style="width: 500px;">
-                                        <div class="labelSize">
-                                            <label for="">수령점</label>
+                                        </div><hr style="width: 500px;">
+                                        <div class="labelSize"><label for="">주문일자</label><input type="text" style="border: 0px; margin-left: 120px; width: 150px;" th:value="${#dates.format(p.purchase_date, 'yyyy-MM-dd (E)')}" readonly>
+                                        </div><hr style="width: 500px;">
+                                        <div class="labelSize"><label for="">수령점</label>
                                             <select name="pickup_place" id="" style="margin-left: 130px; width:200px;height:30px;">
                                                 <option value="DWINE 역삼점" th:selected="${p.pickup_place}=='DWINE 역삼점'">DWINE 역삼점</option>
                                                 <option value="DWINE 논현점" th:selected="${p.pickup_place}=='DWINE 논현점'">DWINE 논현점</option>
                                                 <option value="DWINE 성수점" th:selected="${p.pickup_place}=='DWINE 성수점'">DWINE 성수점</option>
-                                            </select>
-                                        </div>
-                                        <hr style="width: 500px;">
-                                        <div class="labelSize">
-                                            <label for="">수령날짜</label>
-                                           <!--  <input type="text" name="pickup_date" class="Date" th:value="${p.pickup_date}" style="border: 1px solid black; margin-left: 116px; width: 190px; height: 25px;" readonly> -->
-                                        	<select id="pickupDate" name="pickup_date" style="margin-left: 116px; width:200px;height:30px;">
+                                            </select></div><hr style="width: 500px;">
+                                        <div class="labelSize"><label for="">수령날짜</label><select onclick="selectDate(this);" id="pickupDate" class="pickupDate" name="pickup_date" style="margin-left: 116px; width:200px;height:30px;">
                                         		<option>[[${p.pickup_date}]]</option>
                                         	</select>
                                         </div>
@@ -314,42 +301,53 @@
         </script>
         
         <script>
-	        /* 오늘부터 +7일 출력하기 */
-	        var currentDay = new Date();  
-	        var theYear = currentDay.getFullYear();
-	        var theMonth = currentDay.getMonth();
-	        var theDate  = currentDay.getDate();
-	        var theDayOfWeek = currentDay.getDay();
-	
+        
+        	function selectDate(elem){
+        		var a = elem.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+        		var b = a.firstChild.nextSibling.nextSibling;
+        		var c = b.firstChild.firstChild.nextSibling;
+        		var d = c.firstChild.nextSibling.firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling;
+        		var e = d.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling;
+        		var f = e.firstChild.nextSibling;
+        		
+        		/* 오늘부터 +7일 출력하기 */
+    	        var currentDay = new Date();  
+    	        var theYear = currentDay.getFullYear();
+    	        var theMonth = currentDay.getMonth();
+    	        var theDate  = currentDay.getDate();
+    	        var theDayOfWeek = currentDay.getDay();
+    	
+    	        
+    	        const WEEKDAY = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
+    	        
+    	        var thisWeek = [];
+    	         
+    	        for(var i=0; i<7; i++) {
+    	          var resultDay = new Date(theYear, theMonth, theDate + i, theDayOfWeek);
+    	          var mm = Number(resultDay.getMonth()) + 1;
+    	          var dd = resultDay.getDate();
+    	          var day = resultDay.getDay();
+    	          
+    	          
+    	          mm = String(mm).length === 1 ? '0' + mm : mm;
+    	          dd = String(dd).length === 1 ? '0' + dd : dd;
+    	          
+    	          thisWeek[i] =  mm + '-' + dd + WEEKDAY[day];
+    	        }
+    	
+    	      var optionIndex = 0;
+    	
+    	      for(var i=0;i<7;i++){
+    	
+    		      //let selectbox = document.querySelector(".pickupDate"); //f
+    		      var objOption = document.createElement("option"); 
+    		      objOption.text = thisWeek[i];
+    		      objOption.value = thisWeek[i];
+    		      f.options.add(objOption);
+    	
+    	      }
+        	}
 	        
-	        const WEEKDAY = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
-	        
-	        var thisWeek = [];
-	         
-	        for(var i=0; i<7; i++) {
-	          var resultDay = new Date(theYear, theMonth, theDate + i, theDayOfWeek);
-	          var mm = Number(resultDay.getMonth()) + 1;
-	          var dd = resultDay.getDate();
-	          var day = resultDay.getDay();
-	          
-	          
-	          mm = String(mm).length === 1 ? '0' + mm : mm;
-	          dd = String(dd).length === 1 ? '0' + dd : dd;
-	          
-	          thisWeek[i] =  mm + '-' + dd + WEEKDAY[day];
-	        }
-	
-	      var optionIndex = 0;
-	
-	      for(var i=0;i<7;i++){
-	
-	      let selectbox = document.querySelector("#pickupDate");
-	      var objOption = document.createElement("option"); 
-	      objOption.text = thisWeek[i];
-	      objOption.value = thisWeek[i];
-	      selectbox.options.add(objOption);
-	
-	      }
         </script>
 
         <script>
