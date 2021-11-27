@@ -55,6 +55,7 @@ public class MypageController{
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
 	    Member m = mypageService.selectMember(user_no);
+	    System.out.println("회원정보수정페이지 : " + m);
 	    mv.addObject("m", m);
 	    mv.setViewName("mypage/memberModify");
 	    return mv;
@@ -90,7 +91,7 @@ public class MypageController{
 	    model.addAttribute("user_no", user_no);
 	}
 	
-	@PostMapping("/mypage/pwdModify")
+	@PostMapping("/mypage/pwdModifyForm")
 	public String pwdModifyForm(@RequestParam(required = false) String newPwd, @RequestParam(required = false) int user_no,
 			@RequestParam(required = false) String user_pwd, HttpServletResponse response, RedirectAttributes rttr) throws IOException {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -101,12 +102,14 @@ public class MypageController{
 		boolean test = passwordEncoder.matches(user_pwd, pw);
 		if(test == true) {
 			int result1 = mypageService.pwdModfiytest(user_no, user_pw);
+			System.out.println("비밀번호변경성공");
 			rttr.addFlashAttribute("message", "비밀번호가 변경되었습니다.");
 			return "redirect:/mypage/memberModify";
 		} else {
 			System.out.println("no match");
 			rttr.addFlashAttribute("message", "비밀번호가 변경에 실패하였습니다.");
-			   return "redirect:/mypage/memberModify";
+			System.out.println("비밀번호변경실패");
+			return "redirect:/mypage/memberModify";
 		}
 		
 		//return "/mypage/memberModify";
@@ -128,6 +131,7 @@ public class MypageController{
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
 	    Member m = mypageService.selectMember(user_no);
+	    System.out.println("회원탈퇴페이지 비밀번호가져오기 : " + m.getUser_pw());
 	    mv.addObject("m",m);
 	    mv.setViewName("mypage/memberDel");
 	    return mv;
@@ -139,8 +143,9 @@ public class MypageController{
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String pw = user.getUser_pw();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		
-		boolean test = passwordEncoder.matches(user_pwd, pw);
+		Member m = mypageService.selectMember(user_no);
+		String aa = m.getUser_pw();
+		boolean test = passwordEncoder.matches(user_pwd, aa);
 		if(test == true) {
 			int result = mypageService.deleteMember(user_no);
 			response.setContentType("text/html; charset=euc-kr");

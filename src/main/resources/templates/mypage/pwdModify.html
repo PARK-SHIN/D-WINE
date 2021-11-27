@@ -12,6 +12,8 @@
 	
 	if(successMessgae){
 		alert(successMessgae);
+		opener.window.location.reload();
+		self.close();
 	}
 </script>
 </head>
@@ -20,7 +22,7 @@
 		<div class="pwdHeader">
 			<h2 align="center">비밀번호 변경</h2>
 			<div class="pwdForm">
-				<form id="updatePwdForm" th:action="@{/mypage/pwdModify}" method="post"
+				<form id="updatePwdForm" th:action="@{/mypage/pwdModifyForm}" method="post"
 					onsubmit="return checkPwd();">
 					<input type="hidden" id="user_no" name="user_no" th:value="${user_no}">
 					<h4>현재 비밀번호</h4>
@@ -36,7 +38,7 @@
 						name="newPwd2" id="newPwd2" maxlength="15" required>
 					</span>
 					<div class="btnArea">
-						<button id="updatePwdBtn">변경하기</button>
+						<button id="updatePwdBtn" type="submit">변경하기</button>
 					</div>
 				</form>
 			</div>
