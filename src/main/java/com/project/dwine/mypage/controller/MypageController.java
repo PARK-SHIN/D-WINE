@@ -145,6 +145,7 @@ public class MypageController{
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		Member m = mypageService.selectMember(user_no);
 		String aa = m.getUser_pw();
+		
 		boolean test = passwordEncoder.matches(user_pwd, aa);
 		if(test == true) {
 			int result = mypageService.deleteMember(user_no);
