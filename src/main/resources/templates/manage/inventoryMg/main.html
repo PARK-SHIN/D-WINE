@@ -176,18 +176,18 @@
         height: 25px;
         border-radius: 8%;  
       }
+      th:nth-of-type(11) { display: none; }   
+      td:nth-of-type(11) { display: none; }
       
-
-
+      
     </style>
 </head>
 <body>
 <header th:include="common/header :: header"></header>
 <div id="container"> 
-<nav class="snb" th:replace="/manage/adminSubmenu.html">
-        </nav>
+  <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
         
- <div class="content">
+  <div class="content">
        
    <h2>입고관리</h2>    
     <hr>
@@ -228,7 +228,6 @@
     </div>
 
         <button id="registBtn"  onclick="location.href='/manage/inventoryMg/regist'">입고</button><br>
-      <form id="cancleForm" th:action="@{/manage/inventoryMg/cancle}" method="post" onsubmit="return checkConfirm()">
         <div class="reviewList">
             <table class="stockList">
                 <tr>
@@ -242,9 +241,10 @@
                 <th>지불 금액</th>
                 <th>입고일</th>
                 <th>기능</th>
+                <th>상태</th>
                 </tr>
 
-                <tr th:each="inven: ${ invenList }">
+                <tr class="allinven" th:each="inven: ${ invenList }">
                     <td id="inven_no"  th:text="${ inven.inven_no }"/>
                     <td th:text="${ inven.product_no }"/>
                     <td th:text="${ inven.product_kname }"/>
@@ -254,12 +254,12 @@
                     <td th:text="${#numbers.formatDecimal(inven.cost_price, 0, 'COMMA', 0, 'POINT')}"/>
                     <td th:text="${#numbers.formatDecimal(inven.inven_price, 0, 'COMMA', 0, 'POINT')}"/>
                     <td th:text="${ #dates.format(inven.inven_date, 'yyyy-MM-dd') }"/>
-                    <td><button id="cancleBtn" >취소</button></td>
+                    <td><button class="cancleBtn" id="cancleBtn">취소</button></td>
+                    <td class="tdStatus" th:text="${ inven.status }"></td>
                 </tr>
                 
             </table>
         </div>
-        </form>
 </div>
 </div>
 
@@ -273,10 +273,15 @@
 	$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
 	
 	
-	// 선택 삭제 버튼 클릭 시 deleteMultiForm submit
-	$("#cancleBtn").on("click", function() {
-		$("#cancleForm").submit();
-	});
+	if($(".tdStatus").text = 'N'){
+		$(".allinven").css('background', 'rgba(180,19,30,0.1)');
+		$(".cancleBtn").hide();  
+	}else{
+		$(".allinven").css('background', 'none');
+		$(".cancleBtn").show();  
+	}; 
+	
+	
 
 	// 삭제 confirm
 	function checkConfirm() {
@@ -285,7 +290,24 @@
 		else
 			return false;
 	}
-
+	
+	$(".cancleBtn").click(function(){
+		var inven_no= $(this).parent().parent().children().eq(0).text();
+		
+		confirm("정말 취소하시겠습니까?");
+		
+		$.ajax({
+			url : "/manage/inventoryMg/cancle",
+			data : {inven_no, inven_no},
+			type : "post",
+			success : function(data) {
+				console.log("성공하셨습니다.");
+			},
+			error : function(e) {
+				console.log(e);
+			}						
+		});
+	});
 
 </script>
 </body>
