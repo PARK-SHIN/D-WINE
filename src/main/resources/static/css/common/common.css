@@ -3,12 +3,14 @@
 html, body {
 	padding: 0;
 	margin: 0;
+	font-family: 'Gowun Batang', sans-serif;
 	height: 93.35%;
 }
 
 .wrapper {
 	position: relative;
 	min-height: 100%;
+	cursor: pointer;
 }
 
 .menu_nav a {
