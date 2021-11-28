@@ -31,6 +31,8 @@ import com.project.dwine.member.model.sevice.MemberService;
 import com.project.dwine.member.model.sevice.SendEmailService;
 import com.project.dwine.member.model.vo.Member;
 
+import retrofit2.http.POST;
+
 @Controller
 @RequestMapping("/member")
 public class MemberController {
@@ -50,7 +52,12 @@ public class MemberController {
 	@GetMapping("/login")
 	public void loginForm() {
 	}
+	@PostMapping("/loginerror")
+	public String loginerror() {
+		return "member/login";
+	}
 
+	
 	@GetMapping("/kakaologout")
 	public String kakaoLogout(HttpSession session, HttpServletResponse response) {
 		String accessToken = (String) session.getAttribute("accessToken");
