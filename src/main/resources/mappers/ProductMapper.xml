@@ -56,19 +56,68 @@
 		<result property="modifyDate" column="MODIFY_DATE"/>
 	</resultMap>
 	
-	<select id="selectProductList" resultMap="productListResultMap">
-		SELECT 
-			  PRODUCT_NO
-			, PRODUCT_KNAME
-			, SALE_PRICE
-			, PRODUCT_COUNT
-			, CREATE_DATE
-			, MODIFY_DATE
-		  FROM PRODUCT
-		  WHERE STATUS = 'Y'
-		  ORDER BY PRODUCT_NO
+	<resultMap id="imgPathResultMap" type="com.project.dwine.product.model.vo.Product">
+		<result property="thumbnail" column="THUMBNAIL"/>
+		<result property="labelImage" column="LABEL_IMAGE"/>
+	</resultMap>
+	
+	<select id="selectProductList" resultMap="productListResultMap" parameterType="_int">
+		SELECT
+               PRODUCT_NO
+				, PRODUCT_KNAME
+				, SALE_PRICE
+				, PRODUCT_COUNT
+				, CREATE_DATE
+				, MODIFY_DATE
+      FROM (SELECT 
+               ROWNUM RNUM
+              , PLIST.*
+       FROM(SELECT
+               *
+               FROM PRODUCT
+              WHERE STATUS = 'Y'
+              ORDER BY PRODUCT_NO) PLIST)
+      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+	 
+	<select id="selectSortProductList" resultMap="productListResultMap">
+		SELECT
+               PRODUCT_NO
+				, PRODUCT_KNAME
+				, SALE_PRICE
+				, PRODUCT_COUNT
+				, CREATE_DATE
+				, MODIFY_DATE
+      FROM (SELECT 
+               ROWNUM RNUM
+              , PLIST.*
+       FROM(SELECT
+               *
+               FROM PRODUCT
+              WHERE STATUS = 'Y'
+              <if test="sortStandard == 'no_low'">
+			  	ORDER BY PRODUCT_NO		  
+			  </if>	
+			  <if test="sortStandard == 'no_high'">
+			  	ORDER BY PRODUCT_NO	DESC
+			  </if>	
+			  <if test="sortStandard == 'stock_low'">
+			  	ORDER BY PRODUCT_COUNT, PRODUCT_NO			  
+			  </if>	
+			  <if test="sortStandard == 'stock_high'">
+			  	ORDER BY PRODUCT_COUNT DESC, PRODUCT_NO		  
+			  </if>	) PLIST)
+      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
 	
+	 
+	<select id="getTotalListCount" resultType="_int">
+		SELECT
+			COUNT(*)
+		FROM PRODUCT
+		WHERE STATUS = 'Y'		
+	</select>
+
 	<select id="selectProductByNo" resultMap="productResultMap">
 		SELECT
 		      P.PRODUCT_NO
@@ -308,5 +357,45 @@
 			COUNT(PRODUCT_NO)
 		FROM PRODUCT
 		WHERE PRODUCT_KNAME = #{ kname }
+	</select>
+	
+	<!--  
+	<select id="sortProductList" resultMap="productListResultMap">
+		SELECT
+               PRODUCT_NO
+				, PRODUCT_KNAME
+				, SALE_PRICE
+				, PRODUCT_COUNT
+				, CREATE_DATE
+				, MODIFY_DATE
+      FROM (SELECT 
+               ROWNUM RNUM
+              , PLIST.*
+       FROM(SELECT
+               *
+               FROM PRODUCT
+              WHERE STATUS = 'Y'
+              <if test="sortStandard == 'no_low'">
+			  	ORDER BY PRODUCT_NO		  
+			  </if>	
+			  <if test="sortStandard == 'no_high'">
+			  	ORDER BY PRODUCT_NO	DESC
+			  </if>	
+			  <if test="sortStandard == 'stock_low'">
+			  	ORDER BY PRODUCT_COUNT, PRODUCT_NO			  
+			  </if>	
+			  <if test="sortStandard == 'stock_high'">
+			  	ORDER BY PRODUCT_COUNT DESC, PRODUCT_NO		  
+			  </if>	) PLIST)
+      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+	-->
+	
+	<select id="selectImgPath" resultMap="imgPathResultMap" parameterType="_int">
+		SELECT
+			THUMBNAIL
+		  , LABEL_IMAGE
+		FROM PRODUCT
+		WHERE PRODUCT_NO = #{ productNo }
 	</select>
 </mapper>

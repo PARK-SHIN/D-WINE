@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.project.dwine.hashtag.model.vo.Hashtag;
 
 
-public class Product {
+public class Product{
 	// 총 22 필드
 	private int productNo;			// 상품 번호 
 	private String productKName;	// 한글명
@@ -65,7 +65,7 @@ public class Product {
 		this.variety = variety;
 		this.type = type;
 		this.country = country;
-		HashtagList = hashtagList;
+		this.HashtagList = hashtagList;
 	}
 
 	public Product(String productKName, String productEName, int costPrice, int salePrice, int productCount,
@@ -113,6 +113,12 @@ public class Product {
 		this.variety = variety;
 		this.type = type;
 		this.country = country;
+	}
+
+	public Product(String thumbnail, String labelImage) {
+		super();
+		this.thumbnail = thumbnail;
+		this.labelImage = labelImage;
 	}
 
 	public int getProductNo() {

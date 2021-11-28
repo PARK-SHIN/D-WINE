@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.project.dwine.paging.PageInfo;
 import com.project.dwine.product.model.service.ProductService;
 import com.project.dwine.product.model.vo.Country;
 import com.project.dwine.product.model.vo.Product;
@@ -41,15 +41,64 @@ public class ProductController {
 	}
 	
 	@GetMapping("list")
-	public ModelAndView productList(ModelAndView mv) {
+	public String listPage(@RequestParam(value="sortStandard", required=false) String sortStandard, @RequestParam(value="page", required=false) String page, Model model) throws Exception {
 		
-		List<Product> productList = productService.selectProductList();
+		if(sortStandard == null) {
+			sortStandard = "no_low";
+		}
+	
+		int listCount = productService.getTotalListCount();
 		
-		mv.addObject("productList", productList);
-		mv.setViewName("product/list");
+		int resultPage = 1;
 		
-		return mv;
+		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
+		if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+		
+		List<Product> productList = productService.selectSortProductList(sortStandard, startRow, endRow);
+		
+		model.addAttribute("productList", productList);
+		model.addAttribute("pi", pi);
+		model.addAttribute("sortStandard", sortStandard);
+
+		return "/product/list";
+		// return null;
 	}
+	/*
+	@PostMapping("list")
+	public String sortList(@RequestParam(value="sortStandard", required=false) String sortStandard, @RequestParam(value="page", required=false) String page, Model model) throws Exception {
+		
+		System.out.println("sortStandard : " + sortStandard);
+		int listCount = productService.getTotalListCount();
+		
+		int resultPage = 1;
+		
+		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
+		if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+		
+		List<Product> productList = productService.selectSortProductList(sortStandard, startRow, endRow);
+		
+		model.addAttribute("productList", productList);
+		model.addAttribute("pi", pi);
+		model.addAttribute("sortStandard", sortStandard);
+		
+		return "/product/list";
+		// return null;
+	}
+	*/
 	
 	@GetMapping("category")
 	@ResponseBody
@@ -322,14 +371,34 @@ public class ProductController {
 	}
 	
 	@PostMapping("delete") 
-	public String deleteProduct(@RequestParam int productNo, RedirectAttributes rttr) {
-		int result = productService.deleteProduct(productNo);
+	public String deleteProduct(@RequestParam String productNo, RedirectAttributes rttr) {
+		
+		Product product = productService.selectImgPath(Integer.parseInt(productNo));
+		
+		String currentDir = System.getProperty("user.dir");
+		String delete_path = currentDir + "\\src\\main\\resources\\static";
+		
+		String thumbPath = product.getThumbnail();
+		String labelPath = product.getLabelImage();
+	
+		if (!thumbPath.equals("")) {
+			File deleteThumb = new File(delete_path + thumbPath);
+			deleteThumb.delete();
+		}
+		
+		if (!labelPath.equals("")) {
+			File deleteLabel = new File(delete_path + labelPath);
+			deleteLabel.delete();
+		}
+		
+		int result = productService.deleteProduct(Integer.parseInt(productNo));
 		
 		if(result > 0) {
 			rttr.addFlashAttribute("message", "상품 삭제에 성공하였습니다.");
 		} else {
 			rttr.addFlashAttribute("message", "상품 삭제에 실패하였습니다.");
 		}
+		
 		return "redirect:/product/list";
 	}
 	
@@ -337,8 +406,27 @@ public class ProductController {
 	public String deleteMultiProduct(HttpServletRequest request, RedirectAttributes rttr) {
 		String[] productNos = request.getParameterValues("delete_nums");
 
+		String currentDir = System.getProperty("user.dir");
+		String delete_path = currentDir + "\\src\\main\\resources\\static";
+		
 		int result = 0;
+		
 		for(String productNo : productNos) {
+			Product product = productService.selectImgPath(Integer.parseInt(productNo));
+			
+			String thumbPath = product.getThumbnail();
+			String labelPath = product.getLabelImage();
+			
+			if (!thumbPath.equals("")) {
+				File deleteThumb = new File(delete_path + thumbPath);
+				deleteThumb.delete();
+			}
+			
+			if (!labelPath.equals("")) {
+				File deleteLabel = new File(delete_path + labelPath);
+				deleteLabel.delete();
+			}
+			
 			result += productService.deleteMultiProduct(Integer.parseInt(productNo));
 		}
 		
@@ -358,4 +446,32 @@ public class ProductController {
 		
 		return searchList;
 	}
+	/*
+	@PostMapping("sort")
+	public String sortProduct(@RequestParam String sortStandard, @RequestParam(value="page", required=false) String page, Model model) {
+		
+		System.out.println("sortStandard : " + sortStandard);
+		
+		int listCount = productService.getTotalListCount();
+		
+		int resultPage = 1;
+		
+		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
+		if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+		
+		List<Product> sortList = productService.sortProductList(sortStandard, startRow, endRow);
+		
+		model.addAttribute("productList", sortList);
+		model.addAttribute("pi", pi);
+
+		return "/product/list";
+	}
+	*/
 }

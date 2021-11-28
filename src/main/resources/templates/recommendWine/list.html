@@ -84,7 +84,7 @@
     #null_text {
     	color: #c4c4c4;
     	font-size : 40px;
-    	margin: auto 0;
+    	padding-top: 200px;
     }
    
 </style>
@@ -98,7 +98,7 @@
 	        <div id="label_area">
 	        	<input id="input_box" type="text" name="hashName" th:value="${ hashName }" readonly>
 	        </div>
-	        <div id="list_area" th:if="${not #lists.isEmpty(wineList)}">
+	        <div id="list_area" th:if="${#lists.size(wineList) != 0}">
 	        	<ul class="product_list">
 				    <li th:each="wine : ${wineList}">
 				        <div class="product_explain">
@@ -120,8 +120,8 @@
 				    </li>
 				</ul>
 	        </div>
-			<div id="null_area" th:if="${#lists.isEmpty(wineList)}">
-				<div id="null_text" th:text="${ message }"></div>
+			<div id="null_area" th:if="${#lists.size(wineList) == 0}">
+				<div id="null_text">검색하시는 해시태그의 상품이 없습니다.</div>
 			</div>
 		</div>
 	</div>

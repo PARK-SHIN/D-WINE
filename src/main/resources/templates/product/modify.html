@@ -333,29 +333,34 @@
 			}
 			
 			// 한글명, 영문명 데이터 유효성 체크 
-    		let regExp1 = /^[가-힣\d]+$/;
+    		let regExp1 = /^[가-힣\d\s]+$/;
     		if(!regExp1.test($("input[name=kname]").val())) {
     			alert("한글명은 한글, 숫자만 입력 가능합니다.");
     			$("input[name=kname]").focus();
     			return false;
     		}
     		
-    		let regExp2 = /^[a-zA-Z\d]+$/;
+    		let regExp2 = /^[a-zA-Z\d\s]+$/;
     		if(!regExp2.test($("input[name=ename]").val())) {
     			alert("영문명은 대소문자, 숫자만 입력 가능합니다.");
     			$("input[name=ename]").focus();
+    			return false;
+    		}
+    		
+    		if(!isUsable) {
+    			alert("상품명 중복체크를 진행해주세요.");
     			return false;
     		}
 			
 			return true;
 		}
 		
-		$(".modify_btn").attr("disabled", true);
+		var isUsable = false;
+		
+		/* $(".modify_btn").attr("disabled", true); */
     	
     	function productNameCheck(){
     		var kname = $("input[name=kname]").val();
-    		console.log(kname);
-    		isUsable = false;
     		
     		if(!kname) {
     			$("input[name=kname]").focus();
@@ -378,11 +383,11 @@
     							isUsable = false;
     						}
     					}
-    					if(isUsable) {
+    					/* if(isUsable) {
     						$(".modify_btn").removeAttr("disabled");
     					} else {
     						$(".modify_btn").attr("disabled", true);
-    					}
+    					} */
     				}, 
     				error : function(e) {
     					console.log(e);
