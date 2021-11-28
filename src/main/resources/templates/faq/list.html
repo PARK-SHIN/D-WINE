@@ -222,6 +222,13 @@
 	<header th:include="common/header :: header"></header>
     <div id="container">
         <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+        <script>
+        $(document).ready(function () { 
+            $('.faq').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
+            $('.faq').css('color', 'rgb(131,19,30)'); 
+            $('.faq').css('font-weight', 'bold'); 
+        });
+        </script>
         <div class="contents">
             <div class="inner">
                 <div class="headerArea">    
@@ -280,14 +287,12 @@
 
                     <div class="modal_layer"></div>
                 </div>
-
-               
-
             </div>
         </div>
     </div>
     <footer th:include="common/footer :: footer"></footer>
     
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script>
 	    var token = $("meta[name='_csrf']").attr("content");
 	    var header = $("meta[name='_csrf_header']").attr("content");
@@ -351,7 +356,6 @@
 		        });
         	}
         });
-        
         
         
     </script>

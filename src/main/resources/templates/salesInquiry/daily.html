@@ -112,6 +112,13 @@
 	<header th:include="common/header :: header"></header>
     <div id="container">
         <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+        <script>
+        $(document).ready(function () { 
+            $('.salesInquiry').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
+            $('.salesInquiry').css('color', 'rgb(131,19,30)'); 
+            $('.salesInquiry').css('font-weight', 'bold'); 
+        });
+        </script>
         <div class="contents">
             <div class="inner">
                 <div>
