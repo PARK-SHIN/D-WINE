@@ -8,11 +8,28 @@ public class Point {
 	private String content;
 	private int point;
 	private Date pdate;
+	private String status;
 	private int user_no;
 	private int review_no;
 	private String purchase_no;
 	
 	public Point() {}
+
+	
+
+	public Point(int point_no, String content, int point, Date pdate, String status, int user_no, int review_no,
+			String purchase_no) {
+		super();
+		this.point_no = point_no;
+		this.content = content;
+		this.point = point;
+		this.pdate = pdate;
+		this.status = status;
+		this.user_no = user_no;
+		this.review_no = review_no;
+		this.purchase_no = purchase_no;
+	}
+
 
 	public int getPoint_no() {
 		return point_no;
@@ -70,11 +87,25 @@ public class Point {
 		this.purchase_no = purchase_no;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "Point [point_no=" + point_no + ", content=" + content + ", point=" + point + ", pdate=" + pdate
-				+ ", user_no=" + user_no + ", review_no=" + review_no + ", purchase_no=" + purchase_no + "]";
+				+ ", status=" + status + ", user_no=" + user_no + ", review_no=" + review_no + ", purchase_no="
+				+ purchase_no + "]";
 	}
+
 
 	
 }

@@ -89,6 +89,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	/* payment Table 값 넣기  */
 	@Override
 	public int paymentInsert(Payment payment) {
+		System.out.println(payment);
 		return purchaseMapper.paymentInsert(payment);
 	}
 
