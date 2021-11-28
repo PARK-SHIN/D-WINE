@@ -43,6 +43,7 @@
 		<result property="content" column="content" />
 		<result property="point" column="point" />
 		<result property="pdate" column="pdate" />
+		<result property="status" column="status" />
 		<result property="review_no" column="review_no" />
 		<result property="purchase_no" column="purchase_no" />
 	</resultMap>
@@ -192,6 +193,7 @@
 			CONTENT,
 			POINT,
 			PDATE,
+			P.STATUS,
 			P.USER_NO,
 			R.REVIEW_NO,
 			PC.PURCHASE_NO,
@@ -201,9 +203,10 @@
 		LEFT JOIN REVIEW R ON (P.REVIEW_NO = R.REVIEW_NO)
 		LEFT JOIN PURCHASE PC ON (P.PURCHASE_NO = PC.PURCHASE_NO)
 		WHERE P.USER_NO = #{user_no}
+		AND P.STATUS = 'Y'
         AND (R.STATUS = 'Y'
         OR PC.STATUS = 'Y')
-        GROUP BY POINT_NO, CONTENT, PDATE, P.USER_NO, R.REVIEW_NO, PC.PURCHASE_NO, POINT, PC.USE_POINT
+        GROUP BY POINT_NO, CONTENT, PDATE, P.USER_NO, R.REVIEW_NO, PC.PURCHASE_NO, POINT, PC.USE_POINT, P.STATUS
 		ORDER BY POINT_NO
 	</select>
 	
@@ -301,8 +304,8 @@
 	
 	<insert id="insertReviewPoint" parameterType="com.project.dwine.mypage.model.vo.Point">
 		INSERT INTO POINT 
-        (point_no, CONTENT, POINT, PDATE, USER_NO, REVIEW_NO)
-        VALUES(seq_point_no.nextval, '리뷰에 대한 적립', 300, sysdate, #{user_no}, #{review_no})
+        (point_no, CONTENT, POINT, PDATE, STATUS, USER_NO, REVIEW_NO)
+        VALUES(seq_point_no.nextval, '리뷰에 대한 적립', 300, sysdate, 'Y', #{user_no}, #{review_no})
 	</insert>
 	
 	<insert id="insertWishToCart" parameterType="com.project.dwine.mypage.model.vo.Cart">

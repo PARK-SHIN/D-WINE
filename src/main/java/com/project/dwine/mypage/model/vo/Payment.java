@@ -4,14 +4,14 @@ import java.util.Date;
 
 public class Payment {
 	
-	private int pay_no;
+	private String pay_no;
 	private Date pay_date;
 	private String pay_method;
 	private String purchase_no;
 	
 	private int user_no;
 
-	public Payment(int pay_no, Date pay_date, String pay_method, String purchase_no, int user_no) {
+	public Payment(String pay_no, Date pay_date, String pay_method, String purchase_no, int user_no) {
 		super();
 		this.pay_no = pay_no;
 		this.pay_date = pay_date;
@@ -20,11 +20,11 @@ public class Payment {
 		this.user_no = user_no;
 	}
 
-	public int getPay_no() {
+	public String getPay_no() {
 		return pay_no;
 	}
 
-	public void setPay_no(int pay_no) {
+	public void setPay_no(String pay_no) {
 		this.pay_no = pay_no;
 	}
 
@@ -65,6 +65,5 @@ public class Payment {
 		return "Payment [pay_no=" + pay_no + ", pay_date=" + pay_date + ", pay_method=" + pay_method + ", purchase_no="
 				+ purchase_no + ", user_no=" + user_no + "]";
 	}
-
 	
 }
