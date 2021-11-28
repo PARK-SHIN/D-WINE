@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="/css/common/common.css" rel="stylesheet">      
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<style>
+	
+	.wrapper{
+		margin: 100px 0;
+	}
+	
+	a{
+		text-decoration: none;
+	}
+
+    .payment_complete_header{
+        width: 800px;
+        margin: 0 auto;
+    }
+    ul{
+        list-style: none;
+        margin: 0%;
+    }
+
+   table tr{
+       padding: 2px;
+   }
+   
+   .nick{
+       font-size: 20px;
+       color: #83131E;
+       font-weight: bold;
+       text-align: center;
+       padding: 10px 0;
+	   margin: 0;
+    }
+
+    .order_detail{
+       font-size: 15px;
+       margin-top: 20px;
+
+   }
+
+   .order_detail tr td{
+       padding: 10px 40px;
+       /* color: #d1d1d1; */
+       /* font-weight: bold; */
+       
+       
+   }
+
+   .order_title {
+        font-size: 17px;
+       
+       background-color: #f2f5f9;
+       color: #83131E;
+
+    }
+
+
+   .add_point{
+       font-size: 15px;
+       margin: 10px 0 0 0px;
+   }
+
+   .pickUp_title{
+        background-color: #f2f5f9;
+       font-size: 17px;
+
+        padding: 10px 40px;
+        color: #83131E;
+        text-align: center;
+        
+   }
+
+   .pickUp_content{
+       padding-left: 20px;
+   }
+
+   .info_head{
+       margin-top: 50px;
+   }
+
+
+   .pickUp_info{
+       background-color: #f2f5f9;
+       text-align: center;
+       padding: 20px;
+       width: 800px;
+   }
+
+   .order_info{
+       display: flex;
+       margin: 50px 0 0 0;
+       justify-content: space-between;
+       font-weight: bold;
+   }
+
+   .wine_info{
+       display: flex;
+       justify-content: space-between;
+       height: 120px;
+   }
+
+   .wine_img{
+       width: 150px;
+       height: 130px;
+   }
+
+   .wine_price{
+       font-size: 20px;
+   }
+   
+   .wine_value{
+   		width: 300px;
+   		text-align: center;
+   }
+
+   ul{
+       width: 800px;
+       padding: 0;
+
+   }
+   .payment_wine{
+       border-bottom: 5px solid #f2f5f9;
+       width: 800px;
+       padding: 20px;
+   }
+
+
+   .btns{
+       display: flex;
+       width: 800px;
+       justify-content: center;
+       margin-top: 50px;
+   }
+
+   .main_btn{
+       width: 120px;
+       height: 50px;
+       background-color: #ffff;
+       border-color: #83131E;
+       color: #83131E;
+       margin-right: 30px;
+   }
+
+   .my_payment_btn{
+       width: 120px;
+       height: 50px;
+       margin-left: 30px;
+       background-color: #83131E;
+       border: none;
+       color: white;
+   }
+
+
+</style>
+<body>
+    <header th:include="common/header :: header"></header>
+	<div class="wrapper">
+    <div class="payment_complete_header">
+        <h2 style="text-align:center">주문이 완료되었습니다.</h2>
+        <p class="nick" th:text="|ID : ${member.user_id}|"></p>
+        <p class="nick" th:text="|NICKNAME : ${member.user_nickname}|"></p>
+
+        <h3 class="info_head">결제정보</h3>
+        <table class="order_detail">
+            <tr>
+                <td class="order_title">
+                    주문번호
+                </td>
+                <td th:text="${purchase.purchase_no}">
+                   
+                </td>
+            </tr>
+            <tr>
+                <td class="order_title">
+                    상품금액
+                </td>
+                <td th:text="|${purchase.use_point + purchase.purchase_price}원|">
+                   
+                </td>
+            </tr>
+            <tr>
+                <td class="order_title">
+                    적립금사용
+                </td>
+                <td th:text="|${purchase.use_point}원|">
+                  
+                </td>
+            </tr>
+            <tr>
+                <td class="order_title">
+                    결제금액
+                </td>
+                <td th:text="|${purchase.purchase_price}원|">
+                  
+                </td>
+            </tr>
+            <tr>
+                <td class="order_title">
+                    구매 적립금
+                </td>
+                <td th:text="|${point.point}원|">
+
+                </td>
+            </tr>
+        </table>
+        <p class="add_point">* 구매금액의 5%가 적립됩니다.</p>
+
+        <h3 class="info_head">픽업정보</h3>
+        <table>
+            <tr>
+                <td class="pickUp_title">
+                    픽업매장
+                </td>
+                <td class="pickUp_content" th:text="|D.WINE ${purchase.pickup_place}점|">
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="pickUp_title">
+                    픽업날짜
+                </td>
+                <td class="pickUp_content" th:text="${purchase.pickup_date}">
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="pickUp_title">
+                    픽업시간
+                </td>
+                <td class="pickUp_content"  th:text="${purchase.pickup_time}">
+                   
+                </td>
+            </tr>
+        </table>
+
+        <h3 class="info_head">매장픽업 안내</h3>
+        <div class="pickUp_info">
+            주문 시 지정하신 날짜에 매장 방문하여 상품을 픽업해 주세요.<br><br>
+            (주슈 상품은 신분증 확인이 필요하니, 신분증을 꼭 지참해서 방문해 주세요.)<br><br>
+            주류 상품은 매장 방문 시 반품은 가능하나, 상품 교환은 불가합니다.<br>(추가 문의는 고객센터 1577-3419로 문의해 주세요.) 
+        </div>
+        
+        <div class="order_info pickUp_info">
+            <p style="padding-left: 30px; font-size: 20px";>주문상품</p>
+            <p style="padding-right: 100px;"></p>
+        </div>
+        <ul>
+            <li class="payment_wine" th:each="orderList : ${orderDetail}" >
+                <div class="wine_info">
+                    <img class="wine_img" th:src="${orderList.thumbnail}">
+                    <div class="wine_value"  th:each="orderdetail : ${orderList.orderDetail}">
+                        <p class="wine_name" th:text="${orderList.product_kname}"></p>
+                        <p class="wine_name" th:text="${orderList.product_ename}"></p>
+                       <span th:text="|${orderdetail.od_count}개|"></span>&emsp;&emsp;
+                       <span class="wine_price" th:text="|${orderdetail.od_price}원|"></span><br>
+
+                    </div>
+                </div>
+            </li>
+        <!--     <li class="payment_wine">
+                <div class="wine_info">
+                    <img class="wine_img" src="./resources/images/wine.png">
+                    <div class="wine_value">
+                        <p class="wine_name">카베르네 소비뇽</p>
+                        <p class="wine_name">Carbernet Sauvignon</p>
+                        <span>2개&emsp;&emsp;</span><span class="wine_price">57,600</span><br>
+
+                    </div>
+                </div>
+            </li> -->
+        </ul>
+
+        <div class="btns">
+            <button class="main_btn"><a href="/home" style="color:white">메인</a></button>
+            <button class="my_payment_btn"><a href="/home" style="color:white">구매 내역</a></button>
+        </div>
+        </div> 
+    </div>
+    <div th:replace="common/footer :: footer"></div>
+    
+</body>
+</html>

@@ -35,8 +35,49 @@ public class Product {
 	private String variety_name;
 	private List<Hashtag> hash_names;
 	private List<Cart> cart;
+	private List<OrderDetail> orderDetail;
 	
 	public Product() {}
+
+	
+	public Product(int product_no, String product_kname, String product_ename, int cost_price, int sale_price,
+			int product_count, String winery, String thumbnail, int capacity, int abv, String taste_graph,
+			String information, String award, String tip, String label_image, String status, Date create_date,
+			Date modify_date, int variety_no, int type_no, int country_no, String country_name, String type_name,
+			String variety_name, List<Hashtag> hash_names, List<Cart> cart, List<OrderDetail> orderDetail) {
+		super();
+		this.product_no = product_no;
+		this.product_kname = product_kname;
+		this.product_ename = product_ename;
+		this.cost_price = cost_price;
+		this.sale_price = sale_price;
+		this.product_count = product_count;
+		this.winery = winery;
+		this.thumbnail = thumbnail;
+		this.capacity = capacity;
+		this.abv = abv;
+		this.taste_graph = taste_graph;
+		this.information = information;
+		this.award = award;
+		this.tip = tip;
+		this.label_image = label_image;
+		this.status = status;
+		this.create_date = create_date;
+		this.modify_date = modify_date;
+		this.variety_no = variety_no;
+		this.type_no = type_no;
+		this.country_no = country_no;
+		this.country_name = country_name;
+		this.type_name = type_name;
+		this.variety_name = variety_name;
+		this.hash_names = hash_names;
+		this.cart = cart;
+		this.orderDetail = orderDetail;
+	}
+
+
+
+
 
 	public Product(int product_no, String product_kname, String product_ename, int cost_price, int sale_price,
 			int product_count, String winery, String thumbnail, int capacity, int abv, String taste_graph,
@@ -323,6 +364,17 @@ public class Product {
 		this.cart = cart;
 	}
 
+
+	public List<OrderDetail> getOrderDetail() {
+		return orderDetail;
+	}
+
+
+	public void setOrrderDetail(List<OrderDetail> orderDetail) {
+		this.orderDetail = orderDetail;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Product [product_no=" + product_no + ", product_kname=" + product_kname + ", product_ename="
@@ -332,8 +384,10 @@ public class Product {
 				+ ", tip=" + tip + ", label_image=" + label_image + ", status=" + status + ", create_date="
 				+ create_date + ", modify_date=" + modify_date + ", variety_no=" + variety_no + ", type_no=" + type_no
 				+ ", country_no=" + country_no + ", country_name=" + country_name + ", type_name=" + type_name
-				+ ", variety_name=" + variety_name + ", hash_names=" + hash_names + ", cart=" + cart + "]";
+				+ ", variety_name=" + variety_name + ", hash_names=" + hash_names + ", cart=" + cart + ", orderDetail="
+				+ orderDetail + "]";
 	}
+
 
 	
 	

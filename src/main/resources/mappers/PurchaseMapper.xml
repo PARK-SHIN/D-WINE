@@ -6,7 +6,6 @@
 		<id property="product_no" column="PRODUCT_NO"/>
 		<result property="product_kname" column="PRODUCT_KNAME"/>
 		<result property="product_ename" column="PRODUCT_ENAME"/>
-		<result property="cost_price" column="COST_PRICE"/>
 		<result property="sale_price" column="SALE_PRICE"/>
 		<result property="product_count" column="PRODUCT_COUNT"/>
 		<result property="winery" column="WINERY"/>
@@ -30,7 +29,6 @@
 		<id property="product_no" column="PRODUCT_NO"/>
 		<result property="product_kname" column="PRODUCT_KNAME"/>
 		<result property="product_ename" column="PRODUCT_ENAME"/>
-		<result property="cost_price" column="COST_PRICE"/>
 		<result property="sale_price" column="SALE_PRICE"/>
 		<result property="product_count" column="PRODUCT_COUNT"/>
 		<result property="winery" column="WINERY"/>
@@ -54,12 +52,63 @@
 		<collection property="hash_names" resultMap="hashAllNames"/>
 	</resultMap>
 	
+	<resultMap id="productDetailResult" type="com.project.dwine.purchase.model.vo.Product">
+		<id property="product_no" column="PRODUCT_NO"/>
+		<result property="product_kname" column="PRODUCT_KNAME"/>
+		<result property="product_ename" column="PRODUCT_ENAME"/>
+		<result property="sale_price" column="SALE_PRICE"/>
+		<result property="product_count" column="PRODUCT_COUNT"/>
+		<result property="winery" column="WINERY"/>
+		<result property="thumbnail" column="THUMBNAIL"/>
+		<result property="capacity" column="CAPACITY"/>
+		<result property="abv" column="ABV"/>
+		<result property="taste_graph" column="TASTE_GRAPH"/>
+		<result property="information" column="INFORMATION"/>
+		<result property="award" column="AWARD"/>
+		<result property="tip" column="TIP"/>
+		<result property="label_image" column="LABEL_IMAGE"/>
+		<result property="status" column="STATUS"/>
+		<result property="create_date" column="CREATE_DATE"/>
+		<result property="modify_date" column="MODIFY_DATE"/>
+		<result property="variety_no" column="VARIETY_NO"/>
+		<result property="type_no" column="TYPE_NO"/>
+		<result property="country_no" column="COUNTRY_NO"/>
+		<result property="country_name" column="COUNTRY_NAME"/>
+		<result property="type_name" column="TYPE_NAME"/>
+		<result property="variety_name" column="VARIETY_NAME"/>
+		<association property="orderDetail" resultMap="OD"/>
+	</resultMap>
+	
+	
 	<resultMap type="com.project.dwine.purchase.model.vo.Hashtag" id="hashAllNames">
 		<id property="hash_no" column="HASH_NO"/>
 		<result property="hash_type" column="HASH_TYPE"/>
 		<result property="hash_name" column="HASH_NAME"/>
 	</resultMap>
 	
+	<resultMap type="com.project.dwine.purchase.model.vo.OrderDetail" id="OD">
+		<id property="od_no" column="OD_NO"/>
+		<result property="od_count" column="OD_COUNT"/>
+		<result property="od_price" column="OD_PRICE"/>
+		<result property="purchase_no" column="PURCHASE_NO"/>
+		<result property="product_no" column="PRODUCT_NO"/>
+	</resultMap>
+<!-- 	<resultMap id="purchaseResultMap" type="com.project.dwine.purchase.model.vo.Purchase">
+		<id property="product_no" column="PRODUCT_NO"/>
+		<result property="purchase_date" column="PURCHASE_DATE"/>
+		<result property="use_point" column="USE_POINT"/>
+		<result property="purchase_price" column="PURCHASE_PRICE"/>
+		<result property="pickup_date" column="PICKUP_DATE"/>
+		<result property="pickup_place" column="PICKUP_PLACE"/>
+		<result property="pickup_time" column="PICKUP_TIME"/>
+		<result property="order_status" column="ORDER_STATUS"/>
+		<result property="status" column="STATUS"/>
+		<result property="refund_date" column="REFUND_DATE"/>
+		<result property="use_no" column="USER_NO"/>
+		<collection property="orderDetail" resultMap="OD"/>
+	</resultMap>
+	-->
+ 
 	<select id="hashList" resultMap="hashAllNames">
 		SELECT
 				B.HASH_NO
@@ -76,7 +125,6 @@
 			    PRODUCT_NO
 			  , PRODUCT_KNAME
 			  , PRODUCT_ENAME
-			  , COST_PRICE
 			  , SALE_PRICE
 			  , PRODUCT_COUNT
 			  , WINERY
@@ -104,7 +152,6 @@
 			    P.PRODUCT_NO
 			  , P.PRODUCT_KNAME
 			  , P.PRODUCT_ENAME
-			  , P.COST_PRICE
 			  , P.SALE_PRICE
 			  , P.PRODUCT_COUNT
 			  , P.WINERY
@@ -142,7 +189,6 @@
 				P.PRODUCT_NO
 			  , P.PRODUCT_KNAME
 			  , P.PRODUCT_ENAME
-			  , P.COST_PRICE
 			  , P.SALE_PRICE
 			  , P.PRODUCT_COUNT
 			  , P.WINERY
@@ -204,7 +250,6 @@
 			    PRODUCT_NO
 			  , PRODUCT_KNAME
 			  , PRODUCT_ENAME
-			  , COST_PRICE
 			  , SALE_PRICE
 			  , PRODUCT_COUNT
 			  , WINERY
@@ -247,6 +292,177 @@
 	      WHERE USER_NO = #{user_no}
 	        AND PRODUCT_NO = #{product_no}
 	</select>
+	
+	<insert id="purchaseInsert" parameterType="com.project.dwine.purchase.model.vo.Purchase">
+	INSERT
+			INTO PURCHASE
+		(
+			PURCHASE_NO
+		  , PURCHASE_DATE
+		  , USE_POINT
+		  , PURCHASE_PRICE
+		  , PICKUP_DATE
+		  , PICKUP_PLACE
+		  , PICKUP_TIME
+		  , ORDER_STATUS
+		  , STATUS
+		  , REFUND_DATE
+		  , USER_NO
+		)
+		VALUES
+		(
+			#{purchase_no}
+		  ,	DEFAULT
+		  , #{use_point}
+		  , #{purchase_price}
+		  , #{pickup_date}
+		  , #{pickup_place}
+		  , #{pickup_time}
+		  , DEFAULT
+		  , DEFAULT
+		  , NULL
+		  , #{user_no}
+		)
+	</insert>
+	
+	<update id="pointUpdate" parameterType="com.project.dwine.member.model.vo.Member">
+	UPDATE MEMBER
+  	   SET USER_POINT = #{user_point}
+  	 WHERE USER_NO = #{user_no}
+	</update>
+	
+	<insert id="pointPlus" parameterType="com.project.dwine.purchase.model.vo.Point">
+	INSERT
+  	  INTO POINT
+	  (
+	    POINT_NO
+	  , CONTENT
+	  , POINT
+	  , PDATE
+	  , STATUS
+	  , USER_NO
+	  , PURCHASE_NO
+	  )
+	  VALUES
+	  (
+	    SEQ_POINT_NO.NEXTVAL
+	  , '구매에 대한 적립'
+	  , #{point}
+	  , SYSDATE
+	  , SYSDATE
+	  , #{user_no}
+	  , #{purchase_no}
+	  )
+	</insert>
+	<insert id="paymentInsert" parameterType="com.project.dwine.purchase.model.vo.Payment">
+	INSERT
+  	  INTO PAYMENT
+	  (
+	    PAY_NO
+	  , PAY_DATE
+	  , PAY_METHOD
+	  , PURCHASE_NO
+	  )
+	  VALUES
+	  (
+	    #{pay_no}
+	  , SYSDATE
+	  , #{pay_method}
+	  , #{purchase_no}
+	  )
+	</insert>
+	<insert id="orderDetailInsert" parameterType="com.project.dwine.purchase.model.vo.OrderDetail">
+	INSERT
+  	  INTO ORDER_DETAIL
+	  (
+	    OD_NO
+	  , OD_COUNT
+	  , OD_PRICE
+	  , PURCHASE_NO
+	  , PRODUCT_NO
+	  )
+	  VALUES
+	  (
+	    SEQ_ODNO.NEXTVAL
+	  , #{od_count}
+	  , #{od_price}
+	  , #{purchase_no}
+	  , #{product_no}
+	  )
+	</insert>
+	<delete id="cartDelete" parameterType="com.project.dwine.cart.model.vo.Cart">
+	DELETE FROM CART
+	WHERE USER_NO = #{user_no}
+	<if test="cart_no!=null">
+				AND
+				<foreach collection="cart_no" item="cartno" separator="or">
+				CART_NO = #{cartno}
+				</foreach>
+	</if>
+	</delete>
+	<update id="stockUpdate" parameterType="com.project.dwine.purchase.model.vo.Product">
+	UPDATE PRODUCT
+	   SET PRODUCT_COUNT =  #{product_count}
+	 WHERE PRODUCT_NO =  #{product_no}
+	</update>
+	<select id="memberinfo"  parameterType="_int"  resultType="com.project.dwine.member.model.vo.Member">
+	SELECT
+		USER_NO,
+		USER_ID,
+		USER_PW,
+		USER_NAME,
+		USER_BIRTH,
+		USER_PHONE,
+		USER_NICKNAME,
+		USER_POINT,
+		USER_STATUS
+	FROM MEMBER
+	WHERE USER_NO =  #{user_no}
+	AND USER_STATUS = 'Y'
+	</select>
+<select id="selectPurchase" parameterType="string"  resultType="com.project.dwine.purchase.model.vo.Purchase">
+	SELECT
+			PURCHASE_NO
+		  , PURCHASE_DATE
+		  , USE_POINT
+		  , PURCHASE_PRICE
+		  , PICKUP_DATE
+		  , PICKUP_PLACE
+		  , PICKUP_TIME
+		  , ORDER_STATUS
+		  , STATUS
+		  , REFUND_DATE
+		  , USER_NO
+	FROM PURCHASE
+	WHERE PURCHASE_NO = #{purchase_no}
+	</select>
+	<select id="selectOrderDetail" parameterType="string" resultMap="productDetailResult">
+	SELECT
+	        PRODUCT_KNAME
+	      , PRODUCT_ENAME
+	      , SALE_PRICE
+	      , THUMBNAIL
+	      , OD_COUNT
+	      , OD_PRICE
+        FROM PRODUCT P
+        JOIN ORDER_DETAIL O ON(P.PRODUCT_NO = O.PRODUCT_NO)
+        WHERE PURCHASE_NO = #{purchase_no}
+	</select>
+	<select id="selectPoint"  parameterType="string"  resultType="com.project.dwine.purchase.model.vo.Point">
+	SELECT
+			POINT_NO
+		  , CONTENT
+		  , POINT
+		  , PDATE
+		  , USER_NO
+		  , REVIEW_NO
+		  , PURCHASE_NO
+	FROM POINT
+	WHERE PURCHASE_NO = #{purchase_no}
+	</select>
+
+	
+	
 </mapper>
 
 
