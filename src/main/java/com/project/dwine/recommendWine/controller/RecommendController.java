@@ -63,11 +63,7 @@ public class RecommendController {
 		
 		List<Product> wineList = recommendService.searchWineList(hashName);
 		
-		if(!wineList.isEmpty()) {
-			model.addAttribute("wineList", wineList);			
-		} else {
-			model.addAttribute("message", "검색하시는 해시태그의 상품이 없습니다.");
-		}
+		model.addAttribute("wineList", wineList);	
 		
 		return "/recommendWine/list"; 
 	}

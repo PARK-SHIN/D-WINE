@@ -23,6 +23,7 @@
 	#top_area {
 		display: flex;
 		justify-content: space-between;
+		margin: 30px 10px;
 	}
 	
 	#open_regist_btn {
@@ -35,21 +36,22 @@
 		margin-bottom: auto;
 		border: 0;
 	}
-	
 	h1 {
 		display: inline;
 	}
-	
 	#table_area {
 		border: 1px solid #f9f9f9;
-		width: 80%;
+		width: 70%;
 		margin-top: 20px;
 		margin-left: auto;
 		margin-right: auto;
 	}
-	
 	#table_area th {
 		background: rgba(196, 196, 196, 0.3);
+	}
+	
+	.list_area {
+		height: 420px;
 	}
 	
 	#deleteMulti_btn {
@@ -58,11 +60,6 @@
 		color: #525252;
 		border: 1px solid #525252;
 	}
-	
-	td {
-		border-right: 1px solid rgba(196, 196, 196, 0.3);
-	}
-	
 	.center {
 		text-align: center
 	}
@@ -80,6 +77,57 @@
 		border-radius: 5px;
 		border: 1px solid #83131E;
 	}
+	tr, td {
+		height: 30px;
+	}
+	td {
+		border-right: 1px solid rgba(196, 196, 196, 0.3);
+	}
+	#sort_area {
+		margin-left: 15%;
+	}
+	
+	.change-bg{
+		background: rgba(180,19,30,0.1);
+	}
+	
+	.change-color{
+		color: red;
+		font-weight: bold;
+	}
+	
+	/* 페이징 부분 */
+	.paging_ul {
+		height: 50px;
+		line-height: 50px;
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		width: 480px;
+		margin: 30px auto;
+	}
+
+	.paging_ul a {
+		text-decoration: none;
+		color: #282A35;
+		display: block;
+		text-align: center;
+		border: 1px solid #dae0e9;
+	    margin-left: 10px;
+		width: 37px;
+		height: 37px;
+		line-height : 37px;
+	    font-size: 12px;
+	    border-radius : 5px;
+	}
+
+	.paging_ul a.current_page {
+		border: 1px solid  #83131E;
+	    background:  #83131E;
+	    color: #fff;
+	    border-radius : 5px;
+	}
+	
 </style>
 </head>
 <body>
@@ -89,58 +137,101 @@
         <button id="open_regist_btn" onclick="location.href='/product/regist'">상품 등록</button>
     </div>
     <hr>
-	<div id="top_area">
-		<div>
-			<button id="deleteMulti_btn">선택 삭제</button>
-			<button id="hash_btn" onclick="openHashForm()">해시태그 관리</button>
+    <div class="container">
+    	<div id="top_area">
+			<div>
+				<button id="deleteMulti_btn">선택 삭제</button>
+				<button id="hash_btn" onclick="openHashForm()">해시태그 관리</button>
+			</div>
+			<div>
+				<select name="search_select">
+					<option value="no">상품번호</option>
+					<option value="name">상품명</option>
+				</select> 
+				<input type="text" name="search_product">
+				<button id="search_btn">검색</button>
+			</div>
 		</div>
-		<div>
-			<select name="search_select">
-				<option value="no">상품번호</option>
-				<option value="name">상품명</option>
-			</select> 
-			<input type="text" name="search_product">
-			<button id="search_btn">검색</button>
+		<div class="list_area">
+			<div class="sort_area">
+				<form id="sortForm" th:action="@{/product/list}" method="get">
+					<select id="sort_area" name="sortStandard">
+						<option value="no_low" th:selected="${ sortStandard }=='no_low'">상품번호 낮은 순</option>
+						<option value="no_high" th:selected="${ sortStandard }=='no_high'">상품번호 높은 순</option>
+						<option value="stock_low" th:selected="${ sortStandard }=='stock_low'">재고 적은 순</option>
+						<option value="stock_high" th:selected="${ sortStandard }=='stock_high'">재고 많은 순</option>
+					</select> 
+				</form>
+			</div>
+			<form id="deleteMultiForm" th:action="@{/product/deleteMulti}" method="post" onsubmit="return checkConfirm()">
+				<table id="table_area">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="delete_all" name="delete_all"></th>
+							<th>상품번호</th>
+							<th>상품명</th>
+							<th>판매가</th>
+							<th>재고</th>
+							<th>등록일</th>
+							<th>수정일</th>
+						</tr>
+					</thead>
+					<tbody id="productList">
+						<tr th:each="product : ${ productList }">
+							<td class="center"><input type="checkbox" name="delete_nums" th:value="${ product.productNo }"></td>
+							<td class="center" th:text="${ product.productNo }"></td>
+							<td class="choose" th:text="${ product.productKName }" th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|"></td>
+							<td class="center" th:text="${ product.salePrice }"></td>
+							<td class="center choose" th:text="${ product.productCount }" th:onclick="|location.href='@{/manage/inventoryMg/main}'|"></td>
+							<td class="center" th:text="${#dates.format(product.createDate, 'yyyy-MM-dd')}"></td>
+							<td class="center" th:text="${#dates.format(product.modifyDate, 'yyyy-MM-dd')}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</form> 		
 		</div>
+    </div>
+
+	<!-- 페이징 -->
+	<div class="paging__area">
+		<ul class="paging_ul">
+			<!-- 맨 첨으로(<<) -->
+			<li><a th:href="@{/product/list(page=1, sortStandard=${sortStandard})}">&lt;&lt;</a></li>
+
+			<!-- 이전 페이지로(<) -->
+			<li th:if="${ pi.page > 1 }"><a th:href="@{/product/list(page=${pi.page - 1}, sortStandard=${sortStandard})}">&lt;</a></li>
+			<li th:unless="${ pi.page > 1 }"><a href="#">&lt;</a></li>
+
+			<!-- 페이지 목록(최대 10개) -->
+			<li th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}">
+			<a th:if="${ pi.page == page }" class="current_page" th:text="${page}" href="#"></a>
+			<a th:unless="${ pi.page == page }" th:text="${page}" th:href="@{/product/list(page=${page}, sortStandard=${sortStandard})}"></a>
+			</li>
+
+			<!-- 다음 페이지로(>) -->
+			<li th:if="${ pi.page < pi.maxPage }"><a th:href="@{/product/list(page=${pi.page + 1}, sortStandard=${sortStandard})}">&gt;</a></li>
+			<li th:unless="${ pi.page < pi.maxPage }"><a href="#">&gt;</a></li>
+
+			<!-- 맨  끝으로(>>) -->
+			<li><a th:href="@{/product/list(page=${pi.endPage}, sortStandard=${sortStandard})}">&gt;&gt;</a></li>
+		</ul>
 	</div>
-	<div>
-		<form id="deleteMultiForm" th:action="@{/product/deleteMulti}" method="post" onsubmit="return checkConfirm()">
-			<table id="table_area">
-				<thead>
-					<tr>
-						<th><input type="checkbox" id="delete_all" name="delete_all"></th>
-						<th>상품번호</th>
-						<th>상품명</th>
-						<th>판매가</th>
-						<th>총 수량</th>
-						<th>등록일</th>
-						<th>수정일</th>
-					</tr>
-				</thead>
-				<tbody id="productList">
-					<tr th:each="product : ${ productList }">
-						<td class="center"><input type="checkbox" name="delete_nums" th:value="${ product.productNo }"></td>
-						<td class="center" th:text="${ product.productNo }"></td>
-						<td class="choose" th:text="${ product.productKName }" th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|"></td>
-						<td class="center" th:text="${ product.salePrice }"></td>
-						<td class="center" th:text="${ product.productCount }"></td>
-						<td class="center" th:text="${#dates.format(product.createDate, 'yyyy-MM-dd')}"></td>
-						<td class="center" th:text="${#dates.format(product.modifyDate, 'yyyy-MM-dd')}"></td>
-					</tr>
-				</tbody>
-			</table>
-		</form> 
-	</div>
+	
 
 	<footer th:include="common/footer :: footer"></footer>
 	
 	<script>
-
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		$(document).ajaxSend(function(e, xhr, options) {
 			xhr.setRequestHeader(header, token);
 		});
+
+		$(function() {
+			change_bg();
+			
+			
+		})
 
 		// 선택 삭제 버튼 클릭 시 deleteMultiForm submit
 		$("#deleteMulti_btn").on("click", function() {
@@ -183,12 +274,15 @@
 			return date.getFullYear() + '-' + month + '-' + day;
 		}
 
+
 		// 상품 검색
 		$("#search_btn").on("click", function() {
+			/*
 			var searchStandard = $("select[name=search_select]").val();
 			var searchValue = $("input[name=search_product]").val();
 
-			var tableHTML;
+			var tableHTML = "";
+			
 			$.ajax({
 				url : "/product/search",
 				data : {searchStandard : searchStandard, searchValue : searchValue},
@@ -203,14 +297,15 @@
 						let modifyDate = new Date(item.modifyDate);
 
 						tableHTML += "<tr><td class='center'><input type='checkbox' name='delete_nums' value='" + item.productNo + "'></td>"
-									+ "<td class='center'>"+ item.productNo+ "</td>"
+									+ "<td class='center'>"+ item.productNo + "</td>"
 									+ "<td class=\"choose\" onclick=\"location.href='/product/detail/" + item.productNo + "'\">"+ item.productKName+ "</td>"
 									+ "<td class='center'>"+ item.salePrice + "</td>"
 									+ "<td class='center'>"+ item.productCount+ "</td>"
 									+ "<td class='center'>"+ dateFormat(createDate)+ "</td>"
 									+ "<td class='center'>"+ dateFormat(modifyDate)+ "</td></tr>"
 
-									$("#productList").html(tableHTML);
+						$("#productList").html(tableHTML);
+					    change_bg();
 						});
 					}
 				},
@@ -218,13 +313,65 @@
 					console.log(e);
 				}						
 			});
+			*/
 		});
 		
+		// 와인리스트 상품번호 높은순/낮은순, 재고 낮은순/높은순으로 정렬
+		$("#sort_area").on('change', function(){
+			$("#sortForm").submit();
+			
+			/*
+			var sortStandard = $("select[name=sort_select]").val();
+			
+			var tableHTML = "";
+			
+			$.ajax({
+				url : "/product/sort",
+				data : {sortStandard : sortStandard},
+				type : "post",
+				success : function(data) {
+					$.each(data, function(index, item) {
+
+						let createDate = new Date(item.createDate);
+						let modifyDate = new Date(item.modifyDate);
+
+						tableHTML += "<tr><td class='center'><input type='checkbox' name='delete_nums' value='" + item.productNo + "'></td>"
+									+ "<td class='center'>"+ item.productNo+ "</td>"
+									+ "<td class=\"choose\" onclick=\"location.href='/product/detail/" + item.productNo + "'\">"+ item.productKName+ "</td>"
+									+ "<td class='center'>"+ item.salePrice + "</td>"
+									+ "<td class='center stoke'>"+ item.productCount + "</td>"
+									+ "<td class='center'>"+ dateFormat(createDate) + "</td>"
+									+ "<td class='center'>"+ dateFormat(modifyDate) + "</td></tr>"
+
+						$("#productList").html(tableHTML);
+
+					    change_bg();
+
+					});
+				},
+				error : function(e) {
+					console.log(e);
+				}						
+			});
+			*/
+			
+		});
+
+		function change_bg() {
+			$('#productList tr').each(function() {
+				var stock = $(this).children().eq(4).text();
+
+				if (stock <= 5) {
+					$(this).addClass("change-bg");
+					$(this).children().eq(4).addClass("change-color");
+				}
+			});
+		}
+
 		// 해시태그 관리 팝업
-        function openHashForm(){
-            window.open("/hashtag/form", "popup", "width=800, height=600");
-        }
-		
+		function openHashForm() {
+			window.open("/hashtag/form", "popup", "width=800, height=600");
+		}
 	</script>
 	
 	

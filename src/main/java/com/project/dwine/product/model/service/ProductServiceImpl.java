@@ -23,11 +23,6 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<Product> selectProductList() {
-		return productMapper.selectProductList();
-	}
-
-	@Override
 	public List<Type> selectTypeList() {
 		return productMapper.selectTypeList();
 	}
@@ -93,6 +88,34 @@ public class ProductServiceImpl implements ProductService{
 		return productMapper.productNameCheck(kname);
 	}
 
+	/*
+	@Override
+	public List<Product> sortProductList(String sortStandard, int startRow, int endRow) {
+		return productMapper.sortProductList(sortStandard, startRow, endRow);
+	}
+	*/
+
+	@Override
+	public Product selectImgPath(int productNo) {
+		return productMapper.selectImgPath(productNo);
+	}
+
+	@Override
+	public int getTotalListCount() {
+		return productMapper.getTotalListCount();
+	}
+
+	@Override
+	public List<Product> selectProductList(int startRow, int endRow) {
+		return productMapper.selectProductList(startRow, endRow);
+	}
+
+	@Override
+	public List<Product> selectSortProductList(String sortStandard, int startRow, int endRow) {
+		return productMapper.selectSortProductList(sortStandard, startRow, endRow);
+	}
+
+	
 	
 
 }

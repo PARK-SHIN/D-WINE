@@ -9,8 +9,6 @@ import com.project.dwine.product.model.vo.Variety;
 
 public interface ProductService {
 
-	List<Product> selectProductList();
-
 	List<Type> selectTypeList();
 
 	List<Country> selectCountryList();
@@ -36,6 +34,16 @@ public interface ProductService {
 	List<Product> searchProductList(String searchStandard, String searchValue);
 	
 	int productNameCheck(String kname);
+
+	// List<Product> sortProductList(String sortStandard, int startRow, int endRow);
+
+	Product selectImgPath(int productNo);
+
+	int getTotalListCount();
+
+	List<Product> selectProductList(int startRow, int endRow);
+
+	List<Product> selectSortProductList(String sortStandard, int startRow, int endRow);
 
 
 
