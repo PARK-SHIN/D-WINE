@@ -7,7 +7,11 @@
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/orderlist.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
 <style>
+*{
+	font-family: 'Gowun Batang', serif;
+}
 .sub_inner>ul {
 	list-style-type: none;
 	margin: 0;
@@ -59,6 +63,10 @@
 	background-image: url(/images/mypage/member.png);
 }
 
+.snb_inner>ul>li:nth-child(7) span {
+	background-image: url(/images/mypage/member.png);
+}
+
 .sub_ul {
 	list-style-type: none;
 	margin: 0;
@@ -78,6 +86,7 @@
 </head>
 <body>
 <header th:include="common/header :: header"></header>
+<div class="wrapper">
 	<div id="container">
         <!-- <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
         </nav> -->
@@ -89,6 +98,7 @@
 					<li><a class="ahover" href="/mypage/wish"><span>찜리스트</span></a></li>
 					<li><a class="ahover" href="/mypage/review"><span>나의리뷰</span></a></li>
 					<li><a class="ahover" href="/mypage/point"><span>내 포인트</span></a></li>
+					<li><a class="ahover mypoint" href="/qna/userqnaList"><span>나의1:1문의</span></a></li>
 					<li><a class="ahover" href="/mypage/memberModify"><span>회원정보수정</span></a></li>
 		            <li><a class="ahover" href="/mypage/memberDel"><span>회원탈퇴</span></a></li>
 				</ul>
@@ -132,7 +142,7 @@
                                	 		<!-- <button onclick="openModal(this)">픽업변경</button> -->
                                	 		<form method="post" th:action="@{/mypage/updateCancelPayment}" style="display:inline;">
 	                               	 		<input type="hidden" name="purchase_no" th:value="${p.purchase_no}">
-	                               	 		<button type="submit" class="cancelPayment" style="margin-left : 30px; margin-top:5px;" onclick="cancelPay()">결제취소</button>
+	                               	 		<button type="submit" class="cancelPayment" style="margin-left : 30px; margin-top:5px;">결제취소</button>
                                	 		</form>
 								    </div>
 								    <p th:case="환불완료">
@@ -171,7 +181,7 @@
                                	 		<!-- <button onclick="openModal(this)">픽업변경</button> -->
                                	 		<form method="post" th:action="@{/mypage/updateCancelPayment}" style="display:inline;">
 	                               	 		<input type="hidden" name="purchase_no" th:value="${p.purchase_no}">
-	                               	 		<button type="submit" class="cancelPayment" style="margin-left : 30px; margin-top:5px;" onclick="cancelPay()">결제취소</button>
+	                               	 		<button type="submit" class="cancelPayment" style="margin-left : 30px; margin-top:5px;">결제취소</button>
                                	 		</form>
 								    </div>
 								    <p th:case="환불완료">
@@ -234,6 +244,7 @@
             </div>
         </div>
     </div>
+   </div>
     <script>
         function openModal(elem){
         	console.log(elem);
@@ -384,7 +395,7 @@
         </script>
         
         <!-- 결제 취소 api 관련 script -->
-        <script>
+        <<!-- script>
         var price = $(".sum").val;
         
 		  function cancelPay(pay_no, purchase_price) {
@@ -400,7 +411,7 @@
 		      dataType: "json"
 		    });
 		  }
-		</script>
+		</script> -->
         
 <footer th:include="common/footer :: footer"></footer>
 </body>

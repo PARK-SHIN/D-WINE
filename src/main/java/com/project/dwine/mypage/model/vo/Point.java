@@ -11,12 +11,13 @@ public class Point {
 	private int review_no;
 	private String purchase_no;
 	private int use_point;
+	private String status;
 	private int total;
 	
 	public Point() {}
 
 	public Point(int point_no, String content, int point, Date pdate, int review_no, String purchase_no, int use_point,
-			int total) {
+			String status, int total) {
 		super();
 		this.point_no = point_no;
 		this.content = content;
@@ -25,6 +26,7 @@ public class Point {
 		this.review_no = review_no;
 		this.purchase_no = purchase_no;
 		this.use_point = use_point;
+		this.status = status;
 		this.total = total;
 	}
 
@@ -84,6 +86,14 @@ public class Point {
 		this.use_point = use_point;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public int getTotal() {
 		return total;
 	}
@@ -95,9 +105,8 @@ public class Point {
 	@Override
 	public String toString() {
 		return "Point [point_no=" + point_no + ", content=" + content + ", point=" + point + ", pdate=" + pdate
-				+ ", review_no=" + review_no + ", purchase_no=" + purchase_no + ", use_point=" + use_point + ", total="
-				+ total + "]";
+				+ ", review_no=" + review_no + ", purchase_no=" + purchase_no + ", use_point=" + use_point + ", status="
+				+ status + ", total=" + total + "]";
 	}
-
 	
 }
