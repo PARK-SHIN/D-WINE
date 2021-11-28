@@ -11,7 +11,7 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 </head>
 <style>
-    ul{
+    #ulwrapper{
         list-style: none;
         padding: 0%;
         margin: 0;
@@ -29,7 +29,7 @@
         
     }
 
-    ul li{
+    #ulwrapper li{
         display: flex;
     }
 
@@ -254,7 +254,7 @@
             <h2>상품  매장픽업 매장 / 일자 선택</h3>
             <div class="block"></div>
             <div class="main">
-            <ul>
+            <ul id="ulwrapper">
             	<li th:each="orderList : ${purchaseList}" style="padding : 30px 0">
             		<div class="order_info">
                     <div class="wine_info">
@@ -362,7 +362,6 @@
         <div class="order_btn">
             <button type="submit" onclick="return checkForm()"><span class="ofp"></span>원 결제하기</button>
         </div>
-        <button onclick="cartDelete()">가보자</button>
      </div>
     <!-- </form> -->
     <input type="hidden" class="username" th:value="${member.user_name}">

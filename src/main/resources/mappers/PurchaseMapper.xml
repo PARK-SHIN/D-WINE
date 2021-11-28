@@ -349,7 +349,7 @@
 	  , '구매에 대한 적립'
 	  , #{point}
 	  , SYSDATE
-	  , SYSDATE
+	  , DEFAULT
 	  , #{user_no}
 	  , #{purchase_no}
 	  )

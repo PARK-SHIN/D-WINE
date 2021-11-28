@@ -10,7 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <style>
-    ul{
+    #ulwrapper{
         list-style: none;
         padding: 0%;
         margin: 0;
@@ -38,7 +38,7 @@
 		font-weight: bold;
 	}
 	
-    ul li{
+    #ulwrapper li{
         display: flex;
         padding: 25px 15px;
     }
@@ -188,7 +188,7 @@
            <!--  --> 
            <form th:action="@{/cart/detail}" method="post" onsubmit="return orderCheck()">
        
-            <ul>
+            <ul id="ulwrapper">
                 <li th:each="cList : ${cartList}">
 	 				<div class="wine_info">
                 
