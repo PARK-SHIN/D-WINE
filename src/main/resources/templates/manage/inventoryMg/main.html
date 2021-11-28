@@ -243,21 +243,21 @@
                 <th>기능</th>
                 <th>상태</th>
                 </tr>
-
-                <tr class="allinven" th:each="inven: ${ invenList }">
+<tbody class="trArea">                
+				<tr class="allinven" th:each="inven: ${ invenList }">
                     <td id="inven_no"  th:text="${ inven.inven_no }"/>
                     <td th:text="${ inven.product_no }"/>
                     <td th:text="${ inven.product_kname }"/>
                     <td th:text="${ inven.product_ename }"/>
                     <td th:text="${#numbers.formatDecimal(inven.sale_price, 0, 'COMMA', 0, 'POINT')}"/>
                     <td th:text="${ inven.inven_count}"/>
-                    <td th:text="${#numbers.formatDecimal(inven.cost_price, 0, 'COMMA', 0, 'POINT')}"/>
+                    <td th:text="${#numbers.formatDecimal(inven.inven_cost, 0, 'COMMA', 0, 'POINT')}"/>
                     <td th:text="${#numbers.formatDecimal(inven.inven_price, 0, 'COMMA', 0, 'POINT')}"/>
                     <td th:text="${ #dates.format(inven.inven_date, 'yyyy-MM-dd') }"/>
                     <td><button class="cancleBtn" id="cancleBtn">취소</button></td>
                     <td class="tdStatus" th:text="${ inven.status }"></td>
                 </tr>
-                
+                </tbody>
             </table>
         </div>
 </div>
@@ -273,13 +273,15 @@
 	$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
 	
 	
+	
+	/* 
 	if($(".tdStatus").text = 'N'){
 		$(".allinven").css('background', 'rgba(180,19,30,0.1)');
 		$(".cancleBtn").hide();  
 	}else{
 		$(".allinven").css('background', 'none');
 		$(".cancleBtn").show();  
-	}; 
+	};  */
 	
 	
 
@@ -302,12 +304,35 @@
 			type : "post",
 			success : function(data) {
 				console.log("성공하셨습니다.");
+				location.reload();
 			},
 			error : function(e) {
 				console.log(e);
 			}						
 		});
-	});
+	}); 
+	
+$(function(){	
+   $(".trArea tr").each(function(){
+	   var status = $(this).children().eq(10).text();
+	   var cancleBtn = $(this).children().eq(9).children();
+	   
+	   console.log(status);
+	   
+	   if(status == 'N'){
+	       $(this).css('background', 'rgba(180,19,30,0.1)');
+	       cancleBtn.hide();
+	       
+	    }else{
+	       $(this).css('background', 'none');
+	       cancleBtn.show();
+	    }
+	   
+	   
+   });
+    
+
+ });
 
 </script>
 </body>

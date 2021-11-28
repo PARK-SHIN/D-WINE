@@ -11,8 +11,16 @@
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
+	
     <div id="container">
         <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+        <script>
+        $(document).ready(function () { 
+            $('.orderManage').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
+            $('.orderManage').css('color', 'rgb(131,19,30)'); 
+            $('.orderManage').css('font-weight', 'bold'); 
+        });
+        </script>
         <div class="contents">
             <div class="inner">
                 <div>

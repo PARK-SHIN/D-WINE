@@ -1,12 +1,18 @@
 package com.project.dwine.purchase.model.vo;
 
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 public class Purchase {
 
-	private int purchase_no;
+	private String purchase_no;
+	@DateTimeFormat(pattern = "yyyy.MM.dd HH:mm:ss")
 	private Date purchase_date;
 	private int use_point;
+	private int purchase_price;
 	private String pickup_date;
 	private String pickup_place;
 	private String pickup_time;
@@ -14,15 +20,20 @@ public class Purchase {
 	private String status;
 	private Date refund_date;
 	private int user_no;
+	private List<OrderDetail> orderDetail;
 	
 	public Purchase() {}
 
-	public Purchase(int purchase_no, Date purchase_date, int use_point, String pickup_date, String pickup_place,
-			String pickup_time, String order_status, String status, Date refund_date, int user_no) {
+
+
+	public Purchase(String purchase_no, Date purchase_date, int use_point, int purchase_price, String pickup_date,
+			String pickup_place, String pickup_time, String order_status, String status, Date refund_date, int user_no,
+			List<OrderDetail> orderDetail) {
 		super();
 		this.purchase_no = purchase_no;
 		this.purchase_date = purchase_date;
 		this.use_point = use_point;
+		this.purchase_price = purchase_price;
 		this.pickup_date = pickup_date;
 		this.pickup_place = pickup_place;
 		this.pickup_time = pickup_time;
@@ -30,13 +41,20 @@ public class Purchase {
 		this.status = status;
 		this.refund_date = refund_date;
 		this.user_no = user_no;
+		this.orderDetail = orderDetail;
 	}
 
-	public int getPurchase_no() {
+
+
+
+
+
+
+	public String getPurchase_no() {
 		return purchase_no;
 	}
 
-	public void setPurchase_no(int purchase_no) {
+	public void setPurchase_no(String purchase_no) {
 		this.purchase_no = purchase_no;
 	}
 
@@ -54,6 +72,16 @@ public class Purchase {
 
 	public void setUse_point(int use_point) {
 		this.use_point = use_point;
+	}
+
+	public int getPurchase_price() {
+		return purchase_price;
+	}
+
+
+
+	public void setPurchase_price(int purchase_price) {
+		this.purchase_price = purchase_price;
 	}
 
 	public String getPickup_date() {
@@ -112,13 +140,26 @@ public class Purchase {
 		this.user_no = user_no;
 	}
 
+	public List<OrderDetail> getOrderDetail() {
+		return orderDetail;
+	}
+
+
+
+	public void setOrderDetail(List<OrderDetail> orderDetail) {
+		this.orderDetail = orderDetail;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "Purchase [purchase_no=" + purchase_no + ", purchase_date=" + purchase_date + ", use_point=" + use_point
-				+ ", pickup_date=" + pickup_date + ", pickup_place=" + pickup_place + ", pickup_time=" + pickup_time
-				+ ", order_status=" + order_status + ", status=" + status + ", refund_date=" + refund_date
-				+ ", user_no=" + user_no + "]";
+				+ ", purchase_price=" + purchase_price + ", pickup_date=" + pickup_date + ", pickup_place="
+				+ pickup_place + ", pickup_time=" + pickup_time + ", order_status=" + order_status + ", status="
+				+ status + ", refund_date=" + refund_date + ", user_no=" + user_no + ", orderDetail=" + orderDetail
+				+ "]";
 	}
-	
+
 	
 }

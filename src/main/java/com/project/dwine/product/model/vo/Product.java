@@ -14,7 +14,6 @@ public class Product{
 	private int productNo;			// 상품 번호 
 	private String productKName;	// 한글명
 	private String productEName;	// 영문명
-	private int costPrice;			// 원가
 	private int salePrice;			// 판매가
 	private int productCount;		// 수량
 	private String winery;			// 와이너리
@@ -39,7 +38,7 @@ public class Product{
 	
 	public Product() {}
 
-	public Product(int productNo, String productKName, String productEName, int costPrice, int salePrice,
+	public Product(int productNo, String productKName, String productEName, int salePrice,
 			int productCount, String winery, String thumbnail, int capacity, double abv, String tasteGraph,
 			String information, String award, String tip, String labelImage, String status, Date createDate,
 			Date modifyDate, Variety variety, Type type, Country country, List<Hashtag> hashtagList) {
@@ -47,7 +46,6 @@ public class Product{
 		this.productNo = productNo;
 		this.productKName = productKName;
 		this.productEName = productEName;
-		this.costPrice = costPrice;
 		this.salePrice = salePrice;
 		this.productCount = productCount;
 		this.winery = winery;
@@ -68,13 +66,12 @@ public class Product{
 		this.HashtagList = hashtagList;
 	}
 
-	public Product(String productKName, String productEName, int costPrice, int salePrice, int productCount,
+	public Product(String productKName, String productEName, int salePrice, int productCount,
 			String winery, String thumbnail, int capacity, double abv, String tasteGraph, String information,
 			String award, String tip, String labelImage, Variety variety, Type type, Country country) {
 		super();
 		this.productKName = productKName;
 		this.productEName = productEName;
-		this.costPrice = costPrice;
 		this.salePrice = salePrice;
 		this.productCount = productCount;
 		this.winery = winery;
@@ -91,14 +88,13 @@ public class Product{
 		this.country = country;
 	}
 	
-	public Product(int productNo, String productKName, String productEName, int costPrice, int salePrice,
+	public Product(int productNo, String productKName, String productEName, int salePrice,
 			int productCount, String winery, String thumbnail, int capacity, double abv, String tasteGraph,
 			String information, String award, String tip, String labelImage, Variety variety, Type type, Country country) {
 		super();
 		this.productNo = productNo;
 		this.productKName = productKName;
 		this.productEName = productEName;
-		this.costPrice = costPrice;
 		this.salePrice = salePrice;
 		this.productCount = productCount;
 		this.winery = winery;
@@ -131,10 +127,6 @@ public class Product{
 
 	public String getProductEName() {
 		return productEName;
-	}
-
-	public int getCostPrice() {
-		return costPrice;
 	}
 
 	public int getSalePrice() {
@@ -221,10 +213,6 @@ public class Product{
 		this.productEName = productEName;
 	}
 
-	public void setCostPrice(int costPrice) {
-		this.costPrice = costPrice;
-	}
-
 	public void setSalePrice(int salePrice) {
 		this.salePrice = salePrice;
 	}
@@ -300,7 +288,7 @@ public class Product{
 	@Override
 	public String toString() {
 		return "Product [productNo=" + productNo + ", productKName=" + productKName + ", productEName=" + productEName
-				+ ", costPrice=" + costPrice + ", salePrice=" + salePrice + ", productCount=" + productCount
+				+ ", salePrice=" + salePrice + ", productCount=" + productCount
 				+ ", winery=" + winery + ", thumbnail=" + thumbnail + ", capacity=" + capacity + ", abv=" + abv
 				+ ", tasteGraph=" + tasteGraph + ", information=" + information + ", award=" + award + ", tip=" + tip
 				+ ", labelImage=" + labelImage + ", status=" + status + ", createDate=" + createDate + ", modifyDate="

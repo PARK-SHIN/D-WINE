@@ -30,6 +30,7 @@ public class ReviewMgController {
 	@GetMapping("/reviewMg/main")
 	public ModelAndView reportMgList(ModelAndView mv) {
 		List<Review> reviewMgList = reviewMgService.selectReviewList();
+		
 		mv.addObject("reviewMgList", reviewMgList);
 		mv.setViewName("manage/reviewMg/main");
 		return mv;

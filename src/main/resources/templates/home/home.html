@@ -4,16 +4,134 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <title>DWine</title>
 <link href="/css/common/common.css" rel="stylesheet">
+<style>
+.main_wine_list {
+	text-align: center;
+	animation: rotation 15s linear infinite;
+	transform-style: preserve-3d;
+}
+
+.face {
+	display: inline-block;
+	width: 350px;
+	height: 150px;
+	position: absolute;
+	transform-origin: center;
+	background: white;
+}
+
+.face img {
+	width: 150px;
+	cursor: pointer;
+}
+
+.a {
+	transform: translate3d(0, 0, 500px);
+}
+
+.b {
+	transform: rotateY(36deg) translate3d(0, 0, 500px);
+}
+
+.c {
+	transform: rotateY(-36deg) translate3d(0, 0, 500px);
+}
+
+.d {
+	transform: rotateY(72deg) translate3d(0, 0, 500px);
+}
+
+.e {
+	transform: rotateY(108deg) translate3d(0, 0, 500px);
+}
+
+.f {
+	transform: rotateY(-108deg) translate3d(0, 0, 500px);
+}
+
+.g {
+	transform: rotateY(144deg) translate3d(0, 0, 500px);
+}
+
+.h {
+	transform: rotateY(-144deg) translate3d(0, 0, 500px);
+}
+
+.i {
+	transform: rotateY(180deg) translate3d(0, 0, 500px);
+}
+
+.j {
+	transform: rotateY(-180deg) translate3d(0, 0, 500px);
+}
+
+.k {
+	transform: rotateY(-72deg) translate3d(0, 0, 500px);
+}
+
+@keyframes rotation {
+	from { 
+		transform:rotateY(0);
+	}
+	
+	to {
+		transform: rotateY(360deg);
+	}
+}
+</style>
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
 	<div class="wrapper">
-		<!-- 
-		본문 section
-	 -->
-	 <h1 align="center">본문</h1>
+		<h1 align="center">오늘의 와인</h1>
+		<div class="main_wine_list">
+			<div class="face a">
+				<img src="/images/member/blanc.PNG" onclick="alert('a')">
+			</div>
+
+			<div class="face b">
+				<img src="/images/member/lolailo.PNG" onclick="alert('b')">
+			</div>
+
+			<div class="face c">
+				<img src="/images/member/malbec.PNG" onclick="alert('c')">
+			</div>
+
+			<div class="face d">
+				<img src="/images/member/michelle.PNG" onclick="alert('d')">
+			</div>
+
+			<div class="face e">
+				<img src="/images/member/rose.PNG" onclick="alert('e')">
+			</div>
+
+			<div class="face f">
+				<img src="/images/member/blanc.PNG" onclick="alert('f')">
+			</div>
+
+			<div class="face g">
+				<img src="/images/member/lolailo.PNG" onclick="alert('g')">
+			</div>
+
+			<div class="face h">
+				<img src="/images/member/malbec.PNG" onclick="alert('h')">
+			</div>
+
+			<div class="face i">
+				<img src="/images/member/rose.PNG" onclick="alert('i')">
+			</div>
+
+			<div class="face j">
+				<img src="/images/member/malbec.PNG" onclick="alert('j')">
+			</div>
+
+			<div class="face k">
+				<img src="/images/member/michelle.PNG" onclick="alert('k')">
+			</div>
+		</div>
 	</div>
 	<footer th:include="common/footer :: footer"></footer>
 

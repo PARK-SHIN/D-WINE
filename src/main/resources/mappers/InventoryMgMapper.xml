@@ -6,7 +6,6 @@
 		<id property="productNo" column="PRODUCT_NO"/>
 		<result property="productKName" column="PRODUCT_KNAME"/>
 		<result property="productEName" column="PRODUCT_ENAME"/>
-		<result property="costPrice" column="COST_PRICE"/>
 		<result property="salePrice" column="SALE_PRICE"/>
 		<result property="productCount" column="PRODUCT_COUNT"/>
 		<result property="winery" column="WINERY"/>
@@ -77,13 +76,13 @@
 			      , I.INVEN_DATE
 			      , I.STATUS
 			      , I.PRODUCT_NO
-			      , P.COST_PRICE
+			      , I.INVEN_COST
 			      , P.SALE_PRICE
 			      , P.PRODUCT_COUNT 
 			      , P.PRODUCT_KNAME 
 			      , P.PRODUCT_ENAME      
 			      , (SELECT
-			                P.COST_PRICE * I.INVEN_COUNT
+			                I.INVEN_COST * I.INVEN_COUNT
 			                FROM PRODUCT P
 			                WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS INVEN_PRICE
 		FROM INVENTORY I, PRODUCT P
@@ -119,10 +118,10 @@
 	VALUES (
 				SEQ_INO.NEXTVAL
 				, #{inven_count}
+				, #{inven_cost}
 				, DEFAULT
 				, DEFAULT
 				, #{product_no}
-				, #{inven_cost}
 			)
 	</insert>
 	

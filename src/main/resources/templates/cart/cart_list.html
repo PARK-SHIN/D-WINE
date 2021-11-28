@@ -219,18 +219,18 @@
                         
                         
                  <div th:if="${cList.product_count == 0}" style="pointer-events: none;">
-                  <div class="price_count">
-                      <p class="soldout">품절</p>
-                  </div>
-     			</div>
-     			<div th:unless="${cList.product_count == 0}"> 
+		                 <div class="price_count">
+		                     	<p class="soldout">품절</p>
+		                 </div>
+     			 </div>
+     			 <div th:unless="${cList.product_count == 0}"> 
                         <div class="price t_price" th:text="${cList.sale_price * product.cart_count}"></div>
-					<div class="price_count">
-	                      <button class="minus" type="button"><i class="fas fa-minus"></i></button>
-	                      <div class='pCount' th:text="${product.cart_count}"></div>
-	                      <button class="plus" type="button"><i class="fas fa-plus"></i></button>
-	                </div>
-				</div> 
+						<div class="price_count">
+		                      <button class="minus" type="button"><i class="fas fa-minus"></i></button>
+		                      <div class='pCount' th:text="${product.cart_count}"></div>
+		                      <button class="plus" type="button"><i class="fas fa-plus"></i></button>
+		                </div>
+				 </div> 
 				
 				
 				
@@ -476,8 +476,14 @@
            	function orderCheck(){
            		
            		const product_checkbox = document.querySelectorAll(".product_checkbox");
+           		
+           		
+           		 var checkresult = 0;
+           		 
            		 for(const elem of product_checkbox){
            		    	if(elem.checked){
+           		    		checkresult = checkresult + 1;
+           		    		
            		    		var pkname = elem.closest("li").querySelector(".product_kname").innerText;
            		    		var count = elem.closest("li").querySelector(".product_count").value;
            		    		var pCount = Number(elem.closest("li").querySelector(".pCount").innerText);
@@ -493,6 +499,12 @@
            		    		
            		    	}
            		     }
+           		 
+           		 if(checkresult == 0){
+           			 alert('상품을 선택해주세요.');
+           			 return false;
+           		 }
+           		 
            		return true;
            	}
            		

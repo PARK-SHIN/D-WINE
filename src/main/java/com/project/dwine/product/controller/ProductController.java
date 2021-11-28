@@ -140,7 +140,6 @@ public class ProductController {
 		// 맛그래프, 이미지 제외 정보들
 		String kname = request.getParameter("kname");
 		String ename = request.getParameter("ename");
-		int costPrice = Integer.parseInt(request.getParameter("costPrice"));
 		int salePrice = Integer.parseInt(request.getParameter("salePrice"));
 		int productCount = Integer.parseInt(request.getParameter("productCount"));
 		String winary = request.getParameter("winary");
@@ -210,7 +209,7 @@ public class ProductController {
 		Type type = new Type(typeNo, typeName);
 		Country country = new Country(countryNo, countryName);
 		
-		Product product = new Product(kname, ename, costPrice, salePrice, productCount,
+		Product product = new Product(kname, ename, salePrice, productCount,
 				winary, thumbPath, capacity, abv, tasteGraph, information, award, tip, labelPath, variety, type, country);
 		
 		int result = productService.registProduct(product);
@@ -247,7 +246,6 @@ public class ProductController {
 		int productNo = Integer.parseInt(request.getParameter("productNo"));
 		String kname = request.getParameter("kname");
 		String ename = request.getParameter("ename");
-		int costPrice = Integer.parseInt(request.getParameter("costPrice"));
 		int salePrice = Integer.parseInt(request.getParameter("salePrice"));
 		int productCount = Integer.parseInt(request.getParameter("productCount"));
 		String winary = request.getParameter("winary");
@@ -348,7 +346,7 @@ public class ProductController {
 		Type type = new Type(typeNo, typeName);
 		Country country = new Country(countryNo, countryName);
 		
-		Product product = new Product(productNo, kname, ename, costPrice, salePrice, productCount,
+		Product product = new Product(productNo, kname, ename, salePrice, productCount,
 				winary, new_thumbPath, capacity, abv, tasteGraph, information, award, tip, new_labelPath, variety, type, country);
 		
 		int result = productService.modifyProduct(product);

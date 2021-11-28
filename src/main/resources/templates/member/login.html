@@ -5,15 +5,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>로그인</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Acme&display=swap"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
 	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 	crossorigin="anonymous"></script>
 <link href="/css/member/loginForm.css" rel="stylesheet">
 <link href="/css/common/common.css" rel="stylesheet">
+<th:block th:if="${#request.getAttribute('login') != null}">
+	<th:block th:if="${#request.getAttribute('login') == 'loginerror'}">
+		<script>
+			alert('아이디랑 비밀번호를 확인해주세요.')
+		</script>
+	</th:block>
+</th:block>
 </head>
 <body>
 	<div class="wrapper">
