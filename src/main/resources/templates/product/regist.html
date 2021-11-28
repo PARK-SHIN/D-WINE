@@ -94,103 +94,107 @@
 		width: 350px;
 		height: 350px;
 	}
+	.container {
+		display : flex;
+	}
 </style>    
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
-    <h1>상품 등록</h1>
-    <hr>
-    <form id="registForm" th:action="@{/product/regist}" method="post" encType="multipart/form-data" onsubmit="return validate()">
-        <h3>상품 기본 정보</h3>
-        <div class="input_area">
-            <div class="label_area">카테고리</div>
-            <div class="category">
-                <select name="typeNo" id="type" required></select><br>
-                <select name="countryNo" id="country" required></select><br>
-                <select name="varietyNo" id="variety" required></select>
-            </div>
-        </div>
-        <div class="input_area">
-            <div class="label_area">상품명</div>
-            <div>
-                <input class="name_area" type="text" name="kname" placeholder="한글명" required>
-                <button type="button" id="nameCheck" onclick="return productNameCheck()">중복확인</button><br>
-                <input class="name_area" type="text" name="ename" placeholder="영문명" required>
-            </div>
-        </div>
-        <div class="input_area">
-            <div class="label_area">원가</div>
-            <div><input type="number" name="costPrice" min="0" required></div>
-        </div>
-        <div class="input_area">
-            <div class="label_area">판매가</div>
-            <div><input type="number" name="salePrice" min="0" required></div>
-        </div>
-        <div class="input_area">
-            <div class="label_area">대표 이미지</div>
-            <div>
-                <input name="thumbnail" type="file" accept=".gif, .jpg, .png" required>
-                <div class="image_area"></div>
-            </div>
-        </div>
-        <div class="input_area">
-            <div class="label_area">수량</div>
-            <div><input type="number" name="productCount" required></div>
-        </div>
-
-        <br>
-        <h3>상품 상세설명</h3>
-        <div class="input_area">
-            <div class="label_area">와이너리</div>
-            <div><input type="text" name="winary" required></div>
-        </div>
-        <div class="input_area">
-            <div class="label_area">용량 / 도수</div>
-            <div><input type="number" name="capacity" min="0" required>ml / <input type="number" name="abv" min="0" required>%</div>
-        </div>
-        <div class="input_area">
-            <div class="label_area">해시태그</div>
-            <div>
-                <select name="mood1" id="mood1" required></select>
-                <select name="mood2" id="mood2" required></select>
-                <select name="food1" id="food1" required></select>
-                <select name="food2" id="food2" required></select>
-            </div>
-            <button id="hash_btn" onclick="openHashForm()">해시태그 관리</button> <!-- onclick="location.href='/hashtag/form'" -->
-        </div>
-        <div class="input_area">
-            <div class="label_area">맛 그래프</div>
-            <div>
-                <label>당도</label><input type="range" name="sweetness" min="0" max="5" value="0" required><br>
-                <label>산도</label><input type="range" name="acidity" min="0" max="5" value="0" required><br>
-                <label>바디</label><input type="range" name="body" min="0" max="5" value="0" required><br>
-                <label>탄닌</label><input type="range" name="tannin" min="0" max="5" value="0" required>
-            </div>
-        </div>
-        <div class="input_area">
-            <div class="label_area">INFORMATION</div>
-            <div><textarea class="text_area" name="information" required></textarea></div>
-        </div>
-        <div class="input_area">
-            <div class="label_area">AWARD</div>
-            <div><textarea class="text_area" name="award" required></textarea></div>
-        </div>
-        <div class="input_area">
-            <div class="label_area">TIP</div>
-            <div><textarea class="text_area" name="tip" required></textarea></div>
-        </div>
-        <div class="input_area">
-            <div class="label_area">LABEL IMAGE</div>
-            <div>
-                <input name="labelImg" type="file" accept=".gif, .jpg, .png" required>
-                <div class="image_area"></div>
-            </div>
-        </div>
-        <div id="btn_area">
-            <button class="cancle_btn btn" type="button" onclick="location.href='/product/list'">취소</button>
-            <button class="regist_btn btn">등록</button>
-        </div>
-    </form>
+	<div class="container">
+		<nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+		<div class="contens">
+		    <h1>상품 등록</h1>
+		    <hr>
+		    <form id="registForm" th:action="@{/product/regist}" method="post" encType="multipart/form-data" onsubmit="return validate()">
+		        <h3>상품 기본 정보</h3>
+		        <div class="input_area">
+		            <div class="label_area">카테고리</div>
+		            <div class="category">
+		                <select name="typeNo" id="type" required></select><br>
+		                <select name="countryNo" id="country" required></select><br>
+		                <select name="varietyNo" id="variety" required></select>
+		            </div>
+		        </div>
+		        <div class="input_area">
+		            <div class="label_area">상품명</div>
+		            <div>
+		                <input class="name_area" type="text" name="kname" placeholder="한글명" required>
+		                <button type="button" id="nameCheck" onclick="return productNameCheck()">중복확인</button><br>
+		                <input class="name_area" type="text" name="ename" placeholder="영문명" required>
+		            </div>
+		        </div>
+		        <div class="input_area">
+		            <div class="label_area">판매가</div>
+		            <div><input type="number" name="salePrice" min="0" required></div>
+		        </div>
+		        <div class="input_area">
+		            <div class="label_area">대표 이미지</div>
+		            <div>
+		                <input name="thumbnail" type="file" accept=".gif, .jpg, .png" required>
+		                <div class="image_area"></div>
+		            </div>
+		        </div>
+		        <div class="input_area">
+		            <div class="label_area">수량</div>
+		            <div><input type="number" name="productCount" required></div>
+		        </div>
+		
+		        <br>
+		        <h3>상품 상세설명</h3>
+		        <div class="input_area">
+		            <div class="label_area">와이너리</div>
+		            <div><input type="text" name="winary" required></div>
+		        </div>
+		        <div class="input_area">
+		            <div class="label_area">용량 / 도수</div>
+		            <div><input type="number" name="capacity" min="0" required>ml / <input type="number" name="abv" min="0" required>%</div>
+		        </div>
+		        <div class="input_area">
+		            <div class="label_area">해시태그</div>
+		            <div>
+		                <select name="mood1" id="mood1" required></select>
+		                <select name="mood2" id="mood2" required></select>
+		                <select name="food1" id="food1" required></select>
+		                <select name="food2" id="food2" required></select>
+		            </div>
+		            <button id="hash_btn" onclick="openHashForm()">해시태그 관리</button> <!-- onclick="location.href='/hashtag/form'" -->
+		        </div>
+		        <div class="input_area">
+		            <div class="label_area">맛 그래프</div>
+		            <div>
+		                <label>당도</label><input type="range" name="sweetness" min="0" max="5" value="0" required><br>
+		                <label>산도</label><input type="range" name="acidity" min="0" max="5" value="0" required><br>
+		                <label>바디</label><input type="range" name="body" min="0" max="5" value="0" required><br>
+		                <label>탄닌</label><input type="range" name="tannin" min="0" max="5" value="0" required>
+		            </div>
+		        </div>
+		        <div class="input_area">
+		            <div class="label_area">INFORMATION</div>
+		            <div><textarea class="text_area" name="information" required></textarea></div>
+		        </div>
+		        <div class="input_area">
+		            <div class="label_area">AWARD</div>
+		            <div><textarea class="text_area" name="award" required></textarea></div>
+		        </div>
+		        <div class="input_area">
+		            <div class="label_area">TIP</div>
+		            <div><textarea class="text_area" name="tip" required></textarea></div>
+		        </div>
+		        <div class="input_area">
+		            <div class="label_area">LABEL IMAGE</div>
+		            <div>
+		                <input name="labelImg" type="file" accept=".gif, .jpg, .png" required>
+		                <div class="image_area"></div>
+		            </div>
+		        </div>
+		        <div id="btn_area">
+		            <button class="cancle_btn btn" type="button" onclick="location.href='/product/list'">취소</button>
+		            <button class="regist_btn btn">등록</button>
+		        </div>
+		    </form>
+	    </div>
+	</div>
 	
     <footer th:include="common/footer :: footer"></footer>
 

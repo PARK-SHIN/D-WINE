@@ -5,7 +5,6 @@
 		<id property="productNo" column="PRODUCT_NO"/>
 		<result property="productKName" column="PRODUCT_KNAME"/>
 		<result property="productEName" column="PRODUCT_ENAME"/>
-		<result property="costPrice" column="COST_PRICE"/>
 		<result property="salePrice" column="SALE_PRICE"/>
 		<result property="productCount" column="PRODUCT_COUNT"/>
 		<result property="winery" column="WINERY"/>
@@ -123,7 +122,6 @@
 		      P.PRODUCT_NO
 		    , P.PRODUCT_KNAME
 		    , P.PRODUCT_ENAME
-		    , P.COST_PRICE
 		    , P.SALE_PRICE
 		    , P.PRODUCT_COUNT
 		    , P.WINERY
@@ -188,7 +186,6 @@
 			  PRODUCT_NO
 			, PRODUCT_KNAME
 			, PRODUCT_ENAME
-			, COST_PRICE
 			, SALE_PRICE
 			, PRODUCT_COUNT
 			, WINERY
@@ -212,7 +209,6 @@
 			  SEQ_PNO.NEXTVAL
 			, #{ productKName }
 			, #{ productEName }
-			, #{ costPrice }
 			, #{ salePrice }
 			, #{ productCount }
 			, #{ winery }
@@ -268,9 +264,6 @@
    		  </if>
    		  <if test="productEName != null and productEName != ''">
    		  		, PRODUCT_ENAME = #{ productEName }
-   		  </if>
-   		  <if test="costPrice != null and costPrice gt 0">
-   		  		, COST_PRICE = #{ costPrice }
    		  </if>
    		  <if test="salePrice != null and salePrice gt 0">
    		  		, SALE_PRICE = #{ salePrice }
