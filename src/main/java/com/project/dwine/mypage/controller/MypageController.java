@@ -24,14 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.dwine.member.model.vo.Member;
 import com.project.dwine.member.model.vo.UserImpl;
 import com.project.dwine.mypage.model.service.MypageService;
-import com.project.dwine.mypage.model.vo.Pagination;
-import com.project.dwine.mypage.model.vo.Payment;
 import com.project.dwine.mypage.model.vo.Point;
 import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
