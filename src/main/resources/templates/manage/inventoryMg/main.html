@@ -5,17 +5,23 @@
 <title>재고관리</title>
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 
     <style>
+    * {
+          font-family: 'Gowun Batang', serif;
+       }
+       
     #container {
             width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-            height: 1400px;
+		    margin: 0 auto;
+		    display: flex;
+		    justify-content: space-between;
+		    flex-wrap: nowrap;
+		    border: none;
+		    height: 1400px;
         }
 
         .snb {
@@ -23,11 +29,7 @@
             /* height: 2500px; */
             height: 100%;
         }
-    .contents {
-            width: 888px;
-            height: 100%;
-        }
-
+    	
         .inner {
             margin-top: 30px;
             margin-left: 27px;
@@ -48,10 +50,8 @@
         }
        /* 여기서부터 */
         .content {
-            margin : 50px auto;
-            height : auto;
-            min-height : 100%;
-            width: 900px;
+            width: 840px;
+	    	height: 100%;
         }
 
         .totalList{
@@ -62,9 +62,9 @@
             list-style: none;
             text-align: center;
             margin-bottom: 10px;
-           
-            
+            margin-top: 20px; 
         }
+        
         #totalStock{
             margin-right: 200px;
             margin-left: 160px;
@@ -133,41 +133,56 @@
             width:80px;
             height: 30px;
             border-radius: 5px;
-            margin-right: 50px;
+            margin-right: -10px;
             margin-bottom: 10px;
         }
-
-      .reviewList{
-        margin-top: 20px;
-        margin-bottom: 30px;
-        width: 850px;
-        height: 500px;
-      }
-
-      /* .arrayArea{
-        display: right; 
-      }
- */
-      .stockList{
-        border-collapse:collapse;
-        font-display: center;  
-        width : 850px;
+		
+		
+		.invenMgList{
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 900px;
+            height: 500px;
+        
+        }
+        
+        tbody{
+        border: none;
+        }
+        
+        
+        .invenMgTable{
+       	width: 850px;
+	    text-align: center;
+	    font-weight: lighter;
+	    border-collapse: collapse;
+	    border-spacing: 0px;
+	    font-size: 14px;
         }
 
-      .stockList th{
-        border-left: none;
-        background: lightgray;
-        height: 35px;
+        .invenMgTable th{
+        font-weight: lighter;
+	    background-color: rgba(196, 196, 196, 0.3);
+	    border: none;
+        }
         
-      }
+        .invenMgTable tr {
+	    height: 35px;
+		}
+		
+		.invenMgTable tr:nth-child(n+2):hover {
+	    background-color: rgba(196, 196, 196, 0.1);
+		}
 
-      .stockList td{
-        border:1px solid lightgray;
+        .invenMgTable td{
+        border-bottom:1px solid lightgray;
+        border-left: none;
         text-align: center;
         height: 35px;
-        padding: 1px;
         font-size: 14px;
-      }
+        }
+      
       #cancleBtn{
         background: white ;
         border: 1px solid #83131E ;
@@ -176,7 +191,9 @@
         height: 25px;
         border-radius: 8%;  
       }
-      th:nth-of-type(11) { display: none; }   
+       th:nth-of-type(4) { display: none; }   
+      th:nth-of-type(11) { display: none; } 
+      td:nth-of-type(4) { display: none; }  
       td:nth-of-type(11) { display: none; }
       
       
@@ -228,22 +245,22 @@
     </div>
 
         <button id="registBtn"  onclick="location.href='/manage/inventoryMg/regist'">입고</button><br>
-        <div class="reviewList">
-            <table class="stockList">
+        <div class="invenMgList">
+            <table class="invenMgTable">
                 <tr>
-                <th>입고번호</th>
-                <th>상품번호</th>
+                <th>입고No</th>
+                <th>상품No</th>
                 <th>상품명(한글)</th>
                 <th>상품명(영어)</th>
-                <th>판매 가</th>
-                <th>입고량</th>
-                <th>입고단가</th>
+                <th>판매 가격</th>
+                <th>입고 수량</th>
+                <th>입고 단가</th>
                 <th>지불 금액</th>
                 <th>입고일</th>
                 <th>기능</th>
                 <th>상태</th>
                 </tr>
-<tbody class="trArea">                
+			<tbody class="trArea">                
 				<tr class="allinven" th:each="inven: ${ invenList }">
                     <td id="inven_no"  th:text="${ inven.inven_no }"/>
                     <td th:text="${ inven.product_no }"/>

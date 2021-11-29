@@ -25,6 +25,11 @@ public class ReviewMgServiceImpl implements ReviewMgService {
 		return reviewMgMapper.selectReviewList();
 	}
 	
+	@Override
+	public Review selectOneReview(int review_no) {
+		return reviewMgMapper.selectOneReview(review_no);
+	}
+
 
 	@Override
 	public void deleteReviewMg(String review_no) {
@@ -32,6 +37,8 @@ public class ReviewMgServiceImpl implements ReviewMgService {
 		
 	}
 
+
+	
 	
 
 }
