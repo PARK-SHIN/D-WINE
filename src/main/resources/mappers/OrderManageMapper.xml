@@ -16,6 +16,7 @@
 		<result property="userNo" column="USER_NO"/>
 		<result property="userName" column="USER_NAME"/>
 		<result property="userPhone" column="USER_PHONE"/>
+		<result property="payMethod" column="PAY_METHOD"/>
 		<collection property="orderDetail" resultMap="orderDetailResultMap"/>
 	</resultMap>
 	
@@ -96,11 +97,13 @@
 		     , PR.PRODUCT_KNAME
 		     , O.OD_COUNT
 		     , O.OD_PRICE
+		     , PA.PAY_METHOD
 		  FROM PURCHASE P
 		  LEFT JOIN MEMBER M ON(P.USER_NO = M.USER_NO)
 		  LEFT JOIN ORDER_DETAIL O ON(P.PURCHASE_NO = O.PURCHASE_NO)
 		  LEFT JOIN PRODUCT PR ON(O.PRODUCT_NO = PR.PRODUCT_NO)
 		  LEFT JOIN TYPE T ON(PR.TYPE_NO = T.TYPE_NO)
+		  LEFT JOIN PAYMENT PA ON(P.PURCHASE_NO = PA.PURCHASE_NO)
 		 WHERE O.PURCHASE_NO = #{ purchaseNo }
 	</select>
 	

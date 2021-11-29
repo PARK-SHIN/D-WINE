@@ -21,13 +21,14 @@ public class Purchase {
 	private int userNo;				// 회원번호
 	private String userName;		// 회원이름
 	private String userPhone;		// 회원전화번호
+	private String payMethod;		// 결제수단
 	private List<OrderDetail> orderDetail;
 
 	public Purchase() {}
 
 	public Purchase(String purchaseNo, Date purchaseDate, int usePoint, int purchasePrice, String pickupDate,
 			String pickupPlace, String pickupTime, String orderStatus, String status, Date refundDate, int userNo,
-			String userName, String userPhone, List<OrderDetail> orderDetail) {
+			String userName, String userPhone, String payMethod, List<OrderDetail> orderDetail) {
 		super();
 		this.purchaseNo = purchaseNo;
 		this.purchaseDate = purchaseDate;
@@ -42,6 +43,7 @@ public class Purchase {
 		this.userNo = userNo;
 		this.userName = userName;
 		this.userPhone = userPhone;
+		this.payMethod = payMethod;
 		this.orderDetail = orderDetail;
 	}
 
@@ -149,6 +151,14 @@ public class Purchase {
 		this.userPhone = userPhone;
 	}
 
+	public String getPayMethod() {
+		return payMethod;
+	}
+
+	public void setPayMethod(String payMethod) {
+		this.payMethod = payMethod;
+	}
+
 	public List<OrderDetail> getOrderDetail() {
 		return orderDetail;
 	}
@@ -163,7 +173,7 @@ public class Purchase {
 				+ ", purchasePrice=" + purchasePrice + ", pickupDate=" + pickupDate + ", pickupPlace=" + pickupPlace
 				+ ", pickupTime=" + pickupTime + ", orderStatus=" + orderStatus + ", status=" + status + ", refundDate="
 				+ refundDate + ", userNo=" + userNo + ", userName=" + userName + ", userPhone=" + userPhone
-				+ ", orderDetail=" + orderDetail + "]";
+				+ ", payMethod=" + payMethod + ", orderDetail=" + orderDetail + "]";
 	}
 
 }
