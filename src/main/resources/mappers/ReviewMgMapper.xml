@@ -79,6 +79,20 @@
 	
 	</select>
 	
+	<select id="selectOneReview" resultMap="ReviewResultMap">
+		SELECT
+			REVIEW_NO,
+			review_text,
+			REVIEW_IMAGE,
+			REVIEW_DATE,
+			REVIEW_MODIFY,
+			STAR,
+			STATUS,
+			USER_NO,
+			OD_NO
+		FROM REVIEW
+		WHERE REVIEW_NO = #{review_no}
+	</select>
 	
 	
 	

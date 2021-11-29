@@ -8,8 +8,12 @@ import com.project.dwine.manage.model.vo.Review;
 public interface ReviewMgService {
 
 	List<Review> selectReviewList();
+	
+	Review selectOneReview(int review_no);
 
 	void deleteReviewMg(String review_no);
+
+	
 
 	
 

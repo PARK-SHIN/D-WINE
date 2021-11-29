@@ -2,12 +2,15 @@ package com.project.dwine.manage.controller;
 
 import java.util.List;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,15 +18,18 @@ import org.springframework.web.servlet.ModelAndView;
 import com.project.dwine.manage.model.service.ReviewMgService;
 import com.project.dwine.manage.model.vo.Report;
 import com.project.dwine.manage.model.vo.Review;
+import com.project.dwine.mypage.model.service.MypageService;
 
 @Controller
 @RequestMapping("/manage")
 public class ReviewMgController {
 	private ReviewMgService reviewMgService;
+	private MypageService mypageService;
 	
 	@Autowired
-	public ReviewMgController(ReviewMgService reviewMgService) {
+	public ReviewMgController(ReviewMgService reviewMgService, MypageService mypageService) {
 		this.reviewMgService = reviewMgService;
+		this.mypageService = mypageService;
 	}
 	
 
@@ -35,6 +41,21 @@ public class ReviewMgController {
 		mv.setViewName("manage/reviewMg/main");
 		return mv;
 	}
+	
+	//detail
+	@GetMapping("/reviewMg/detail/{review_no}")
+	public String reviewUpdatePage(Model model, @PathVariable int review_no) {
+	    
+	    Review r = reviewMgService.selectOneReview(review_no);
+	    model.addAttribute("review", r);
+	    System.out.println(r);
+	    
+		return "manage/reviewMg/detail.html";
+	}
+	
+	
+	
+	
 	
 
 	   @GetMapping("reviewMg/delete")

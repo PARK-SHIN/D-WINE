@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>리뷰관리-상세</title>
+<link href="/css/mypage/reviewInsert.css" rel="stylesheet">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+<style>
+	* {
+          font-family: 'Gowun Batang', serif;
+       }
+</style>
+</head>
+<body>
+<div class="contents">
+            <div class="inner">
+                <div>
+                    <h3 style="font-size: 24px;">리뷰 상세보기</h3>
+                </div>
+                <hr style="width: 700px; padding-right: 130px;">
+                <form id="reviewUpdateForm" th:action="@{/mypage/reviewUpdateForm}" method="post" enctype="multipart/form-data">   
+                    <div>
+                        <h3>별점</h3>
+						<!--  별점테스트 2 
+						1. 배경 별: (전체) 별 5개가 꽉찰만한 width로 회색으로 채웁니다. 잘 재보세요.
+						2. 색깔 별: (점수) 배경 별의 넓이*(점수/총점)을 width로 합니다.-->
+						<div class="star-ratings">
+					        <div class="star-ratings-fill space-x-2 text-lg">
+					            <!-- 24 * 3.5 + 4 * (3.5 - 3.5%1) }px -->
+					            <span><img src="/images/mypage/star_on.png" style="width:30px; padding:0px;"></span>
+					            <span><img src="/images/mypage/star_on.png" style="width:30px; padding:0px;"></span>
+					            <span><img src="/images/mypage/star_on.png" style="width:30px; padding:0px;"></span>
+					            <span><img src="/images/mypage/star_on.png" style="width:30px; padding:0px;"></span>
+					            <span><img src="/images/mypage/star_on.png" style="width:30px; padding:0px;"></span>
+					            
+					        </div>
+					        <div class="star-ratings-base space-x-2 text-lg">
+					            <!-- <span><img src="/images/mypage/star.png" style="width:30px; padding:0px;"></span>
+					            <span><img src="/images/mypage/star.png" style="width:30px; padding:0px;"></span>
+					            <span><img src="/images/mypage/star.png" style="width:30px; padding:0px;"></span>
+					            <span><img src="/images/mypage/star.png" style="width:30px; padding:0px;"></span>
+					            <span><img src="/images/mypage/star.png" style="width:30px; padding:0px;"></span> -->
+					        </div>
+					    </div>
+                        <!-- <div class="star-box">
+							<span class="star star_left">
+							</span> 
+							<span class="star star_right">
+							</span> 
+							<span class="star star_left" value="1.5">
+								<span style="display:none;">1.5</span>  
+							</span> 
+							<span class="star star_right" data-value="2"></span>
+							<span class="star star_left" value="2.5"></span> 
+							<span class="star star_right" value="3"></span>
+							<span class="star star_left" value="3.5"></span> 
+							<span class="star star_right" value="4"></span>
+							<span class="star star_left" value="4.5"></span> 
+							<span class="star star_right" value="5"></span>
+						</div> -->
+                    </div>
+                    <br>
+                    <div>
+                    <input name= "star" type="hidden" id="star" th:value="${review.star}">
+                    <input name="user_no" type="hidden" th:value=${review.user_no}>
+                    <input name="od_no" type="hidden" th:value=${review.od_no}>
+                    <input name="review_no" type="hidden" th:value=${review.review_no}>
+                        <h3>리뷰내용 <span style="font-size: 12px;">(10자 이상 500자 미만)</span></h3>
+                        <div>
+                            <input type="text" name="review_text" style="border: 1px solid lightgray; width: 700px; height: 90px;" th:value="${review.review_text}">
+                        </div>
+                    </div>
+                    <br>
+                    <div>
+                        <h3>리뷰이미지 첨부 </h3>
+                        <div id="fileArea" style="border: 1px solid lightgray; width: 500px; height: 500px;">
+                            <!-- 이미지 첨부 영역 -->
+                            <img alt="" th:src="${review.review_image}" width="500px" height="500px">
+                        </div>
+                    </div>
+                    <br>
+                    
+					
+                </form>
+            </div>
+        </div>
+
+</body>
+</html>
