@@ -114,7 +114,7 @@ public class OrderManageController {
 	public Purchase selectOrderDetail(@RequestParam String purchaseNo) {
 			
 		Purchase detail = orderManageService.selectOrderDetail(purchaseNo);
-		
+
 		return detail;
 	}
 	

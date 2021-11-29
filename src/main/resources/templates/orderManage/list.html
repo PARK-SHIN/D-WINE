@@ -9,6 +9,11 @@
     <link href="/css/common/common.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
     <link href="/css/orderManage/list.css" rel="stylesheet">
+    <style>
+    	.refundCss > div {
+    	width: 5px;}
+    </style>
+    
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
@@ -373,7 +378,7 @@
         			orderHTML += '<tr><th>주문번호</th>';
         			orderHTML += '<td>' + data.purchaseNo + '</td>';
         			orderHTML += '<th>결제수단</th>';
-        			orderHTML += '<td>신용카드</td>';
+        			orderHTML += '<td>' + data.payMethod + '</td>';
         			orderHTML += '</tr><tr>';
         			orderHTML += '<th>주문일시</th>';
         			orderHTML += '<td>' + dateFormat(date) + '</td>';
@@ -388,9 +393,13 @@
         			orderHTML += '<th>연락처</th>';
         			orderHTML += '<td>' + data.userPhone + '</td>';
         			orderHTML += '<th>환불일시</th>';
-        			orderHTML += '<td style="text-align: center;">' + refundDate + '</td></tr>';
+        			orderHTML += '<td class="refundCss">' + refundDate + '</td></tr>';
         			
         			$("#orderInfo").html(orderHTML);
+        			
+        			if(refundDate == '-') {
+        				$(".refundCss").attr('style', 'text-align: center');
+        			}
  
         			// 상품 정보
         			$.each(data.orderDetail, function(index, item){

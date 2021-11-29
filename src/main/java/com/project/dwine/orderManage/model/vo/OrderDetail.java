@@ -2,7 +2,6 @@ package com.project.dwine.orderManage.model.vo;
 
 public class OrderDetail {
 
-	private int purchaseNo;
 	private int productNo;			// 상품번호
 	private String typeName;		// 와인종류
 	private String productKname;	// 와인명
@@ -11,22 +10,13 @@ public class OrderDetail {
 	
 	public OrderDetail() {}
 
-	public OrderDetail(int purchaseNo, int productNo, String typeName, String productKname, int odCount, int odPrice) {
+	public OrderDetail(int productNo, String typeName, String productKname, int odCount, int odPrice) {
 		super();
-		this.purchaseNo = purchaseNo;
 		this.productNo = productNo;
 		this.typeName = typeName;
 		this.productKname = productKname;
 		this.odCount = odCount;
 		this.odPrice = odPrice;
-	}
-
-	public int getPurchaseNo() {
-		return purchaseNo;
-	}
-
-	public void setPurchaseNo(int purchaseNo) {
-		this.purchaseNo = purchaseNo;
 	}
 
 	public int getProductNo() {
@@ -71,9 +61,7 @@ public class OrderDetail {
 
 	@Override
 	public String toString() {
-		return "OrderDetail [purchaseNo=" + purchaseNo + ", productNo=" + productNo + ", typeName=" + typeName
-				+ ", productKname=" + productKname + ", odCount=" + odCount + ", odPrice=" + odPrice + "]";
+		return "OrderDetail [productNo=" + productNo + ", typeName=" + typeName + ", productKname=" + productKname
+				+ ", odCount=" + odCount + ", odPrice=" + odPrice + "]";
 	}
-
-	
 }
