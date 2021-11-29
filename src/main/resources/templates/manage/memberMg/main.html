@@ -31,12 +31,7 @@
 	    border: 1px solid blue;
 	}
 	
-	.contents {
-	    width: 888px;
-	    height: 100%;
-	    /*2500px -> 100%*/
-	    /* border: 1px solid black; */
-	}
+
 	
 	.inner {
 	    margin-top: 30px;
@@ -85,6 +80,7 @@
         #searchArea{
         float: right;
         margin-right: 30px;
+        margin-bottom: 20px;
         }  
 
       .memberList{
@@ -103,18 +99,18 @@
 	    font-size: 14px;
     }
 
-    .memberTable th{
-        font-weight: lighter;
-	    background-color: rgba(196, 196, 196, 0.3);
-	    border: none;
-    }
+	    .memberTable th{
+	     font-weight: lighter;
+	     background-color: rgba(196, 196, 196, 0.3);
+	     border: none;
+	    }
     
-     .memberTable tr {
+     	.memberTable tr {
 	    height: 35px;
 		}
 		
 
-    .memberTable tr:nth-child(n+2):hover {
+    	.memberTable tr:nth-child(n+2):hover {
 	    background-color: rgba(196, 196, 196, 0.1);
 		}
 
@@ -239,9 +235,6 @@
         .hidden {
           display: none;
         }
-        
-        
-
     </style>
 </head>
 <body>
@@ -252,23 +245,20 @@
         <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
         <script>
         $(document).ready(function () { 
-            $('.orderManage').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
-            $('.orderManage').css('color', 'rgb(131,19,30)'); 
-            $('.orderManage').css('font-weight', 'bold'); 
+            $('.memberMg').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
+            $('.memberMg').css('color', 'rgb(131,19,30)'); 
+            $('.memberMg').css('font-weight', 'bold'); 
         });
         </script>
-
-
-
 <div class="content">
     <h2>회원관리</h2>    
     <hr>
     <button id="deleteBtn" onclick="deleteValue();">회원제명</button><br>
-    <label>정렬 : </label>
+   <!--  <label>정렬 : </label>
     <select name="array">
         <option value="latest">최신순</option>
         <option value="report-count">신고누적수</option>
-    </select>
+    </select> 기능특성 상 하지 않아도 될 듯 하다. -->
     <div id="searchArea"><input type="text" id="searchTitle"> <button>검색</button> </div>
     <div class="memberList">
         <table class="memberTable">
@@ -346,17 +336,9 @@ function openModal(elem){
 	}
 	
 	closetest.addEventListener("click", close);
-	//t3.addEventListener("click", close);
+	
 }
 	
-	
-	
-	
-	//var user_no = document.getElementById("checkbox").value;
-	//
-	//function openDetail(){  
-	  //  window.open("manage/memberMg/detail/" + user_no, "상세보기창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );  
-	//}  
 	
 	//crsf토큰
 	var token = $("meta[name='_csrf']").attr("content");
@@ -394,10 +376,6 @@ function openModal(elem){
 	    for(var i = 0; i < list.length; i++){
 	        if(list[i].checked){ 
 	            valueArr.push(list[i].value);
-	        // Array.push(), Array.unshift(), Array.splice() 
-	        //콘솔값 잘 나옴. 
-	        //console.log(valueArr);
-	        //console.log(valueArr.length);
 	        }
 	    }
 	    if (valueArr.length == 0){

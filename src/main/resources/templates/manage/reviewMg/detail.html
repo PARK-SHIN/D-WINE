@@ -12,6 +12,35 @@
 	* {
           font-family: 'Gowun Batang', serif;
        }
+       
+       
+	       
+	       .star-ratings {
+	  color: #aaa9a9; 
+	  position: relative;
+	  unicode-bidi: bidi-override;
+	  width: max-content;
+	  -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+	  -webkit-text-stroke-width: 1.3px;
+	  -webkit-text-stroke-color: #2b2a29;
+	}
+	 
+	.star-ratings-fill {
+	  color: #fff58c;
+	  padding: 0;
+	  position: absolute;
+	  z-index: 1;
+	  display: flex;
+	  top: 0;
+	  left: 0;
+	  overflow: hidden;
+	  -webkit-text-fill-color: gold;
+	}
+	 
+	.star-ratings-base {
+	  z-index: 0;
+	  padding: 0;
+	}   
 </style>
 </head>
 <body>
@@ -24,12 +53,9 @@
                 <form id="reviewUpdateForm" th:action="@{/mypage/reviewUpdateForm}" method="post" enctype="multipart/form-data">   
                     <div>
                         <h3>별점</h3>
-						<!--  별점테스트 2 
-						1. 배경 별: (전체) 별 5개가 꽉찰만한 width로 회색으로 채웁니다. 잘 재보세요.
-						2. 색깔 별: (점수) 배경 별의 넓이*(점수/총점)을 width로 합니다.-->
+				
 						<div class="star-ratings">
 					        <div class="star-ratings-fill space-x-2 text-lg">
-					            <!-- 24 * 3.5 + 4 * (3.5 - 3.5%1) }px -->
 					            <span><img src="/images/mypage/star_on.png" style="width:30px; padding:0px;"></span>
 					            <span><img src="/images/mypage/star_on.png" style="width:30px; padding:0px;"></span>
 					            <span><img src="/images/mypage/star_on.png" style="width:30px; padding:0px;"></span>
@@ -37,30 +63,9 @@
 					            <span><img src="/images/mypage/star_on.png" style="width:30px; padding:0px;"></span>
 					            
 					        </div>
-					        <div class="star-ratings-base space-x-2 text-lg">
-					            <!-- <span><img src="/images/mypage/star.png" style="width:30px; padding:0px;"></span>
-					            <span><img src="/images/mypage/star.png" style="width:30px; padding:0px;"></span>
-					            <span><img src="/images/mypage/star.png" style="width:30px; padding:0px;"></span>
-					            <span><img src="/images/mypage/star.png" style="width:30px; padding:0px;"></span>
-					            <span><img src="/images/mypage/star.png" style="width:30px; padding:0px;"></span> -->
-					        </div>
+					       
 					    </div>
-                        <!-- <div class="star-box">
-							<span class="star star_left">
-							</span> 
-							<span class="star star_right">
-							</span> 
-							<span class="star star_left" value="1.5">
-								<span style="display:none;">1.5</span>  
-							</span> 
-							<span class="star star_right" data-value="2"></span>
-							<span class="star star_left" value="2.5"></span> 
-							<span class="star star_right" value="3"></span>
-							<span class="star star_left" value="3.5"></span> 
-							<span class="star star_right" value="4"></span>
-							<span class="star star_left" value="4.5"></span> 
-							<span class="star star_right" value="5"></span>
-						</div> -->
+                       
                     </div>
                     <br>
                     <div>
@@ -77,16 +82,48 @@
                     <div>
                         <h3>리뷰이미지 첨부 </h3>
                         <div id="fileArea" style="border: 1px solid lightgray; width: 500px; height: 500px;">
-                            <!-- 이미지 첨부 영역 -->
+                  
                             <img alt="" th:src="${review.review_image}" width="500px" height="500px">
                         </div>
                     </div>
                     <br>
-                    
-					
-                </form>
+                  </form>
             </div>
         </div>
+        
+        <script>
+        var star = null;
+        star = $("#star").val();
+        console.log(star);
+       	
+	    $(".star").on('click',function(){
+	   		var result = 1;
+	        var idx = $(this).index();
+	        $(".star").removeClass("on");
+	        for(var i=0; i<=idx; i++){
+	        	$(".star").eq(i).addClass("on");
+	            result = i;
+	       }
+	       console.log(result+1);
+	       document.getElementById('star').value = (result+1)/2;
+	    });
+	    
+	    var star = document.querySelector("#star").value;
+	    console.log(star);
+        switch(star){
+            case '0.5' : document.querySelector(".star-ratings-fill").style.width = '15px'; break;
+            case '1.0' : document.querySelector(".star-ratings-fill").style.width = '30px'; break;
+            case '1.5' : document.querySelector(".star-ratings-fill").style.width = '45px'; break;
+            case '2.0' : document.querySelector(".star-ratings-fill").style.width = '60px'; break;
+            case '2.5' : document.querySelector(".star-ratings-fill").style.width = '75px'; break;
+            case '3.0' : document.querySelector(".star-ratings-fill").style.width = '90px'; break;
+            case '3.5' : document.querySelector(".star-ratings-fill").style.width = '105px'; break;
+            case '4.0' : document.querySelector(".star-ratings-fill").style.width = '120px'; break;
+            case '4.5' : document.querySelector(".star-ratings-fill").style.width = '135px'; break;
+            default : document.querySelector(".star-ratings-fill").style.width = '150px'; break;
+
+        }
+    </script>
 
 </body>
 </html>
