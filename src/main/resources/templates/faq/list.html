@@ -5,10 +5,22 @@
     <meta name="_csrf" th:content="${_csrf.token}">
 	<meta name="_csrf_header" th:content="${_csrf.headerName}">
     <title>FAQ</title>
+    <script>
+	const successMessgae = '[[${ message }]]';
+	
+	if(successMessgae){
+		alert(successMessgae);
+	}
+	</script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="/css/common/common.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
     <!-- <link href="/css/orderManage/list.css" rel="stylesheet"> -->
     <style>
+    	* {
+    		font-family: 'Gowun Batang', serif;
+    	}
+    	
         #container {
             width: 1100px;
             margin: 0 auto;
@@ -62,6 +74,10 @@
         [class $= "Btn"] {
             cursor: pointer;
         }
+        
+        input:focus, textarea:focus {
+        	outline: none;
+        }
 
         .insertBtn {
             width: 80px;
@@ -104,7 +120,7 @@
             width: 795px;
             text-align: center;
             font-weight: lighter;
-            font-size: 14px;
+            font-size: 15px;
             border-collapse: collapse; 
         }
 
@@ -112,8 +128,9 @@
             height: 35px;
         }
 
-        tr:nth-child(n+2):hover {
+        tbody tr:hover {
             background-color: rgba(196, 196, 196, 0.1);
+            cursor: pointer;
         }
         
         th {
@@ -122,11 +139,22 @@
         }
         
         table .listContent {
-        	width: 550px;
+        	width: 500px;
         }
 
         /* 모달 */
         #modal.modal-overlay {
+            position: fixed;
+            top: 10%;
+            left: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            display: none;
+        }
+        
+        #modal2.modal-overlay {
             position: fixed;
             top: 10%;
             left: 30%;
@@ -145,18 +173,27 @@
             height: 400px;
             position: relative;
         }
-
-        #modal .title {
+        
+        #modal2 .modal-window {
+            background: #FFFFFF;
+            border-radius: 5px;
+            border: 1px solid #C4C4C4;
+            width: 650px;
+            height: 400px;
+            position: relative;
+        }
+        
+        #modal .title, #modal2 .title {
             text-align: center;
             display: inline;
             font-size: 16px;
         }
 
-        #modal .title h2 {
+        #modal .title h2, #modal2 .title h2 {
             display: inline;
         }
 
-        #modal .close-area {
+        #modal .close-area, #modal2 .close-area {
             display: inline;
             float: right;
             padding-right: 10px;
@@ -164,29 +201,33 @@
             color: black;
         }
         
-        #modal .content {
+       	span {
+        	font-size: 12px;
+       	}
+        
+        #modal .content, #modal2 .content {
             margin-top: 20px;
             padding: 0px 10px;
             color: black;
         }
 
-        #modal label {
+        #modal label, #modal2 label {
             margin-right: 40px;
             font-size: 14px;
         }
 
-        #modal input {
+        #modal input, #modal2 input {
             border: none;
             width: 550px;
             margin-top: 10px;
             margin-bottom: 10px;
         }
-
-        #modal input:nth-child(6){
-            height: 150px;
+        
+        textarea {
+        	border: none;
         }
 
-        .cancleBtn, .registBtn {
+        .cancleBtn, .registBtn, .updateBtn {
             width: 300px;
             height: 35px;
             border-radius: 5px;
@@ -206,7 +247,7 @@
             color: #FFFFFF;
         }
 
-        #modal .modal_layer {
+        #modal .modal_layer, #modal2 .modal_layer {
             position:fixed;
             top:0;
             left:0;
@@ -214,6 +255,15 @@
             height:100%;
             background:rgba(0, 0, 0, 0.3);
             z-index:-1;
+        }
+        
+        .innerTitle, .innerContent {
+        	display: flex;
+        }
+        
+        .dateDiv {
+        	text-align: right;
+        	margin-right: 10px;
         }
 
     </style>
@@ -241,27 +291,32 @@
                     <div class="btnArea">
                         <button type="button" class="deleteBtn">선택 삭제</button>
                         <div>
-                            <input type="search" class="searchBox" placeholder="제목 검색">
+                            <input type="search" class="searchBox" name="searchValue" placeholder="제목 검색">
                             <button type="button" class="searchBtn">이미지</button>
                         </div>
                     </div>
 
                     <table>
-                        <tr>
-                            <th><input type="checkbox" onclick="selectAll()" id="checkBox"></th>
-                            <th>번호</th>
-                            <th>제목</th>
-                            <th>내용</th>
-                        </tr>
-                        <tr th:each="f : ${ faqList }">
-                            <td><input name="chk" type="checkbox" th:value="${ f.faqNo }"></td>
-                            <td th:text="${ f.faqNo }"></td>
-                            <td th:text="${ f.faqTitle }"></td>
-                            <td th:text="${ f.faqContent }" class="listContent"></td>
-                        </tr>
+                    	<thead>
+	                        <tr>
+	                            <th><input type="checkbox" onclick="selectAll()" id="checkBox"></th>
+	                            <th>번호</th>
+	                            <th>제목</th>
+	                            <th>내용</th>
+	                        </tr>
+                        </thead>
+                        <tbody id="fList">
+	                        <tr th:each="f : ${ faqList }" class="trFaq">
+	                            <td><input name="chk" type="checkbox" th:value="${ f.faqNo }"></td>
+	                            <td th:text="${ f.faqNo }"></td>
+	                            <td th:text="${ f.faqTitle }"></td>
+	                            <td th:text="${ f.faqContent }" class="listContent"></td>
+	                        </tr>
+                        </tbody>
                     </table>
                 </div>    
 
+				<!-- 등록 모달 -->
                 <div id="modal" class="modal-overlay">
                     <div class="modal-window">
                         <div class="close-area">X</div>
@@ -269,18 +324,55 @@
                             <h4>FAQ 등록</h4>
                         </div>
                         
-                        <form class="faqForm">
+                        <form id="faqResgistForm" th:action="@{/faq/regist}" method="post">
+                        <input type="hidden" name="user_no" th:value="${ userNo }">
                         <div class="content">
                             <hr style="color: #C4C4C4;">
                             <label>제목</label>
-                            <input type="text" placeholder="제목을 입력해주세요.">
+                            <input type="text" placeholder="제목을 입력해주세요." name="title" maxlength="100">
                             <hr style="color: #C4C4C4;">
-                            <label>내용</label>
-                            <input type="text" placeholder="내용을 입력해주세요." maxlength="500">
-                            <!-- <textarea cols="80" rows="13" style="resize: none;" placeholder="내용을 입력해주세요."></textarea> -->
+                            <div class="innerContent">
+                            	<div><label>내용</label></div>
+                            	<div><textarea rows="9" cols="80" placeholder="내용을 입력해주세요." 
+                            		name="content" maxlength="500" style="resize: none"></textarea></div>
+                            </div>
                             <hr style="color: #C4C4C4;">
                             <button type="button" class="cancleBtn">취소</button>
                             <button type="submit" class="registBtn">등록</button>
+                        </div>
+                        </form>
+                    </div>
+
+                    <div class="modal_layer"></div>
+                </div>
+                
+                <!-- 조회/수정 모달 -->
+                <div id="modal2" class="modal-overlay">
+                    <div class="modal-window">
+                        <div class="close-area">X</div>
+                        <div class="title">
+                            <h4>FAQ 수정</h4>
+                        </div>
+                        <div class="dateDiv">
+                        	<span class="registDate"></span>
+                        	<span class="updateDate"></span>
+                        </div>
+                        <form id="faqUpdateForm" th:action="@{/faq/update}" method="post">
+                        <input type="hidden" name="faq_no" id="faqNo">
+                        
+                        <div class="content">
+                            <hr style="color: #C4C4C4;">
+	                           	<label>제목</label>
+	                            <input type="text" name="title" id="modalTitle" maxlength="100">
+                            <hr style="color: #C4C4C4;">
+                            <div class="innerContent">
+	                            <div><label>내용</label></div>
+	                            <div><textarea rows="7" cols="80" name="content" id="modalContent" 
+	                            		maxlength="500" style="resize: none"></textarea></div>
+	                        </div>    		
+                            <hr style="color: #C4C4C4;">
+                            <button type="button" class="cancleBtn">취소</button>
+                            <button type="submit" class="updateBtn">수정</button>
                         </div>
                         </form>
                     </div>
@@ -299,26 +391,43 @@
 	    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
 	    
 	    // 등록 모달창
-	    $(".insertBtn").click(function(){
+
+        $(document).on("click",".insertBtn", function(){
             $("#modal").css("display", "block");
         });
 
-        $(".close-area").click(function(){
+        $(document).on("click",".close-area", function(){
             $("#modal").css("display", "none");
         });
 
-        $(".cancleBtn").click(function(){
+        $(document).on("click",".cancleBtn", function(){
             $("#modal").css("display", "none");
+        });
+
+        $(document).on("click",".trFaq", function(){
+            $("#modal2").css("display", "block");
+        });
+
+        $(document).on("click",".close-area", function(){
+            $("#modal2").css("display", "none");
+        });
+
+        $(document).on("click",".cancleBtn", function(){
+            $("#modal2").css("display", "none");
         });
  
         // 목록 내용 말줄임 처리
-        var length = 45;
-        var content = $(".listContent").text();	
-        if(content.length > length){
-        	content = content.substr(0, length-2) + '...';
-        	$(".listContent").text(content);
-        }
-        
+       $(".listContent").each(function(){
+        	var content = $(this).text();
+        	
+        	if(content.length > 40){
+            	content = content.substr(0, 40) + '...';
+            	$(this).text(content);
+    	    } else {
+    	    	$(this).text(content);
+    	    }
+        });
+       	 
      	// 체크박스 전체 체크
         function selectAll(){
             if($("#checkBox").is(":checked")){
@@ -356,7 +465,91 @@
 		        });
         	}
         });
-        
+    	
+    	// 제목 검색
+    	$(document).on("click",".searchBtn", function(){
+			var searchValue = $("input[name=searchValue]").val();
+						
+			$.ajax({
+				url : "/faq/search",
+				type : "post",
+				data : {searchValue : searchValue},
+				success : function(data){
+					tableHTML = '';
+					
+					if(data.length != 0) {
+        				$.each(data, function(index, item){
+        					
+        					tableHTML += "<tr><td><input name='chk' type='checkbox'></td>"
+                            		   + "<td>" + item.faqNo + "</td>"
+                            		   + "<td>" + item.faqTitle + "</td>"
+                            		   + "<td class='listContent'>" + item.faqContent + "</td></tr>";
+   		           		
+        					$("#fList").html(tableHTML);
+        					
+        					$(".listContent").each(function(){
+        			        	var content = $(this).text();
+        			        	
+        			        	if(content.length > 40){
+        			            	content = content.substr(0, 40) + '...';
+        			            	$(this).text(content);
+        			    	    } else {
+        			    	    	$(this).text(content);
+        			    	    }
+        			        });
+            			});	
+        			} else {
+        				tableHTML += "<tr><td colspan='4' rowspan='5'>검색 결과가 존재하지 않습니다.</td></tr>"
+        						   + "<tr></tr><tr></tr><tr></tr><tr></tr>";
+        				$("#fList").html(tableHTML);
+        			}
+				},
+				error : function(e){
+					console.log(e);
+				}
+			});
+		});
+    	
+    	// 날짜포맷
+    	function dateFormat(date){
+        	let month = date.getMonth() + 1;
+        	let day = date.getDate();
+            
+            month = month >= 10 ? month : '0' + month;
+            day = day >= 10 ? day : '0' + day;
+            
+            return date.getFullYear() + '-' + month + '-' + day;
+        }
+    	
+    	// 상세보기
+    	$(document).on('click', "tbody tr", function(){
+    		var faqNo = $(this).children().eq(1).text();
+    		
+    		$.ajax({
+    			url : "/faq/detail",
+    			type : "post",
+    			data : {faqNo : faqNo},
+    			success : function(data){
+    				
+    				let registDate = new Date(data.createDate);
+    				
+    				$("#modalTitle").val(data.faqTitle);
+    				$("#modalContent").val(data.faqContent);
+    				$("#faqNo").val(data.faqNo);
+    				$(".registDate").text("등록일 : " + dateFormat(registDate));
+    				
+    				if(data.updateDate != null){
+    					let updateDate = new Date(data.updateDate);
+    					$(".updateDate").text(", 수정일 : " + dateFormat(updateDate));
+    				} else {
+    					$(".updateDate").text("");
+    				}
+    			},
+    			error : function(e){
+    				console.log(e);
+    			}
+    		});
+    	});
         
     </script>
 </body>

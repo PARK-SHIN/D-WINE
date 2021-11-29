@@ -27,4 +27,24 @@ public class FaqServiceImpl implements FaqService{
 	public int deleteFaq(int faqNo) {
 		return faqMapper.deleteFaq(faqNo);
 	}
+
+	@Override
+	public int registFaq(String title, String content, int userNo) {
+		return faqMapper.registFaq(title, content, userNo);
+	}
+
+	@Override
+	public List<Faq> selectSearchList(String searchValue) {
+		return faqMapper.selectSearchList(searchValue);
+	}
+
+	@Override
+	public Faq selectFaq(int faqNo) {
+		return faqMapper.selectFaq(faqNo);
+	}
+
+	@Override
+	public int updateFaq(String title, String content, int faqNo) {
+		return faqMapper.updateFaq(title, content, faqNo);
+	}
 }
