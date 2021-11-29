@@ -14,20 +14,63 @@
 	
 	<select id="selectFaqList" resultMap="faqResultMap">
 		SELECT
-		       FAQ_NO
-		     , FAQ_TITLE
-		     , FAQ_CONTENT
-		     , CREATE_DATE
-		     , UPDATE_DATE
-		     , USER_NO
+		       *
 		  FROM FAQ
 		 WHERE STATUS = 'Y'
 		 ORDER BY FAQ_NO DESC
 	</select>
 	
+	<select id="selectSearchList" resultMap="faqResultMap">
+		SELECT
+		       *
+		  FROM FAQ
+		 WHERE STATUS = 'Y'
+		   AND FAQ_TITLE LIKE '%' || #{ searchValue } || '%'
+		 ORDER BY FAQ_NO DESC
+	</select>
+	
+	<select id="selectFaq" resultMap="faqResultMap">
+		SELECT
+			   *
+		  FROM FAQ
+		 WHERE FAQ_NO = #{ faqNo }
+	</select>
+	
 	<update id="deleteFaq" parameterType="_int">
 		UPDATE FAQ
 		   SET STATUS = 'N'
+		 WHERE FAQ_NO = #{ faqNo }
+	</update>
+	
+	<insert id="registFaq" parameterType="com.project.dwine.faq.model.vo.Faq">
+		INSERT
+		  INTO FAQ
+		(
+			   FAQ_NO
+			 , FAQ_TITLE
+			 , FAQ_CONTENT
+			 , CREATE_DATE
+			 , UPDATE_DATE
+			 , STATUS
+			 , USER_NO
+		)
+		VALUES
+		(
+			   SEQ_FNO.NEXTVAL
+			 , #{ title }
+			 , #{ content }
+			 , SYSDATE
+			 , NULL
+			 , DEFAULT
+			 , #{ userNo }
+		)
+	</insert>
+	
+	<update id="updateFaq" parameterType="com.project.dwine.faq.model.vo.Faq">
+		UPDATE FAQ
+		   SET FAQ_TITLE = #{ title }
+		     , FAQ_CONTENT = #{ content }
+		     , UPDATE_DATE = SYSDATE
 		 WHERE FAQ_NO = #{ faqNo }
 	</update>
 

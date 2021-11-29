@@ -7,121 +7,126 @@
     <title>매출조회</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="/css/common/common.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
     <!-- <link href="/css/orderManage/list.css" rel="stylesheet"> -->
 <style>
-        #container {
-            width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-            border: 1px solid red;
-            height: 1400px;
-        }
+	* {
+    	font-family: 'Gowun Batang', serif;
+    }
+    	
+    #container {
+        width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        border: 1px solid red;
+        height: 1400px;
+    }
 
-        .snb {
-            width: 200px;
-            /* height: 2500px; */
-            height: 100%;
-            border: 1px solid blue;
-        }
+    .snb {
+        width: 200px;
+        /* height: 2500px; */
+        height: 100%;
+        border: 1px solid blue;
+    }
 
-        .contents {
-            width: 888px;
-            height: 100%;
-            /*2500px -> 100%*/
-            /* border: 1px solid black; */
-        }
+    .contents {
+        width: 888px;
+        height: 100%;
+        /*2500px -> 100%*/
+        /* border: 1px solid black; */
+    }
 
-        .inner {
-            margin-top: 30px;
-            margin-left: 27px;
-            width: 795px;
-            /* height: 100%; */
-            border: 1px solid green;
-        }
-        a {
-            text-decoration: none;
-            color: #000;
-        }
+    .inner {
+        margin-top: 30px;
+        margin-left: 27px;
+        width: 795px;
+        /* height: 100%; */
+        border: 1px solid green;
+    }
+    a {
+        text-decoration: none;
+        color: #000;
+    }
 
-        .snb {
-            width: 210px;
-        }
+    .snb {
+        width: 210px;
+    }
 
-        .snb_inner {
-            width: 170px;
-            margin: 30px auto 0;
-        }
+    .snb_inner {
+        width: 170px;
+        margin: 30px auto 0;
+    }
 
-        [class $= "Area"] {
-            width: 793px;
-            height: 250px;
-            border: 1px solid #C4C4C4;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
+    [class $= "Area"] {
+        width: 793px;
+        height: 250px;
+        border: 1px solid #C4C4C4;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
 
-        label {
-            font-size: 15px;
-            font-weight: bold;
-        }
+    label {
+        font-size: 15px;
+        font-weight: bold;
+    }
 
-        .detailBtn {
-            float: right;
-            background-color: white;
-            border-color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 3px;
-        }
+    .detailBtn {
+        float: right;
+        background-color: white;
+        border-color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 3px;
+    }
 
-        .areas {
-            display: flex;
-            margin-top: 40px;
-            margin-left: 40px;
-            text-align: center;
-        }
+    .areas {
+        display: flex;
+        margin-top: 40px;
+        margin-left: 40px;
+        text-align: center;
+    }
 
-        .area1 {
-            width: 160px;
-            height: 180px;
-            background: #96C8E6;
-            color: white;
-        }
+    .area1 {
+        width: 160px;
+        height: 180px;
+        background: #96C8E6;
+        color: white;
+    }
 
-        .area2 {
-            width: 160px;
-            height: 180px;
-            background: #C8AAD9;
-            color: white;
-            margin-left: 20px;
-        }
+    .area2 {
+        width: 160px;
+        height: 180px;
+        background: #C8AAD9;
+        color: white;
+        margin-left: 20px;
+    }
 
-        .area3 {
-            width: 160px;
-            height: 180px;
-            background: #FFB428;
-            color: white;
-            margin-left: 20px;
-        }
+    .area3 {
+        width: 160px;
+        height: 180px;
+        background: #FFB428;
+        color: white;
+        margin-left: 20px;
+    }
 
-        .area4 {
-            width: 160px;
-            height: 180px;
-            background: #AAC87B;
-            color: white;
-            margin-left: 20px;
-        }
+    .area4 {
+        width: 160px;
+        height: 180px;
+        background: #AAC87B;
+        color: white;
+        margin-left: 20px;
+    }
 
-        p {
-            margin-top: 50px;
-            font-size: 14px;
-        }
+    p {
+        margin-top: 50px;
+        font-size: 14px;
+    }
 
-        b {
-            font-size: 25px;
-        }
+    b {
+        font-size: 25px;
+    }
 
     </style>
 </head>
