@@ -48,16 +48,10 @@ public class ReviewMgController {
 	    
 	    Review r = reviewMgService.selectOneReview(review_no);
 	    model.addAttribute("review", r);
-	    System.out.println(r);
 	    
 		return "manage/reviewMg/detail.html";
 	}
 	
-	
-	
-	
-	
-
 	   @GetMapping("reviewMg/delete")
 	   public String reviewMgdelete(String review_no) throws Exception {
 		   reviewMgService.deleteReviewMg(review_no);

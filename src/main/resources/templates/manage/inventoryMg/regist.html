@@ -45,16 +45,16 @@
             width: 850px;
         }
 
-        #totalStock{
+        #todayReceiving{
             margin-right: 200px;
-            margin-left: 160px;
+            margin-left: 140px;
         }
 
         #totalShop {
             margin-right: 200px;
         }
         
-        #todayReceiving{
+        #totalStock{
             margin-right: 150px;
         }
         
@@ -258,6 +258,8 @@
             margin-right: 45px;
     		margin-left: -35px;
 		}
+		
+	
         
 
 
@@ -272,19 +274,21 @@
      <input type="hidden" name="totalStock" th:value="${totalStock.totalStock}">
      <input type="hidden" name="totalShop" th:value="${totalShop.totalShop}">
      <input type="hidden" name="todayReceiving" th:value="${todayReceiving.todayReceiving}">
-  
-        <div id="totalStock">
-            <span id="count"  th:text="${totalStock.totalStock}"></span> 
-            <span id="countTitle">Total Stock</span>
-        </div>
-        <div id="totalShop">
-            <span id="counts" th:text="${totalShop.totalShop}"></span> 
-            <span id="countTitle">Total Shop</span>
-        </div>
+        
         <div id="todayReceiving">
             <span id="count" th:text="${todayReceiving.todayReceiving}">9</span>
             <span id="countTitle">Today Receiving</span>
         </div>
+        
+        <div id="totalShop">
+            <span id="counts" th:text="${totalShop.totalShop}"></span> 
+            <span id="countTitle">Total Shop</span>
+        </div>
+        <div id="totalStock">
+            <span id="count"  th:text="${totalStock.totalStock}"></span> 
+            <span id="countTitle">Total Stock</span>
+        </div>
+        
     </div> 
     
             <form class="registArea" th:action="@{/manage/inventoryMg/regist(${_csrf.parameterName}=${_csrf.token})}" method="post">
@@ -296,7 +300,6 @@
                     <option value="productName">상품명</option>
                     <option value="productNo">상품번호</option>
                 </select>
-                <input type="text" id="searchTitle" readonly> 
                 <button type="button" class="openBtn" id="selectBtn">검색</button></div><br>
                 <input type="hidden" id="product_no" name="product_no">
                 <div class="receivingInput"><span class="label_area"><label>상품명(한글) : </label></span>
@@ -319,7 +322,7 @@
             </div>
             
                 <div class="btnArea">
-                <button id="cancleBtn">취소</button> 
+                <button id="cancleBtn" onClick="history.back(); return false ;">취소</button> 
                 <input id="enrollBtn" type="submit" value="등록">
                 </div>
           </div>      
@@ -373,7 +376,6 @@
 		console.log(elem.className);
 		
 		modaltest.classList.remove("hidden");
-		
 		
 		var closetest= modaltest.firstChild.nextSibling.firstChild
 		console.log(closetest)
@@ -433,8 +435,8 @@
 	
 	$(document).on("click", ".selectPno li", function() {
 		productNo = $(this).val();
-		$(this).css("border", "solid 2px #83131E");
-		//css 꼭하기
+		$(this).css("background-color", "rgba(196, 196, 196, 0.1)");
+	
 	});
 
 	$("#mapplyBtn").click(function(){
@@ -459,13 +461,12 @@
 
 	
 	
-	function calc(val){ //수수료포함 코인가격 현금화 계산 함수.
+	function calc(val){ //입고재고 가격 자동계산하기.
 	   // var iCount = document.getElementById('inven_count').value
 	    var iCount = $("#inven_count").val();
-			console.log(iCount);
-		var iPrice = $("#inven_cost").val();
-		console.log(iPrice);
 	    //var iPrice = document.getElementById('inven_price').value
+		var iPrice = $("#inven_cost").val();
+
 		var inven_price = iCount*iPrice;
 		console.log(inven_price);
 	    
@@ -475,14 +476,7 @@
 	        document.getElementById('inven_price').value = inven_price;
 	    }
 	}	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 </script>
 </body>

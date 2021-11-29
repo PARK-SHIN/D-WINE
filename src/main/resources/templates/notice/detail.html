@@ -6,6 +6,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
  <title>공지사항 디테일</title>
     <style>
+     * {
+          font-family: 'Gowun Batang', serif;
+       }
+    
     .content {
 	margin : 50px auto;
 	height : auto;
@@ -17,6 +21,13 @@
 	    justify-content: center;
 	    align-items: center;   
     }
+    .dateArea{
+    	margin-left: 690px;
+    }
+    
+    .categoryArea{
+    	font-size: 23px;
+    }
 
     #titleLabel{
         margin-right: 38px;
@@ -27,27 +38,34 @@
         margin-right: 5px;
     }
 
-    select{
+   /*  select{
         width: 64px;
         height: 30px;
         font-size: 14px;
+         border : none;
     }
 
     option{
         width: 64px;
         height: 20px;
+        border : none;
     }
-
+ */
     #title{
         height: 30px;
-        width: 600px;
+	    width: 600px;
+	    border: none;
+	    font-size: 25px;
+	    text-align: center;
+	    margin-left: 75px;
     }
 
     #summernote{
         text-align: center;
-        border: black 1px solid;
+        border: lightgray 1px solid;
         margin-top: 30px;
         margin-bottom: 30px;
+        margin-left: 50px;
         width: 800px;
         height: auto;
     }
@@ -64,7 +82,7 @@
             color: #83131E;
             width:150px;
             height: 25px;
-            border-radius: 8%;
+            border-radius: 5%;
             margin-right: 30px;
         }
 
@@ -75,7 +93,7 @@
             color:white;
             width:150px;
             height: 25px;
-            border-radius: 8%;
+            border-radius: 5%;
             margin-right: 30px;
         }
 
@@ -89,16 +107,17 @@
     <h2>공지사항 - 상세보기</h2>   
     <hr>
     <br>
-     <div>
-    	등록일 : <span th:text="${#dates.format(notice.create_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
-    	수정일 : <span th:text="${#dates.format(notice.modify_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+      <span class="categoryArea" th:text="${notice.notice_category}"></span>
+     <div class="dateArea">
+    	등록일 : <span th:text="${#dates.format(notice.create_date, 'yyyy-MM-dd, HH:mm:ss')}"></span><br>
+    	수정일 : <span th:text="${#dates.format(notice.modify_date, 'yyyy-MM-dd, HH:mm:ss')}"></span>
     </div>
     <br>
-    <div class="categoryArea"><label>카테고리</label>
-    <select id="selectArea">
+  
+    <!-- <select id="selectArea" >
         <option value="일반" th:selected="${notice.notice_category}=='일반'">일반</option>
         <option value="이벤트" th:selected="${notice.notice_category}=='이벤트'">이벤트</option>
-    </select></div><br>
+    </select></div><br> -->
     <div class="titleArea"><label id="titleLabel">제목</label>
     <input type="text" id="title" name="notice_title" th:value="${notice.notice_title}" readonly></div>
    

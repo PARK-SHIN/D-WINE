@@ -86,10 +86,21 @@ public class InventoryMgController {
 		} else {
 			rttr.addFlashAttribute("message", "입고등록에 실패하였습니다. ");
 		}
-		
-		
 		return "redirect:main";
 	}
+	
+	//날짜 오늘, 7일, 한달 SELECT
+	//1
+	
+	
+	
+	//7
+	
+	
+	
+	//30
+	
+	
 	
 	
 	
@@ -109,8 +120,7 @@ public class InventoryMgController {
 	}
 	
 	
-	// 입고 주문 취소 cancle /manage/inventoryMg/cancle
-	
+	// 입고 주문 취소 cancle 
 	@PostMapping("/inventoryMg/cancle")
 	public String cancleInventory(RedirectAttributes rttr, @RequestParam int inven_no){
 		int result =  inventoryMgService.cancleInventory(inven_no);
@@ -121,7 +131,6 @@ public class InventoryMgController {
 			rttr.addFlashAttribute("message", "입고취소가 실패하였습니다. ");
 		}
 	    
-		
 	    return "redirect:main";
 	   }
 

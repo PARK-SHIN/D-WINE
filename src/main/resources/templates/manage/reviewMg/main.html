@@ -41,7 +41,7 @@
 	    margin-left: 27px;
 	    width: 795px;
 	    /* height: 100%; */
-	    border: none
+	    border: none;
 	}
 	a {
 	    text-decoration: none;
@@ -78,7 +78,7 @@
         }
         
         .reviewMgTable{
-       	width: 795px;
+       	width: 840px;
 	    text-align: center;
 	    font-weight: lighter;
 	    border-collapse: collapse;
@@ -105,6 +105,12 @@
         text-align: center;
         height: 35px;
         font-size: 14px;
+        }
+        
+        .reviewText{ 
+        text-overflow: ellpsis; 
+        white-space: nowrap; 
+        max-width: 70px;
         }
 
         /* 체크박스 색상 변경 */
@@ -150,9 +156,9 @@
         <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
         <script>
         $(document).ready(function () { 
-            $('.orderManage').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
-            $('.orderManage').css('color', 'rgb(131,19,30)'); 
-            $('.orderManage').css('font-weight', 'bold'); 
+            $('.reviewMg').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
+            $('.reviewMg').css('color', 'rgb(131,19,30)'); 
+            $('.reviewMg').css('font-weight', 'bold'); 
         });
         </script>
 
@@ -162,11 +168,11 @@
     <h2>리뷰관리</h2>    
     <hr>
     <button id="deleteBtn" onclick="deleteValue();">삭제</button><br>
-    <label>정렬 : </label>
+   <!--  <label>정렬 : </label>
     <select name="array">
         <option value="latest">최신순</option>
         <option value="report-count">신고수</option>
-    </select>
+    </select> 기능 상 의미가 없는 것같다.  -->
     <div class="reviewMgList">
             <table class="reviewMgTable">
             <tr>
@@ -182,7 +188,7 @@
             <tr th:each="report: ${ reviewMgList }" onclick="openDetail()" th:style="${report.count == 0 ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}">
                 <td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ report.review_no }" onclick="event.cancelBubble=true"></td>  
                 <td th:text="${ report.user_id2 }"/>
-                <td th:text="${ report.review_text }"></td>
+                <td class="reviewText" th:text="${ report.review_text }"></td>
                 <td th:text="${ #dates.format(report.review_date, 'yyyy-MM-dd') }"></td>
                 <td th:text="${ report.reason_context }"></td>
                 <td th:text="${ report.user_id1 }"></td>
@@ -211,8 +217,19 @@ $("tr").click(function(){
     openDetail(no);
  });
 
+//detail 가운데로 띄우기. 
+
+var popupWidth = 1080;
+var popupHeight = 700;
+
+var popupX = (window.screen.width / 2) - (popupWidth / 2);
+// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼주었음
+
+var popupY= (window.screen.height / 2) - (popupHeight / 2);
+// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼주었음
+
  function openDetail(no){  
-    window.open("/manage/reviewMg/detail/" + no, "상세보기창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );  
+    window.open("/manage/reviewMg/detail/" + no, "상세보기창", "width=1080, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes"+', left='+ popupX + ', top='+ popupY );  
  }  
 
 

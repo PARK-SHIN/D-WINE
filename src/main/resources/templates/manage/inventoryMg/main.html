@@ -65,16 +65,16 @@
             margin-top: 20px; 
         }
         
-        #totalStock{
+        #todayReceiving{
             margin-right: 200px;
-            margin-left: 160px;
+            margin-left: 140px;
         }
 
         #totalShop {
             margin-right: 200px;
         }
-        
-        #todayReceiving{
+      
+        #totalStock{
             margin-right: 150px;
         }
         span#count{
@@ -201,8 +201,16 @@
 </head>
 <body>
 <header th:include="common/header :: header"></header>
-<div id="container"> 
-  <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+<div id="container">
+        <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+        <script>
+        $(document).ready(function () { 
+            $('.inventory').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
+            $('.inventory').css('color', 'rgb(131,19,30)'); 
+            $('.inventory').css('font-weight', 'bold'); 
+        });
+        </script>
+
         
   <div class="content">
        
@@ -213,17 +221,18 @@
      <input type="hidden" name="totalShop" th:value="${totalShop.totalShop}">
      <input type="hidden" name="todayReceiving" th:value="${todayReceiving.todayReceiving}">
   
-        <div id="totalStock">
-            <span id="count"  th:text="${totalStock.totalStock}"></span> 
-            <span id="countTitle">Total Stock</span>
+        <div id="todayReceiving">
+            <span id="count" th:text="${todayReceiving.todayReceiving}">9</span>
+            <span id="countTitle">Today Receiving</span>
         </div>
+        
         <div id="totalShop">
             <span id="counts" th:text="${totalShop.totalShop}"></span> 
             <span id="countTitle">Total Shop</span>
         </div>
-        <div id="todayReceiving">
-            <span id="count" th:text="${todayReceiving.todayReceiving}">9</span>
-            <span id="countTitle">Today Receiving</span>
+        <div id="totalStock">
+            <span id="count"  th:text="${totalStock.totalStock}"></span> 
+            <span id="countTitle">Total Stock</span>
         </div>
     </div> 
     
@@ -234,10 +243,10 @@
         <button class="dayArrayBtn">1주일</button>
         <button class="dayArrayBtn">1개월</button>
         <div class="searchArea"><label>조건 검색 : </label>
-            <select name="selectCategory">
-                <option value="productName">상품명</option>
-                <option value="productNo">상품번호</option>
-            </select>
+            <select id="selectCategory">
+                    <option value="productName">상품명</option>
+                    <option value="productNo">상품번호</option>
+                </select>
             <input type="text" id="searchTitle"> 
             <button id="serarchBtn">검색</button> 
         </div>
@@ -290,17 +299,6 @@
 	$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
 	
 	
-	
-	/* 
-	if($(".tdStatus").text = 'N'){
-		$(".allinven").css('background', 'rgba(180,19,30,0.1)');
-		$(".cancleBtn").hide();  
-	}else{
-		$(".allinven").css('background', 'none');
-		$(".cancleBtn").show();  
-	};  */
-	
-	
 
 	// 삭제 confirm
 	function checkConfirm() {
@@ -338,17 +336,14 @@ $(function(){
 	   
 	   if(status == 'N'){
 	       $(this).css('background', 'rgba(180,19,30,0.1)');
+	       $(this).css("text-decoration", "line-through");
 	       cancleBtn.hide();
 	       
 	    }else{
 	       $(this).css('background', 'none');
 	       cancleBtn.show();
 	    }
-	   
-	   
    });
-    
-
  });
 
 </script>

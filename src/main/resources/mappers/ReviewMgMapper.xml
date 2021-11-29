@@ -68,6 +68,7 @@
               , R.REVIEW_DATE
               , RP.REPORT_DATE
               , R.REVIEW_NO 
+              , R.STAR
               , M1.USER_ID AS user_id1
         FROM REVIEW R
         LEFT JOIN REPORT RP ON R.REVIEW_NO = RP.REVIEW_NO
