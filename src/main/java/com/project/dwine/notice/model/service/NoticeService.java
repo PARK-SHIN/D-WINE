@@ -17,6 +17,8 @@ public interface NoticeService {
 	
 	void deleteNotice(String notice_no);
 
+	List<Notice> searchNoticeList(String searchValue);
+
 
 
 

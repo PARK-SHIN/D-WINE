@@ -89,6 +89,7 @@
 		WHERE I.PRODUCT_NO = P.PRODUCT_NO
 		ORDER BY INVEN_DATE DESC
 	</select>
+	
 	<!-- 검색 -->
 	<select id="searchInvenList" resultMap="inventoryResultMap">
 		SELECT

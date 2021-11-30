@@ -29,6 +29,31 @@
       ORDER BY NOTICE_NO DESC
 	</select>
 	
+	<!-- 검색창용 sql searchNoticeList -->
+	
+	<select id="searchNoticeList" resultMap="noticeResultMap">
+	SELECT
+		   	 NOTICE_NO
+		   , NOTICE_CATEGORY	
+		   , NOTICE_TITLE
+		   , NOTICE_CONTEXT
+		   , CREATE_DATE
+		   , MODIFY_DATE
+		   , STATUS
+		   , USER_NO
+		
+	  FROM NOTICE
+      WHERE STATUS = 'Y'
+      <if test="searchValue != null">
+   	  AND NOTICE_TITLE LIKE '%' || #{ searchValue } || '%'
+   	  OR NOTICE_CONTEXT LIKE '%' || #{ searchValue } || '%'
+   	  </if>
+      ORDER BY NOTICE_NO DESC
+	 </select>
+	
+	
+	
+	
 	<select id="selectNoticeByno" resultMap="noticeResultMap">
 	SELECT
 		   	 NOTICE_NO
