@@ -9,6 +9,7 @@ import com.project.dwine.purchase.model.vo.Payment;
 import com.project.dwine.purchase.model.vo.Point;
 import com.project.dwine.purchase.model.vo.Product;
 import com.project.dwine.purchase.model.vo.Purchase;
+import com.project.dwine.purchase.model.vo.Review;
 import com.project.dwine.wish.model.vo.Wish;
 
 public interface PurchaseService {
@@ -46,6 +47,10 @@ public interface PurchaseService {
 	List<OrderDetail> selectOrderDetail(String purchase_no);
 
 	Point selectPoint(String purchase_no);
+
+	List<Review> reviewList(String id);
+
+	List<Product> popularList(String value);
 
 	
 

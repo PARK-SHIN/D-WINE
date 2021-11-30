@@ -13,6 +13,7 @@ import com.project.dwine.purchase.model.vo.Payment;
 import com.project.dwine.purchase.model.vo.Point;
 import com.project.dwine.purchase.model.vo.Product;
 import com.project.dwine.purchase.model.vo.Purchase;
+import com.project.dwine.purchase.model.vo.Review;
 import com.project.dwine.wish.model.vo.Wish;
 
 @Service("purchaseService")
@@ -48,6 +49,11 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return purchaseMapper.filterWineList(type,price,country,variety,name);
 	}
 
+	/* 와인 인기순으로 정렬*/
+	@Override
+	public List<Product> popularList(String value) {
+		return purchaseMapper.popularList(value);
+	}
 
 	
 	/* Sort된 wineList 리턴 **/
@@ -105,25 +111,36 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return purchaseMapper.stockUpdate(product_no, product_count);	
 	}
 
+	/* 회원 정보 불러오기 */
 	@Override
 	public Member memberinfo(int user_no) {
 		return purchaseMapper.memberinfo(user_no);
 	}
 
+	/* 구매 정보 불러오기 */
 	@Override
 	public Purchase selectPurchase(String purchase_no) {
 		return purchaseMapper.selectPurchase(purchase_no);
 	}
 
+	/* 주문 상세 불러오기 */
 	@Override
 	public List<OrderDetail> selectOrderDetail(String purchase_no) {
 		return purchaseMapper.selectOrderDetail(purchase_no);
 	}
 
+	/* 포인트 내역 불러오기 */
 	@Override
 	public Point selectPoint(String purchase_no) {
 		return purchaseMapper.selectPoint(purchase_no);
 	}
+
+	/* 댓글 리스트 불러오기 */
+	@Override
+	public List<Review> reviewList(String id) {
+		return purchaseMapper.reviewList(id);
+	}
+
 
 }
 

@@ -36,10 +36,55 @@ public class Product {
 	private List<Hashtag> hash_names;
 	private List<Cart> cart;
 	private List<OrderDetail> orderDetail;
+	private List<Review> review;
+	private int order_count;
 	
 	public Product() {}
 
+
 	
+
+	public Product(int product_no, String product_kname, String product_ename, int cost_price, int sale_price,
+			int product_count, String winery, String thumbnail, int capacity, int abv, String taste_graph,
+			String information, String award, String tip, String label_image, String status, Date create_date,
+			Date modify_date, int variety_no, int type_no, int country_no, String country_name, String type_name,
+			String variety_name, List<Hashtag> hash_names, List<Cart> cart, List<OrderDetail> orderDetail,
+			List<Review> review, int order_count) {
+		super();
+		this.product_no = product_no;
+		this.product_kname = product_kname;
+		this.product_ename = product_ename;
+		this.cost_price = cost_price;
+		this.sale_price = sale_price;
+		this.product_count = product_count;
+		this.winery = winery;
+		this.thumbnail = thumbnail;
+		this.capacity = capacity;
+		this.abv = abv;
+		this.taste_graph = taste_graph;
+		this.information = information;
+		this.award = award;
+		this.tip = tip;
+		this.label_image = label_image;
+		this.status = status;
+		this.create_date = create_date;
+		this.modify_date = modify_date;
+		this.variety_no = variety_no;
+		this.type_no = type_no;
+		this.country_no = country_no;
+		this.country_name = country_name;
+		this.type_name = type_name;
+		this.variety_name = variety_name;
+		this.hash_names = hash_names;
+		this.cart = cart;
+		this.orderDetail = orderDetail;
+		this.review = review;
+		this.order_count = order_count;
+	}
+
+
+
+
 	public Product(int product_no, String product_kname, String product_ename, int cost_price, int sale_price,
 			int product_count, String winery, String thumbnail, int capacity, int abv, String taste_graph,
 			String information, String award, String tip, String label_image, String status, Date create_date,
@@ -373,6 +418,34 @@ public class Product {
 	public void setOrrderDetail(List<OrderDetail> orderDetail) {
 		this.orderDetail = orderDetail;
 	}
+	
+
+	public List<Review> getReview() {
+		return review;
+	}
+
+	public void setReview(List<Review> review) {
+		this.review = review;
+	}
+
+
+	public void setOrderDetail(List<OrderDetail> orderDetail) {
+		this.orderDetail = orderDetail;
+	}
+	
+
+	public int getOrder_count() {
+		return order_count;
+	}
+
+
+
+
+	public void setOrder_count(int order_count) {
+		this.order_count = order_count;
+	}
+
+
 
 
 	@Override
@@ -385,11 +458,12 @@ public class Product {
 				+ create_date + ", modify_date=" + modify_date + ", variety_no=" + variety_no + ", type_no=" + type_no
 				+ ", country_no=" + country_no + ", country_name=" + country_name + ", type_name=" + type_name
 				+ ", variety_name=" + variety_name + ", hash_names=" + hash_names + ", cart=" + cart + ", orderDetail="
-				+ orderDetail + "]";
+				+ orderDetail + ", review=" + review + ", order_count=" + order_count + "]";
 	}
 
 
-	
+
+
 	
 	
 //	@Override

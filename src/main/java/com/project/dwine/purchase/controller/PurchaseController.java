@@ -2,10 +2,13 @@ package com.project.dwine.purchase.controller;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,6 +33,7 @@ import com.project.dwine.purchase.model.vo.Payment;
 import com.project.dwine.purchase.model.vo.Point;
 import com.project.dwine.purchase.model.vo.Product;
 import com.project.dwine.purchase.model.vo.Purchase;
+import com.project.dwine.purchase.model.vo.Review;
 import com.project.dwine.wish.model.vo.Wish;
 
 
@@ -91,8 +95,18 @@ public class PurchaseController {
 		String value = val.replace("\"", "");
 		System.out.println(value);
 		
-		List<Product> lis = purchaseService.sortWineList(value);
-		System.out.println(lis);
+		List<Product> lis = new ArrayList<Product>();
+		
+		if(value.equals("popular")) {
+			System.out.println("인기순");
+			lis = purchaseService.popularList(value);
+			System.out.println("인기순 : " + lis);
+		} else {
+			lis = purchaseService.sortWineList(value);
+			System.out.println(lis);
+			
+		}
+		
 		
 		return lis;
 	}
@@ -112,26 +126,45 @@ public class PurchaseController {
 			System.out.println(wish);
 		}
 		
+		/* 상품이 찜목록에 있는지 확인 */
 		if (wish == null) {
 			wish = new Wish();
 		}
 		
 		Product product = purchaseService.wineDetail(id);
+		List<Review> review = purchaseService.reviewList(id);
 		
+		// 상품에 review가 없으면 null로 바꿔주고 보내준다.
+		System.out.println(review.size());
+		
+	/*
+		if(review.get(0) == null) {
+			System.out.println("List is empty2");
+			review = null;
+			System.out.println("review : " + review);
+			
+		} 
+		*/
+		model.addAttribute("review", review);
 		model.addAttribute("wish", wish);
 		model.addAttribute("product", product);
-
 		
+	
+		
+
+
+		System.out.println(wish);
+		System.out.println(product);
+		System.out.println("review : " + review);
+	
 		return "purchase/wine_detail";
 	}
 	
-	/* 리뷰 신고 */
-	@GetMapping("/reviewReport")
-	public void reviewReport(Model model) {
-		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    int user_no = user.getUser_no();
-	    model.addAttribute("user_no", user_no);
-	}
+	
+	
+	
+	
+	
 	
 	/* 약관 보여주기 */
 	@GetMapping("/clause")
@@ -371,6 +404,50 @@ public class PurchaseController {
 		return mv;
 	}
 	
+	
+	/* 리뷰 신고 */
+	/*
+	@GetMapping("/reviewReport")
+	public String reviewReport(Model model,String shin) {
+	    
+	    model.addAttribute("shin", shin);
+	    
+		System.out.println("리뷰 번호 : " + shin);
+		return "purchase/reviewReport.html";
+	}
+	*/
+	
+	@RequestMapping("/reviewReport")
+	public void reviewReport(Model model, @RequestParam(required = false) String shin){
+		
+		System.out.println("shin :" + shin);
+		model.addAttribute("shin", shin);
+	}
+
+
+
+	/*
+	 * @GetMapping("/reviewReport/{userNo}") public String reviewReport(Model
+	 * model, @PathVariable int userNo) {
+	 * 
+	 * System.out.println("유저번호 : " + userNo); model.addAttribute("userNo", userNo);
+	 * 
+	 * return "purchase/reviewReport.html";
+	 * 
+	 * 
+	 * }
+	 */
+	
+	/*
+	 * @GetMapping("/reviewReport") public String reviewReport() {
+	 * 
+	 * 
+	 * 
+	 * return "purchase/reviewReport.html";
+	 * 
+	 * 
+	 * }
+	 */
 	
 	
 	

@@ -11,6 +11,7 @@ import com.project.dwine.purchase.model.vo.Payment;
 import com.project.dwine.purchase.model.vo.Point;
 import com.project.dwine.purchase.model.vo.Product;
 import com.project.dwine.purchase.model.vo.Purchase;
+import com.project.dwine.purchase.model.vo.Review;
 import com.project.dwine.wish.model.vo.Wish;
 
 @Mapper
@@ -25,6 +26,8 @@ public interface PurchaseMapper {
 	List<Product> filterWineList(String type, String price, String country, String variety, String name);
 
 	List<Product> sortWineList(String val);
+	
+	List<Product> popularList(String value);
 
 	Wish checkWish(int user_no, int product_no);
 
@@ -49,6 +52,8 @@ public interface PurchaseMapper {
 	List<OrderDetail> selectOrderDetail(String purchase_no);
 
 	Point selectPoint(String purchase_no);
+
+	List<Review> reviewList(String id);
 
 
 
