@@ -1,5 +1,6 @@
 package com.project.dwine.notice.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.project.dwine.manage.model.vo.Inventory;
 import com.project.dwine.member.model.vo.UserImpl;
 import com.project.dwine.notice.model.service.NoticeService;
 import com.project.dwine.notice.model.vo.Notice;
@@ -39,6 +42,16 @@ public class NoticeController {
       
       return mv;
    }
+   
+ //인벤토리 검색
+ 	@PostMapping("/searchMain")
+ 	@ResponseBody
+ 	public List<Notice> seachMainNotice(@RequestParam String searchValue) throws IOException {
+ 		List<Notice> searchNoticeList = noticeService.searchNoticeList(searchValue);
+ 		return searchNoticeList;
+ 	}
+   
+   
 
    @GetMapping("detail/{notice_no}")
    public String selectNoticeByNo(@PathVariable int notice_no, Model model) {

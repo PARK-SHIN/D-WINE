@@ -50,6 +50,11 @@ public class NoticeServiceImpl implements NoticeService {
 		noticeMapper.deleteNotice(notice_no);
 		
 	}
+
+	@Override
+	public List<Notice> searchNoticeList(String searchValue) {
+		return noticeMapper.searchNoticeList(searchValue);
+	}
 	
 
 

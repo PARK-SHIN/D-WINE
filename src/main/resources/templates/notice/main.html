@@ -5,7 +5,7 @@
 <title>공지사항</title>
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
-<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/notice/main.css" rel="stylesheet">    
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
@@ -20,8 +20,8 @@
     <button id="insertBtn" onclick="location.href='/notice/regist'">등록</button><br>
    
     <button id="deleteBtn" onclick="deleteValue();" >선택삭제</button>
-    <div id=searchdiv><input type="text" id="searchTitle"> 
-        <button id="serarchBtn">검색</button> 
+    <div id=searchdiv><input type="text" id="searchTitle" name="search_titleContext"> 
+        <button id="searchBtn">검색</button> 
     </div>
     <div class="noticeList">
         <table class="noticeTable">
@@ -31,13 +31,14 @@
                 <th>제목</th>
                 <th>등록일</th>
             </tr>
-            	<tr th:each="notice : ${ noticeList }">
+            <tbody class="trArea">   
+            	<tr class="allNotice" th:each="notice : ${ noticeList }">
                 <td><input type="checkbox" class="checkbox" name="checkbox" th:value="${ notice.notice_no }"></td>
                 <td th:text="${notice.notice_category}"></td>
-                <td th:text="${notice.notice_title}" th:onclick="|location.href='@{/notice/detail/{noticeNo}(noticeNo=${notice.notice_no})}'|"></td>
+                <td th:text="${notice.notice_title}" th:onclick="|location.href='@{/notice/detail/{notice_no}(notice_no=${notice.notice_no})}'|"></td>
                 <td th:text="${ #dates.format(notice.create_date, 'yyyy-MM-dd')}"></td>
-        
-            </tr>     
+            </tr> 
+            </tbody>    
         </table>    
       </div>
 	
@@ -73,7 +74,56 @@
 			});
 		});
 		
+		//날짜포맷함수
+		function dateFormat(date) {
+				let month = date.getMonth() + 1;
+				let day = date.getDate();
+
+				month = month >= 10 ? month : '0' + month;
+				day = day >= 10 ? day : '0' + day;
+
+				return date.getFullYear() + '-' + month + '-' + day;
+			}
 		
+	//제목과 내용 검색 ->왜안됨?
+	$("#searchBtn").on("click", function() {
+
+		var searchValue = $("input[name=search_titleContext]").val();
+
+		var tableHTML;
+		$.ajax({
+			url : "/notice/searchMain",
+			data : {searchValue : searchValue},
+			type : "post",
+			success : function(data) {
+				if (data.length == 0) {
+					alert("검색 결과가 없습니다.");
+				} else {
+					//var tableHTML = '<ul class="selectPno" id="selectPno">';
+					var tableHTML = null;
+					
+					$.each(data, function(index, item) {
+						let create_date = new Date(item.create_date);
+						
+						tableHTML += "<tr class='allNotice'><td><input type='checkbox' name='delete_nums' value='" + item.inven_no + "'></td>"
+                        + "<td>"+ item.notice_category + "</td>"
+                        + "<td onclick=\"location.href='/notice/detail/" + item.notice_no + "'\">"+ item.notice_title + "</td>"
+                        + "<td>"+ dateFormat(create_date) + "</td></tr>";
+
+              			 $(".trArea").html(tableHTML);
+					});
+					//?
+				}
+			},
+			error : function(e) {
+				console.log(e);
+			}						
+		});
+	});
+		
+		
+		
+		//게시글 삭제 ajax
 		function deleteValue(){
 			
 			var valueArr = new Array();
@@ -109,11 +159,13 @@
 					error : function(e){
 						consloe.log("삭제에 실패했습니다");
 					}
-	           
 				});
 			  }
 			}
 		 }
+		
+		
+		
 	</script>
 
 </body>

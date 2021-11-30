@@ -48,7 +48,7 @@
 	margin-right: 30px;
 }
 
- #serarchBtn{
+ #searchBtn{
      margin: 5px;
      background: white ;
      border: 1px solid #83131E ;
@@ -58,7 +58,7 @@
      border-radius: 5px;
 }
 
-#serarchBtn:hover {
+#searchBtn:hover {
    cursor: pointer;
    transform:scale(1.1);
    background:  #83131E;
