@@ -115,6 +115,17 @@ public class ProductServiceImpl implements ProductService{
 		return productMapper.selectSortProductList(sortStandard, startRow, endRow);
 	}
 
+	@Override
+	public int getsearchListCount(String sortStandard, String searchStandard, String searchValue) {
+		return productMapper.getsearchListCount(sortStandard, searchStandard, searchValue);
+	}
+
+	@Override
+	public List<Product> selectSearchProductList(String sortStandard, String searchStandard, String searchValue,
+			int startRow, int endRow) {
+		return productMapper.selectSearchProductList(sortStandard, searchStandard, searchValue, startRow, endRow);
+	}
+
 	
 	
 

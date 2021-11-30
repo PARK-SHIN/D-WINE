@@ -7,7 +7,16 @@
 <link href="/css/common/common.css" rel="stylesheet">
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <style>
+	* {
+          font-family: 'Gowun Batang', serif;
+       }
+	.wrapper {
+		display : flex;
+		width: 1100px;
+		margin : 0 auto;
+	}
 	.input_area {
 		display: flex;
 		margin-bottom: 20px;
@@ -63,8 +72,8 @@
 	}
 	
 	.btn {
-		height: 44px;
-		width: 98.9552230834961px;
+		height: 40px;
+		width: 100px;
 		left: 0px;
 		top: 0px;
 		border-radius: 5px;
@@ -75,7 +84,6 @@
 	}
 	
 	#btn_area {
-		width: 500px;
 		text-align: center;
 	}
 	
@@ -96,14 +104,12 @@
 		width: 350px;
 		height: 350px;
 	}
-	.container {
-		display: flex;
-	}
+	
 </style>    
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
-	<div class="container">
+	<div class="wrapper">
 		<nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
 		<div class="contens">
 		    <h1>상품 수정</h1>
