@@ -157,6 +157,21 @@
         display: none;
         }
 	
+		 #serarchBtn{
+           margin: 5px;
+           background: white ;
+           border: 1px solid #83131E ;
+           color: #83131E;
+           width: 45px;
+           height: 25px;
+           border-radius: 5px;
+        }
+        #serarchBtn:hover {
+            cursor: pointer;
+            transform:scale(1.1);
+            background:  #83131E;
+            color: white;  
+        }
 		/*디테일 css*/
 		
 		 .detailArea{
@@ -259,7 +274,7 @@
         <option value="latest">최신순</option>
         <option value="report-count">신고누적수</option>
     </select> 기능특성 상 하지 않아도 될 듯 하다. -->
-    <div id="searchArea"><input type="text" id="searchTitle"> <button>검색</button> </div>
+    <div id="searchArea"><input type="text" id="searchTitle"> <button id="serarchBtn">검색</button> </div>
     <div class="memberList">
         <table class="memberTable">
             <tr>
@@ -382,7 +397,8 @@ function openModal(elem){
 	    	alert("선택된 회원이 없습니다.");
 	    }
 	    else{
-			var chk = confirm("정말 삭제하시겠습니까?");				 
+			var chk = confirm("정말 삭제하시겠습니까?");		
+			if(chk == ture){
 			$.ajax({
 			    url : "/manage/memberMg/delete",                   
 			    type : 'POST',  
@@ -400,6 +416,7 @@ function openModal(elem){
 				}
            
 			});
+		  }
 		}
 	 }
 

@@ -100,17 +100,25 @@ public class InventoryMgController {
 	
 	//30
 	
+	//인벤토리 검색
+	@PostMapping("/inventoryMg/searchMain")
+	@ResponseBody
+	public List<Inventory> seachMainInventory(@RequestParam String searchStandard, @RequestParam String searchValue) throws IOException {
+		List<Inventory> searchInvenList = inventoryMgService.searchInvenList(searchStandard, searchValue);
+		return searchInvenList;
+	}
 	
 	
 	
 	
-	//상품검색
+	//상품등록을 위한검색
 	@PostMapping("/inventoryMg/search")
 	@ResponseBody
 	public List<Product> seachProduct(@RequestParam String searchStandard, @RequestParam String searchValue) throws IOException {
 		List<Product> searchList = productService.searchProductList(searchStandard, searchValue);
 		return searchList;
 	}
+	
 	
 	//상품no로 regist에 불러오기
 	@PostMapping("/inventoryMg/searchByProductNo")

@@ -92,7 +92,8 @@
 		    	alert("선택된 게시글이 없습니다.");
 		    }
 		    else{
-				var chk = confirm("정말 삭제하시겠습니까?");				 
+				var chk = confirm("정말 삭제하시겠습니까?");	
+				if(chk == true){
 				$.ajax({
 				    url : "/notice/delete",                   
 				    type : 'POST',  
@@ -110,6 +111,7 @@
 					}
 	           
 				});
+			  }
 			}
 		 }
 	</script>

@@ -89,6 +89,38 @@
 		WHERE I.PRODUCT_NO = P.PRODUCT_NO
 		ORDER BY INVEN_DATE DESC
 	</select>
+	<!-- 검색 -->
+	<select id="searchInvenList" resultMap="inventoryResultMap">
+		SELECT
+			        I.INVEN_NO
+			      , I.INVEN_COUNT
+			      , I.INVEN_DATE
+			      , I.STATUS
+			      , I.PRODUCT_NO
+			      , I.INVEN_COST
+			      , P.SALE_PRICE
+			      , P.PRODUCT_COUNT 
+			      , P.PRODUCT_KNAME 
+			      , P.PRODUCT_ENAME      
+			      , (SELECT
+			                I.INVEN_COST * I.INVEN_COUNT
+			                FROM PRODUCT P
+			                WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS INVEN_PRICE
+		FROM INVENTORY I, PRODUCT P
+		WHERE I.PRODUCT_NO = P.PRODUCT_NO
+		<if test="searchStandard == 'no'">
+   		AND P.PRODUCT_NO LIKE '%' || #{ searchValue } || '%'
+   		</if>
+   		<if test="searchStandard == 'name'">
+   		AND PRODUCT_KNAME LIKE '%' || #{ searchValue } || '%'
+   		</if>
+		ORDER BY INVEN_DATE DESC
+		
+	</select>
+	
+	
+	
+	
 	
 	<!-- 카운트 3개 -->
 	<select id="selectTotalStock" resultMap="inventoryResultMap">

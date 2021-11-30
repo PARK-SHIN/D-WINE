@@ -6,7 +6,7 @@
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 
     <style>
@@ -108,7 +108,7 @@
         }
        
 
-        #serarchBtn{
+        #searchBtn{
            margin: 5px;
            background: white ;
            border: 1px solid #83131E ;
@@ -117,7 +117,7 @@
            height: 25px;
            border-radius: 5px;
         }
-        #serarchBtn:hover {
+        #searchBtn:hover {
             cursor: pointer;
             transform:scale(1.1);
             background:  #83131E;
@@ -243,12 +243,12 @@
         <button class="dayArrayBtn">1주일</button>
         <button class="dayArrayBtn">1개월</button>
         <div class="searchArea"><label>조건 검색 : </label>
-            <select id="selectCategory">
-                    <option value="productName">상품명</option>
-                    <option value="productNo">상품번호</option>
+            <select id="selectCategory" name="search_select">
+                    <option value="name">상품명</option>
+                    <option value="no">상품번호</option>
                 </select>
-            <input type="text" id="searchTitle"> 
-            <button id="serarchBtn">검색</button> 
+            <input type="text" id="searchTitle" name="search_product"> 
+            <button id="searchBtn">검색</button> 
         </div>
 
     </div>
@@ -298,35 +298,110 @@
 	var header = $("meta[name='_csrf_header']").attr("content");
 	$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
 	
-	
+	//날짜포맷함수
+	function dateFormat(date) {
+			let month = date.getMonth() + 1;
+			let day = date.getDate();
 
-	// 삭제 confirm
-	function checkConfirm() {
-		if (confirm("정말 삭제하시겠습니까?"))
-			return true
-		else
-			return false;
-	}
+			month = month >= 10 ? month : '0' + month;
+			day = day >= 10 ? day : '0' + day;
+
+			return date.getFullYear() + '-' + month + '-' + day;
+		}
 	
+	
+	//검색
+	$("#searchBtn").on("click", function() {
+		var searchStandard = $("select[name=search_select]").val();
+		var searchValue = $("input[name=search_product]").val();
+
+		var tableHTML;
+		$.ajax({
+			url : "/manage/inventoryMg/searchMain",
+			data : {searchStandard : searchStandard, searchValue : searchValue},
+			type : "post",
+			success : function(data) {
+				if (data.length == 0) {
+					alert("검색 결과가 없습니다.");
+				} else {
+					var tableHTML = '<ul class="selectPno" id="selectPno">';
+				
+					$.each(data, function(index, item) {
+						let inven_date = new Date(item.inven_date);
+						
+						tableHTML += "<tr class='allinven'><td id='inven_no'>" + item.inven_no + "</td>"
+                        + "<td>"+ item.product_no + "</td>"
+                        + "<td>"+ item.product_kname + "</td>"
+                        + "<td>"+ item.product_ename + "</td>"
+                        + "<td>"+ item.sale_price + "</td>"
+                        + "<td>"+ item.inven_count + "</td>"
+                        + "<td>"+ item.inven_cost + "</td>"
+                        + "<td>"+ item.inven_price + "</td>"
+                        + "<td>"+ dateFormat(inven_date)+ "</td>"
+                        + "<td><button class='cancleBtn' id='cancleBtn'>취소</btton></td>"
+                        + "<td>"+ item.status + "</td></tr>";
+
+              			 $(".trArea").html(tableHTML);
+              				changeCss();
+					});
+					//?
+				}
+			},
+			error : function(e) {
+				console.log(e);
+			}						
+		});
+	});
+	
+	function changeCss(){
+		$(".trArea tr").each(function(){
+			   var status = $(this).children().eq(10).text();
+			   var cancleBtn = $(this).children().eq(9).children();
+			   
+			   console.log(status);
+			   
+			   if(status == 'N'){
+			       $(this).css('background', 'rgba(180,19,30,0.1)');
+			       $(this).css("text-decoration", "line-through");
+			       cancleBtn.hide();
+			       
+			    }else{
+			       $(this).css('background', 'none');
+			       cancleBtn.show();
+			    }
+		});
+	}
+
+	
+	
+	
+	
+//입고주문취소
 	$(".cancleBtn").click(function(){
 		var inven_no= $(this).parent().parent().children().eq(0).text();
 		
-		confirm("정말 취소하시겠습니까?");
+		var chk = confirm("정말 취소하시겠습니까?");	
+		if(chk == true){
 		
 		$.ajax({
 			url : "/manage/inventoryMg/cancle",
 			data : {inven_no, inven_no},
 			type : "post",
 			success : function(data) {
-				console.log("성공하셨습니다.");
+				alert("입고주문 취소를 성공하셨습니다.");
 				location.reload();
 			},
 			error : function(e) {
+				alert("입고주문 취소에 실패하셨습니다.");
 				console.log(e);
 			}						
 		});
+	  }
 	}); 
 	
+	
+	
+	//관련 css
 $(function(){	
    $(".trArea tr").each(function(){
 	   var status = $(this).children().eq(10).text();

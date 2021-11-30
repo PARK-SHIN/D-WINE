@@ -20,5 +20,7 @@ public interface InventoryMgMapper {
 
 	int cancleInventory(int inven_no);
 
+	List<Inventory> searchInvenList(String searchStandard, String searchValue);
+
 	
 }
