@@ -55,4 +55,10 @@ public class InventoryMgServiceImpl implements InventoryMgService {
 		return inventoryMgMapper.cancleInventory(inven_no);	
 	}
 
+
+	@Override
+	public List<Inventory> searchInvenList(String searchStandard, String searchValue) {
+		return inventoryMgMapper.searchInvenList(searchStandard, searchValue);
+	}
+
 }
