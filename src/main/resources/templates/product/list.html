@@ -271,7 +271,17 @@
 		clickPage = 1;
 		
 		// 정렬 select, 검색 버튼 눌렀을 때
-		$(document).on("click", "select[name=sortStandard], #search_btn", function(){
+		$(document).on("click", "#search_btn", function(){
+			var page = 1;
+			var sortStandard = $("select[name=sortStandard]").val();
+			var searchStandard = $("select[name=searchStandard]").val();
+			var searchValue = $("input[name=searchValue]").val();
+			
+			ajaxPaging(page, sortStandard, searchStandard, searchValue);
+		});
+		
+		// 정렬 select change 됐을 때
+		$(document).on("change", "select[name=sortStandard]", function(){
 			var page = 1;
 			var sortStandard = $("select[name=sortStandard]").val();
 			var searchStandard = $("select[name=searchStandard]").val();
