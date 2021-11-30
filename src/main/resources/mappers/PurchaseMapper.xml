@@ -86,6 +86,19 @@
 		<result property="hash_name" column="HASH_NAME"/>
 	</resultMap>
 	
+	<resultMap type="com.project.dwine.purchase.model.vo.Review" id="reviews">
+		<id property="review_no" column="REVIEW_NO"/>
+		<result property="review_text" column="REVIEW_TEXT"/>
+		<result property="review_image" column="REVIEW_IMAGE"/>
+		<result property="review_date" column="REVIEW_DATE"/>
+		<result property="review_modify" column="REVIEW_MODIFY"/>
+		<result property="star" column="STAR"/>
+		<result property="status" column="STATUS"/>
+		<result property="user_no" column="USER_NO"/>
+		<result property="od_no" column="OD_NO"/>
+		<result property="nickname" column="USER_NICKNAME"/>
+	</resultMap>
+	
 	<resultMap type="com.project.dwine.purchase.model.vo.OrderDetail" id="OD">
 		<id property="od_no" column="OD_NO"/>
 		<result property="od_count" column="OD_COUNT"/>
@@ -120,35 +133,37 @@
            WHERE P.PRODUCT_NO = #{ id }
 	</select>
 	
-	<select id="wineList" resultMap="productResultMap">
-		SELECT
-			    PRODUCT_NO
-			  , PRODUCT_KNAME
-			  , PRODUCT_ENAME
-			  , SALE_PRICE
-			  , PRODUCT_COUNT
-			  , WINERY
-			  , THUMBNAIL
-			  , CAPACITY
-			  , ABV
-			  , TASTE_GRAPH
-			  , INFORMATION
-			  , AWARD
-			  , TIP
-			  , LABEL_IMAGE
-			  , STATUS
-			  , CREATE_DATE
-			  , MODIFY_DATE
-			  , VARIETY_NO
-			  , TYPE_NO
-			  , COUNTRY_NO
-		   FROM PRODUCT
-		  WHERE STATUS = 'Y'
-		  ORDER BY PRODUCT_NO
+	<select id="wineList" parameterType="String" resultType="com.project.dwine.purchase.model.vo.Product">
+			SELECT
+	        DISTINCT(PRODUCT_NO)
+	      , NVL(SUM(OD_COUNT) OVER(PARTITION BY PRODUCT_NO),0)
+	      , PRODUCT_KNAME
+	      , PRODUCT_ENAME
+	      , SALE_PRICE
+	      , PRODUCT_COUNT
+	      , WINERY
+	      , THUMBNAIL
+	      , CAPACITY
+	      , ABV
+	      , TASTE_GRAPH
+	      , INFORMATION
+	      , AWARD
+	      , TIP
+	      , LABEL_IMAGE
+	      , STATUS
+	      , CREATE_DATE
+	      , MODIFY_DATE
+	      , VARIETY_NO
+	      , TYPE_NO
+	      , COUNTRY_NO
+	      FROM PRODUCT
+	      LEFT JOIN ORDER_DETAIL USING (PRODUCT_NO)
+	      WHERE STATUS = 'Y'
+	      ORDER BY 2 DESC
 	</select>
 	
 	<select id="wineDetail" resultMap="productDetailResultMap">
-		 SELECT
+		 	 SELECT
 			    P.PRODUCT_NO
 			  , P.PRODUCT_KNAME
 			  , P.PRODUCT_ENAME
@@ -181,8 +196,33 @@
            LEFT JOIN COUNTRY C ON (P.COUNTRY_NO = C.COUNTRY_NO)
            LEFT JOIN TYPE D ON(P.TYPE_NO = D.TYPE_NO)
            LEFT JOIN VARIETY E ON(P.VARIETY_NO = E.VARIETY_NO)
+           LEFT JOIN ORDER_DETAIL F ON(P.PRODUCT_NO = F.PRODUCT_NO)
+           LEFT JOIN REVIEW G ON(F.OD_NO = G.OD_NO)
+           LEFT JOIN MEMBER H ON(G.USER_NO = H.USER_NO)
           WHERE P.PRODUCT_NO = #{ id }
+            AND P.STATUS = 'Y'
 	</select>
+	
+	<select id="reviewList" resultMap="reviews">
+		SELECT
+	        G.REVIEW_NO
+	      , G.REVIEW_TEXT
+	      , G.REVIEW_IMAGE
+	      , G.REVIEW_DATE
+	      , G.REVIEW_MODIFY
+	      , G.STAR
+	      , G.STATUS
+	      , G.USER_NO
+	      , G.OD_NO
+	      , H.USER_NICKNAME
+	    FROM PRODUCT P
+	    JOIN ORDER_DETAIL O ON(P.PRODUCT_NO = O.PRODUCT_NO)
+	    JOIN REVIEW G ON(O.OD_NO = G.OD_NO)
+	    JOIN MEMBER H ON(G.USER_NO = H.USER_NO)
+	    WHERE P.PRODUCT_NO = #{ id }
+	     AND G.STATUS = 'Y'
+	</select>
+	
 
 	<select id="filterWineList" parameterType="String" resultMap="productResultMap">
 		SELECT
@@ -211,6 +251,7 @@
            LEFT JOIN TYPE D ON(P.TYPE_NO = D.TYPE_NO)
            LEFT JOIN VARIETY E ON(P.VARIETY_NO = E.VARIETY_NO)
            WHERE 1=1
+           AND P.STATUS = 'Y'
 			<if test="country!=null and !country.equals('')">
 					AND COUNTRY_NAME = #{ country }		
 			</if>
@@ -268,7 +309,8 @@
 			  , TYPE_NO
 			  , COUNTRY_NO
 		   FROM PRODUCT
-           WHERE 1=1            
+           WHERE 1=1         
+           AND STATUS = 'Y'   
             <if test="val!=null and !val.equals('')">
 				<if test="val.equals('hprice')">
 					ORDER BY SALE_PRICE DESC
@@ -281,6 +323,35 @@
 				</if>
 			</if>
 	</select>
+	
+	<select id="popularList" parameterType="String" resultType="com.project.dwine.purchase.model.vo.Product">
+		SELECT
+	        DISTINCT(PRODUCT_NO)
+	      , NVL(SUM(OD_COUNT) OVER(PARTITION BY PRODUCT_NO),0)
+	      , PRODUCT_KNAME
+	      , PRODUCT_ENAME
+	      , SALE_PRICE
+	      , PRODUCT_COUNT
+	      , WINERY
+	      , THUMBNAIL
+	      , CAPACITY
+	      , ABV
+	      , TASTE_GRAPH
+	      , INFORMATION
+	      , AWARD
+	      , TIP
+	      , LABEL_IMAGE
+	      , STATUS
+	      , CREATE_DATE
+	      , MODIFY_DATE
+	      , VARIETY_NO
+	      , TYPE_NO
+	      , COUNTRY_NO
+	      FROM PRODUCT
+	      LEFT JOIN ORDER_DETAIL USING (PRODUCT_NO)
+	      ORDER BY 2 DESC
+	</select>
+	
 	<select id="checkWish" parameterType="_int" resultType="com.project.dwine.wish.model.vo.Wish">
 		SELECT
 	        WISH_NO
