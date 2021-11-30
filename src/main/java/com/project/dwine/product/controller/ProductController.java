@@ -70,12 +70,12 @@ public class ProductController {
 		return "/product/list";
 		// return null;
 	}
-	/*
+	
 	@PostMapping("list")
-	public String sortList(@RequestParam(value="sortStandard", required=false) String sortStandard, @RequestParam(value="page", required=false) String page, Model model) throws Exception {
-		
-		System.out.println("sortStandard : " + sortStandard);
-		int listCount = productService.getTotalListCount();
+	@ResponseBody
+	public Map<String, Object> sortList(@RequestParam(value="page", required=false) String page, @RequestParam(value="sortStandard", required=false) String sortStandard, @RequestParam(value="searchStandard", required=false) String searchStandard, @RequestParam(value="searchValue", required=false) String searchValue) throws Exception {
+
+		int searchListCount = productService.getsearchListCount(sortStandard, searchStandard, searchValue);
 		
 		int resultPage = 1;
 		
@@ -84,21 +84,23 @@ public class ProductController {
 			resultPage = Integer.parseInt(page);
 		}
 		
-		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		PageInfo pi = new PageInfo(resultPage, searchListCount, 10, 10);
 		
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
 		
-		List<Product> productList = productService.selectSortProductList(sortStandard, startRow, endRow);
+		List<Product> productList = productService.selectSearchProductList(sortStandard, searchStandard, searchValue, startRow, endRow);
 		
-		model.addAttribute("productList", productList);
-		model.addAttribute("pi", pi);
-		model.addAttribute("sortStandard", sortStandard);
+		Map<String, Object> map = new HashMap<String, Object>();
 		
-		return "/product/list";
-		// return null;
+		map.put("productList", productList);
+		map.put("pi", pi);
+		map.put("sortStandard", sortStandard);
+		map.put("searchStandard", searchStandard);
+		map.put("searchValue", searchValue);
+	
+		return map;
 	}
-	*/
 	
 	@GetMapping("category")
 	@ResponseBody

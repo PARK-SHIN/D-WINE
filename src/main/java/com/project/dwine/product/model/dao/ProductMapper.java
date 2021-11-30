@@ -48,5 +48,10 @@ public interface ProductMapper {
 
 	List<Product> selectSortProductList(String sortStandard, int startRow, int endRow);
 
+	int getsearchListCount(String sortStandard, String searchStandard, String searchValue);
+
+	List<Product> selectSearchProductList(String sortStandard, String searchStandard, String searchValue, int startRow,
+			int endRow);
+
 
 }

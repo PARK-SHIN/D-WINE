@@ -60,6 +60,69 @@
 		<result property="labelImage" column="LABEL_IMAGE"/>
 	</resultMap>
 	
+	<!-- ajax 테스트 -->
+	<select id="getsearchListCount" resultType="_int">
+		SELECT
+			COUNT(*)
+		FROM PRODUCT
+		WHERE STATUS = 'Y'	
+		<if test="searchStandard == 'no' and searchValue != null and searchValue != ''">
+   		  	AND PRODUCT_NO LIKE '%' || #{ searchValue } || '%'
+   		</if>	
+   		<if test="searchStandard == 'name' and searchValue != null and searchValue != ''">
+   		  	AND PRODUCT_KNAME LIKE '%' || #{ searchValue } || '%'
+   		</if>
+   		<if test="sortStandard == 'no_low'">
+			ORDER BY PRODUCT_NO		  
+		</if>	
+		<if test="sortStandard == 'no_high'">
+			ORDER BY PRODUCT_NO	DESC
+		</if>	
+		<if test="sortStandard == 'stock_low'">
+			ORDER BY PRODUCT_COUNT, PRODUCT_NO			  
+		</if>	
+		<if test="sortStandard == 'stock_high'">
+			ORDER BY PRODUCT_COUNT DESC, PRODUCT_NO		  
+		</if>
+	</select>
+	
+	<select id="selectSearchProductList" resultMap="productListResultMap">
+		SELECT
+               PRODUCT_NO
+				, PRODUCT_KNAME
+				, SALE_PRICE
+				, PRODUCT_COUNT
+				, CREATE_DATE
+				, MODIFY_DATE
+      FROM (SELECT 
+               ROWNUM RNUM
+              , PLIST.*
+       FROM(SELECT
+               *
+               FROM PRODUCT
+              WHERE STATUS = 'Y'
+              <if test="searchStandard == 'no' and searchValue != null and searchValue != ''">
+	   		  	AND PRODUCT_NO LIKE '%' || #{ searchValue } || '%'
+	   		  </if>	
+	   		  <if test="searchStandard == 'name' and searchValue != null and searchValue != ''">
+	   		  	AND PRODUCT_KNAME LIKE '%' || #{ searchValue } || '%'
+	   		  </if>
+	   		  <if test="sortStandard == 'no_low'">
+				ORDER BY PRODUCT_NO		  
+			  </if>	
+			  <if test="sortStandard == 'no_high'">
+				ORDER BY PRODUCT_NO	DESC
+			  </if>	
+			  <if test="sortStandard == 'stock_low'">
+				ORDER BY PRODUCT_COUNT, PRODUCT_NO			  
+			  </if>	
+			  <if test="sortStandard == 'stock_high'">
+				ORDER BY PRODUCT_COUNT DESC, PRODUCT_NO		  
+			  </if>	) PLIST)
+      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+	<!-- ajax 테스트 -->
+	
 	<select id="selectProductList" resultMap="productListResultMap" parameterType="_int">
 		SELECT
                PRODUCT_NO

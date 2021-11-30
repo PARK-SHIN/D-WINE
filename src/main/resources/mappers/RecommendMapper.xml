@@ -12,7 +12,6 @@
 		<id property="productNo" column="PRODUCT_NO"/>
 		<result property="productKName" column="PRODUCT_KNAME"/>
 		<result property="productEName" column="PRODUCT_ENAME"/>
-		<result property="costPrice" column="COST_PRICE"/>
 		<result property="salePrice" column="SALE_PRICE"/>
 		<result property="productCount" column="PRODUCT_COUNT"/>
 		<result property="winery" column="WINERY"/>
@@ -63,7 +62,6 @@
 		      P.PRODUCT_NO
 		    , P.PRODUCT_KNAME
 		    , P.PRODUCT_ENAME
-		    , P.COST_PRICE
 		    , P.SALE_PRICE
 		    , P.PRODUCT_COUNT
 		    , P.WINERY
@@ -102,7 +100,6 @@
 		      P.PRODUCT_NO
 		    , P.PRODUCT_KNAME
 		    , P.PRODUCT_ENAME
-		    , P.COST_PRICE
 		    , P.SALE_PRICE
 		    , P.PRODUCT_COUNT
 		    , P.WINERY

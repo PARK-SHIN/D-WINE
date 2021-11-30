@@ -6,8 +6,12 @@
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <title>recommend wine main</title>
 <style>
+	* {
+          font-family: 'Gowun Batang', serif;
+       }
 	.wrapper {
 		width: 1300px;
 		margin: 0 auto;
@@ -33,6 +37,10 @@
 	
 	#search_btn {
 		height: 30px;
+		background: #83131E;
+		color: #ffffff;
+		border: none;
+		border-radius: 5px;
 	}
     #input_box {
         border: none;
@@ -70,7 +78,7 @@
 	    <hr>
 	    <div class="content">	
 	        <div id="search_area">
-	            <form id="searchForm" th:action="@{/recommendWine/search}" method="post">
+	            <form id="searchForm" th:action="@{/recommendWine/search}" method="post" onsubmit="return validate()">
 	                <input id="input_box" type="text" name="search_hash" placeholder="#해시태그를 입력하세요.">
 	                <button id="search_btn">검색</button>
 	            </form>
@@ -121,6 +129,14 @@
 		$("<ul></ul>").append(targets2.slice(i, i+10)).appendTo(".list_area2");
 		}
 		 */
+		 
+		 function validate() {
+			 
+			 if($("input[name=search_hash]").val() == null) {
+				 alert("검색하실 해시태그명을 입력해주세요.");
+				 return false;
+			 }
+		 }
 		 
 		$(function(){
 			$("input[name=search_hash]").val("");
