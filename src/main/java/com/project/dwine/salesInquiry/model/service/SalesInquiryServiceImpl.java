@@ -24,8 +24,19 @@ public class SalesInquiryServiceImpl implements SalesInquiryService{
 	}
 
 	@Override
-	public List<Total> dailyList() {
-		return salesInquiryMapper.dailyList();
+	public List<Total> yearSales() {
+		return salesInquiryMapper.yearSales();
 	}
+
+	@Override
+	public List<Total> dailyList(int startRow, int endRow) {
+		return salesInquiryMapper.dailyList(startRow, endRow);
+	}
+
+	@Override
+	public int getDailyListCount() {
+		return salesInquiryMapper.getDailyListCount();
+	}
+
 
 }
