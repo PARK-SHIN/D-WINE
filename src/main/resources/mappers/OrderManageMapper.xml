@@ -34,6 +34,7 @@
 		     , P.PURCHASE_DATE
 		     , P.USE_POINT
 		     , P.PURCHASE_PRICE
+		     , P.USE_POINT
 		     , P.PICKUP_DATE
 		     , P.PICKUP_PLACE
 		     , P.PICKUP_TIME
@@ -132,6 +133,18 @@
 		UPDATE PURCHASE
 		   SET ORDER_STATUS = #{ orderStatus }
 		 WHERE PURCHASE_NO = #{ purchaseNo }
+	</update>
+	
+	<update id="updatePoint" parameterType="com.project.dwine.orderManage.model.vo.Purchase">
+		UPDATE POINT
+		   SET STATUS = 'N'
+		 WHERE PURCHASE_NO = #{ purchaseNo }
+	</update>
+	
+	<update id="updateMember" parameterType="com.project.dwine.orderManage.model.vo.Purchase">
+		UPDATE MEMBER
+		   SET USER_POINT = USER_POINT + #{ usePoint }
+		 WHERE USER_NO = #{ userNo }
 	</update>
 	
 	<update id="updateAllChange" parameterType="com.project.dwine.orderManage.model.vo.Purchase">

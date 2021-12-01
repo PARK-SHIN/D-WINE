@@ -12,6 +12,10 @@ public interface OrderManageService {
 	
 	int updateOrderStatus(String purchaseNo, String orderStatus);
 
+	int updatePoint(String purchaseNo);
+	
+	int updateMember(int userNo, int usePoint);
+
 	int deleteOrder(String purchaseNo);
 
 	Purchase selectOrderDetail(String purchaseNo);
@@ -19,4 +23,6 @@ public interface OrderManageService {
 	int updateAllChange(String purchaseNo, String orderStatus);
 
 	List<Purchase> selectSearchList(String searchStatus, String searchCondition, String searchValue);
+
+
 }

@@ -69,9 +69,31 @@ public class OrderManageController {
 	// 주문 상태 변경
 	@PostMapping(value = "update")
 	@ResponseBody
-	public void updateOrderStatus(@RequestParam String purchaseNo, @RequestParam String odStatus) {
+	public String updateOrderStatus(@RequestParam String purchaseNo, @RequestParam String odStatus, 
+								  	@RequestParam int userNo, @RequestParam int usePoint) {
 		
-		int result = orderManageService.updateOrderStatus(purchaseNo, odStatus);
+		
+		int result1 = orderManageService.updateOrderStatus(purchaseNo, odStatus);	
+		
+		String str = "";
+		if(odStatus.equals("환불완료") && odStatus.equals("결제취소")) {
+			// point, member 테이블
+			int result2 = orderManageService.updatePoint(purchaseNo);
+			int result3 = orderManageService.updateMember(userNo, usePoint);
+			
+			if(result1 + result2 + result3 == 3) {
+				str = "success";
+			} else {
+				str = "fail";
+			} 
+		} else {
+			if(result1 > 0) {
+				str = "success";
+			} else {
+				str = "fail";
+			}
+		}
+		return str; 
 	}
 	
 	// 일괄 상태 변경

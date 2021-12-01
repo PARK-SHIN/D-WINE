@@ -15,12 +15,15 @@ public interface OrderManageMapper {
 	
 	int updateOrderStatus(String purchaseNo, String orderStatus);
 
+	int updatePoint(String purchaseNo);
+	
+	int updateMember(int userNo, int usePoint);
+
 	int deleteOrder(String purchaseNo);
 
 	Purchase selectOrderDetail(String purchaseNo);
 
 	int updateAllChange(String purchaseNo, String orderStatus);
 
-	List<Purchase> selectSearchList(String searchStatus, String searchCondition, String searchValue);
-	
+	List<Purchase> selectSearchList(String searchStatus, String searchCondition, String searchValue);	
 }
