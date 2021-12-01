@@ -531,8 +531,39 @@
 	FROM POINT
 	WHERE PURCHASE_NO = #{purchase_no}
 	</select>
-
-	
+	<select id="checkReport" resultType="com.project.dwine.manage.model.vo.Report">
+	SELECT
+        REPORT_NO
+      , USER_NO
+      , REASON_NO
+      , REVIEW_NO
+      , REPORTER_NO
+      , REPORT_DATE
+    FROM REPORT
+    WHERE REPORTER_NO = #{user_no}
+    AND REVIEW_NO = #{reviewNo}
+	</select>
+	<insert id="insertReport"  parameterType="com.project.dwine.manage.model.vo.Report">
+	INSERT
+	INTO REPORT
+	(
+	    REPORT_NO
+	  , USER_NO
+	  , REASON_NO
+	  , REVIEW_NO
+	  , REPORTER_NO
+	  , REPORT_DATE
+	)
+	VALUES
+	(
+	    SEQ_RPNO.NEXTVAL
+	    , #{userNo}
+	    , #{reasonNo}
+	    , #{reviewNo}
+	    , #{user_no}
+	    , SYSDATE
+	)
+	</insert>
 	
 </mapper>
 

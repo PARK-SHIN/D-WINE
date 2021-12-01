@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.project.dwine.manage.model.vo.Report;
 import com.project.dwine.member.model.vo.Member;
 import com.project.dwine.purchase.model.vo.Hashtag;
 import com.project.dwine.purchase.model.vo.OrderDetail;
@@ -54,6 +55,10 @@ public interface PurchaseMapper {
 	Point selectPoint(String purchase_no);
 
 	List<Review> reviewList(String id);
+
+	Report checkReport(int user_no, int reviewNo);
+
+	int insertReport(int user_no, int userNo, int reviewNo, int reasonNo);
 
 
 

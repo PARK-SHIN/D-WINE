@@ -11,6 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <style>
+   	 * {
+          font-family: 'Gowun Batang', serif;
+       }
         .wine_detail_view{
             width: 1000px;
             margin : 0 auto;
@@ -476,6 +479,9 @@
 
 <body>
 <header th:include="common/header :: header"></header>
+
+
+
 <div class="wrapper">
     <div class="wine_detail_view">
     <div class="product_view">
@@ -941,8 +947,10 @@
                     </p>
                     <p class="report_btn">
                     	<input type="hidden" class="reviewUserNo" th:value="${reviews.user_no}">
-                        <button class="report" onclick="report()">신고</button>
+                        <input type="hidden" class="reviewNo" th:value="${reviews.review_no}">
+                        <button class="report" >신고</button>
                     </p>
+                 
                 </div>
 
                 
@@ -980,6 +988,9 @@
         </ul>    
                 
       </div>
+      
+      	
+      
         <script>
 	        //	var userNo = (document.querySelector(".reviewUserNo").value);
 	        	
@@ -987,13 +998,19 @@
 	        	    
 	        //		console.log("유저 번호 : " + userNo);
 	        		console.log(this.closest("li").querySelector(".reviewUserNo").value);
-	        		var shin = (this.closest("li").querySelector(".reviewUserNo").value);
-	        	 	 console.log("dd : " + shin);
-	        	 	// var url = "purchase/reviewReport?shin=" + shin;
-	        	  window.open("/purchase/reviewReport?shin=" + shin, "_blank","width=1080, height=700");
+	        		var userNo = (this.closest("li").querySelector(".reviewUserNo").value);
+	        		var reviewNo = (this.closest("li").querySelector(".reviewNo").value);
+	        	 	console.log("dd : " + userNo);
+	 
+	        	  reviewReport(userNo,reviewNo);
+	        	  
 	        	});
 	        	
-	      
+	      	function reviewReport(userNo,reviewNo){
+	      		
+	        	  window.open("/purchase/reviewReport?userNo=" + userNo + "&reviewNo=" + reviewNo, "_blank","toolbar=yes,menubar=yes,width=500, height=630");
+	        	  
+	      	}
 	        
     	</script>
           <!--</div>   -->
@@ -1060,19 +1077,7 @@
 	            </script>
        
         
-        
-        
-        
-        
-        
-        
-        
-        
-	<script>
-        function report(){
-            window.open("/purchase/reviewReport", "popup1", "width=500, height=600");
-        }
-    </script>
+     
     
     
         <h3 class="product_h3">교환 및 반품 안내</h3>
