@@ -16,4 +16,6 @@ public interface RecommendMapper {
 
 	List<Product> searchWineList(String hashName);
 
+	List<Product> selectProductByWeather(int typeNo, int varietyNo1, int varietyNo2);
+
 }

@@ -1,0 +1,75 @@
+@charset "UTF-8";
+	* {
+          font-family: 'Gowun Batang', serif;
+      }
+    #content {
+        display: flex;
+        width: fit-content;
+        padding: 20px;
+        margin: 0 auto;
+    }
+    #left_box {
+        display: flex;
+        margin-right: 30px;
+    }
+    .list_box {
+        width: 150px;
+        height: 400px;
+        overflow-y: scroll;
+        border: 1px solid black;
+        margin-right: 10px;
+        padding: 10px;
+    }
+    .list_box > li {
+    	list-style: none;
+    	text-align: left;
+    }
+    
+    .list_box > li:hover {
+    	background:  rgba(196, 196, 196, 0.3);
+    }
+    
+    #right_box {
+        margin : auto 0;
+    }
+    .label {
+        display: inline-block;
+        width: 130px;
+    }
+    .center {
+        text-align: center;
+    }
+    .center > label {
+        text-align: center;
+    }
+    .controll {
+    	margin-bottom: 20px;
+    }
+    li:hover {
+    	background: #c4c4c4;
+    }
+    .btn_area {
+    	margin-top: 20px;
+    }
+    .btn {
+    	background: #83131E;
+		color: white;
+		border-radius: 5px;
+		width: 70px;
+		height: 40px;
+    }
+    #hashNameCheck {
+    	background: white;
+		border-radius: 5px;
+		color: #525252;
+		border: 1px solid #525252;
+		margin-left: 5px;
+    }
+    #closeBtn {
+    	background: white;
+		border-radius: 5px;
+		color: #525252;
+		border: 1px solid #525252;
+		width: 70px;
+		height: 40px;
+    }

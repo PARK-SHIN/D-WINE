@@ -1,0 +1,33 @@
+@charset "UTF-8";
+	html, body {
+		width:fit-content;
+		height: fit-content;
+	}
+	* {
+          font-family: 'Gowun Batang', serif;
+       }
+	.container {
+		width: 220px;
+		height : 530px;
+		border : 1px solid black;
+		text-align: center;
+	}
+	.content {
+		height: 500px;
+		margin: 15px 0;
+	}
+	#weather_img {
+		width: 100px;
+		height: 100px;
+	}
+	#current_temp {
+		font-size: 40px;
+		margin: 20px 0;
+	}
+	#wine_img {
+		width: 150px;
+		height: 150px;
+	}
+	.name_area {
+		font-size: 8px;
+	}

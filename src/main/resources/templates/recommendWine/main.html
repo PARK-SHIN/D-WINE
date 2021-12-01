@@ -6,70 +6,9 @@
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/recommendWine/main.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-<title>recommend wine main</title>
-<style>
-	* {
-          font-family: 'Gowun Batang', serif;
-       }
-	.wrapper {
-		width: 1300px;
-		margin: 0 auto;
-	}
-    .content {
-        text-align: center;
-    }
-    #content_area {
-        display: flex;
-        justify-content: space-between;
-    }
-    .img {
-        width: 80%;
-        height: 300px;
-        border-radius: 3px;
-    }
-    .wine_area {
-        width: 50%;
-    }
-    #search_area {
-       margin: 4em 0;
-    }
-	
-	#search_btn {
-		height: 30px;
-		background: #83131E;
-		color: #ffffff;
-		border: none;
-		border-radius: 5px;
-	}
-    #input_box {
-        border: none;
-        border-bottom: #83131E 1px solid;
-        width: 800px;
-        height : 30px;
-        text-align: center;
-    }
-    
-    #input_box:focus {
-    	outline: none;
-    }
-    
-    ul {
-    	list-style: none;
-    	padding-left: 70px;
-    }
-    
-    li {
-    	text-align: left;
-    }
-    li:hover {
-    	cursor: pointer;
-    	text-decoration: underline;
-    }
-    .list_area1, .list_area2 {
-    	display: flex;
-    }
-</style>
+<title>recommend wine by hashtag(main)</title>
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
@@ -111,7 +50,6 @@
     <footer th:include="common/footer :: footer"></footer>
     
     <script>
-	
 	    var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		$(document).ajaxSend(function(e, xhr, options) {

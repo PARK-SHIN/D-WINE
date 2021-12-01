@@ -13,4 +13,6 @@ public interface RecommendService {
 
 	List<Product> searchWineList(String hashName);
 
+	List<Product> selectProductByWeather(int typeNo, int varietyNo1, int varietyNo2);
+
 }
