@@ -66,31 +66,18 @@
         </div>
         </div>
         <div class="paging__area">
-        	<ul class="paging_ul">
-					<!-- 맨 첨으로(<<) -->
-					<li class="go_first"><a th:href="@{/qna/userqna(page=1)}">&lt;&lt;</a></li>
-					<!-- 이전 페이지로(<) -->
-					<li class="go_prev" th:if="${ pi.page > 1 }"><a th:href="@{/qna/userqna(page=${pi.page - 1})}">&lt;</a></li>
+        		<ul class="paging_ul">
+					<li><a th:href="@{/qna/userqna(page=1)}">&lt;&lt;</a></li>
+					<li th:if="${ pi.page > 1 }"><a th:href="@{/qna/userqna(page=${pi.page - 1})}">&lt;</a></li>
 					<li th:unless="${ pi.page > 1 }"><a href="#">&lt;</a></li>
-					<!-- 페이지 목록(최대 10개) -->
-					<li class="" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}">
-					<a th:if="${ pi.page == page }" class="pageNo current_page" th:text="${page}" href="#"></a>
-					<a class="pageNo" th:unless="${ pi.page == page }" th:text="${page}" th:href="@{/qna/userqna(page=${page})}"></a>
+					<li th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}">
+						<a th:if="${ pi.page == page }" class="current_page" th:text="${page}" href="#"></a>
+						<a th:unless="${ pi.page == page }" th:text="${page}" th:href="@{/qna/userqna(page=${page})}"></a>
 					</li>
-					<!-- 다음 페이지로(>) -->
-					<li class="pageNo" th:if="${ pi.page < pi.maxPage }"><a th:href="@{/qna/userqna(page=${pi.page + 1})}">&gt;</a></li>
-					<li class="go_next" th:unless="${ pi.page < pi.maxPage }"><a href="#">&gt;</a></li>
-					<!-- 맨  끝으로(>>) -->
-					<li class="go_end"><a th:href="@{/qna/userqna(page=${pi.endPage}}">&gt;&gt;</a></li>
+					<li th:if="${ pi.page < pi.maxPage }"><a th:href="@{/qna/userqna(page=${pi.page + 1})}">&gt;</a></li>
+					<li th:unless="${ pi.page < pi.maxPage }"><a href="#">&gt;</a></li>
+					<li><a th:href="@{/qna/userqna(page=${pi.endPage})}">&gt;&gt;</a></li>
 				</ul>
-		 	<!-- <ul class="paging_ul">
-				<li class="go_first" th:href="@{/qna/userqna(page=1)}">&lt;&lt;</li>
-				<li class="go_prev" th:href="@{/qna/userqna(page=${pi.page - 1})}">&lt;</li>
-				<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
-				<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
-				<li class="go_next">&gt;</li>
-				<li class="go_end">&gt;&gt;</li>
-			</ul>  -->
 		</div>
     </div>
    </div>

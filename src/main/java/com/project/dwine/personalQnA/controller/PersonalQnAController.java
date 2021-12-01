@@ -172,7 +172,7 @@ public class PersonalQnAController {
 			resultPage = Integer.parseInt(page);
 		}
 		
-		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 5);
 		
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
