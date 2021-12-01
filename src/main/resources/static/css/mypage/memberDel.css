@@ -1,85 +1,87 @@
 @charset "UTF-8";
+
+* {
+	font-size: 18px;
+	font-family: 'Gowun Batang', serif;
+}
+
 #container {
-        width: 1100px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: nowrap;
-        /* border: 1px solid red; */
-    }
+	width: 1100px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+}
 
-    .snb {
-        width: 200px;
-        /* height: 2500px; */
-        height: 100%;
-        /* border: 1px solid blue; */
-    }
+.snb {
+	width: 200px;
+	height: 100%;
+}
 
-    .contents {
-        width: 888px;
-        height: 100%;
-        /*2500px -> 100%*/
-        /* border: 1px solid black; */
-    }
+.contents {
+	width: 888px;
+	height: 100%;
+}
 
-    .inner {
-        margin-top: 30px;
-        margin-left: 27px;
-        width: 836px;
-        height: 100%;
-        /* border: 1px solid yellow; */
-    }
-    a {
-        text-decoration: none;
-        color: #000;
-    }
+.inner {
+	margin-top: 30px;
+	margin-left: 27px;
+	width: 836px;
+	height: 100%;
+}
 
-    .snb {
-        width: 210px;
-    }
+a {
+	text-decoration: none;
+	color: #000;
+}
 
-    .snb_inner {
-        width: 170px;
-        margin: 30px auto 0;
-    }
+.snb {
+	width: 210px;
+}
 
-    .snb_inner>h2 {
-        font-size: 20px;
-        font-weight: 700;
-        margin-bottom: 17px;
-    }
+.snb_inner {
+	width: 170px;
+	margin: 30px auto 0;
+}
 
-    /* .snb_inner>ul>li {
-        margin-bottom: 20px;
-        list-style: none;
-    } */
-    #userId{
-        border: 0;
-        background-color: lightgray;
-    }
-    .idArea {
-        width: 300px;
-        background-color: lightgray;
-        height: 50px;
-        margin-right: 50px;
-        margin-left: 150px;
-    }
-    label {
-        height: 40px;
-        width: 300px;
-    }
-    .modifyArea {
-        margin-top: 50px;
-    }
-    #save {
-        padding: 10px 15px;
-        border-radius: 5px;
-        background-color: #83131E;
-        color: #fff;
-        border : 0px;
-        cursor: pointer;
-    }
-    .cmd {
-        margin-left: 380px;
-        margin-top: 50px;
-    }
+.snb_inner>h2 {
+	font-size: 20px;
+	font-weight: 700;
+	margin-bottom: 17px;
+}
+
+#userId {
+	border: 0;
+	background-color: #ebebeb;
+	padding-left: 10px;
+}
+
+.idArea {
+	width: 300px;
+	height: 50px;
+	margin-right: 50px;
+	margin-left: 102px;
+}
+
+label {
+	height: 40px;
+	width: 300px;
+}
+
+.modifyArea {
+	margin-top: 50px;
+}
+
+#save {
+	padding: 10px 15px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 0px;
+	cursor: pointer;
+}
+
+.cmd {
+	margin-left: 380px;
+	margin-top: 50px;
+}

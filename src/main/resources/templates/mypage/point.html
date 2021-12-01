@@ -7,6 +7,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/point.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
 </head>
 <body>
 <header th:include="common/header :: header"></header>
@@ -27,7 +28,7 @@
                 </div>
                 <hr style="width: 700px; padding-right: 130px;">
                 <h3 class="title">총 적립금</h3>
-                <h3 class="title" id="sum"></h3>
+                <h3 class="title" id="sum" th:text="${m.user_point}"></h3>
                 <div class="totalArea" th:each="point : ${pointList}">
                		<input type="hidden" class="hiddenarea" th:value="${point.total}">
                </div>
@@ -53,7 +54,7 @@
                         <li class="num">-</li>
                         <li class="date"><label th:text="${#dates.format(m.create_date, 'yyyy.MM.dd')}"></label></li>
                         <li class="point">2000</li>
-                        <li class="content">첫 회원가입 이벤트</li>
+                        <li class="content">첫 회원가입 이벤트 적립</li>
                     </ul>	
 					</th:block>
                     <ul th:each="point,index : ${pointList}">
@@ -75,7 +76,7 @@
             </div>
         </div>
     </div>
-    <script>
+    <!-- <script>
     	var test = document.querySelector(".inner").firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling;
     	console.log(test);
     	var test2 = test.nextSibling.nextSibling;
@@ -100,7 +101,7 @@
     	console.log("d : " +d);
     	
     	test2.innerHTML= d;
-    </script>
+    </script> -->
 <footer th:include="common/footer :: footer"></footer>
 </body>
 </html>

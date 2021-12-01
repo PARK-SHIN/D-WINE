@@ -1,100 +1,224 @@
 @charset "UTF-8";
+
 #container {
-            width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-            /* border: 1px solid red; */
-        }
+	width: 1100px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+	/* border: 1px solid red; */
+}
 
-        .snb {
-            width: 200px;
-            /* height: 2500px; */
-            height: 100%;
-            /* border: 1px solid blue; */
-        }
+.snb {
+	width: 200px;
+	/* height: 2500px; */
+	height: 100%;
+	/* border: 1px solid blue; */
+}
 
-        .contents {
-            width: 888px;
-            height: 100%;
-            /*2500px -> 100%*/
-            /* border: 1px solid black; */
-        }
+.contents {
+	width: 888px;
+	height: 100%;
+	/*2500px -> 100%*/
+	/* border: 1px solid black; */
+}
 
-        .inner {
-            margin-top: 30px;
-            margin-left: 27px;
-            width: 836px;
-            height: 100%;
-            /* border: 1px solid yellow; */
-        }
-        a {
-            text-decoration: none;
-            color: #000;
-        }
+.inner {
+	margin-top: 30px;
+	margin-left: 27px;
+	width: 836px;
+	height: 100%;
+	/* border: 1px solid yellow; */
+}
 
-        .snb {
-            width: 210px;
-        }
+a {
+	text-decoration: none;
+	color: #000;
+}
 
-        .snb_inner {
-            width: 170px;
-            margin: 30px auto 0;
-        }
+.snb {
+	width: 210px;
+}
 
-        .snb_inner>h2 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 17px;
-        }
+.snb_inner {
+	width: 170px;
+	margin: 30px auto 0;
+}
 
-        /* .snb_inner>ul>li {
+.snb_inner>h2 {
+	font-size: 20px;
+	font-weight: 700;
+	margin-bottom: 17px;
+}
+
+/* .snb_inner>ul>li {
             margin-bottom: 20px;
             list-style: none;
         } */
-        button {
-            padding: 10px 15px;
-            border-radius: 5px;
-            background-color: #83131E;
-            color: #fff;
-            border : 0px;
-            cursor: pointer;
-        }
-        .inputbox{
-            width: 500px;
-            height: 45px;
-        }
-        form > input {
-            font-size: 18px;
-        }
-        #save {
-            padding: 10px 15px;
-            border-radius: 5px;
-            background-color: #83131E;
-            color: #fff;
-            border : 0px;
-            cursor: pointer;
-        }
-        .cmd {
-            margin-left: 230px;
-            margin-top: 20px;
-        }
-        #nickname_check {
-        	padding: 10px 15px;
-            border-radius: 5px;
-            background-color: #83131E;
-            color: #fff;
-            border : 0px;
-            cursor: pointer;
-            font-size : 13px;
-        }
-        #check_nickName{
-        	padding: 10px 15px;
-            border-radius: 5px;
-            background-color: #83131E;
-            color: #fff;
-            border : 0px;
-            cursor: pointer;
-            font-size : 13px;
-        }
+button {
+	padding: 10px 15px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 0px;
+	cursor: pointer;
+}
+
+.inputbox {
+	width: 500px;
+	height: 45px;
+}
+
+form>input {
+	font-size: 18px;
+}
+
+#save {
+	padding: 10px 15px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 0px;
+	cursor: pointer;
+}
+
+.cmd {
+	margin-left: 230px;
+	margin-top: 20px;
+}
+
+#nickname_check {
+	padding: 10px 15px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 0px;
+	cursor: pointer;
+	font-size: 13px;
+}
+
+#check_nickName {
+	padding: 10px 15px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 0px;
+	cursor: pointer;
+	font-size: 13px;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal .bg {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modalBox {
+	position: absolute;
+	background-color: #fff;
+	width: 500px;
+	height: 550px;
+	padding: 15px;
+}
+
+.modalBox button {
+	display: block;
+	width: 80px;
+	margin: 0 auto;
+}
+
+.hidden {
+	display: none;
+}
+
+.pwdOuter {
+	width: 500;
+	height: 500;
+}
+
+.pwdHeader {
+	position: relative;
+	width: 400px;
+	height: 60px;
+	left: 50px;
+	top: 0px;
+}
+
+.pwdHeader h1 {
+	font-style: normal;
+	font-weight: bold;
+	font-size: 34px;
+	line-height: 49px;
+	align-items: center;
+	text-align: center;
+	letter-spacing: -0.02em;
+}
+
+.pwdForm {
+	position: relative;
+	width: 300px;
+	height: 380px;
+	left: 50px;
+	padding-top: 10px;
+}
+
+.pwdForm h4 {
+	font-style: normal;
+	font-weight: normal;
+	font-size: 16px;
+	line-height: 23px;
+	display: flex;
+	align-items: center;
+	letter-spacing: -0.02em;
+}
+
+.input_area {
+	display: inline-block;
+	width: 300px;
+	height: 40px;
+	left: 0px;
+	top: 70px;
+	margin-bottom: 10px;
+	border: 1px solid #000000;
+	box-sizing: border-box;
+}
+
+.input_area input {
+	width: 250px;
+	height: 30px;
+	border: 0px;
+	margin: 5px 25px 5px 25px;
+}
+
+.btnArea {
+	text-align: center;
+	padding: 30px;
+}
+
+#updatePwdBtn {
+	padding: 10px 15px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 0px;
+	cursor: pointer;
+}
+
+.closeArea {
+	float: right;
+}
+
+.closeBtn:hover {
+	cursor : pointer;	
+}

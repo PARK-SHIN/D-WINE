@@ -91,26 +91,6 @@
 			USER_PHONE = #{user_phone}
 		WHERE USER_NO = #{user_no}
 	</update>
-	
-	<select id="findAllReview" resultMap="ReviewResultMap">
-		SELECT
-			REVIEW_NO,
-			review_text,
-			REVIEW_IMAGE,
-			REVIEW_DATE,
-			REVIEW_MODIFY,
-			STAR,
-			r.STATUS,
-			r.USER_NO,
-			r.OD_NO,
-			p.product_kname
-		FROM REVIEW r
-		JOIN ORDER_DETAIL od ON(r.od_no = od.od_no)
-        JOIN PRODUCT p ON(od.product_no = p.product_no)
-		WHERE r.STATUS = 'Y'
-		AND USER_NO = #{user_no}
-		ORDER BY REVIEW_DATE DESC
-	</select>
 
 	<select id="selectMember" resultMap="memberResultMap">
 		SELECT
@@ -173,20 +153,6 @@
 		WHERE REVIEW_NO = #{review_no}
 	</update>
 	
-	<select id="selectWishList" resultMap="WishResultMap">
-		SELECT 
-			WISH_NO,
-			WISH_DATE,
-			USER_NO,
-			P.PRODUCT_NO,
-			P.PRODUCT_KNAME,
-			P.THUMBNAIL
-		FROM WISH W
-		JOIN PRODUCT P ON (W.PRODUCT_NO=P.PRODUCT_NO)
-		WHERE USER_NO = #{user_no}
-		order by wish_date desc
-	</select>
-	
 	<select id="pointList" resultMap="PointResultMap"> 
 		SELECT
 			POINT_NO,
@@ -208,37 +174,6 @@
         OR PC.STATUS = 'Y')
         GROUP BY POINT_NO, CONTENT, PDATE, P.USER_NO, R.REVIEW_NO, PC.PURCHASE_NO, POINT, PC.USE_POINT, P.STATUS
 		ORDER BY POINT_NO
-	</select>
-	
-	<select id="selectOrderList" resultMap="PurchaseResultMap">
-		select
-		    p.purchase_no,
-		    purchase_date,
-		    purchase_price,
-		    pickup_date,
-		    pickup_place,
-		    pickup_time,
-		    order_status,
-		    p.status,
-		    refund_date,
-		    p.user_no,
-		    od.od_no,
-		    od_count,
-		    od_price,
-		    od.product_no,
-		    pro.product_kname,
-		    r.review_no,
-            pay_no,
-            pay_method,
-            pay_date,
-            pay.purchase_no
-		from order_detail od
-        left join purchase p on (p.purchase_no = od.purchase_no)
-        left join payment pay on (p.purchase_no = pay.purchase_no)
-		left join product pro on(pro.product_no = od.product_no)
-		left join review r on (r.od_no = od.od_no)
-		where p.user_no = #{user_no}
-		order by p.purchase_no DESC
 	</select>
 	
 	<update id="pickupModify" parameterType="com.project.dwine.mypage.model.vo.Purchase">
@@ -288,7 +223,8 @@
 		UPDATE PURCHASE
 		SET
 		ORDER_STATUS = '결제취소',
-		REFUND_DATE = SYSDATE
+		REFUND_DATE = SYSDATE,
+		STATUS = 'N'
 		WHERE PURCHASE_NO = #{purchase_no}
 	</update>
 	
@@ -305,7 +241,7 @@
 	<insert id="insertReviewPoint" parameterType="com.project.dwine.mypage.model.vo.Point">
 		INSERT INTO POINT 
         (point_no, CONTENT, POINT, PDATE, STATUS, USER_NO, REVIEW_NO)
-        VALUES(seq_point_no.nextval, '리뷰에 대한 적립', 300, sysdate, 'Y', #{user_no}, #{review_no})
+        VALUES (seq_point_no.nextval, '리뷰에 대한 적립', 300, sysdate, 'Y', #{user_no}, #{review_no})
 	</insert>
 	
 	<insert id="insertWishToCart" parameterType="com.project.dwine.mypage.model.vo.Cart">
@@ -344,6 +280,131 @@
 	
 	<update id="updateAddMemberPoint" parameterType="com.project.dwine.member.model.vo.Member">
 		UPDATE MEMBER SET USER_POINT = USER_POINT + 300 
+		WHERE USER_NO = #{user_no}
+	</update>
+	
+	<select id="getTotalListCount" resultType="_int">
+		SELECT COUNT(*) FROM ORDER_DETAIL OD LEFT JOIN PURCHASE P ON(P.PURCHASE_NO = OD.PURCHASE_NO) WHERE USER_NO = #{user_no}
+	</select>
+	
+	<select id="selectOrderListPage" resultMap="PurchaseResultMap">
+		select
+		    purchase_no,
+		    purchase_date,
+		    purchase_price,
+		    pickup_date,
+		    pickup_place,
+		    pickup_time,
+		    order_status,
+		    status,
+		    refund_date,
+		    user_no,
+		    od_no,
+		    od_count,
+		    od_price,
+		    product_no,
+		    product_kname,
+		    review_no
+		from (SELECT ROWNUM RNUM, PLIST.* FROM ( SELECT
+            p.purchase_no,
+		    purchase_date,
+		    purchase_price,
+		    pickup_date,
+		    pickup_place,
+		    pickup_time,
+		    order_status,
+		    p.status,
+		    refund_date,
+		    p.user_no,
+		    od.od_no,
+		    od_count,
+		    od_price,
+		    od.product_no,
+		    pro.product_kname,
+		    r.review_no
+            FROM order_detail od
+        left join purchase p on (p.purchase_no = od.purchase_no)
+		left join product pro on(pro.product_no = od.product_no)
+		left join review r on (r.od_no = od.od_no)
+		where p.user_no = #{user_no}
+		order by p.purchase_no DESC) PLIST )
+        WHERE RNUM BETWEEN  #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="getTotalWishListCount" resultType="_int">
+		SELECT COUNT(*) FROM WISH WHERE USER_NO = #{user_no}
+	</select>
+	
+	<select id="selectWishListPage" resultMap="WishResultMap">
+		SELECT 
+			WISH_NO,
+			WISH_DATE,
+			USER_NO,
+			PRODUCT_NO,
+			PRODUCT_KNAME,
+			THUMBNAIL
+		FROM (SELECT ROWNUM RNUM, WLIST.* FROM (SELECT
+            WISH_NO,
+			WISH_DATE,
+			USER_NO,
+			P.PRODUCT_NO,
+			P.PRODUCT_KNAME,
+			P.THUMBNAIL FROM WISH W JOIN PRODUCT P ON (W.PRODUCT_NO=P.PRODUCT_NO)
+		WHERE USER_NO = #{user_no}
+		order by wish_date desc) WLIST
+        ) WHERE RNUM BETWEEN  #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="findAllReviewPage" resultMap="ReviewResultMap">
+		SELECT
+			REVIEW_NO,
+			review_text,
+			REVIEW_IMAGE,
+			REVIEW_DATE,
+			REVIEW_MODIFY,
+			STAR,
+			STATUS,
+			USER_NO,
+			OD_NO,
+			product_kname
+		FROM (SELECT ROWNUM RNUM, RLIST.* FROM (SELECT
+        REVIEW_NO,
+			review_text,
+			REVIEW_IMAGE,
+			REVIEW_DATE,
+			REVIEW_MODIFY,
+			STAR,
+			r.STATUS,
+			r.USER_NO,
+			r.OD_NO,
+			p.product_kname
+		FROM REVIEW r JOIN ORDER_DETAIL od ON(r.od_no = od.od_no)
+        JOIN PRODUCT p ON(od.product_no = p.product_no)
+		WHERE r.STATUS = 'Y'
+		AND USER_NO = #{user_no}
+		ORDER BY REVIEW_DATE DESC) RLIST
+        ) WHERE RNUM BETWEEN  #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="getTotalReviewListCount" resultType="_int">
+		SELECT COUNT(*) FROM REVIEW WHERE USER_NO = #{user_no}
+	</select>
+	
+	<update id="memberPointReviewDelete" parameterType="com.project.dwine.member.model.vo.Member">
+		UPDATE MEMBER SET USER_POINT = USER_POINT - 300 
+		WHERE USER_NO = #{user_no}
+	</update>
+	
+	<select id="findPurchasePoint" resultMap="PointResultMap">
+		SELECT 
+			*
+		FROM POINT
+		WHERE PURCHASE_NO = #{purchase_no}
+	</select>
+	
+	<update id="memberPointPayCancelDelete" parameterType="com.project.dwine.member.model.vo.Member">
+		UPDATE MEMBER SET
+		USER_POINT = USER_POINT - #{point} + #{use_point}
 		WHERE USER_NO = #{user_no}
 	</update>
 </mapper>
