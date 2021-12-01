@@ -21,7 +21,7 @@
             justify-content: space-between;
             flex-wrap: nowrap;
             border: 1px solid red;
-            height: 1400px;
+            /* height: 1400px; */
     }
 
     .snb {
@@ -110,6 +110,37 @@
         background-color: rgba(196, 196, 196, 0.3);
         border: none;
     }
+    
+    /* 페이징 부분 */
+	.paging_ul {
+		height: 50px;
+		line-height: 50px;
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		width: 480px;
+		margin: 30px auto;
+	}
+	
+	.paging_ul li {
+		text-decoration: none;
+		display: block;
+		text-align: center;
+		border: 1px solid #dae0e9;
+	    margin-left: 10px;
+		width: 37px;
+		height: 37px;
+		line-height : 37px;
+	    font-size: 12px;
+	    border-radius : 5px;
+	}
+	
+	.current_page {
+		border: 1px solid  #83131E;
+	    background:  #83131E;
+	    color: white;
+	    border-radius : 5px;
+	}
 
     </style>
 </head>
@@ -159,7 +190,7 @@
                             <th>할인</th>
                         </tr>
                         </thead>
-						<tbody>
+						<tbody id="dailyList">
                         <tr th:each="d : ${ dailyList }">
                             <!-- 일자 -->
                             <td th:text="${#dates.format(d.daily, 'yyyy.MM.dd (E)')}">2021.10.28(목)</td>
@@ -192,8 +223,20 @@
                         </tfoot>
                     </table>
                 </div>
-
             </div>
+            
+            <!-- 페이징 -->
+ 			<div class="paging__area">
+			 	<ul class="paging_ul">
+					<li class="go_first">&lt;&lt;</li>
+					<li class="go_prev">&lt;</li>
+					<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
+					<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
+					<li class="go_next">&gt;</li>
+					<li class="go_end">&gt;&gt;</li>
+				</ul> 
+			</div>
+ 			<!-- 페이징 -->
         </div>
     </div>
 	<footer th:include="common/footer :: footer"></footer>
@@ -247,7 +290,185 @@
 	    	$(this).children().eq(6).text(c6);	
 	    });
 
-	    
+	    // datepicker
+	    /* $(function() { 
+            $( ".Date" ).datepicker({
+                changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다. 
+                changeYear: true, // 년을 바꿀 수 있는 셀렉트 박스를 표시한다. 
+                minDate: '-100y', // 현재날짜로부터 100년이전까지 년을 표시한다. 
+                nextText: '다음 달', // next 아이콘의 툴팁. prevText: '이전 달', // prev 아이콘의 툴팁. 
+                numberOfMonths: [1,1], // 한번에 얼마나 많은 월을 표시할것인가. [2,3] 일 경우, 2(행) x 3(열) = 6개의 월을 표시한다. 
+                stepMonths: 3, // next, prev 버튼을 클릭했을때 얼마나 많은 월을 이동하여 표시하는가. 
+                yearRange: 'c-100:c+10', // 년도 선택 셀렉트박스를 현재 년도에서 이전, 이후로 얼마의 범위를 표시할것인가. 
+                showButtonPanel: true, // 캘린더 하단에 버튼 패널을 표시한다. 
+                currentText: '오늘 날짜' , // 오늘 날짜로 이동하는 버튼 패널 
+                closeText: '닫기', // 닫기 버튼 패널 
+                dateFormat: "yy.mm.dd D", // 텍스트 필드에 입력되는 날짜 형식. 
+                showAnim: "slide", //애니메이션을 적용한다. 
+                showMonthAfterYear: true , // 월, 년순의 셀렉트 박스를 년,월 순으로 바꿔준다. 
+                dayNamesMin: ['월', '화', '수', '목', '금', '토', '일'], // 요일의 한글 형식. 
+                monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], // 월의 한글 형식. 
+                yearRange: "2021:2022" //연도 범위 
+            });
+        }); */
+        
+        
+        // =========================== 페이징 ===========================
+        endPage = $(".pageNo").last().val();
+		clickPage = 1;
+     	
+		// 페이지 <li> 눌렀을 때
+		$(document).on("click", ".pageNo", function(){
+			var page = $(this).val();
+			clickPage = page;
+			
+			ajaxPaging(page);
+		});
+		
+		// "<<" 버튼
+		$(document).on("click", ".go_first", function() {
+			clickPage = 1;
+			var page = 1;
+			
+			ajaxPaging(page);
+		});
+
+		// ">>" 버튼
+		$(document).on("click", ".go_end", function() {
+			clickPage = endPage;
+			var page = endPage;
+			
+			ajaxPaging(page);
+		});
+		
+		// "<" 버튼
+		$(document).on("click", ".go_prev", function() {
+			if(clickPage != 1) {
+				var page = clickPage - 1;
+				clickPage = clickPage - 1;
+				
+				ajaxPaging(page);
+			}	
+		});
+		
+		// ">" 버튼
+		$(document).on("click", ".go_next", function() {
+			if(clickPage != endPage) {
+				var page = clickPage + 1;
+				clickPage = clickPage + 1;
+				
+				ajaxPaging(page);
+			}	
+		});
+		
+		// 날짜포맷
+		function dateFormat(date) {
+			let month = date.getMonth() + 1;
+			let day = date.getDate();
+			let week = date.getUTCDay();
+
+			month = month >= 10 ? month : '0' + month;
+			day = day >= 10 ? day : '0' + day;
+
+			return date.getFullYear() + '.' + month + '.' + day + '(' + '일월화수목금토'.charAt(week) + ')';
+		}
+
+		// 페이징 전송
+		function ajaxPaging(page) {
+			
+			$.ajax({
+				url : "/salesInquiry/daily",
+				data : {page : page},
+				type : "post",
+				success : function(data) {
+					var dailyList = data.dailyList;
+					var pi = data.pi;
+					
+					endPage = pi.endPage;
+					
+					if(dailyList.length == 0) {
+						alert("조회할 데이터가 없습니다.");
+					} else {
+					
+						var pagingHTML = '<li class="go_first">&lt;&lt;</li><li class="go_prev">&lt;</li>';
+					
+					
+						for(var i = parseInt(pi.startPage); i <= parseInt(pi.endPage) ; i++) {
+							tableHTML = '';
+							pagingHTML += '<li class="pageNo" value="' + i + '">' + i +'</li>';
+						}  
+						
+						pagingHTML += '<li class="go_next">&gt;</li><li class="go_end">&gt;&gt;</li>';	
+						$(".paging_ul").html(pagingHTML);
+						
+						$.each(dailyList, function(index, item) {
+	
+							let daily = new Date(item.daily);
+							
+							tableHTML += "<tr><td>" + dateFormat(daily) + "</td>"
+	                       			   + "<td>" + item.totalOrder + "</td>"
+	                        		   + "<td>" + item.totalPrice + "</td>"
+	                        		   + "<td class='point'>" + item.point + "</td>"
+	                        		   + "<td>" + (item.totalPrice - item.point) + "</td>"
+	                        		   + "<td class='refund'>" + item.totalRefund + "</td>"
+	                        		   + "<td>" + (item.totalPrice - item.point - item.totalRefund) + "</td></tr>";
+	                        
+							$("#dailyList").html(tableHTML);
+						});
+						
+						// 합계
+					    var result1 = 0;	// 주문수
+					    var result2 = 0;	// 결제구매합계
+					    var result3 = 0;	// 할인
+					    var result4 = 0;	// 결제합계
+					    var result5 = 0; 	// 환불합계
+					    var result6 = 0;	// 매출액
+					    
+					    $("tbody tr").each(function(){
+						    
+					    	result1 += parseInt($(this).children().eq(1).text());
+					    	result2 += parseInt($(this).children().eq(2).text());
+					    	result3 += parseInt($(this).children().eq(3).text());
+					    	result4 += parseInt($(this).children().eq(4).text());
+					    	result5 += parseInt($(this).children().eq(5).text());
+					    	result6 += parseInt($(this).children().eq(6).text());
+					    	
+						    $("tfoot tr td").eq(1).text(result1);
+						    $("tfoot tr td").eq(2).text(result2);
+						    $("tfoot tr td").eq(3).text(result3);
+						    $("tfoot tr td").eq(4).text(result4);
+						    $("tfoot tr td").eq(5).text(result5);
+						    $("tfoot tr td").eq(6).text(result6);
+					    });
+					    
+					    // 자릿수 포맷
+					    function comma(value){
+					        return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");; 
+					    }
+					    
+					    $("tbody tr, tfoot tr").each(function(){
+					    	let c2 = comma($(this).children().eq(2).text());
+					    	let c3 = comma($(this).children().eq(3).text());
+					    	let c4 = comma($(this).children().eq(4).text());
+					    	let c5 = comma($(this).children().eq(5).text());
+					    	let c6 = comma($(this).children().eq(6).text());
+					    	
+					    	$(this).children().eq(2).text(c2);
+					    	$(this).children().eq(3).text(c3);
+					    	$(this).children().eq(4).text(c4);
+					    	$(this).children().eq(5).text(c5);
+					    	$(this).children().eq(6).text(c6);	
+					    });
+							 
+						$('li[value='+ page + ']').addClass("current_page");
+					}
+				},
+				error : function(e) {
+					console.log(e);
+				}			
+			});
+		
+		}
 	    
     </script>
 </body>
