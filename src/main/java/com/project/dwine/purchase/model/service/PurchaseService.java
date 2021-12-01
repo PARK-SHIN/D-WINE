@@ -2,6 +2,7 @@ package com.project.dwine.purchase.model.service;
 
 import java.util.List;
 
+import com.project.dwine.manage.model.vo.Report;
 import com.project.dwine.member.model.vo.Member;
 import com.project.dwine.purchase.model.vo.Hashtag;
 import com.project.dwine.purchase.model.vo.OrderDetail;
@@ -52,7 +53,9 @@ public interface PurchaseService {
 
 	List<Product> popularList(String value);
 
-	
+	Report checkReport(int user_no, int reviewNo);
+
+	int insertReport(int user_no, int userNo, int reviewNo, int reasonNo);
 
 	// int stockUpdates(List<Integer> productNo, List<Integer> stockArr);
 
