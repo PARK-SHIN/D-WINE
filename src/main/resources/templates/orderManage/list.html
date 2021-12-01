@@ -72,7 +72,7 @@
                             <button type="button" class="deleteBtn">선택 삭제</button>
                             <button type="button" onclick="" class="changeBtn" id="changeBtn" disabled>상태 일괄 변경</button>
                         </div>
-                        <div class="infoArea">총 주문 수 : <span id="totalCnt"></span>, 검색 주문 수 : <span id="searchCnt">10</span></div>    
+                        <div class="infoArea">총 주문 수 : <span id="totalCnt"></span>, 검색 주문 수 : <span id="searchCnt">0</span></div>    
                     </div>
 			
                     <table id="orderList">
@@ -92,6 +92,8 @@
 	                            <td th:text="${#dates.format(o.purchaseDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 	                            <td th:text="${ o.userName }"></td>
 	                            <td th:text="${ o.purchasePrice }"></td>
+	                            <td class="userNo"><input type="hidden" th:value="${ o.userNo }"></td>
+	                            <td class="usePoint"><input type="hidden" th:value="${ o.usePoint }"></td>
 	                            <td>
 	                                <select class="odStatus">
 	                                    <option th:selected="${ o.orderStatus }=='결제완료'">결제완료</option>
@@ -100,8 +102,7 @@
 	                                    <option th:selected="${ o.orderStatus }=='픽업완료'">픽업완료</option>
 	                                    <option th:selected="${ o.orderStatus }=='환불완료'">환불완료</option>
 	                                </select>
-	                            </td>
-	                            
+	                            </td>	                            
 	                            <td>
 	                                <button type="button" class="applyBtn">적용</button>
 	                                <button type="button" class="detailBtn">상세보기</button>
@@ -122,10 +123,8 @@
                             <span id="beforeStatus">결제완료</span>&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;
                             <select id="afterStatus">
                                 <option value="결제완료">결제완료</option>
-                                <option value="결제취소">결제취소</option>
                                 <option value="픽업대기중">픽업대기중</option>
                                 <option value="픽업완료">픽업완료</option>
-                                <option value="환불완료">환불완료</option>
                             </select>
 
                             <button type="button" class="cancleBtn" id="cancleBtn">취소</button>
@@ -240,9 +239,9 @@
         	$.ajax({
         		url : "/orderManage/totalCnt",
         		success : function(data){
-        			var totalCnt = $("#totalCnt");
-
-        			totalCnt.text(data.totalCnt);
+					$("#totalCnt").text(data.totalCnt);
+					$("#searchCnt").text(data.totalCnt);
+					
         		},
         		error : function(e){
         			console.log(e);
@@ -269,12 +268,19 @@
        
         // 주문상태로 조회
         $("#orderState").change(function(){
-        	 
+        	var state = $("#orderState").val();
+
+        	if(state == "- 구분 -")
+        		location.reload();
+        	
         	$.ajax({
         		url : "/orderManage/state",
-        		data : {state : $("#orderState").val()},
+        		data : {state : state},
         		type : "post",
         		success : function(data){
+        			
+        			var dataSize = data.length;
+        			$("#searchCnt").text(dataSize);
         			
             		var tableHTML = '';
             		
@@ -288,6 +294,8 @@
    		                 		       + "<td>" + dateFormat(date) + "</td>"
    		                 		       + "<td>" + item.userName + "</td>"
    		                 		       + "<td>" + item.purchasePrice + "</td>"
+   		                 		   	   + "<td class='userNo'><input type='hidden' value='" + item.userNo + "'></td>"
+   		                 		       + "<td class='usePoint'><input type='hidden' value='" + item.usePoint + "'></td>"
    		                 	           + "<td><select class='odStatus'>"
    		                               + "<option value='결제완료'>결제완료</option>"
    		                               + "<option value='결제취소'>결제취소</option>"
@@ -312,32 +320,52 @@
         		}
         	});
         });
-        
-        // 주문상태 수정
-        $(document).on("click",".applyBtn", function(){
-        	
-        	var tr = $(this).parent().parent();
-        	var td = tr.children();
 
-        	var purchaseNo = td.eq(1).text();
-        	var odStatus = td.eq(5).children().val();
+        // 주문상태 변경 & 동일상태 변경 불가
+        var before;
+     	var after;
+     	$(document).on("focus", ".odStatus", function(){
+    		before = this.value;
+    	}).on("click", ".odStatus", function(){
+    		after = this.value;
+    	}).on("click",".applyBtn", function(){
         	
-        	if(confirm("주문상태를 변경하시겠습니까?")){
+    		if(before == after) {
+        		alert("동일상태로 변경할 수 없습니다.");
         		
-	        	$.ajax({
-	        		url : "/orderManage/update",
-	        		data : {purchaseNo : purchaseNo,
-	        				odStatus : odStatus},
-	        		type : "post",
-	        		success : function(data){
-	        			alert("주문상태가 변경되었습니다.");
-	        		},
-	        		error : function(e){
-	        			console.log(e);
-	        			alert("주문상태 변경에 실패하였습니다.");
-	        		}
-	        	});
-        	}
+        	} else if(before == "결제취소" && after == "환불완료") {
+        		alert("결제취소된 건은 환불완료 불가합니다.");
+        		
+        	} else {
+	        	var tr = $(this).parent().parent();
+	        	var td = tr.children();
+	
+	        	var purchaseNo = td.eq(1).text();
+	        	var userNo = td.eq(5).children().val();
+	        	var usePoint = td.eq(6).children().val();
+	        	var odStatus = td.eq(7).children().val();
+	        	
+	        	if(confirm("주문상태를 변경하시겠습니까?")){
+	        		
+		        	$.ajax({
+		        		url : "/orderManage/update",
+		        		data : {purchaseNo : purchaseNo,
+		        				userNo : userNo,
+		        				usePoint : usePoint,
+		        				odStatus : odStatus},
+		        		type : "post",
+		        		success : function(data){
+		        			if(data == "success")
+		        				alert("주문상태가 변경되었습니다.");	        				
+		        			else
+		        				alert("주문상태 변경에 실패하였습니다.");
+		        		},
+		        		error : function(e){
+		        			console.log(e);
+		        		}
+		        	});
+	        	}
+        	}	
         });
         
 		// 상세보기
@@ -472,6 +500,9 @@
 						searchValue : searchValue},
 						
 				success : function(data){
+					var dataSize = data.length;
+					$("#searchCnt").text(dataSize);
+					
 					tableHTML = '';
 					
 					if(data.length != 0) {

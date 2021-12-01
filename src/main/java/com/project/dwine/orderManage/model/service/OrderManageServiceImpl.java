@@ -28,11 +28,20 @@ public class OrderManageServiceImpl implements OrderManageService {
 		return orderManageMapper.stateChangeList(state);
 	}
 
-	
-	 @Override public int updateOrderStatus(String purchaseNo, String orderStatus) {
-	 return orderManageMapper.updateOrderStatus(purchaseNo, orderStatus); 
-	 }
+	@Override public int updateOrderStatus(String purchaseNo, String orderStatus) {
+		return orderManageMapper.updateOrderStatus(purchaseNo, orderStatus); 
+	}
 
+	@Override
+	public int updatePoint(String purchaseNo) {
+		return orderManageMapper.updatePoint(purchaseNo);
+	}
+	 
+	@Override
+	public int updateMember(int userNo, int usePoint) {
+		return orderManageMapper.updateMember(userNo, usePoint);
+	}
+	 
 	@Override
 	public int deleteOrder(String purchaseNo) {
 		return orderManageMapper.deleteOrder(purchaseNo);
@@ -52,9 +61,5 @@ public class OrderManageServiceImpl implements OrderManageService {
 	public List<Purchase> selectSearchList(String searchStatus, String searchCondition, String searchValue) {
 		return orderManageMapper.selectSearchList(searchStatus, searchCondition, searchValue);
 	}
-
-	
-	
-	
 	
 }
