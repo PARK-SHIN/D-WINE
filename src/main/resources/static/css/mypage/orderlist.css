@@ -271,7 +271,7 @@
 	width: 200px;
 	margin-top:10px;
 }
-/* 페이징 부분 */
+   /* 페이징 부분 1201 변경*/
    .paging_ul {
       height: 50px;
       line-height: 50px;
@@ -281,8 +281,9 @@
       width: 480px;
       margin: 30px auto;
    }
-   .paging_ul li {
+   .paging_ul a {
       text-decoration: none;
+      color: #282A35;
       display: block;
       text-align: center;
       border: 1px solid #dae0e9;
@@ -293,12 +294,9 @@
        font-size: 12px;
        border-radius : 5px;
    }
-   .paging_ul li:hover {
-      cursor: pointer;
-   }
-   .current_page {
+   .paging_ul a.current_page {
       border: 1px solid  #83131E;
        background:  #83131E;
-       color: white;
+       color: #fff;
        border-radius : 5px;
    }
