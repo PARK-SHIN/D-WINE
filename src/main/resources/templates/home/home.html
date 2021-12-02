@@ -173,9 +173,9 @@
 	        this.x = x;
 	        this.y = y;
 	        this.fixedY = y;
-	        this.speed = 0.1;
+	        this.speed = 0.05;
 	        this.cur = index;
-	        this.max = Math.random() * 100 +80;
+	        this.max = Math.random() * 100 + 80;
 	      }
 
 	      update() {
@@ -186,7 +186,7 @@
 
 	    class Wave {
 	      constructor() {
-	        this.totalPoints = 7;
+	        this.totalPoints = 6;
 	      }
 	      resize(width, height) {
 	        this.points = [];

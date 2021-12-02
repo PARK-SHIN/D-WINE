@@ -29,7 +29,6 @@ input[type=button] {
 	font-size: 20px;
 	font-weight: bold;
 	transition: 0.5s;
-	color: #808080;
 }
 
 .menu_nav a:hover {
@@ -60,10 +59,29 @@ header {
 	list-style: none;
 	text-align: center;
 	padding-left: 60px;
+	cursor: pointer;
 }
 
 .menu_nav li {
+	list-style: none;
 	padding: 8px 0 8px 50px;
+}
+
+.menu_nav li:hover ul.customer_sub {
+	display: block;
+	text-align: center;
+}
+
+.customer_sub {
+	display: none;
+	position: absolute;
+	padding-left: 0px;
+	text-align: center;
+}
+
+.customer_sub li {
+	margin-top: 5px;
+	padding: 5px;
 }
 
 .member_nav {
@@ -71,6 +89,7 @@ header {
 	display: flex;
 	padding: 8px 60px 8px 0;
 	justify-content: end;
+	cursor: pointer;
 }
 
 .member_nav img {
@@ -84,10 +103,6 @@ header {
 	width: 120px;
 	text-align: center;
 	padding-bottom: 5px;
-}
-
-.member_nav img:hover {
-	cursor: pointer;
 }
 
 .member_nav li:hover ul.member_sub {
@@ -170,6 +185,9 @@ footer {
 		padding: 5px 0px;
 		width: 100%;
 	}
+		.customer_sub {padding: 0;
+		width: 100%;
+	}
 	.member_nav {
 		position: absolute;
 		order: 1;
@@ -188,6 +206,7 @@ footer {
 }
 
 @media screen and (max-width: 800px) {
+
 	.member_nav {
 		position: absolute;
 		order: 1;
@@ -197,6 +216,7 @@ footer {
 		margin: 0px;
 		width: 100px;
 	}
+	
 	.submenu {
 		position: absolute;
 		right: -20px;
@@ -209,5 +229,4 @@ footer {
 		width: 100px;
 		height: 100px;
 	}
-	
 }
