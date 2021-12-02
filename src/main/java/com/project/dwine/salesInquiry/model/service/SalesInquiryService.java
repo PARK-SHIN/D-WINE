@@ -14,5 +14,9 @@ public interface SalesInquiryService {
 
 	int getDailyListCount();
 
+	List<Total> searchDateList(int startRow, int endRow, String startDate, String endDate);
+
+	int getDateListCount(String startDate, String endDate);
+
 
 }

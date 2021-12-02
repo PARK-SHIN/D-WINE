@@ -72,7 +72,7 @@
 		                 WHERE TO_CHAR(P2.REFUND_DATE, 'yy/MM/dd') = TO_CHAR(P1.PURCHASE_DATE, 'yy/MM/dd')) totalRefund
 		         FROM PURCHASE P1
 		         GROUP BY PURCHASE_DATE
-		         ORDER BY P1.PURCHASE_DATE DESC) PLIST)
+		         ORDER BY PURCHASE_DATE DESC) PLIST)
 		  WHERE RNUM BETWEEN #{ startRow } AND #{ endRow }
 	</select>
 	
@@ -80,6 +80,45 @@
 		SELECT 
 			   COUNT(DISTINCT PURCHASE_DATE) 
 		  FROM PURCHASE
+	</select>
+	
+	<select id="searchDateList" resultType="com.project.dwine.salesInquiry.model.vo.Total">
+		SELECT
+		       daily
+		     , totalOrder
+		     , totalPrice
+		     , point
+		     , totalRefund
+		  FROM (SELECT 
+		       ROWNUM RNUM
+		      , PLIST.*
+		   FROM(SELECT
+		               P1.PURCHASE_DATE daily
+		             , COUNT(P1.PURCHASE_NO) totalOrder
+		             , SUM(P1.PURCHASE_PRICE) totalPrice
+		             , SUM(P1.USE_POINT) point
+		             , (SELECT
+		                       SUM(P2.PURCHASE_PRICE)
+		                  FROM PURCHASE P2
+		                 WHERE TO_CHAR(P2.REFUND_DATE, 'yy/MM/dd') = TO_CHAR(P1.PURCHASE_DATE, 'yy/MM/dd')) totalRefund
+		         FROM PURCHASE P1
+		        <if test="startDate != null and endDate != null and startDate != '' and endDate != ''"> 
+		        WHERE PURCHASE_DATE <![CDATA[ >= ]]> TO_DATE(#{ startDate }, 'yy/MM/dd')
+                  AND PURCHASE_DATE <![CDATA[ <= ]]> TO_DATE(#{ endDate }, 'yy/MM/dd')
+                </if>
+		         GROUP BY PURCHASE_DATE
+		         ORDER BY PURCHASE_DATE DESC) PLIST)
+		  WHERE RNUM BETWEEN #{ startRow } AND #{ endRow }		
+	</select>
+	
+	<select id="getDateListCount" resultType="_int">
+		SELECT 
+			   COUNT(DISTINCT PURCHASE_DATE) 
+		  FROM PURCHASE
+		 <if test="startDate != null and endDate != null and startDate != '' and endDate != ''">
+		 WHERE PURCHASE_DATE <![CDATA[ >= ]]> TO_DATE(#{ startDate }, 'yy/MM/dd')
+           AND PURCHASE_DATE <![CDATA[ <= ]]> TO_DATE(#{ endDate }, 'yy/MM/dd')
+         </if>  
 	</select>
 
 	<select id="yearSales" resultType="com.project.dwine.salesInquiry.model.vo.Total">

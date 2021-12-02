@@ -8,6 +8,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="/css/common/common.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  
+   <!--  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
     <!-- <link href="/css/orderManage/list.css" rel="stylesheet"> -->
 <style>
 	* {
@@ -73,6 +81,12 @@
 
     [class $= "Btn"] {
         cursor: pointer;
+    }
+    
+    #selectDate {
+    	margin-right: 10px;
+    	width: 180px;
+    	text-align: center;
     }
 
     .dateBtn {
@@ -167,7 +181,8 @@
                 <form name="searchDateForm" method="get">
                     <div class="searchDate">
                         <label>조회 기간</label>
-                        <input type="date"> ~ <input type="date">
+                        <input type="text" id="selectDate">
+​
                         <input type="button" value="오늘" class="dateBtn">
                         <input type="button" value="1주일" class="dateBtn">
                         <input type="button" value="1개월" class="dateBtn">
@@ -289,56 +304,68 @@
 	    	$(this).children().eq(5).text(c5);
 	    	$(this).children().eq(6).text(c6);	
 	    });
+	    
+	 	// 날짜포맷
+        function dateFormat1(date){
+        	let month = date.getMonth() + 1;
+        	let day = date.getDate();
+            
+            month = month >= 10 ? month : '0' + month;
+            day = day >= 10 ? day : '0' + day;
+           
+            return date.getFullYear() + '/' + month + '/' + day;
+        }
+	
+		// 날짜조회 (flatpickr)
+	 	start = null;		// 날짜 선택하면 담기 위한 전역변수
+	 	end = null;
+	    $("#selectDate").flatpickr({ 
+	    	dateFormat: "Y-m-d",
+	    	mode: "range",
+	    	onClose: function(selectDates){
+	    		var startDate = dateFormat1(selectDates[0]);
+	    		var endDate = dateFormat1(selectDates[1]);
+	    		
+	    		start = startDate;
+	    		end = endDate;
+	    		ajaxPaging(1, startDate, endDate);
+	    	}
+	    });
 
-	    // datepicker
-	    /* $(function() { 
-            $( ".Date" ).datepicker({
-                changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다. 
-                changeYear: true, // 년을 바꿀 수 있는 셀렉트 박스를 표시한다. 
-                minDate: '-100y', // 현재날짜로부터 100년이전까지 년을 표시한다. 
-                nextText: '다음 달', // next 아이콘의 툴팁. prevText: '이전 달', // prev 아이콘의 툴팁. 
-                numberOfMonths: [1,1], // 한번에 얼마나 많은 월을 표시할것인가. [2,3] 일 경우, 2(행) x 3(열) = 6개의 월을 표시한다. 
-                stepMonths: 3, // next, prev 버튼을 클릭했을때 얼마나 많은 월을 이동하여 표시하는가. 
-                yearRange: 'c-100:c+10', // 년도 선택 셀렉트박스를 현재 년도에서 이전, 이후로 얼마의 범위를 표시할것인가. 
-                showButtonPanel: true, // 캘린더 하단에 버튼 패널을 표시한다. 
-                currentText: '오늘 날짜' , // 오늘 날짜로 이동하는 버튼 패널 
-                closeText: '닫기', // 닫기 버튼 패널 
-                dateFormat: "yy.mm.dd D", // 텍스트 필드에 입력되는 날짜 형식. 
-                showAnim: "slide", //애니메이션을 적용한다. 
-                showMonthAfterYear: true , // 월, 년순의 셀렉트 박스를 년,월 순으로 바꿔준다. 
-                dayNamesMin: ['월', '화', '수', '목', '금', '토', '일'], // 요일의 한글 형식. 
-                monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], // 월의 한글 형식. 
-                yearRange: "2021:2022" //연도 범위 
-            });
-        }); */
-        
-        
-        // =========================== 페이징 ===========================
         endPage = $(".pageNo").last().val();
 		clickPage = 1;
-     	
+		
 		// 페이지 <li> 눌렀을 때
 		$(document).on("click", ".pageNo", function(){
 			var page = $(this).val();
 			clickPage = page;
-			
-			ajaxPaging(page);
+			var startDate = start;
+    		var endDate = end;
+	     	console.log(startDate);
+	     	console.log(endDate);
+ 
+    		
+			ajaxPaging(page, startDate, endDate);
 		});
 		
 		// "<<" 버튼
 		$(document).on("click", ".go_first", function() {
 			clickPage = 1;
 			var page = 1;
+			var startDate = start;
+    		var endDate = end;
 			
-			ajaxPaging(page);
+			ajaxPaging(page, startDate, endDate);
 		});
 
 		// ">>" 버튼
 		$(document).on("click", ".go_end", function() {
 			clickPage = endPage;
 			var page = endPage;
+			var startDate = start;
+    		var endDate = end;
 			
-			ajaxPaging(page);
+			ajaxPaging(page, startDate, endDate);
 		});
 		
 		// "<" 버튼
@@ -346,8 +373,10 @@
 			if(clickPage != 1) {
 				var page = clickPage - 1;
 				clickPage = clickPage - 1;
+				var startDate = start;
+	    		var endDate = end;
 				
-				ajaxPaging(page);
+				ajaxPaging(page, startDate, endDate);
 			}	
 		});
 		
@@ -356,13 +385,15 @@
 			if(clickPage != endPage) {
 				var page = clickPage + 1;
 				clickPage = clickPage + 1;
+				var startDate = start;
+	    		var endDate = end;
 				
-				ajaxPaging(page);
+				ajaxPaging(page, startDate, endDate);
 			}	
 		});
 		
 		// 날짜포맷
-		function dateFormat(date) {
+		function dateFormat2(date) {
 			let month = date.getMonth() + 1;
 			let day = date.getDate();
 			let week = date.getUTCDay();
@@ -374,13 +405,16 @@
 		}
 
 		// 페이징 전송
-		function ajaxPaging(page) {
+		function ajaxPaging(page, startDate, endDate) {
 			
 			$.ajax({
 				url : "/salesInquiry/daily",
-				data : {page : page},
+				data : {page : page,
+						startDate : startDate,
+						endDate : endDate},
 				type : "post",
 				success : function(data) {
+					
 					var dailyList = data.dailyList;
 					var pi = data.pi;
 					
@@ -405,7 +439,7 @@
 	
 							let daily = new Date(item.daily);
 							
-							tableHTML += "<tr><td>" + dateFormat(daily) + "</td>"
+							tableHTML += "<tr><td>" + dateFormat2(daily) + "</td>"
 	                       			   + "<td>" + item.totalOrder + "</td>"
 	                        		   + "<td>" + item.totalPrice + "</td>"
 	                        		   + "<td class='point'>" + item.point + "</td>"
