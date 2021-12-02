@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/review.css" rel="stylesheet">
@@ -51,21 +53,147 @@
                         </li>
                     </ul>
                 </div>
-                <div class="paging__area">
-			 	<ul class="paging_ul">
-					<li class="go_first">&lt;&lt;</li>
-					<li class="go_prev">&lt;</li>
-					<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
-					<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
-					<li class="go_next">&gt;</li>
-					<li class="go_end">&gt;&gt;</li>
-				</ul> 
-			</div>
+                
+            <div class="paging__area">
+				 	<ul class="paging_ul">
+						<li class="go_first">&lt;&lt;</li>
+						<li class="go_prev">&lt;</li>
+						<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
+						<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
+						<li class="go_next">&gt;</li>
+						<li class="go_end">&gt;&gt;</li>
+					</ul> 
+				</div>
             </div>
         </div>
     </div>
     <script>
-    	
+    var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
+	});
+	
+	endPage = $(".pageNo").last().val();
+	clickPage = 1;
+	
+	function dateFormat(date) {
+		let month = date.getMonth() + 1;
+		let day = date.getDate();
+
+		month = month >= 10 ? month : '0' + month;
+		day = day >= 10 ? day : '0' + day;
+
+		return date.getFullYear() + '-' + month + '-' + day;
+	}
+	
+ // 페이지 <li> 눌렀을 때
+	$(document).on("click", ".pageNo", function(){
+		var page = $(this).val();
+		
+		clickPage = page;
+		
+		ajaxPaging(page);
+		
+	});
+	
+	// "<<" 버튼
+	$(document).on("click", ".go_first", function() {
+		clickPage = 1;
+		var page = 1;
+		
+		ajaxPaging(page);
+	});
+	
+	
+	// ">>" 버튼
+	$(document).on("click", ".go_end", function() {
+		clickPage = endPage;
+		var page = endPage;
+		
+		ajaxPaging(page);
+	});
+	
+	// "<" 버튼
+	$(document).on("click", ".go_prev", function() {
+		if(clickPage != 1) {
+			var page = clickPage - 1;
+			clickPage = clickPage - 1;
+			
+			ajaxPaging(page);
+		}
+		
+		
+	});
+	
+	// ">" 버튼
+	$(document).on("click", ".go_next", function() {
+		if(clickPage != endPage) {
+			var page = clickPage + 1;
+			clickPage = clickPage + 1;
+			
+			ajaxPaging(page);
+		}
+		
+	});
+
+	function ajaxPaging(page) {
+		
+		$.ajax({
+			url : "/mypage/review",
+			data : {"page" : page},
+			type : "post",
+			success : function(data) {
+				var reviewList = data.reviewList;
+				var pi = data.pi;
+				
+				endPage = pi.endPage;
+				
+				if(reviewList.length == 0) {
+					alert("리뷰가 존재하지 않습니다");
+				} else {
+			
+					var tableHTML = '';
+					var pagingHTML = '<li class="go_first">&lt;&lt;</li><li class="go_prev">&lt;</li>';
+				
+					for(var i = parseInt(pi.startPage); i <= parseInt(pi.endPage) ; i++) {
+						
+						pagingHTML += '<li class="pageNo" value="' + i + '">' + i +'</li>';
+					}  
+					
+					pagingHTML += '<li class="go_next">&gt;</li><li class="go_end">&gt;&gt;</li>';	
+					$(".paging_ul").html(pagingHTML);
+					
+					 $.each(reviewList, function(index, item) {
+
+						let review_date = new Date(item.review_date);
+						let review_modify = new Date(item.review_modify);
+
+						tableHTML += "<ul style='height: 100px;'>" 
+								+ "<li class='title'>"
+                        		+ "<p class='pname'>"+ item.product_kname + "</p>"
+                           		+ "<p style='text-align: left;'>"+ item.review_text + "</p>"
+                    			+ "</li>"
+                    			+ " <li class='review_date'>"
+                    			+ "<li class='review_date'>" + "작성일 : <span>"+ dateFormat(review_date) + "</span>"
+                    			+ "수정일 : <span>"+ dateFormat(review_modify) + "</span>"
+                    			+ "</li>"
+                    			+ "<li class='del'><a class='modifybtn' href=\"/mypage/review/" + item.review_no + "\">수정</a>"
+                    			+ "<a class='deletebtn' href=\"/mypage/reviewDelete/" + item.review_no + "\">삭제</a>"+ "</li></ul>";
+	
+						$(".review_list").html(tableHTML);
+						
+					}); 
+					 
+					$('li[value='+ page + ']').addClass("current_page");
+				}
+			},
+			error : function(e) {
+				console.log(e);
+			}			
+		});
+	
+	}
     </script>
 <footer th:include="common/footer :: footer"></footer>
 </body>
