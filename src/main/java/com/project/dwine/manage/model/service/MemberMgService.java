@@ -3,6 +3,7 @@ package com.project.dwine.manage.model.service;
 import java.util.List;
 
 import com.project.dwine.member.model.vo.Member;
+import com.project.dwine.notice.model.vo.Notice;
 
 public interface MemberMgService {
 
@@ -13,5 +14,9 @@ public interface MemberMgService {
 	void deleteMemberMg(String user_no);
 
 	int memberMgTotalListCnt();
+
+	int searchMemberListCnt(String searchValue);
+
+	List<Member> searchMemberList(String searchValue, int startRow, int endRow);
 
 }

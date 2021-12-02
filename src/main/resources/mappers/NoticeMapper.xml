@@ -32,27 +32,20 @@
 		SELECT COUNT(*) 
 		FROM NOTICE 
 		WHERE STATUS = 'Y'
-		 
-		
-   	 	 
-   	 	 
 	</select>
-	<select id="noticeSearchListCnt" resultType="_int">
 	
+	<select id="noticeSearchListCnt" resultType="_int">
 	SELECT COUNT(*) 
 		FROM NOTICE 
 		WHERE STATUS = 'Y' 
-	<if test="searchValue != null and searchValue != ''">
+		<if test="searchValue != null and searchValue != ''">
    	 	 AND NOTICE_TITLE LIKE '%' || #{ searchValue } || '%'
    	 	 OR NOTICE_CONTEXT LIKE '%' || #{ searchValue } || '%'
    	 	</if>
-   	 	 
-   	 	 
 	</select>
 	
 	
 	<!-- 검색창용 sql searchNoticeList -->
-	
 	<select id="searchNoticeList" resultMap="noticeResultMap">
 	 SELECT
 	*
@@ -72,24 +65,7 @@
       AND RNUM BETWEEN #{startRow} AND #{endRow}
       ORDER BY NOTICE_NO DESC
       </select>
-	<!-- SELECT
-		   	 NOTICE_NO
-		   , NOTICE_CATEGORY	
-		   , NOTICE_TITLE
-		   , NOTICE_CONTEXT
-		   , CREATE_DATE
-		   , MODIFY_DATE
-		   , STATUS
-		   , USER_NO
-		
-	  FROM NOTICE
-      WHERE STATUS = 'Y'
-      <if test="searchValue != null">
-   	  AND NOTICE_TITLE LIKE '%' || #{ searchValue } || '%'
-   	  OR NOTICE_CONTEXT LIKE '%' || #{ searchValue } || '%'
-   	  </if>
-      ORDER BY NOTICE_NO DESC
-	 </select> -->
+	
 	 
 	<select id="selectNoticeByno" resultMap="noticeResultMap">
 	SELECT

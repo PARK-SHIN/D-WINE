@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.dwine.manage.model.dao.MemberMgMapper;
 import com.project.dwine.member.model.vo.Member;
+import com.project.dwine.notice.model.vo.Notice;
 
 @Service("MemberMgService")
 public class MemberMgServiceImpl implements MemberMgService {
@@ -38,6 +39,16 @@ public class MemberMgServiceImpl implements MemberMgService {
 	@Override
 	public int memberMgTotalListCnt() {
 		return memberMgMapper.memberMgTotalListCnt();
+	}
+
+	@Override
+	public int searchMemberListCnt(String searchValue) {
+		return memberMgMapper.searchMemberListCnt(searchValue);
+	}
+
+	@Override
+	public List<Member> searchMemberList(String searchValue, int startRow, int endRow) {
+		return memberMgMapper.searchMemberList(searchValue, startRow, endRow);
 	}
 
 }

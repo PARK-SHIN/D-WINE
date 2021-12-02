@@ -40,8 +40,39 @@
 	</select>
 	
 	<select id="memberMgTotalListCnt" resultType="_int">
-		SELECT COUNT(*) FROM MEMBER
+		SELECT COUNT(*) FROM MEMBER 
 	</select>
+	
+	<select id="searchMemberListCnt" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER 
+		WHERE USER_STATUS = 'Y'
+		<if test="searchValue != null and searchValue != ''">
+   	 	AND USER_ID LIKE '%' || #{ searchValue } || '%'
+   	 	OR USER_NICKNAME LIKE '%' || #{ searchValue } || '%'
+   	 	</if>
+   	 	ORDER BY REPORTED_COUNT DESC, CREATE_DATE
+	</select>
+	
+	<select id="searchMemberList"  resultMap="memberResultMap">
+	SELECT
+		*
+		FROM (SELECT 
+	               ROWNUM RNUM
+	              , MLIST.*
+	       FROM(SELECT
+	               *
+	               FROM MEMBER
+	              WHERE USER_STATUS = 'Y'
+	              ORDER BY REPORTED_COUNT DESC, CREATE_DATE) MLIST)
+	      WHERE USER_STATUS = 'Y'
+	      <if test="searchValue != null and searchValue != ''">
+	   	  AND USER_ID LIKE '%' || #{ searchValue } || '%'
+	   	  OR USER_NICKNAME LIKE '%' || #{ searchValue } || '%'
+	   	  </if>
+	      AND RNUM BETWEEN #{startRow} AND #{endRow}
+	      ORDER BY REPORTED_COUNT DESC, CREATE_DATE
+	</select>
+	
 	
 	<select id="selectMemberMgByNo" parameterType="_int" resultMap="memberResultMap">
 	SELECT
@@ -55,7 +86,7 @@
 			, REPORTED_COUNT
 			, CREATE_DATE
 		FROM MEMBER
-		WHERE USER_NO = #{ user_no}
+		WHERE USER_NO = #{ user_no }
 		AND USER_STATUS = 'Y'
 	
 	</select>
