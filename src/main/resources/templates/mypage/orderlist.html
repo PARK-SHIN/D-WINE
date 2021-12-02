@@ -175,18 +175,18 @@
                     <br>
                 </div>
             <div class="paging__area">
-        		<ul class="paging_ul">
-					<li><a th:href="@{/mypage/orderlist(page=1)}">&lt;&lt;</a></li>
-					<li th:if="${ pi.page > 1 }"><a th:href="@{/mypage/orderlist(page=${pi.page - 1})}">&lt;</a></li>
-					<li th:unless="${ pi.page > 1 }"><a href="#">&lt;</a></li>
-					<li th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}">
-						<a th:if="${ pi.page == page }" class="current_page" th:text="${page}" href="#"></a>
-						<a th:unless="${ pi.page == page }" th:text="${page}" th:href="@{/mypage/orderlist(page=${page})}"></a>
-					</li>
-					<li th:if="${ pi.page < pi.maxPage }"><a th:href="@{/mypage/orderlist(page=${pi.page + 1})}">&gt;</a></li>
-					<li th:unless="${ pi.page < pi.maxPage }"><a href="#">&gt;</a></li>
-					<li><a th:href="@{/mypage/orderlist(page=${pi.endPage})}">&gt;&gt;</a></li>
-				</ul>
+	            <ul class="paging_ul">
+	               <li><a th:href="@{/mypage/orderlist(page=1)}">&lt;&lt;</a></li>
+	               <li th:if="${ pi.page > 1 }"><a th:href="@{/mypage/orderlist(page=${pi.page - 1})}">&lt;</a></li>
+	               <li th:unless="${ pi.page > 1 }"><a href="#">&lt;</a></li>
+	               <li th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}">
+	               <a th:if="${ pi.page == page }" class="current_page" th:text="${page}" href="#"></a>
+	               <a th:unless="${ pi.page == page }" th:text="${page}" th:href="@{/mypage/orderlist(page=${page})}"></a>
+	               </li>
+	               <li th:if="${ pi.page < pi.maxPage }"><a th:href="@{/mypage/orderlist(page=${pi.page + 1})}">&gt;</a></li>
+	               <li th:unless="${ pi.page < pi.maxPage }"><a href="#">&gt;</a></li>
+	               <li><a th:href="@{/mypage/orderlist(page=${pi.endPage})}">&gt;&gt;</a></li>
+	            </ul>
 			</div>
             </div>
         </div>
