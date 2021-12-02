@@ -1,0 +1,61 @@
+@charset "UTF-8";
+	* {
+          font-family: 'Gowun Batang', serif;
+       }
+	.container {
+		width: 1100px;
+		margin: 0 auto;
+	}
+    .content {
+        text-align: center;
+    }
+    #content_area {
+        display: flex;
+        justify-content: space-between;
+    }
+    .img {
+        width: 80%;
+        height: 300px;
+        border-radius: 3px;
+    }
+    .wine_area {
+        width: 50%;
+    }
+    #search_area {
+       margin: 4em 0;
+    }
+	
+	#search_btn {
+		height: 30px;
+		background: #83131E;
+		color: #ffffff;
+		border: none;
+		border-radius: 5px;
+	}
+    #input_box {
+        border: none;
+        border-bottom: #83131E 1px solid;
+        width: 800px;
+        height : 30px;
+        text-align: center;
+    }
+    
+    #input_box:focus {
+    	outline: none;
+    }
+    
+    ul {
+    	list-style: none;
+    	padding-left: 70px;
+    }
+    
+    li {
+    	text-align: left;
+    }
+    li:hover {
+    	cursor: pointer;
+    	text-decoration: underline;
+    }
+    .list_area1, .list_area2 {
+    	display: flex;
+    }

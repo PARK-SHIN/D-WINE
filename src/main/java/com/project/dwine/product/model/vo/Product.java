@@ -110,6 +110,14 @@ public class Product{
 		this.country = country;
 	}
 
+	public Product(int productNo, String productKName, String productEName, String thumbnail) {
+		super();
+		this.productNo = productNo;
+		this.productKName = productKName;
+		this.productEName = productEName;
+		this.thumbnail = thumbnail;
+	}
+
 	public Product(String thumbnail, String labelImage) {
 		super();
 		this.thumbnail = thumbnail;

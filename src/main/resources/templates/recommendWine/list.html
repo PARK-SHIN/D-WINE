@@ -6,128 +6,46 @@
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/recommendWine/list.css" rel="stylesheet">
+<link href="/css/recommendWine/weather.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <title>recommend wine list</title>
-<style>
-	* {
-          font-family: 'Gowun Batang', serif;
-       }
-	.wrapper {
-		width: 1300px;
-		margin: 0 auto;
-	}
-    .content {
-        text-align: center;
-    }
-    #input_box {
-        border: none;
-        border-bottom: #83131E 1px solid;
-        width: 800px;
-        height : 30px;
-        text-align: center;
-    }
-    #input_box:focus{
-    	outline: none;
-    }
-    #label_area {
-    	margin: 4em 0;
-    }
-    
-    /*와인 리스트*/
-    .product_list{
-        display: flex;
-        flex-wrap: wrap;
-        list-style: none;
-        font-size: 13px;
-        padding: 0;
-    }
-    .product_list li{
- 
-        width: 300px;
-        height: 460px;
-        margin: 20px 10px;
-    }
-
-    .product_img{
-        width: 300px;
-        height: 300px;
-        background-color: rgba(0, 0, 0, 0.03);
-    }
-
-    .product_img img
-    {
-        width: 300px;
-        height: 300px;
-        margin-bottom: 20px;
-    }
-
-    .product_explain{
-        font-size: 17px;
-        padding: 10px 0 0 20px;
-    }
-
-    .product_foreignName{
-        padding: 3px 0;
-    }
-    .product_price{
-        font-weight: 500;
-    }
-    .product_score{
-        padding: 3px 0;
-        font-weight: normal;
-    }
-    a{
-    	text-decoration : none;
-    	color:black;
-    }
-    
-    #null_area {
-    	height: 500px;
-    }
-    
-    #null_text {
-    	color: #c4c4c4;
-    	font-size : 40px;
-    	padding-top: 200px;
-    }
-   
-</style>
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
 	<div class="wrapper">
-		<h1>#해시태그 와인 추천</h1>
-	    <hr>
-	    <div class="content">	
-	        <div id="label_area">
-	        	<input id="input_box" type="text" name="hashName" th:value="${ hashName }" readonly>
-	        </div>
-	        <div id="list_area" th:if="${#lists.size(wineList) != 0}">
-	        	<ul class="product_list">
-				    <li th:each="wine : ${wineList}">
-				        <div class="product_explain">
-				            <div class="product_img">
-				              <a th:href="@{'/purchase/' + ${wine.productNo} }">
-				               <img th:src="${wine.thumbnail}">
-				              </a> 
-				            </div>
-				            <div class="product_explain">
-				                <div class="product_KoreaName" th:text="${wine.productKName}"></div>
-				                <div class="product_foreignName"  th:text="${wine.productEName}"></div>
-				                <span class="product_price"  th:text="${wine.salePrice}"></span>&nbsp;원<br>
-				                <div class="product_score">
-				                    ★★★★★
-				                    <span class="review_count"> 25개</span>
-				                </div>
-				            </div>
-				        </div>
-				    </li>
-				</ul>
-	        </div>
-			<div id="null_area" th:if="${#lists.size(wineList) == 0}">
-				<div id="null_text">검색하시는 해시태그의 상품이 없습니다.</div>
+		<div th:include="recommendWine/weather"></div>
+		<div class="container">
+			<h1>#해시태그 와인 추천</h1>
+		    <hr>
+		    <div class="content">	
+		        <div id="label_area">
+		        	<input id="input_box" type="text" name="hashName" th:value="${ hashName }" readonly>
+		        </div>
+		        <div id="list_area" th:if="${#lists.size(wineList) != 0}">
+		        	<ul class="product_list">
+					    <li th:each="wine : ${wineList}">
+					        <div class="product_explain">
+					            <div class="product_img">
+					              <a th:href="@{'/purchase/' + ${wine.productNo} }">
+					               <img th:src="${wine.thumbnail}">
+					              </a> 
+					            </div>
+					            <div class="product_explain">
+					                <div class="product_KoreaName" th:text="${wine.productKName}"></div>
+					                <div class="product_foreignName"  th:text="${wine.productEName}"></div>
+					                <span class="product_price"  th:text="${wine.salePrice}"></span>&nbsp;원<br>
+					            </div>
+					        </div>
+					    </li>
+					</ul>
+		        </div>
+				<div id="null_area" th:if="${#lists.size(wineList) == 0}">
+					<div id="null_text">검색하시는 해시태그의 상품이 없습니다.</div>
+				</div>
 			</div>
 		</div>
+		
 	</div>
     
     <footer th:include="common/footer :: footer"></footer>
