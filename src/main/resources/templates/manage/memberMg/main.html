@@ -187,8 +187,7 @@
         .memberNo{
             text-align: left;
             margin-left: 48px;
-            font-size: 18px;
-            
+            font-size: 18px;  
         }
 
         .memberDetailList{
@@ -250,6 +249,35 @@
         .hidden {
           display: none;
         }
+        
+        /* 페이징 부분 */
+	.paging_ul {
+		height: 50px;
+		line-height: 50px;
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		width: 480px;
+		margin: 30px auto;
+	}
+	.paging_ul li {
+		text-decoration: none;
+		display: block;
+		text-align: center;
+		border: 1px solid #dae0e9;
+	    margin-left: 10px;
+		width: 37px;
+		height: 37px;
+		line-height : 37px;
+	    font-size: 12px;
+	    border-radius : 5px;
+	}
+	.current_page {
+		border: 1px solid  #83131E;
+	    background:  #83131E;
+	    color: white;
+	    border-radius : 5px;
+	}
     </style>
 </head>
 <body>
@@ -305,16 +333,22 @@
                 <div class="memberDetailList"><label class="label_area">신고 당한 수</label> <span th:text="${member.reported_count}" readonly/></div><br>
                 <hr>
             </div>
-            
         </div>
-			    
-			   
 			  </div>
 			</td>
             </tr>
-            
          </table>    
     </div>
+    <div class="paging__area">
+			 	<ul class="paging_ul">
+					<li class="go_first">&lt;&lt;</li>
+					<li class="go_prev">&lt;</li>
+					<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
+					<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
+					<li class="go_next">&gt;</li>
+					<li class="go_end">&gt;&gt;</li>
+				</ul> 
+			</div>
 </div>
 </div>
 <div th:replace="common/footer :: footer"></div>
@@ -345,13 +379,11 @@ function openModal(elem){
 	document.querySelector(".modal").classList.remove("hidden");
 	}
 	
-	
 	const close =()=> {
 		modaltest.classList.add("hidden");
 	}
 	
 	closetest.addEventListener("click", close);
-	
 }
 	
 	
@@ -381,8 +413,7 @@ function openModal(elem){
 			}
 		});
 	});
-	
-	
+
 	function deleteValue(){
 		
 		var valueArr = new Array();

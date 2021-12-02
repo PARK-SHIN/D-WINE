@@ -21,8 +21,13 @@ public class ReviewMgServiceImpl implements ReviewMgService {
 	
 	
 	@Override
-	public List<Review> selectReviewList() {
-		return reviewMgMapper.selectReviewList();
+	public List<Review> selectReviewList(int startRow, int endRow) {
+		return reviewMgMapper.selectReviewList(startRow, endRow);
+	}
+	
+	@Override
+	public Review selectReviewList(int review_no) {
+		return reviewMgMapper.selectReviewList(review_no);
 	}
 	
 	@Override
@@ -36,6 +41,14 @@ public class ReviewMgServiceImpl implements ReviewMgService {
 		reviewMgMapper.deleteReviewMg(review_no);
 		
 	}
+
+
+	@Override
+	public int reviewMgTotalListCnt() {
+		return reviewMgMapper.reviewMgTotalListCnt();
+	}
+
+
 
 
 	
