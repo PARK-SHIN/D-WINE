@@ -1,33 +1,39 @@
 @charset "UTF-8";
-	html, body {
-		width:fit-content;
-		height: fit-content;
-	}
-	* {
+	 * {
           font-family: 'Gowun Batang', serif;
        }
-	.container {
-		width: 220px;
-		height : 530px;
+	.weather_container {
+		width: 170px;
+		height : 350px;
 		border : 1px solid black;
 		text-align: center;
+		position : fixed;
+		margin-left: 20px;
 	}
-	.content {
-		height: 500px;
-		margin: 15px 0;
+	.weather_content {
+		height: 340px;
+		margin: 5px 0;
 	}
 	#weather_img {
+		width: 50px;
+		height: 50px;
+	}
+	#current_temp {
+		font-size: 20px;
+		margin: 10px 0;
+		color : #83131E;
+	}
+	#wine_img {
 		width: 100px;
 		height: 100px;
 	}
-	#current_temp {
-		font-size: 40px;
-		margin: 20px 0;
-	}
-	#wine_img {
-		width: 150px;
-		height: 150px;
-	}
-	.name_area {
+	.font_small {
 		font-size: 8px;
 	}
+	.message_area {
+		margin: 5px 0;
+		font-size: 12px;
+	}
+	.name_area {
+		font-size: 6px;
+	} 

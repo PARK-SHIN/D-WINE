@@ -2,8 +2,8 @@
 	* {
           font-family: 'Gowun Batang', serif;
        }
-	.wrapper {
-		width: 1300px;
+	.container {
+		width: 1100px;
 		margin: 0 auto;
 	}
     .content {

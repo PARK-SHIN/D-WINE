@@ -14,7 +14,7 @@
 	<header th:include="common/header :: header"></header>
 	<div class="wrapper">
 		<nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
-		<div class="contens">
+		<div class="contents">
 		    <h1>상품 수정</h1>
 		    <hr>
 		    <form id="modifyForm" th:action="@{/product/modify(${_csrf.parameterName}=${_csrf.token})}" method="post" encType="multipart/form-data" onsubmit="return validate()">
@@ -227,6 +227,10 @@
 			tannin.css('background','linear-gradient(to right, #83131E 0%, #83131E ' + tannin.val() * 20 + '%, #c4c4c4 ' + tannin.val() + '%, #c4c4c4 100%)');
 		});
 				
+			
+		isUsable = false; // 중복체크 여부 체크
+		isChange = false; // 상품명 변경되었는지 체크
+		
 		// 해시태그 중복 안되게 처리
 		function validate() {
 			var mood1 = $("#mood1");
@@ -260,17 +264,24 @@
     			return false;
     		}
     		
-    		if(!isUsable) {
-    			alert("상품명 중복체크를 진행해주세요.");
-    			return false;
+    		// 상품명 변경이 안되었으면 중복체크 안함
+    		if(!isChange) {
+    			return true;
+    		} else {
+    			if(!isUsable) {
+        			alert("상품명 중복체크를 진행해주세요.");
+        			return false;
+        		}
     		}
+    		
 			
 			return true;
 		}
 		
-		var isUsable = false;
 		
-		/* $(".modify_btn").attr("disabled", true); */
+		$("input[name=kname]").on("change", function(){
+			isChange = true;
+		});
     	
     	function productNameCheck(){
     		var kname = $("input[name=kname]").val();
@@ -296,11 +307,7 @@
     							isUsable = false;
     						}
     					}
-    					/* if(isUsable) {
-    						$(".modify_btn").removeAttr("disabled");
-    					} else {
-    						$(".modify_btn").attr("disabled", true);
-    					} */
+    					
     				}, 
     				error : function(e) {
     					console.log(e);

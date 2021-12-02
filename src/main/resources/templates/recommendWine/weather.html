@@ -9,17 +9,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <title>recommend wine by weather</title>
 </head>
-<body>
-	<div class="container">
-		<div class="content">
-			<div class="location"><img id="coor_img" src="/images/recommendWine/coordinate.png">서울</div>
+<body class="weather_body">
+	<div class="weather_container">
+		<div class="weather_content">
+			<div class="location font_small"><img id="coor_img" src="/images/recommendWine/coordinate.png">서울</div>
 			<div class="icon_area"><img id="weather_img"></div>
-			<div class="contents">
+			<div class="weather_contents">
 				<div class="weather_area">
-					<div id="temp_min"></div>
-					<div id="temp_max"></div>
+					<div id="temp_min" class="font_small"></div>
+					<div id="temp_max" class="font_small"></div>
 					<div id="current_temp"></div>
-					<div class="wine_area">
+					<div class="wine_div">
 					</div>
 				</div>
 			</div>
@@ -64,27 +64,19 @@
 							var message = data.message;
 							
 							var html = "";
-							
-							/*
-							<input type="hidden" name="pno">
-			                  <div class="thumb_area"><img id="wine_img"></div>
-			                  <div id="kname" class="name_area"></div>
-			                  <div id="ename" class="name_area"></div>
-
-							*/
-							
+				
 							if(product != null) {
 								html = '<input type="hidden" name="pno" value="' + product.productNo + '">';
-								html += '<div class="message_area">\"' + message + '\"</div>';
+								html += '<div class="message_area font_small">\"' + message + '\"</div>';
 								html += '<div class="thumb_area"><img id="wine_img" src="' + product.thumbnail + '"></div>';
 								html += '<div id="kname" class="name_area">' + product.productKName + '</div>';
 								html += '<div id="ename" class="name_area">' + product.productEName + '</div>';
 							} else {
 								html = '<div class="thumb_area"><img id="wine_img" src="/images/common/main_logo.png"></div>';
-								html += '<div class="message_area">' + message + '</div>';
+								html += '<div class="message_area class="font_small"">' + message + '</div>';
 							}
 							
-							$(".wine_area").html(html);
+							$(".wine_div").html(html);
 							
 							
 							
@@ -102,10 +94,8 @@
 		
 		});
 		
-		$(".wine_area").on("click", function() {
+		$(document).on("click", ".wine_div" , function() {
 			location.href ='/purchase/' + $("input[name=pno]").val();
-			
-		$("#wine_img").css("height", "")
 		});
 	
 	</script>

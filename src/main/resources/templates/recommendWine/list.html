@@ -7,40 +7,45 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/recommendWine/list.css" rel="stylesheet">
+<link href="/css/recommendWine/weather.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <title>recommend wine list</title>
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
 	<div class="wrapper">
-		<h1>#해시태그 와인 추천</h1>
-	    <hr>
-	    <div class="content">	
-	        <div id="label_area">
-	        	<input id="input_box" type="text" name="hashName" th:value="${ hashName }" readonly>
-	        </div>
-	        <div id="list_area" th:if="${#lists.size(wineList) != 0}">
-	        	<ul class="product_list">
-				    <li th:each="wine : ${wineList}">
-				        <div class="product_explain">
-				            <div class="product_img">
-				              <a th:href="@{'/purchase/' + ${wine.productNo} }">
-				               <img th:src="${wine.thumbnail}">
-				              </a> 
-				            </div>
-				            <div class="product_explain">
-				                <div class="product_KoreaName" th:text="${wine.productKName}"></div>
-				                <div class="product_foreignName"  th:text="${wine.productEName}"></div>
-				                <span class="product_price"  th:text="${wine.salePrice}"></span>&nbsp;원<br>
-				            </div>
-				        </div>
-				    </li>
-				</ul>
-	        </div>
-			<div id="null_area" th:if="${#lists.size(wineList) == 0}">
-				<div id="null_text">검색하시는 해시태그의 상품이 없습니다.</div>
+		<div th:include="recommendWine/weather"></div>
+		<div class="container">
+			<h1>#해시태그 와인 추천</h1>
+		    <hr>
+		    <div class="content">	
+		        <div id="label_area">
+		        	<input id="input_box" type="text" name="hashName" th:value="${ hashName }" readonly>
+		        </div>
+		        <div id="list_area" th:if="${#lists.size(wineList) != 0}">
+		        	<ul class="product_list">
+					    <li th:each="wine : ${wineList}">
+					        <div class="product_explain">
+					            <div class="product_img">
+					              <a th:href="@{'/purchase/' + ${wine.productNo} }">
+					               <img th:src="${wine.thumbnail}">
+					              </a> 
+					            </div>
+					            <div class="product_explain">
+					                <div class="product_KoreaName" th:text="${wine.productKName}"></div>
+					                <div class="product_foreignName"  th:text="${wine.productEName}"></div>
+					                <span class="product_price"  th:text="${wine.salePrice}"></span>&nbsp;원<br>
+					            </div>
+					        </div>
+					    </li>
+					</ul>
+		        </div>
+				<div id="null_area" th:if="${#lists.size(wineList) == 0}">
+					<div id="null_text">검색하시는 해시태그의 상품이 없습니다.</div>
+				</div>
 			</div>
 		</div>
+		
 	</div>
     
     <footer th:include="common/footer :: footer"></footer>
