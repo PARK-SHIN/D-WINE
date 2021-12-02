@@ -7,7 +7,7 @@ import com.project.dwine.product.model.vo.Product;
 
 public interface NoticeService {
 	
-	List<Notice> selectNoticeList();
+	List<Notice> selectNoticeList(int startRow, int endRow);
 	
 	Notice selectNoticeByNo(int notice_no);
 
@@ -17,7 +17,11 @@ public interface NoticeService {
 	
 	void deleteNotice(String notice_no);
 
-	List<Notice> searchNoticeList(String searchValue);
+	List<Notice> searchNoticeList(String searchValue, int startRow, int endRow);
+
+	int noticeTotalListCnt();
+
+	int noticeSearchListCnt(String searchValue);
 
 
 

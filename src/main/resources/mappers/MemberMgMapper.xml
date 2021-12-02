@@ -25,12 +25,22 @@
 	</resultMap>
 	
 	<select id="selectMemberMgList" resultMap="memberResultMap">
+
 	SELECT
-			*
-	FROM MEMBER
-	WHERE USER_STATUS = 'Y'
-	ORDER BY REPORTED_COUNT DESC, CREATE_DATE
+	*
+	FROM (SELECT 
+               ROWNUM RNUM
+              , MLIST.*
+       FROM(SELECT
+               *
+               FROM MEMBER
+              WHERE USER_STATUS = 'Y'
+              ORDER BY REPORTED_COUNT DESC, CREATE_DATE) MLIST)
+      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
 	
+	<select id="memberMgTotalListCnt" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER
 	</select>
 	
 	<select id="selectMemberMgByNo" parameterType="_int" resultMap="memberResultMap">

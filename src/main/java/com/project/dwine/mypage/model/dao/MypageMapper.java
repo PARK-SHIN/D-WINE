@@ -1,13 +1,10 @@
 package com.project.dwine.mypage.model.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.domain.Page;
 
 import com.project.dwine.member.model.vo.Member;
-import com.project.dwine.mypage.model.vo.Payment;
 import com.project.dwine.mypage.model.vo.Point;
 import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
@@ -16,14 +13,9 @@ import com.project.dwine.mypage.model.vo.Wish;
 @Mapper
 public interface MypageMapper {
 
-	//int memberModify(Member m);
 	int memberModify(int user_no, String user_pw, String user_nickname, String user_name, String user_phone);
 
-	List<Review> findAllReview(int userNo);
-
 	Member selectMember(int user_no);
-
-	int memberDelete(int user_no, String user_pw);
 
 	int insertReview(Review r);
 
@@ -31,11 +23,7 @@ public interface MypageMapper {
 
 	int reviewDelete(int review_no);
 	
-	List<Wish> selectWishList(int user_no);
-
 	List<Point> pointList(int user_no);
-
-	List<Purchase> selectOrderList(int user_no);
 
 	int pickupModify(String purchase_no, String pickup_place, String pickup_date, String pickup_time);
 
@@ -69,9 +57,21 @@ public interface MypageMapper {
 
 	int updateAddMemberPoint(int user_no);
 
+	List<Purchase> selectOrderListPage(int user_no, int startRow, int endRow);
 
+	int getTotalListCount(int user_no);
 
+	int getTotalWishListCount(int user_no);
 
-	
+	List<Wish> selectWishListPage(int user_no, int startRow, int endRow);
 
+	List<Review> findAllReviewPage(int user_no, int startRow, int endRow);
+
+	int getTotalReviewListCount(int user_no);
+
+	int memberPointReviewDelete(int user_no);
+
+	Point findPurchasePoint(String purchase_no);
+
+	int memberPointPayCancelDelete(int user_no, int point, int use_point);
 }

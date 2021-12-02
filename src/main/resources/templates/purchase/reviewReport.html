@@ -7,6 +7,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 <style>
+	* {
+          font-family: 'Gowun Batang', serif;
+       }
 	.wrapper{
 		margin: 0 auto;
 		width: 400px;
@@ -16,22 +19,26 @@
 		text-align: center;
 		color:  #83131E;
 	}
-	 #ulwrapper {
+	 #reportwrapper {
 		text-align : center;
         list-style: none;
         padding : 0;
         }
         
-     #ulwrapper li{
+     #reportwrapper .btn{
+     	display : block;
 		background-color : #f5f5f5; 
-     	height: 30px;
+     	height: 50px;
+     	width : 300px;
+     	font-size : 20px;
 		text-align : center;
+		margin : 0 auto;
      	padding : 20px;
      	cursor : pointer;
      	border : 2px solid #f5f5f5;
      }
      
-     ul li:hover{
+     .btn:hover{
      	color:#83131E;
      	font-weight: bold;
      }
@@ -41,7 +48,7 @@
         padding : 30px;
     	}
    
-      #reportBtn{
+       #reportBtn{
         padding: 10px 15px;
         border-radius: 5px;
         background-color: #83131E;
@@ -49,22 +56,26 @@
         color: #fff;
         border : 0px;
         cursor: pointer;
-   		 }
+   		 } 
 </style>
 <body>
 	<div class="wrapper">
 		<h2>신고</h2>
-		<ul id="ulwrapper">
-			<li class="val">광고 / 홍보</li>
-			<li class="val">도배</li>
-			<li class="val">욕설 / 음란어</li>
-			<li class="val">무관한 내용</li>
-			<li class="val">기타(에티켓 위반등)</li>
-		</ul>
-		
+		<form id="reportReason" onsubmit="return reportCheck()" th:action="@{/purchase/reviewReport}" method="post">
+		<div id="reportwrapper">
+			<input type="text" class="btn" value="광고 / 홍보" readonly>
+			<input type="text" class="btn" value="도배" readonly>
+			<input type="text" class="btn" value="욕설 / 음란어" readonly>
+			<input type="text" class="btn" value="무관한 내용" readonly>
+			<input type="text" class="btn" value="기타(에티켓 위반등)" readonly>
+			<input type="hidden" name="userNo" th:value="${userNo}">
+			<input type="hidden" name="reviewNo" th:value="${reviewNo}">
+			
+		</div>
 		<div class="btnArea">
 			<button id="reportBtn">신고</button>
 		</div>
+		</form>
 		
 	</div>
 	
@@ -73,21 +84,34 @@
 	<script>
 	
 	var val = "";
-	$("ul li").click(function(){
-		$("ul li").css('border', '2px solid #f5f5f5');
-		val = $(this).text();
-	    console.log(val);
+	var reportName = "";
+	var thisElem = "";
+	
+	$(".btn").click(function(){
+		$(".btn").css('border', '2px solid #f5f5f5');
 	    $(this).css('border', '2px solid #83131E');
+		val = $(this);
+		$(".btn").attr('name','');
+		thi = $(this).attr('name','reason');
+		thisElem = $(this).attr;
+	    console.log("val : " + val);
+	    console.log(thi);
+	    console.log(thisElem);
+	    //thisElem.querySelector().attr('name','shin');
+	
 	});
 	
 	
-	$('#reportBtn').on('click', function(e){
+	function reportCheck(){
 	    if(val == ""){
-			alert('신고사유를 선택해주세요.');	    	
+			alert('신고사유를 선택해주세요.');	
+			return false;
+	    } else{
+	    	return true;
 	    }
 	
 	
-	});
+	};
 	
 	</script>
 </body>

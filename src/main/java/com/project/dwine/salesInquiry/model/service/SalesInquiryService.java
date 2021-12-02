@@ -8,6 +8,15 @@ public interface SalesInquiryService {
 
 	Total selectTodayStatus();
 
-	List<Total> dailyList();
+	List<Total> yearSales();
+
+	List<Total> dailyList(int startRow, int endRow);
+
+	int getDailyListCount();
+
+	List<Total> searchDateList(int startRow, int endRow, String startDate, String endDate);
+
+	int getDateListCount(String startDate, String endDate);
+
 
 }

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/qna/adminqnaList.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>1:1문의 목록</title>
+<script>
+	const successMessgae = '[[${ message }]]';
+	
+	if(successMessgae){
+		alert(successMessgae);
+	}
+</script>
+</head>
+<body>
+<header th:include="common/header :: header"></header>
+<div id="container">
+	<nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+		<div class="contents">
+            <div class="inner">
+        <div>
+            <h3 style="font-size: 24px; margin-left: 30px;">1:1문의관리
+            </h3>
+        </div>
+        <hr style="width: 800px; margin-bottom: 20px;">
+        <div class="previewArea">
+            <span style="margin-left: 43px;" class="titleBold">문의날짜</span> <span style="margin-left:135px;" class="titleBold">문의제목</span>
+        </div>
+        <div class="replyArea" th:each="q : ${adminQnaList}">
+        	<div style="float:left;"><th:block th:if="${q.answer_status} == null">
+	        	<div style="float:left; margin-top: 10px;"><button class="wait">답변대기</button></div>
+	        	<div class="allArea previewArea"><div class="mainArea"><div class="main"> <div class="parent"><div class="first"><label class="date" th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label></div><div class="second"><label onclick="question_detail(this)" class="clickP" style="margin-right: 100px;" th:text="${q.qna_title}"></label></div><div class="third"><button class="openArea openBtn" onclick="openModal(this)">답변하기</button>
+                        <form style="display:inline;" th:action="@{/qna/amdinDeleteQna}">
+                        	<input type="hidden" name="qna_no" th:value="${q.qna_no}">
+                        	<button class="wait delBtn" type="submit">삭제</button></form>
+                       </div>
+                        
+    </div>
+                    </div><div style="display: none;" class="hide">
+                        <div style="margin-left: 30px;">
+                            <p th:text="${q.qna_content}"></p>
+                        </div>
+                        <div>
+                            <img th:src="${q.qna_image}" style="width:500px; height:500px;">
+                        </div>
+                    </div>
+            </div><div class="modalArea"><div class="modal hidden"><div class="bg"></div><div class="modalBox" style="width:700px"><div class="closeArea"><img src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px"></div>
+                        <h2 align="center" style="margin-top: 20px;">1:1문의 내용</h2>
+                        <hr style="width: 600px;">
+                        <div class="labelSize">
+                            <label class="labelBold" style="margin-left:50px" for="">작성자</label>
+                            <label th:text="${q.user_name}" style="border: 0px; margin-left: 65px; width: 210px;"></label>
+                            <label  style="border: 0px; margin-left: 90px; width: 210px;">/</label>
+                            <label th:text="${q.user_id}"  style="border: 0px; margin-left: 90px; width: 210px;"></label>
+                        </div>
+                        <hr style="width: 600px;">
+                        <div class="labelSize">
+                            <label class="labelBold" style="margin-left:50px" for="">작성일</label>
+                            <label style="margin-left : 70px;" th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label>
+                        </div>
+                        <hr style="width: 600px;">
+                        <div class="labelSize">
+                            <label class="labelBold" style="margin-left:50px" for="">문의내용</label>
+                            <label th:text="${q.qna_content}" style="margin-left : 50px;"></label>
+                        </div>
+                        <hr style="width: 600px;">
+                        <form th:action="@{/qna/adminAnswerInsertForm}" method="post">
+                        	<input type="hidden" name="qna_no" th:value="${q.qna_no}">
+                            <div class="labelSize">
+                                <label class="labelBold" style="margin-left:50px" for="">답변</label>
+                                <br><br>
+                                <textarea name="answer_content" style="margin-left:50px" rows="10" cols="80" th:text="${q.answer_content}"></textarea>
+                            </div> 
+                            <input class="submitInput" type="submit" value="등록">
+                        </form>
+                    </div>
+                      
+                    </div>
+            </div>
+			</div>
+        	</th:block>
+        	<th:block th:if="${q.answer_status} == 'Y'">
+        		<div style="float:left; margin-top: 10px;"><button class="success">답변완료</button></div>
+        		<div class="allArea previewArea"><div class="mainArea"><div class="main"> <div class="parent"><div class="first"><label class="date" th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label></div><div class="second"><label onclick="question_detail(this)" class="clickP" style="margin-right: 100px;" th:text="${q.qna_title}"></label></div><div class="third"><button class="openArea openBtn" onclick="openModal(this)">수정하기</button>
+                        <form style="display:inline;" th:action="@{/qna/amdinDeleteQna}">
+                        	<input type="hidden" name="qna_no" th:value="${q.qna_no}">
+                        	<button class="wait delBtn" type="submit">삭제</button></form>
+                       </div>
+                        
+    </div>
+                    </div><div style="display: none;" class="hide">
+                        <div style="margin-left: 30px;">
+                            <p th:text="${q.qna_content}"></p>
+                        </div>
+                        <div>
+                            <img th:src="${q.qna_image}" style="width:500px; height:500px;">
+                        </div>
+                    </div>
+            </div><div class="modalArea"><div class="modal hidden"><div class="bg"></div><div class="modalBox" style="width:700px"><div class="closeArea"><img src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px"></div>
+                        <h2 align="center" style="margin-top: 20px;">1:1문의 내용</h2>
+                        <hr style="width: 600px;">
+                        <div class="labelSize">
+                            <label class="labelBold" style="margin-left:50px" for="">작성자</label>
+                            <label th:text="${q.user_name}" style="border: 0px; margin-left: 65px; width: 210px;"></label>
+                            <label  style="border: 0px; margin-left: 90px; width: 210px;">/</label>
+                            <label th:text="${q.user_id}"  style="border: 0px; margin-left: 90px; width: 210px;"></label>
+                        </div>
+                        <hr style="width: 600px;">
+                        <div class="labelSize">
+                            <label class="labelBold" style="margin-left:50px" for="">작성일</label>
+                            <label style="margin-left : 70px;" th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label>
+                        </div>
+                        <hr style="width: 600px;">
+                        <div class="labelSize">
+                            <label class="labelBold" style="margin-left:50px" for="">문의내용</label>
+                            <label th:text="${q.qna_content}" style="margin-left : 50px;"></label>
+                        </div>
+                        <hr style="width: 600px;">
+                        <form th:action="@{/qna/adminAnswerModifyForm}" method="post">
+                        	<input type="hidden" name="qna_no" th:value="${q.qna_no}">
+                            <div class="labelSize">
+                                <label class="labelBold" style="margin-left:50px" for="">답변</label>
+                                <br><br>
+                                <textarea name="answer_content" style="margin-left:50px" rows="10" cols="80" th:text="${q.answer_content}"></textarea>
+                            </div> 
+                            <input class="submitInput" type="submit" value="수정">
+                        </form>
+                    </div>
+                      
+                    </div>
+            </div>
+			</div>
+        	</th:block></div>
+        
+			</div>
+			 </div>
+			  <div class="paging__area">
+        		<ul class="paging_ul">
+					<li><a th:href="@{/qna/adminQnaList(page=1)}">&lt;&lt;</a></li>
+					<li th:if="${ pi.page > 1 }"><a th:href="@{/qna/adminQnaList(page=${pi.page - 1})}">&lt;</a></li>
+					<li th:unless="${ pi.page > 1 }"><a href="#">&lt;</a></li>
+					<li th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}">
+						<a th:if="${ pi.page == page }" class="current_page" th:text="${page}" href="#"></a>
+						<a th:unless="${ pi.page == page }" th:text="${page}" th:href="@{/qna/adminQnaList(page=${page})}"></a>
+					</li>
+					<li th:if="${ pi.page < pi.maxPage }"><a th:href="@{/qna/adminQnaList(page=${pi.page + 1})}">&gt;</a></li>
+					<li th:unless="${ pi.page < pi.maxPage }"><a href="#">&gt;</a></li>
+					<li><a th:href="@{/qna/adminQnaList(page=${pi.endPage})}">&gt;&gt;</a></li>
+				</ul>
+			</div>
+        </div>
+        </div>
+        <script>
+        function openModal(elem){
+        	console.log(elem);
+        	var allArea = elem.parentNode.parentNode.parentNode.parentNode.parentNode; 
+        	//console.log(allArea); //allArea
+
+            var modalopen = allArea.firstChild.firstChild.firstChild.nextSibling.nextSibling.nextSibling;
+            //console.log(modalopen); //모달오픈할 함수있는 태그
+
+            var modalArea = allArea.firstChild.nextSibling.firstChild;
+            //console.log(modalArea);
+
+            modalArea.classList.remove("hidden");
+
+            var bg = modalArea.firstChild;
+            //console.log(bg);
+
+            var xbtn = bg.nextSibling.firstChild.firstChild;
+            //console.log(xbtn);\
+            const close =()=> {
+                modalArea.classList.add("hidden");
+	    	}
+        	
+        	bg.addEventListener("click", close);
+        	xbtn.addEventListener("click", close);
+       	 }
+		</script>
+
+    <script>
+        function question_detail(elem) {
+           console.log(elem); //p영역나옴
+            var mainArea = elem.parentNode.parentNode.parentNode; // main영역
+           //console.log(mainArea);
+
+            var hideArea = mainArea.nextSibling;
+            //console.log(hideArea);
+
+            var allArea = mainArea.parentNode;
+            //console.log(allArea); // allArea영역나옴
+
+            var a = allArea.firstChild.nextSibling;
+            //console.log(a);
+            
+            var main = document.querySelector('.main');
+            let hide = document.querySelector('.hide');
+
+            if (hideArea.style.display == 'none') {
+                hideArea.style.display = '';
+                // mainArea.style.display = 'none';
+            } else {
+                hideArea.style.display = 'none';
+                // mainArea.style.display = '';
+            }
+            elem.style.display = '';
+        }
+
+        /* function folding(elem) {
+            console.log(elem);
+            var test2 = elem.parentNode;
+            console.log(test2);
+            var test = elem.parentNode.parentNode;
+            console.log(test);
+
+            var test1 = test.firstChild;
+            console.log(test1);
+
+            if (test1.style.display == '') {
+                test2.style.display = 'none';
+            }
+        } */
+        
+    </script>
+    
+    
+ <footer th:include="common/footer :: footer"></footer>
+</body>
+</html>

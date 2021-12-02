@@ -23,6 +23,8 @@ public class Review {
 	private int report_no;
 	private int reason_no;
 	private int reporter_no;
+	private int review_no1;
+	private int review_no2;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date report_date;
 	private int count;
@@ -32,7 +34,8 @@ public class Review {
 
 	public Review(int review_no, String review_text, String review_image, Date review_date, Date review_modify,
 			double star, String status, int user_no, int od_no, String product_kname, String user_id1, String user_id2,
-			int report_no, int reason_no, int reporter_no, Date report_date, int count, String reason_context) {
+			int report_no, int reason_no, int reporter_no, int review_no1, int review_no2, Date report_date, int count,
+			String reason_context) {
 		super();
 		this.review_no = review_no;
 		this.review_text = review_text;
@@ -49,6 +52,8 @@ public class Review {
 		this.report_no = report_no;
 		this.reason_no = reason_no;
 		this.reporter_no = reporter_no;
+		this.review_no1 = review_no1;
+		this.review_no2 = review_no2;
 		this.report_date = report_date;
 		this.count = count;
 		this.reason_context = reason_context;
@@ -174,6 +179,22 @@ public class Review {
 		this.reporter_no = reporter_no;
 	}
 
+	public int getReview_no1() {
+		return review_no1;
+	}
+
+	public void setReview_no1(int review_no1) {
+		this.review_no1 = review_no1;
+	}
+
+	public int getReview_no2() {
+		return review_no2;
+	}
+
+	public void setReview_no2(int review_no2) {
+		this.review_no2 = review_no2;
+	}
+
 	public Date getReport_date() {
 		return report_date;
 	}
@@ -204,9 +225,11 @@ public class Review {
 				+ ", review_date=" + review_date + ", review_modify=" + review_modify + ", star=" + star + ", status="
 				+ status + ", user_no=" + user_no + ", od_no=" + od_no + ", product_kname=" + product_kname
 				+ ", user_id1=" + user_id1 + ", user_id2=" + user_id2 + ", report_no=" + report_no + ", reason_no="
-				+ reason_no + ", reporter_no=" + reporter_no + ", report_date=" + report_date + ", count=" + count
-				+ ", reason_context=" + reason_context + "]";
+				+ reason_no + ", reporter_no=" + reporter_no + ", review_no1=" + review_no1 + ", review_no2="
+				+ review_no2 + ", report_date=" + report_date + ", count=" + count + ", reason_context="
+				+ reason_context + "]";
 	}
 
+	
 	
 }

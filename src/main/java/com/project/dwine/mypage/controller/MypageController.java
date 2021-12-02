@@ -33,10 +33,10 @@ import com.project.dwine.mypage.model.vo.Point;
 import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
 import com.project.dwine.mypage.model.vo.Wish;
+import com.project.dwine.paging.PageInfo;
 
 @Transactional
 @Controller
-//@RequestMapping("/mypage")
 public class MypageController{
 	
 	private MypageService mypageService;
@@ -108,8 +108,6 @@ public class MypageController{
 			System.out.println("비밀번호변경실패");
 			return "redirect:/mypage/memberModify";
 		}
-		
-		//return "/mypage/memberModify";
 	}
 	
 	// 닉네임 변경
@@ -162,14 +160,26 @@ public class MypageController{
 	//----------------------------------------------
 	// 주문목록
 	@GetMapping("/mypage/orderlist")
-	public ModelAndView orderList(ModelAndView mv) {
+	public ModelAndView orderList(ModelAndView mv,@RequestParam(value="page", required=false) String page) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
-	    // 전체 글 개수
-	    int orderListCnt = mypageService.orderListCnt(user_no);
 	    
-	    List<Purchase> purchaseList = mypageService.selectOrderList(user_no);
-	    mv.addObject("purchaseList", purchaseList);
+	    int listCount = mypageService.getTotalListCount(user_no);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+	    List<Purchase> purchaseList = mypageService.selectOrderListPage(user_no, startRow, endRow);
+        mv.addObject("purchaseList", purchaseList);
+        System.out.println(purchaseList + " : 주문목록");
+        mv.addObject("pi", pi);
 	    mv.setViewName("mypage/orderlist");
 		return mv;
 	}
@@ -200,30 +210,46 @@ public class MypageController{
 	// 결제취소 
 	@PostMapping("/mypage/updateCancelPayment")
 	public String CancelPaymentForm(String purchase_no, RedirectAttributes rttr) {
+		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    int user_no = user.getUser_no();
+	    
 		int result = mypageService.updateCancelPayment(purchase_no);
+		System.out.println("purchase_no : " + purchase_no);
+		Point p = mypageService.findPurchasePoint(purchase_no);
+		int point = p.getPoint();
+		int use_point = p.getUse_point();
+		System.out.println("findPurchasePoint : " + p);
 		if(result > 0) {
-			System.out.println("성공");
+			int result2 = mypageService.memberPointPayCancelDelete(user_no, point, use_point);
 			rttr.addFlashAttribute("message", "결제취소 되었습니다.");
 		} else {
-			System.out.println("실패");
 			rttr.addFlashAttribute("message", "결제취소에 실패하였습니다.");
 		}
 		return "redirect:/mypage/orderlist";
 	}
 	
-	// -----------------------------------------------
-//	@GetMapping("/review")
-//	public void reviewList() {
-//	}
-	
+	// review ------------------------------
 	// 나의 리뷰 리스트
 	@GetMapping("/mypage/review")
-	public ModelAndView reviewList(ModelAndView mv) {
+	public ModelAndView reviewList(ModelAndView mv, @RequestParam(value="page", required=false) String page) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
 	    
-	    List<Review> reviewList = mypageService.findAllReview(user_no);
+	    int listCount = mypageService.getTotalReviewListCount(user_no);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+        List<Review> reviewList = mypageService.findAllReviewPage(user_no, startRow, endRow);
 		mv.addObject("reviewList", reviewList);
+		mv.addObject("pi", pi);
 		mv.setViewName("mypage/review");
 		return mv;
 	}
@@ -332,9 +358,17 @@ public class MypageController{
 	// 리뷰 삭제
 	@GetMapping("/mypage/reviewDelete/{review_no}")
 	public String reviewDelete(@PathVariable int review_no, RedirectAttributes rttr) {
+		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    int user_no = user.getUser_no();
 		int result = mypageService.reviewDelete(review_no);
 		if(result > 0) {
 			rttr.addFlashAttribute("message", "리뷰가 삭제되었습니다.");
+			int result2 = mypageService.memberPointReviewDelete(user_no); // 리뷰 삭제 -> 포인트차감
+			if(result2 > 0) {
+				System.out.println("리뷰삭제 동시에 member table 포인트 차감 성공");
+			} else {
+				System.out.println("실패");
+			}
 		} else {
 			rttr.addFlashAttribute("message", "리뷰 삭제에 실패하였습니다.");
 		}
@@ -344,13 +378,25 @@ public class MypageController{
 	//-------------------------------------------
 	// 찜 목록 보여주기
 	@GetMapping("/mypage/wish")
-	public ModelAndView wishListPage(ModelAndView mv) {
+	public ModelAndView wishListPage(ModelAndView mv, @RequestParam(value="page", required=false) String page) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
-	    List<Wish> wishList = mypageService.selectWishList(user_no);
+	    int listCount = mypageService.getTotalWishListCount(user_no);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+        List<Wish> wishList = mypageService.selectWishListPage(user_no, startRow, endRow);
 	    mv.addObject("wishList",wishList);
+	    mv.addObject("pi", pi);
 	    mv.setViewName("mypage/wish");
-	    System.out.println("WISHLIST : " + wishList);
 	    return mv;
 	}
 	
@@ -404,11 +450,9 @@ public class MypageController{
 	    List<Point> pointList = mypageService.pointList(user_no);
 	    Member m = mypageService.selectMemberPoint(user_no);
 	    model.addAttribute("m", m);
-	    System.out.println(m);
 	    List<Purchase> purchaseList = mypageService.purchaseList(user_no);
 	    mv.addObject("purchaseList", purchaseList);
 	    mv.addObject("pointList", pointList);
-	    System.out.println(pointList);
 	    mv.setViewName("mypage/point");
 	    return mv;
 	}

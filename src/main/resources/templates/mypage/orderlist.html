@@ -8,73 +8,6 @@
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/orderlist.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
-<style>
-*{
-	font-family: 'Gowun Batang', serif;
-}
-.sub_inner>ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	width: 200px;
-}
-
-.sub_ul>li a {
-	display: block;
-	color: #000;
-	padding: 14px 16px;
-	text-decoration: none;
-}
-
-/* Change the link color on hover */
-.ahover:hover {
-	background-color: rgba(131, 19, 30, 0.2);
-	color: #83131E;
-	font-weight: bold;
-}
-
-.snb_inner>ul>li span {
-	background: no-repeat 0 0/20px url(/images/mypage/order.png);
-	/*주문목록*/
-	padding-left: 30px;
-	font-size: 14px;
-	
-}
-
-.snb_inner>ul>li:nth-child(2) span {
-	background-image: url(/images/mypage/wish.png);
-	/*찜*/
-}
-
-.snb_inner>ul>li:nth-child(3) span {
-	background-image: url(/images/mypage/sub_review.png);
-	/*리뷰관리*/
-}
-
-.snb_inner>ul>li:nth-child(4) span {
-	background-image: url(/images/mypage/point.png);
-}
-
-.snb_inner>ul>li:nth-child(5) span {
-	background-image: url(/images/mypage/member.png);
-}
-
-.snb_inner>ul>li:nth-child(6) span {
-	background-image: url(/images/mypage/member.png);
-}
-
-.snb_inner>ul>li:nth-child(7) span {
-	background-image: url(/images/mypage/member.png);
-}
-
-.sub_ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	width: 200px;
-	margin-top:10px;
-}
-</style>
 <script>
 	const successMessgae = '[[${ message }]]';
 	
@@ -86,7 +19,7 @@
 </head>
 <body>
 <header th:include="common/header :: header"></header>
-<div class="wrapper">
+
 	<div id="container">
         <!-- <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
         </nav> -->
@@ -98,7 +31,7 @@
 					<li><a class="ahover" href="/mypage/wish"><span>찜리스트</span></a></li>
 					<li><a class="ahover" href="/mypage/review"><span>나의리뷰</span></a></li>
 					<li><a class="ahover" href="/mypage/point"><span>내 포인트</span></a></li>
-					<li><a class="ahover mypoint" href="/qna/userqnaList"><span>나의1:1문의</span></a></li>
+					<li><a class="ahover mypoint" href="/qna/userqna"><span>나의1:1문의</span></a></li>
 					<li><a class="ahover" href="/mypage/memberModify"><span>회원정보수정</span></a></li>
 		            <li><a class="ahover" href="/mypage/memberDel"><span>회원탈퇴</span></a></li>
 				</ul>
@@ -121,7 +54,7 @@
                         <ul  class="order_ul openBtn" style="display: flex;justify-content: space-around; align-items: center;">
                             <li class="order_date"><p th:text="${#dates.format(p.purchase_date, 'yyyy-MM-dd')}"><p class="fsmall">[<label class="labelArea" th:text="${p.purchase_no}"></label>]</p></li>
                             <li class="pname pnameSize" style="margin:0px; padding: 0px; text-align:center; word-break:break-all; ">
-                              <strong th:text="${p.product_kname}"></strong> <br><p class="fsmall labelp">[수령점 : <label class="labelArea" th:text=${p.pickup_place}></label>]</p>
+                              <a th:href="@{'/purchase/' + ${p.product_no} }"><strong th:text="${p.product_kname}"></strong></a> <br><p class="fsmall labelp">[수령점 : <label class="labelArea" th:text=${p.pickup_place}></label>]</p>
                             </li>
                             <li class="count countSize" th:text="${p.od_count}"></li>
                             <li class="sum sumSize" th:text="${p.od_price}"></li>
@@ -218,9 +151,9 @@
                                         </div><hr style="width: 500px;">
                                         <div class="labelSize"><label for="">수령점</label>
                                             <select name="pickup_place" id="" style="margin-left: 130px; width:200px;height:30px;">
-                                                <option value="DWINE 역삼점" th:selected="${p.pickup_place}=='DWINE 역삼점'">DWINE 역삼점</option>
-                                                <option value="DWINE 논현점" th:selected="${p.pickup_place}=='DWINE 논현점'">DWINE 논현점</option>
-                                                <option value="DWINE 성수점" th:selected="${p.pickup_place}=='DWINE 성수점'">DWINE 성수점</option>
+                                                <option value="강남점" th:selected="${p.pickup_place}=='강남점'">강남점</option>
+                                                <option value="당산점" th:selected="${p.pickup_place}=='당산점'">당산점</option>
+                                                <option value="종로점" th:selected="${p.pickup_place}=='종로점'">종로점</option>
                                             </select></div><hr style="width: 500px;">
                                         <div class="labelSize"><label for="">수령날짜</label><select onclick="selectDate(this);" id="pickupDate" class="pickupDate" name="pickup_date" style="margin-left: 116px; width:200px;height:30px;">
                                         		<option>[[${p.pickup_date}]]</option>
@@ -241,10 +174,24 @@
                         </div></div>
                     <br>
                 </div>
+            <div class="paging__area">
+        		<ul class="paging_ul">
+					<li><a th:href="@{/mypage/orderlist(page=1)}">&lt;&lt;</a></li>
+					<li th:if="${ pi.page > 1 }"><a th:href="@{/mypage/orderlist(page=${pi.page - 1})}">&lt;</a></li>
+					<li th:unless="${ pi.page > 1 }"><a href="#">&lt;</a></li>
+					<li th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}">
+						<a th:if="${ pi.page == page }" class="current_page" th:text="${page}" href="#"></a>
+						<a th:unless="${ pi.page == page }" th:text="${page}" th:href="@{/mypage/orderlist(page=${page})}"></a>
+					</li>
+					<li th:if="${ pi.page < pi.maxPage }"><a th:href="@{/mypage/orderlist(page=${pi.page + 1})}">&gt;</a></li>
+					<li th:unless="${ pi.page < pi.maxPage }"><a href="#">&gt;</a></li>
+					<li><a th:href="@{/mypage/orderlist(page=${pi.endPage})}">&gt;&gt;</a></li>
+				</ul>
+			</div>
             </div>
         </div>
     </div>
-   </div>
+   
     <script>
         function openModal(elem){
         	console.log(elem);
@@ -393,25 +340,6 @@
         		locaion.href = "/mypage/reviewInsert"
         	}
         </script>
-        
-        <!-- 결제 취소 api 관련 script -->
-        <<!-- script>
-        var price = $(".sum").val;
-        
-		  function cancelPay(pay_no, purchase_price) {
-		    $.ajax({
-		      url: "{환불요청을 받을 서비스 URL}", // 예: http://www.myservice.com/payments/cancel
-		      type: "POST",
-		      contentType: "application/json",
-		      data: JSON.stringify({
-				        merchant_uid: pay_no, // 예: ORD20180131-0000011
-				        cancel_request_amount: purchase_price, // 환불금액
-				        reason: "테스트 결제 환불" // 환불사유
-		      }),
-		      dataType: "json"
-		    });
-		  }
-		</script> -->
         
 <footer th:include="common/footer :: footer"></footer>
 </body>

@@ -5,9 +5,15 @@
 <title>재고관리</title>
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
+<!-- 글꼴, jquery, 공통css -->
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+ 
 
     <style>
     * {
@@ -238,7 +244,7 @@
     
     <div class="searchArea">
         <label>기간 조회 : </label>
-        <input type="date"> ~ <input type="date">
+        <input type="text" id="datepicker1" placeholder="년-월-일" > ~ <input type="text" id="datepicker2" placeholder="년-월-일">
         <button class="dayArrayBtn">오늘</button>
         <button class="dayArrayBtn">1주일</button>
         <button class="dayArrayBtn">1개월</button>
@@ -297,6 +303,36 @@
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
 	$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+	
+	
+	//datepicker
+	
+	$(function() {
+      $("#datepicker1, #datepicker2").datepicker({
+          dateFormat: 'yy.mm.dd'
+          
+      });
+  });
+	
+	
+	
+	
+	$.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd',
+        prevText: '이전 달',
+        nextText: '다음 달',
+        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+        showMonthAfterYear: true,
+        yearSuffix: '년'
+    });
+	
+	
+	
+	
 	
 	//날짜포맷함수
 	function dateFormat(date) {

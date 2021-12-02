@@ -8,10 +8,14 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/wish.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
 <style>
 	label {
 		margin : 0;
 		padding : 0;
+	}
+	*{
+		font-family: 'Gowun Batang', serif;
 	}
 </style>
 </head>
@@ -43,8 +47,8 @@
 	                        <li class="title">
 	                            <div class="parent">
 	                                <div class="first"><input type="checkbox" name="ck_code" th:value="${w.product_no}"></div>
-	                                <div class="second"><img th:src="${w.thumbnail}" width="80px" height="80px" alt="wineImg"> </div>
-	                                <div class="third"> <label th:text="${w.product_kname}"></label> </div>
+	                                <div class="second"><a class="movePno" th:href="@{'/purchase/' + ${w.product_no} }"><img th:src="${w.thumbnail}" width="80px" height="80px" alt="wineImg"></a></div>
+	                                <div class="third"><a th:href="@{'/purchase/' + ${w.product_no} }"><label th:text="${w.product_kname}" class="movePno"></label></a> </div>
 	                            </div>
 	                        </li>
 	                        <li class="wish_date date1"><label th:text="${#dates.format(w.wish_date, 'yyyy.MM.dd')}"></label></li>
@@ -60,6 +64,16 @@
 		                </div>
 	                </div>
                 </form>
+            <div class="paging__area">
+			 	<ul class="paging_ul">
+					<li class="go_first">&lt;&lt;</li>
+					<li class="go_prev">&lt;</li>
+					<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
+					<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
+					<li class="go_next">&gt;</li>
+					<li class="go_end">&gt;&gt;</li>
+				</ul> 
+			</div>
             </div>
             </div>
         </div>

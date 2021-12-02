@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.dwine.manage.model.vo.Report;
 import com.project.dwine.member.model.vo.Member;
 import com.project.dwine.purchase.model.dao.PurchaseMapper;
 import com.project.dwine.purchase.model.vo.Hashtag;
@@ -139,6 +140,18 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public List<Review> reviewList(String id) {
 		return purchaseMapper.reviewList(id);
+	}
+
+	/* 리뷰 중복 체크 */
+	@Override
+	public Report checkReport(int user_no, int reviewNo) {
+		return purchaseMapper.checkReport(user_no, reviewNo);
+	}
+
+	/* 리뷰 등록  */
+	@Override
+	public int insertReport(int user_no, int userNo, int reviewNo, int reasonNo) {
+		return purchaseMapper.insertReport(user_no, userNo, reviewNo, reasonNo);
 	}
 
 

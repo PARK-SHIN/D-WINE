@@ -1,0 +1,151 @@
+@charset "UTF-8";
+
+* {
+	font-family: 'Gowun Batang', serif;
+}
+
+#container {
+	width: 1100px;
+	margin: 0 auto;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+	/* height: 1400px; */
+	height: auto;
+}
+
+.contents {
+	height: 100%;
+	/*2500px -> 100%*/
+	/* border: 1px solid black; */
+	margin-bottom: 50px;
+}
+
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+label {
+	font-size: 15px;
+	margin-left: 30px;
+}
+
+.marginClass {
+	margin-bottom: 20px;
+	margin-top: 20px;
+	margin-left: 30px;
+}
+
+.cmd {
+	margin-top: 20px;
+	margin-left: 500px;
+}
+
+#save {
+	padding: 10px 20px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 0px;
+	cursor: pointer;
+}
+
+.colorred {
+	color: red;
+}
+
+.clickP:hover {
+	cursor: pointer;
+}
+
+.previewArea {
+	margin-left: 120px;
+	padding-bottom: 15px;
+}
+
+.main {
+	background-color: #ebebeb;
+	border-radius: 10px;
+	height: 48px;
+	padding-top: 21px;
+	width: 920px;
+}
+
+.answer {
+	border-top: 1px solid #000;
+	margin-top: 5px;
+	width: 920px;
+}
+
+.openArea {
+	padding: 6px 20px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 0px;
+	cursor: pointer;
+	margin-right: 10px;
+	margin-left: 25px;
+}
+
+.wait {
+	padding: 5px 15px;
+	border-radius: 5px;
+	background-color: #fff;
+	color: #83131E;
+	border: 1px solid #83131E;
+}
+
+.delhover {
+	cursor: pointer;
+}
+
+.btnArea {
+	margin-left: 777px;
+	margin-bottom: 20px;
+}
+
+.success {
+	padding: 5px 15px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 1px solid #83131E;
+}
+
+.successA {
+	margin-left: 110px;
+}
+
+.titleBold {
+	font-weight: bold;
+}
+/* 페이징 부분 1201 변경*/
+   .paging_ul {
+      height: 50px;
+      line-height: 50px;
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      width: 480px;
+      margin: 30px auto;
+   }
+   .paging_ul a {
+      text-decoration: none;
+      color: #282A35;
+      display: block;
+      text-align: center;
+      border: 1px solid #dae0e9;
+       margin-left: 10px;
+      width: 37px;
+      height: 37px;
+      line-height : 37px;
+       font-size: 12px;
+       border-radius : 5px;
+   }
+   .paging_ul a.current_page {
+      border: 1px solid  #83131E;
+       background:  #83131E;
+       color: #fff;
+       border-radius : 5px;
+   }

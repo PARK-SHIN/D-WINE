@@ -11,11 +11,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.dwine.manage.model.service.MemberMgService;
 import com.project.dwine.member.model.vo.Member;
+import com.project.dwine.paging.PageInfo;
 
 
 @Controller
@@ -29,10 +31,25 @@ public class MemberMgController {
 	   }
 	
 	@GetMapping("/memberMg/main")
-	public ModelAndView memberList(ModelAndView mv) {
-		List<Member> memberList = memberMgService.selectMemberMgList();
+	public ModelAndView memberList(ModelAndView mv,@RequestParam(value="page", required=false) String page) {
+		
+		int listCount = memberMgService.memberMgTotalListCnt();
+		//System.out.println(listCount);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		System.out.println(pi);
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+		
+		List<Member> memberList = memberMgService.selectMemberMgList(startRow, endRow);
 		mv.addObject("memberList", memberList);
-		 
+		mv.addObject("pi", pi);
 		mv.setViewName("manage/memberMg/main");
 		return mv;
 	}
