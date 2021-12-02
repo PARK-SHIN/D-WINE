@@ -146,6 +146,34 @@
         transform: rotate(45deg);
         display: none;
         }
+            /* 페이징 부분 */
+	.paging_ul {
+		height: 50px;
+		line-height: 50px;
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		width: 480px;
+		margin: 30px auto;
+	}
+	.paging_ul li {
+		text-decoration: none;
+		display: block;
+		text-align: center;
+		border: 1px solid #dae0e9;
+	    margin-left: 10px;
+		width: 37px;
+		height: 37px;
+		line-height : 37px;
+	    font-size: 12px;
+	    border-radius : 5px;
+	}
+	.current_page {
+		border: 1px solid  #83131E;
+	    background:  #83131E;
+	    color: white;
+	    border-radius : 5px;
+	}
 
 
     </style>
@@ -161,9 +189,6 @@
             $('.reviewMg').css('font-weight', 'bold'); 
         });
         </script>
-
-
-
 <div class="content">
     <h2>리뷰관리</h2>    
     <hr>
@@ -185,12 +210,12 @@
                 <th>신고날짜</th>
                 <th>신고 수</th>
             </tr>
-            <tr th:each="report: ${ reviewMgList }" onclick="openDetail()" th:style="${report.count == 0 ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}">
-                <td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ report.review_no }" onclick="event.cancelBubble=true"></td>  
+            <tr th:each="report: ${ reviewMgList }" th:style="${report.count == 0 ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}">
+                <td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ report.review_no1 }" onclick="event.cancelBubble=true"></td>  
                 <td th:text="${ report.user_id2 }"/>
-                <td class="reviewText" th:text="${ report.review_text }"></td>
+                <td class="reviewText" onclick="openDetail();" th:text="${ report.review_text }"></td>
                 <td th:text="${ #dates.format(report.review_date, 'yyyy-MM-dd') }"></td>
-                <td th:text="${ report.reason_context }"></td>
+                <td  th:text="${ report.reason_context }"></td>
                 <td th:text="${ report.user_id1 }"></td>
                 <td th:text="${ #dates.format(report.report_date, 'yyyy-MM-dd') }"></td>
                 <td th:text="${ report.count }">
@@ -199,6 +224,18 @@
    
     </div>
 
+	<!-- 페이징 -->
+ 			<div class="paging__area">
+			 	<ul class="paging_ul">
+					<li class="go_first">&lt;&lt;</li>
+					<li class="go_prev">&lt;</li>
+					<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
+					<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
+					<li class="go_next">&gt;</li>
+					<li class="go_end">&gt;&gt;</li>
+				</ul> 
+			</div>
+ 			<!-- 페이징 -->
 </div>
 </div>
 <div th:replace="common/footer :: footer"></div>
@@ -216,22 +253,30 @@ $("tr").click(function(){
     var no = $(this).children().eq(0).children().val();
     openDetail(no);
  });
+ 
+
+//$("tr").click(function(){
+//    var no = $(this).children().eq(0).children().val();
+ //   openRpDetail(no);
+// })
 
 //detail 가운데로 띄우기. 
 
 var popupWidth = 1080;
 var popupHeight = 700;
-
 var popupX = (window.screen.width / 2) - (popupWidth / 2);
 // 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼주었음
-
 var popupY= (window.screen.height / 2) - (popupHeight / 2);
 // 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼주었음
 
  function openDetail(no){  
-    window.open("/manage/reviewMg/detail/" + no, "상세보기창", "width=1080, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes"+', left='+ popupX + ', top='+ popupY );  
+    window.open("/manage/reviewMg/rdetail/" + no, "상세보기창", "width=1080, height=700, toolbar=no, menubar=no, scrollbars=yes, resizable=yes"+', left='+ popupX + ', top='+ popupY );  
  }  
+ 
+ function openRpDetail(no){
+	    window.open("/manage/reviewMg/rpdetail/" + no, "상세보기창", "width=500, height=500, toolbar=no, menubar=no, scrollbars=yes, resizable=yes"+', left='+ popupX + ', top='+ popupY );  
 
+ }
 
 
 
@@ -259,8 +304,7 @@ $(function(){
 
 
 function deleteValue(){
-   
-   var valueArr = new Array();
+    var valueArr = new Array();
     var list = $("input[name='checkbox']");
     
     console.log("리뷰넘버값: " + list);
@@ -295,11 +339,12 @@ function deleteValue(){
          error : function(e){
         	 alert("삭제에 실패했습니다");
          }
-       
       });
 	 }
    }
  }
+
+
 
 
 

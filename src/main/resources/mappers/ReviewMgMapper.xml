@@ -55,8 +55,23 @@
 	
 	
 	<select id="selectReviewList" resultMap="ReviewResultMap">
-	 SELECT
-                R.REVIEW_NO
+	   SELECT
+                REVIEW_NO1
+              , REPORT_NO 
+              , user_id2
+              , REASON_CONTEXT
+              , COUNT
+              , REVIEW_TEXT
+              , REVIEW_DATE
+              , REPORT_DATE
+              , REVIEW_NO2
+              , STAR
+              , user_id1
+            FROM (SELECT 
+                ROWNUM RNUM
+                , RLIST.*
+            FROM (SELECT 
+            R.REVIEW_NO AS REVIEW_NO1
               , RP.REPORT_NO 
               , M2.USER_ID as user_id2
               , REASON_CONTEXT
@@ -67,32 +82,53 @@
               , R.REVIEW_TEXT
               , R.REVIEW_DATE
               , RP.REPORT_DATE
-              , R.REVIEW_NO 
+              , R.REVIEW_NO AS REVIEW_NO2
               , R.STAR
+              , M1.USER_ID AS user_id1
+        FROM REVIEW R 
+        LEFT JOIN REPORT RP ON R.REVIEW_NO = RP.REVIEW_NO
+        LEFT JOIN REPORTREASON USING(REASON_NO)
+        LEFT JOIN MEMBER M1 ON (REPORTER_NO = M1.USER_NO)
+        LEFT JOIN MEMBER M2 ON R.USER_NO = M2.USER_NO
+        WHERE R.STATUS = 'Y'
+        ORDER BY COUNT DESC, R.REVIEW_NO) RLIST)
+        WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	
+	</select>
+	
+	<select id="reviewMgTotalListCnt" resultType="_int">
+	
+	SELECT COUNT(*) FROM REVIEW WHERE STATUS = 'Y'
+	
+	</select>
+	
+	
+	
+	
+	
+	<select id="selectOneReview" resultMap="ReviewResultMap">
+		 SELECT
+                R.REVIEW_NO AS REVIEW_NO2
+              , RP.REPORT_NO 
+              , M2.USER_ID as user_id2
+              , REASON_CONTEXT
+              , (SELECT 
+                  COUNT(*)
+                  FROM REPORT
+                  WHERE REVIEW_NO = RP.REVIEW_NO)COUNT
+              , R.REVIEW_TEXT
+              , R.REVIEW_IMAGE
+              , R.REVIEW_DATE
+              , RP.REPORT_DATE
+              , R.REVIEW_NO AS REVIEW_NO1
               , M1.USER_ID AS user_id1
         FROM REVIEW R
         LEFT JOIN REPORT RP ON R.REVIEW_NO = RP.REVIEW_NO
         LEFT JOIN REPORTREASON USING(REASON_NO)
         LEFT JOIN MEMBER M1 ON (REPORTER_NO = M1.USER_NO)
         LEFT JOIN MEMBER M2 ON R.USER_NO = M2.USER_NO
-        WHERE R.STATUS = 'Y'
+        WHERE R.REVIEW_NO = #{review_no}
         ORDER BY COUNT DESC, R.REVIEW_NO
-	
-	</select>
-	
-	<select id="selectOneReview" resultMap="ReviewResultMap">
-		SELECT
-			REVIEW_NO,
-			review_text,
-			REVIEW_IMAGE,
-			REVIEW_DATE,
-			REVIEW_MODIFY,
-			STAR,
-			STATUS,
-			USER_NO,
-			OD_NO
-		FROM REVIEW
-		WHERE REVIEW_NO = #{review_no}
 	</select>
 	
 	
@@ -101,7 +137,7 @@
 	
 	UPDATE 	REVIEW 
 	SET		STATUS = 'N'
-    WHERE REVIEW_NO = #{ review_no }
+    WHERE REVIEW_NO1 = #{ review_no1 }
     
 	</update>
 	

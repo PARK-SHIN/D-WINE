@@ -20,9 +20,9 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<Notice> selectNoticeList() {
+	public List<Notice> selectNoticeList(int startRow, int endRow) {
 		
-		return noticeMapper.selectNoticeList();
+		return noticeMapper.selectNoticeList(startRow, endRow);
 	}
 	
 	@Override
@@ -30,7 +30,6 @@ public class NoticeServiceImpl implements NoticeService {
 		return noticeMapper.selectNoticeByno(notice_no);
 	}
 	
-
 
 	@Override
 	public int registNewNotice(Notice notice) {
@@ -52,9 +51,21 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<Notice> searchNoticeList(String searchValue) {
-		return noticeMapper.searchNoticeList(searchValue);
+	public List<Notice> searchNoticeList(String searchValue, int startRow, int endRow) {
+		return noticeMapper.searchNoticeList(searchValue, startRow, endRow);
 	}
+
+	@Override
+	public int noticeTotalListCnt() {
+		return noticeMapper.noticeTotalListCnt();
+	}
+
+	@Override
+	public int noticeSearchListCnt(String searchValue) {
+		return noticeMapper.noticeSearchListCnt(searchValue);
+	}
+
+	
 	
 
 

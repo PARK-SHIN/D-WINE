@@ -1,7 +1,9 @@
 package com.project.dwine.notice.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.project.dwine.manage.model.vo.Inventory;
 import com.project.dwine.member.model.vo.UserImpl;
 import com.project.dwine.notice.model.service.NoticeService;
 import com.project.dwine.notice.model.vo.Notice;
+import com.project.dwine.paging.PageInfo;
 
 @Controller
 @RequestMapping("/notice")
@@ -35,24 +37,55 @@ public class NoticeController {
    }
    
    @GetMapping("/main")
-   public ModelAndView noticeList(ModelAndView mv){
-      List<Notice> noticeList = noticeService.selectNoticeList();
+   public ModelAndView noticeList(ModelAndView mv, @RequestParam(value="page", required=false) String page){
+
+		int listCount = noticeService.noticeTotalListCnt();
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+		int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+	 
+      List<Notice> noticeList = noticeService.selectNoticeList(startRow, endRow);
       mv.addObject("noticeList" , noticeList);
+      mv.addObject("pi", pi);
       mv.setViewName("notice/main");
       
       return mv;
    }
    
  //인벤토리 검색
- 	@PostMapping("/searchMain")
+ 	@PostMapping("/main")
  	@ResponseBody
- 	public List<Notice> seachMainNotice(@RequestParam String searchValue) throws IOException {
- 		List<Notice> searchNoticeList = noticeService.searchNoticeList(searchValue);
- 		return searchNoticeList;
+ 	public Map<String, Object> seachMainNotice(@RequestParam(value="searchValue", required=false) String searchValue, @RequestParam(value="page", required=false) String page) throws IOException {
+ 		
+ 		int listCount = noticeService.noticeSearchListCnt(searchValue);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+		int endRow = startRow + pi.getBoardLimit() - 1;
+		
+ 		List<Notice> searchNoticeList = noticeService.searchNoticeList(searchValue, startRow, endRow);
+ 		
+ 		Map<String, Object> map = new HashMap<>();
+ 		map.put("pi", pi);
+ 		map.put("searchValue", searchValue);
+ 		map.put("searchNoticeList", searchNoticeList);
+ 		
+ 		return map;
  	}
    
-   
-
+   //상세
    @GetMapping("detail/{notice_no}")
    public String selectNoticeByNo(@PathVariable int notice_no, Model model) {
       Notice notice = noticeService.selectNoticeByNo(notice_no);
@@ -61,6 +94,7 @@ public class NoticeController {
       return "notice/detail";
    }
    
+   //등록
    @GetMapping("/regist")
    public void registPage(Model model) {
 	   UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();

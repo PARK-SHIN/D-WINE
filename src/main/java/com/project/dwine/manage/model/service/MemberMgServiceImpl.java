@@ -19,9 +19,9 @@ public class MemberMgServiceImpl implements MemberMgService {
 	}
 	
 	@Override
-	public List<Member> selectMemberMgList() {
+	public List<Member> selectMemberMgList(int startRow, int endRow) {
 		
-		return memberMgMapper.selectMemberMgList();
+		return memberMgMapper.selectMemberMgList(startRow, endRow);
 	}
 
 	@Override
@@ -33,6 +33,11 @@ public class MemberMgServiceImpl implements MemberMgService {
 	public void deleteMemberMg(String user_no) {
 		memberMgMapper.deleteMemberMg(user_no);
 
+	}
+
+	@Override
+	public int memberMgTotalListCnt() {
+		return memberMgMapper.memberMgTotalListCnt();
 	}
 
 }
