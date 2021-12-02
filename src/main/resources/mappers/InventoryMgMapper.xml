@@ -90,9 +90,29 @@
 		ORDER BY INVEN_DATE DESC
 	</select>
 	
-	<!-- 검색 -->
-	<select id="searchInvenList" resultMap="inventoryResultMap">
+	<!-- 전체 페이징 -->
+	<select id="invenTotalListCnt" resultType="_int">
+	SELECT COUNT(*) FROM INVENTORY 
+	</select>
+
+	
+	<select id="invenTotalList" resultMap="inventoryResultMap">
 		SELECT
+			        INVEN_NO
+			      , INVEN_COUNT
+			      , INVEN_DATE
+			      , STATUS
+			      , PRODUCT_NO
+			      , INVEN_COST
+			      , SALE_PRICE
+			      , PRODUCT_COUNT 
+			      , PRODUCT_KNAME 
+			      , PRODUCT_ENAME      
+			      , INVEN_PRICE
+		FROM (SELECT 
+                ROWNUM RNUM
+                , RLIST.*
+            FROM (	SELECT
 			        I.INVEN_NO
 			      , I.INVEN_COUNT
 			      , I.INVEN_DATE
@@ -106,21 +126,78 @@
 			      , (SELECT
 			                I.INVEN_COST * I.INVEN_COUNT
 			                FROM PRODUCT P
-			                WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS INVEN_PRICE
+                     WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS INVEN_PRICE
+        FROM INVENTORY I, PRODUCT P 
+		WHERE I.PRODUCT_NO = P.PRODUCT_NO
+		ORDER BY INVEN_DATE DESC) RLIST)
+        WHERE RNUM BETWEEN #{ startRow } AND #{ endRow }
+		
+	</select>
+	
+	<!-- 검색페이징 -->
+	<select id="invenSearchListCnt" resultType="_int">
+		SELECT 
+				COUNT(*) 
 		FROM INVENTORY I, PRODUCT P
 		WHERE I.PRODUCT_NO = P.PRODUCT_NO
 		<if test="searchStandard == 'no'">
+	   	AND I.PRODUCT_NO LIKE '%' || #{ searchValue } || '%'
+	   	</if>
+	   	<if test="searchStandard == 'name'">
+	   	AND P.PRODUCT_KNAME LIKE '%' || #{ searchValue } || '%'
+	   	</if>
+	   	<if test="startDate != null and endDate != null and startDate != '' and endDate != ''"> 
+		AND I.INVEN_DATE <![CDATA[ >= ]]> TO_DATE(#{ startDate }, 'yy/MM/dd')
+        AND I.INVEN_DATE <![CDATA[ <= ]]> TO_DATE(#{ endDate }, 'yy/MM/dd')
+        </if>
+	</select>
+	
+	<select id="searchInvenList" resultMap="inventoryResultMap">
+		SELECT
+			        INVEN_NO
+			      , INVEN_COUNT
+			      , INVEN_DATE
+			      , STATUS
+			      , PRODUCT_NO
+			      , INVEN_COST
+			      , SALE_PRICE
+			      , PRODUCT_COUNT 
+			      , PRODUCT_KNAME 
+			      , PRODUCT_ENAME      
+			      , INVEN_PRICE
+		FROM (SELECT 
+                ROWNUM RNUM
+                , RLIST.*
+            FROM (	SELECT
+			        I.INVEN_NO
+			      , I.INVEN_COUNT
+			      , I.INVEN_DATE
+			      , I.STATUS
+			      , I.PRODUCT_NO
+			      , I.INVEN_COST
+			      , P.SALE_PRICE
+			      , P.PRODUCT_COUNT 
+			      , P.PRODUCT_KNAME 
+			      , P.PRODUCT_ENAME      
+			      , (SELECT
+			                I.INVEN_COST * I.INVEN_COUNT
+			                FROM PRODUCT P
+                     WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS INVEN_PRICE
+        FROM INVENTORY I, PRODUCT P 
+		WHERE I.PRODUCT_NO = P.PRODUCT_NO
+        <if test="searchStandard == 'no'">
    		AND P.PRODUCT_NO LIKE '%' || #{ searchValue } || '%'
    		</if>
    		<if test="searchStandard == 'name'">
    		AND PRODUCT_KNAME LIKE '%' || #{ searchValue } || '%'
    		</if>
-		ORDER BY INVEN_DATE DESC
-		
+   		<if test="startDate != null and endDate != null and startDate != '' and endDate != ''"> 
+		AND I.INVEN_DATE <![CDATA[ >= ]]> TO_DATE(#{ startDate }, 'yy/MM/dd')
+        AND I.INVEN_DATE <![CDATA[ <= ]]> TO_DATE(#{ endDate }, 'yy/MM/dd')
+        </if>
+		ORDER BY INVEN_DATE DESC) RLIST)
+        WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
-	
-	
-	
 	
 	
 	<!-- 카운트 3개 -->

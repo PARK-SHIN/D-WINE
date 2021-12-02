@@ -2,7 +2,9 @@ package com.project.dwine.manage.controller;
 
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +23,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.dwine.manage.model.service.InventoryMgService;
 import com.project.dwine.manage.model.vo.Inventory;
+import com.project.dwine.notice.model.vo.Notice;
+import com.project.dwine.paging.PageInfo;
 import com.project.dwine.product.model.service.ProductService;
 import com.project.dwine.product.model.vo.Product;
 
@@ -40,8 +44,19 @@ public class InventoryMgController {
 	
 	//메인화면
 	@GetMapping("/inventoryMg/main")
-	public ModelAndView invenList(ModelAndView mv) {
-		List<Inventory> invenList = inventoryMgService.selectInvenMgList();
+	public ModelAndView invenList(ModelAndView mv, @RequestParam(value="page", required=false) String page) {
+		int listCount = inventoryMgService.invenTotalListCnt();
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+		List<Inventory> invenList = inventoryMgService.invenTotalList(startRow, endRow);
 		
 		Inventory totalStock = inventoryMgService.selectTotalStock();
 		Inventory totalShop = inventoryMgService.selectTotalShop();
@@ -50,10 +65,51 @@ public class InventoryMgController {
 		mv.addObject("totalStock", totalStock);
 		mv.addObject("totalShop", totalShop);
 		mv.addObject("todayReceiving", todayReceiving);
-		
+		mv.addObject("pi", pi);
 		mv.setViewName("manage/inventoryMg/main");
 		return mv;
 	}
+	
+	//인벤토리 검색
+	@PostMapping("/inventoryMg/main")
+	@ResponseBody
+	public Map<String, Object> seachMainNotice(@RequestParam(value="page", required=false) String page, @RequestParam(value="searchStandard", required=false) String searchStandard, @RequestParam(value="searchValue", required=false) String searchValue, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate) throws IOException {
+ 		
+ 		int listCount = inventoryMgService.invenSearchListCnt(searchStandard, searchValue);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+		int endRow = startRow + pi.getBoardLimit() - 1;
+		
+ 		List<Inventory> searchInvenList = inventoryMgService.searchInvenList(searchStandard, searchValue, 
+ 				startDate, endDate, startRow, endRow);
+ 		
+		
+		Inventory totalStock = inventoryMgService.selectTotalStock();
+		Inventory totalShop = inventoryMgService.selectTotalShop();
+		Inventory todayReceiving = inventoryMgService.selectTodayReceiving();
+ 		
+ 		Map<String, Object> map = new HashMap<>();
+ 		map.put("totalStock", totalStock);
+ 		map.put("totalShop", totalShop);
+ 		map.put("todayReceiving", todayReceiving);
+ 		map.put("pi", pi);
+ 		map.put("searchInvenList", searchInvenList);
+ 		
+ 		
+ 		return map;
+ 	}
+	
+
+	
+	
+	
+	
 	//입고등록
 	@GetMapping("/inventoryMg/regist") 
 	public ModelAndView registPage(ModelAndView mv) {
@@ -99,15 +155,6 @@ public class InventoryMgController {
 	
 	
 	//30
-	
-	//인벤토리 검색
-	@PostMapping("/inventoryMg/searchMain")
-	@ResponseBody
-	public List<Inventory> seachMainInventory(@RequestParam String searchStandard, @RequestParam String searchValue) throws IOException {
-		List<Inventory> searchInvenList = inventoryMgService.searchInvenList(searchStandard, searchValue);
-		return searchInvenList;
-	}
-	
 	
 	
 	

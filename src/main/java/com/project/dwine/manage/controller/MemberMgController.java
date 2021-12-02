@@ -35,6 +35,7 @@ public class MemberMgController {
 	      this.memberMgService = memberMgService;
 	   }
 	
+	//메인
 	@GetMapping("/memberMg/main")
 	public ModelAndView memberList(ModelAndView mv,@RequestParam(value="page", required=false) String page) {
 		
@@ -47,7 +48,6 @@ public class MemberMgController {
 		}
 		
 		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
-		System.out.println(pi);
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
 	    
@@ -85,9 +85,8 @@ public class MemberMgController {
  		return map;
  	}
 	
-	
-	
-	@GetMapping("memberMg/detail/{user_no}")
+	//디테일
+	  @GetMapping("memberMg/detail/{user_no}")
 	   public String selectMeberByNo(@PathVariable int user_no, Model model) {
 	
 	     Member member = memberMgService.selectMemberMgByNo(user_no);
@@ -96,7 +95,7 @@ public class MemberMgController {
 	     return "manage/memberMg/detail";
 	   }
 	
-	 // 게시물 삭제
+	 //게시물 삭제
 	   @GetMapping("memberMg/delete")
 	   public String memberMgdelete(String user_no) throws Exception {
 		   memberMgService.deleteMemberMg(user_no);
@@ -114,13 +113,8 @@ public class MemberMgController {
 	       int size = meberDeleteArr.length;
 	       for(int i = 0; i < size; i++) {
 	    	   memberMgService.deleteMemberMg(meberDeleteArr[i]);
-	       }
-	       
+	       } 
 	       return "redirect:/manage/memberMg/main";
 	   }
 	   
-	
-	
-	
-
 }

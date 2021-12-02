@@ -9,6 +9,7 @@ import com.project.dwine.notice.model.vo.Notice;
 public interface MemberMgMapper {
 
 	List<Member> selectMemberMgList(int startRow, int endRow);
+	List<Member> searchMemberList(String searchValue, int startRow, int endRow);
 
 	Member selectMemberMgByNo(int user_no);
 
@@ -18,6 +19,5 @@ public interface MemberMgMapper {
 
 	int searchMemberListCnt(String searchValue);
 
-	List<Member> searchMemberList(String searchValue, int startRow, int endRow);
 
 }
