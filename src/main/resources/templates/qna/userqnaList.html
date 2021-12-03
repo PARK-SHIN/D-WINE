@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>1:1문의내역</title>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/qna/userqnaList.css" rel="stylesheet">
@@ -13,12 +15,10 @@
 		alert(successMessgae);
 	}
 </script>
-<style>
-
-</style>
 </head>
 <body>
 <header th:include="common/header :: header"></header>
+<div class="weather" th:include="recommendWine/weather"></div>
 <div id="container">
 	<div class="contents">
         <div>
@@ -83,6 +83,11 @@
    </div>
 
     <script>
+	    var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	       xhr.setRequestHeader(header, token);
+	    });
         function question_detail(elem) {
            // console.log(elem); //p영역나옴
             var mainArea = elem.parentNode; // main영역
@@ -128,7 +133,21 @@
         function insertQ(){
         	location.href = "/qna/insertQ";
         }
+        
+        //var sortStandard = $("select[name=sortStandard]").val();
+        
+        /* $(document).on("change", "select[name=sortStandard]", function(){
+        	 var page = 1;
+        	 var sortStandard = $("select[name=sortStandard]").val();
+        	 console.log(sortStandard);
+        	$.ajax({ 
+        		url : "/qna/userqna",
+             	data : {page : page, sortStandard: sortStandard},
+             	type : "get"
+        	});
+        }); */
     </script>
+    
  <footer th:include="common/footer :: footer"></footer>
 </body>
 </html>

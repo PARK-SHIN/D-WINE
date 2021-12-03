@@ -75,5 +75,10 @@ public interface MypageService {
 	Point findPurchasePoint(String purchase_no);
 
 	int memberPointPayCancelDelete(int user_no, int point, int use_point);
+
+	//test 정렬
+	int getTotalReviewListCountTest(String sortStandard, int user_no);
+
+	List<Review> findAllReviewPageTest(String sortStandard, int user_no, int startRow, int endRow);
 	
 }

@@ -41,7 +41,8 @@
     </style>
 </head>
 <body>
-	<header th:include="common/header :: header"></header>
+<header th:include="common/header :: header"></header>
+<div class="weather" th:include="recommendWine/weather"></div>
 	<div id="container">
         <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
         </nav>
@@ -100,7 +101,7 @@
                     <input name="review_no" type="hidden" th:value=${review.review_no}>
                         <h3>리뷰내용 <span style="font-size: 12px;">(10자 이상 500자 미만)</span></h3>
                         <div>
-                            <input type="text" name="review_text" style="border: 1px solid lightgray; width: 700px; height: 90px;" th:value="${review.review_text}">
+                            <input maxlength="500" type="text" name="review_text" style="border: 1px solid lightgray; width: 700px; height: 90px;" th:value="${review.review_text}">
                         </div>
                     </div>
                     <br>

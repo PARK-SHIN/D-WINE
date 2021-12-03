@@ -9,13 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -51,7 +49,7 @@ public class PersonalQnAController {
 		
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
-		List<PersonalQ> userQnaList = qnaService.findUserQnaListPage(user_no, startRow, endRow);
+        List<PersonalQ> userQnaList = qnaService.findUserQnaListPage(user_no, startRow, endRow);
 		model.addAttribute("qnaList", userQnaList);
 		model.addAttribute("pi", pi);
 		return "/qna/userqnaList";

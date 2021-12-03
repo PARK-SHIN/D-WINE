@@ -327,7 +327,7 @@
 		left join product pro on(pro.product_no = od.product_no)
 		left join review r on (r.od_no = od.od_no)
 		where p.user_no = #{user_no}
-		order by p.purchase_no DESC) PLIST )
+		order by p.purchase_date DESC) PLIST )
         WHERE RNUM BETWEEN  #{startRow} AND #{endRow}
 	</select>
 	
@@ -407,4 +407,51 @@
 		USER_POINT = USER_POINT - #{point} + #{use_point}
 		WHERE USER_NO = #{user_no}
 	</update>
+	
+	<!-- 정렬 test -->
+	<select id="getTotalReviewListCountTest" resultType="_int">
+		SELECT COUNT(*) FROM REVIEW WHERE USER_NO = #{user_no}
+	</select>
+	
+	<select id="findAllReviewPageTest" resultMap="ReviewResultMap">
+		SELECT
+			REVIEW_NO,
+			review_text,
+			REVIEW_IMAGE,
+			REVIEW_DATE,
+			REVIEW_MODIFY,
+			STAR,
+			STATUS,
+			USER_NO,
+			OD_NO,
+			product_kname
+		FROM (SELECT ROWNUM RNUM, RLIST.* FROM (SELECT
+        	REVIEW_NO,
+			review_text,
+			REVIEW_IMAGE,
+			REVIEW_DATE,
+			REVIEW_MODIFY,
+			STAR,
+			r.STATUS,
+			r.USER_NO,
+			r.OD_NO,
+			p.product_kname
+		FROM REVIEW r JOIN ORDER_DETAIL od ON(r.od_no = od.od_no)
+        JOIN PRODUCT p ON(od.product_no = p.product_no)
+		WHERE r.STATUS = 'Y'
+		AND USER_NO = #{user_no}
+		<if test="sortStandard == 'recent'">
+			ORDER BY REVIEW_DATE DESC
+		</if>
+		<if test="sortStandard == 'high'">
+			ORDER BY star DESC
+		</if>
+		<if test="sortStandard == 'name_asc'">
+			ORDER BY product_kname DESC
+		</if>
+		<if test="sortStandard == 'name_desc'">
+			ORDER BY product_kname DESC
+		</if>) RLIST
+        ) WHERE RNUM BETWEEN  #{startRow} AND #{endRow}
+	</select>
 </mapper>

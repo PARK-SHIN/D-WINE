@@ -9,9 +9,10 @@
 </head>
 <body>
 <header th:include="common/header :: header"></header>
+<div class="weather" th:include="recommendWine/weather"></div>
 	<div id="container">
         <div>
-            <h3 style="font-size: 24px; margin-left: 30px;">문의하기</h3>
+            <h3 style="font-size: 24px; margin-left: 30px;">문의 수정하기</h3>
         </div>
         <hr style="width: 900px; padding-right: 130px; margin-bottom: 20px;">
         <form th:action="@{/qna/modifyform}" method="post" enctype="multipart/form-data">
@@ -23,10 +24,11 @@
             </div>
             <div>
                 <label>문의내용  <span class="colorred">*</span> </label><br>
-                	<textarea th:text="${person.qna_content}" class="marginClass" style="width: 800px; height: 300px;" name="qna_content"></textarea>
+                	<textarea th:text="${person.qna_content}" class="marginClass" 
+                	style="width: 800px; height: 300px;" name="qna_content"></textarea>
             </div>
             <div>
-                <label>파일첨부(1장)</label>
+                <label>파일첨부(1장 / 선택)</label>
                 <input class="marginClass" type="file" id="imgfile" name="singleFile">
                 <div id="fileArea" style="margin-left: 30px;">
                     <img th:src="${person.qna_image}">
