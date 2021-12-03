@@ -41,13 +41,13 @@ public class ProductController {
    }
    
    @GetMapping("list")
-   public String listPage(@RequestParam(value="sortStandard", required=false) String sortStandard, @RequestParam(value="page", required=false) String page, Model model) throws Exception {
+   public String listPage(@RequestParam(value="page", required=false) String page, @RequestParam(value="sortStandard", required=false) String sortStandard, @RequestParam(value="searchStandard", required=false) String searchStandard, @RequestParam(value="searchValue", required=false) String searchValue, Model model) throws Exception {
       
       if(sortStandard == null) {
          sortStandard = "no_low";
       }
    
-      int listCount = productService.getTotalListCount();
+      int listCount = productService.getListCount(sortStandard, searchStandard, searchValue);
       
       int resultPage = 1;
       
@@ -61,7 +61,7 @@ public class ProductController {
       int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
       
-      List<Product> productList = productService.selectSortProductList(sortStandard, startRow, endRow);
+      List<Product> productList = productService.selectProductList(sortStandard, searchStandard, searchValue, startRow, endRow);
       
       model.addAttribute("productList", productList);
       model.addAttribute("pi", pi);
@@ -75,7 +75,7 @@ public class ProductController {
    @ResponseBody
    public Map<String, Object> sortList(@RequestParam(value="page", required=false) String page, @RequestParam(value="sortStandard", required=false) String sortStandard, @RequestParam(value="searchStandard", required=false) String searchStandard, @RequestParam(value="searchValue", required=false) String searchValue) throws Exception {
 
-      int searchListCount = productService.getsearchListCount(sortStandard, searchStandard, searchValue);
+      int searchListCount = productService.getListCount(sortStandard, searchStandard, searchValue);
       
       int resultPage = 1;
       
@@ -89,7 +89,7 @@ public class ProductController {
       int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
       int endRow = startRow + pi.getBoardLimit() - 1;
       
-      List<Product> productList = productService.selectSearchProductList(sortStandard, searchStandard, searchValue, startRow, endRow);
+      List<Product> productList = productService.selectProductList(sortStandard, searchStandard, searchValue, startRow, endRow);
       
       Map<String, Object> map = new HashMap<String, Object>();
       

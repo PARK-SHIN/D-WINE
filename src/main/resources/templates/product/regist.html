@@ -157,7 +157,7 @@
         			food2.append($("<option>").val(value.hashNo).text(value.hashName));
 				});
         	});
-        })
+        });
     	
      	
 		function validate() {
@@ -195,6 +195,7 @@
     		
     		if(!isUsable) {
     			alert("상품명 중복체크를 진행해주세요.");
+    			$("#nameCheck").focus();
     			return false;
     		}
     		
@@ -202,8 +203,6 @@
 		}
     	
     	var isUsable = false;
-    	
-    	/* $(".regist_btn").attr("disabled", true); */
     	
     	function productNameCheck(){
     		var kname = $("input[name=kname]").val();
@@ -230,11 +229,7 @@
     							isUsable = false;
     						}
     					}
-    					/* if(isUsable) {
-    						$(".regist_btn").removeAttr("disabled");
-    					} else {
-    						$(".regist_btn").attr("disabled", true);
-    					} */
+    				
     				}, 
     				error : function(e) {
     					console.log(e);
@@ -245,7 +240,7 @@
     	
     	// 해시태그 관리 팝업
         function openHashForm(){
-            window.open("/hashtag/form", "popup", "width=800, height=600");
+            window.open("/hashtag/form", "popup", "width=830, height=655");
         }
       
         // 이미지 프리뷰
