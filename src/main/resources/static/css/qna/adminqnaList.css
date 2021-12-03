@@ -17,6 +17,18 @@ a {
 	color: #000;
 }
 
+.contents {
+	width: 888px;
+	height: 100%;
+}
+
+.inner {
+	margin-top: 30px;
+	margin-left: 27px;
+	width: 836px;
+	height: 100%;
+}
+
 label {
 	/*  font-size: 15px; */
 	margin-left: 30px;
@@ -199,31 +211,40 @@ label {
 	font-weight: bold;
 }
 /* 페이징 부분 1201 변경*/
-   .paging_ul {
-      height: 50px;
-      line-height: 50px;
-      display: flex;
-      justify-content: center;
-      list-style: none;
-      width: 480px;
-      margin: 30px auto;
-   }
-   .paging_ul a {
-      text-decoration: none;
-      color: #282A35;
-      display: block;
-      text-align: center;
-      border: 1px solid #dae0e9;
-       margin-left: 10px;
-      width: 37px;
-      height: 37px;
-      line-height : 37px;
-       font-size: 12px;
-       border-radius : 5px;
-   }
-   .paging_ul a.current_page {
-      border: 1px solid  #83131E;
-       background:  #83131E;
-       color: #fff;
-       border-radius : 5px;
-   }
+.paging_ul {
+	height: 50px;
+	line-height: 50px;
+	display: flex;
+	justify-content: center;
+	list-style: none;
+	width: 480px;
+	margin: 30px auto;
+}
+
+.paging_ul a {
+	text-decoration: none;
+	color: #282A35;
+	display: block;
+	text-align: center;
+	border: 1px solid #dae0e9;
+	margin-left: 10px;
+	width: 37px;
+	height: 37px;
+	line-height: 37px;
+	font-size: 12px;
+	border-radius: 5px;
+}
+
+.paging_ul a.current_page {
+	border: 1px solid #83131E;
+	background: #83131E;
+	color: #fff;
+	border-radius: 5px;
+}
+/*수정*/
+footer {
+	position: static;
+}
+.nocursor {
+	cursor : default;
+}

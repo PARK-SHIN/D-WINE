@@ -149,3 +149,6 @@ label {
        color: #fff;
        border-radius : 5px;
    }
+   .nocursor {
+   	cursor : default;
+   }

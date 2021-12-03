@@ -32,10 +32,10 @@
         </div>
         <div class="replyArea" th:each="q : ${ qnaList }">
         	<th:block th:if="${q.answer_status} == null">
-	        	<div style="float:left; margin-top: 17px; margin-left: 30px;"><button class="wait">답변대기</button></div>
+	        	<div style="float:left; margin-top: 17px; margin-left: 30px;"><button class="wait nocursor" disabled>답변대기</button></div>
         	</th:block>
         	<th:block th:if="${q.answer_status} == 'Y'">
-        		<div style="float:left; margin-top: 17px; margin-left: 30px;"><button class="success">답변완료</button></div>
+        		<div style="float:left; margin-top: 17px; margin-left: 30px;"><button class="success nocursor" disabled>답변완료</button></div>
         	</th:block>
         <div class="allArea previewArea"><div class="main" style="margin-left: 25px;">
                 <label th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label>

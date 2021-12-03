@@ -74,4 +74,14 @@ public class PersonalQnAServiceImpl implements PersonalQnAService {
 		return qnaMapper.findAllQnaListPage(startRow, endRow);
 	}
 
+	@Override
+	public int insertUserQnaNoImage(String qna_title, String qna_content, int user_no) {
+		return qnaMapper.insertUserQnaNoImage(qna_title, qna_content, user_no);
+	}
+
+	@Override
+	public int modifyUserQnaNoImage(String qna_title, String qna_content, int qna_no) {
+		return qnaMapper.modifyUserQnaNoImage(qna_title, qna_content, qna_no);
+	}
+
 }
