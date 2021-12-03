@@ -83,5 +83,4 @@ public class PersonalQnAServiceImpl implements PersonalQnAService {
 	public int modifyUserQnaNoImage(String qna_title, String qna_content, int qna_no) {
 		return qnaMapper.modifyUserQnaNoImage(qna_title, qna_content, qna_no);
 	}
-
 }

@@ -174,4 +174,14 @@ public class MypageServiceImpl implements MypageService{
 		return mypageMapper.memberPointPayCancelDelete(user_no, point, use_point);
 	}
 
+	@Override
+	public int getTotalReviewListCountTest(String sortStandard, int user_no) {
+		return mypageMapper.getTotalReviewListCountTest(sortStandard, user_no);
+	}
+
+	@Override
+	public List<Review> findAllReviewPageTest(String sortStandard, int user_no, int startRow, int endRow) {
+		return mypageMapper.findAllReviewPageTest(sortStandard, user_no, startRow, endRow);
+	}
+
 }

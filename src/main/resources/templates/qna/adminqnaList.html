@@ -44,35 +44,32 @@
                             <p th:text="${q.qna_content}"></p>
                         </div>
                         <div>
-                            <img th:src="${q.qna_image}" style="width:500px; height:500px;">
+                            <img th:src="${q.qna_image}">
                         </div>
                     </div>
             </div><div class="modalArea"><div class="modal hidden"><div class="bg"></div><div class="modalBox" style="width:700px"><div class="closeArea"><img src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px"></div>
-                        <h2 align="center" style="margin-top: 20px;">1:1문의 내용</h2>
+                        <h2 align="center">1:1문의 내용</h2>
                         <hr style="width: 600px;">
                         <div class="labelSize">
                             <label class="labelBold" style="margin-left:50px" for="">작성자</label>
-                            <label th:text="${q.user_name}" style="border: 0px; margin-left: 65px; width: 210px;"></label>
-                            <label  style="border: 0px; margin-left: 90px; width: 210px;">/</label>
-                            <label th:text="${q.user_id}"  style="border: 0px; margin-left: 90px; width: 210px;"></label>
-                        </div>
-                        <hr style="width: 600px;">
-                        <div class="labelSize">
+                            <label th:text="${q.user_name}" style="border: 0px; margin-left: 25px; width: 210px;"></label>
+                            <label  style="border: 0px; width: 210px;">/</label>
+                            <label th:text="${q.user_id}"  style="border: 0px; width: 210px;"></label>
                             <label class="labelBold" style="margin-left:50px" for="">작성일</label>
-                            <label style="margin-left : 70px;" th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label>
+                            <label th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label>
                         </div>
                         <hr style="width: 600px;">
-                        <div class="labelSize">
                             <label class="labelBold" style="margin-left:50px" for="">문의내용</label>
-                            <label th:text="${q.qna_content}" style="margin-left : 50px;"></label>
+                        <div class="labelSize">
+                            <textarea th:text="${q.qna_content}" style="margin-left : 50px; overflow:scroll;"
+                             rows="6.5" cols="90" readonly></textarea>
                         </div>
-                        <hr style="width: 600px;">
                         <form th:action="@{/qna/adminAnswerInsertForm}" method="post">
                         	<input type="hidden" name="qna_no" th:value="${q.qna_no}">
                             <div class="labelSize">
                                 <label class="labelBold" style="margin-left:50px" for="">답변</label>
                                 <br><br>
-                                <textarea name="answer_content" style="margin-left:50px" rows="10" cols="90" th:text="${q.answer_content}"></textarea>
+                                <textarea name="answer_content" style="margin-left:50px; overflow:scroll;" rows="7" cols="90" th:text="${q.answer_content}"></textarea>
                             </div> 
                             <input class="submitInput" type="submit" value="등록">
                         </form>
@@ -96,37 +93,35 @@
                             <p th:text="${q.qna_content}"></p>
                         </div>
                         <div>
-                            <img th:src="${q.qna_image}" style="width:500px; height:500px;">
+                            <img th:src="${q.qna_image}">
                         </div>
                     </div>
             </div><div class="modalArea"><div class="modal hidden"><div class="bg"></div><div class="modalBox" style="width:700px"><div class="closeArea"><img src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px"></div>
-                        <h2 align="center" style="margin-top: 20px;">1:1문의 내용</h2>
+                        <h2 align="center">1:1문의 내용</h2>
                         <hr style="width: 600px;">
                         <div class="labelSize">
                             <label class="labelBold" style="margin-left:50px" for="">작성자</label>
-                            <label th:text="${q.user_name}" style="border: 0px; margin-left: 65px; width: 210px;"></label>
-                            <label  style="border: 0px; margin-left: 90px; width: 210px;">/</label>
-                            <label th:text="${q.user_id}"  style="border: 0px; margin-left: 90px; width: 210px;"></label>
-                        </div>
-                        <hr style="width: 600px;">
-                        <div class="labelSize">
+                            <label th:text="${q.user_name}" style="border: 0px; margin-left: 25px; width: 210px;"></label>
+                            <label  style="border: 0px; width: 210px;">/</label>
+                            <label th:text="${q.user_id}"  style="border: 0px; width: 210px;"></label>
                             <label class="labelBold" style="margin-left:50px" for="">작성일</label>
-                            <label style="margin-left : 70px;" th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label>
+                            <label th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label>
                         </div>
                         <hr style="width: 600px;">
-                        <div class="labelSize">
                             <label class="labelBold" style="margin-left:50px" for="">문의내용</label>
-                            <label th:text="${q.qna_content}" style="margin-left : 50px;"></label>
+                        <div class="labelSize">
+                            <textarea th:text="${q.qna_content}" style="margin-left : 50px; overflow:scroll;" 
+                            rows="6.5" cols="90" readonly></textarea>
                         </div>
-                        <hr style="width: 600px;">
-                        <form th:action="@{/qna/adminAnswerModifyForm}" method="post">
+                        <form th:action="@{/qna/adminAnswerInsertForm}" method="post">
                         	<input type="hidden" name="qna_no" th:value="${q.qna_no}">
                             <div class="labelSize">
                                 <label class="labelBold" style="margin-left:50px" for="">답변</label>
                                 <br><br>
-                                <textarea name="answer_content" style="margin-left:50px" rows="10" cols="90" th:text="${q.answer_content}"></textarea>
+                                <textarea name="answer_content" style="margin-left:50px; overflow:scroll;" 
+                                rows="7" cols="90" th:text="${q.answer_content}"></textarea>
                             </div> 
-                            <input class="submitInput" type="submit" value="수정">
+                            <input class="submitInput" type="submit" value="등록">
                         </form>
                     </div>
                       

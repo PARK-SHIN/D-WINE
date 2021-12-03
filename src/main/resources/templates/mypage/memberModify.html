@@ -27,6 +27,7 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
 </head>
 <body>
 <header th:include="common/header :: header"></header>
+<div class="weather" th:include="recommendWine/weather"></div>
 	<div id="container">
         <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
         </nav>
@@ -83,7 +84,7 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
 									</span>
 									<h4>변경할 비밀번호</h4>
 									<span class="input_area"> <input type="password"
-										name="newPwd" id="newPwd"  maxlength="16" required>
+										name="newPwd" id="newPwd" maxlength="16" required>
 									</span>
 									<h4>변경할 비밀번호 확인</h4>
 									<span class="input_area"> <input type="password"

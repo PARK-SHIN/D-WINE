@@ -261,11 +261,15 @@ public class MypageController{
 	
 	@PostMapping("/mypage/review")
 	@ResponseBody
-	public Map<String, Object> pageList(@RequestParam(value="page", required=false) String page) throws Exception{
+	public Map<String, Object> pageList(@RequestParam(value="page", required=false) String page, @RequestParam(value="sortStandard", required=false) String sortStandard) throws Exception{
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
 	    
-	    int listCount = mypageService.getTotalReviewListCount(user_no);
+	    if(sortStandard == null) {
+	         sortStandard = "recent";
+	      }
+	    
+	    int listCount = mypageService.getTotalReviewListCountTest(sortStandard, user_no);
 	    int resultPage = 1;
 	    
 	    if(page != null) {
@@ -275,12 +279,12 @@ public class MypageController{
 		PageInfo pi = new PageInfo(resultPage, listCount, 10, 7);
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
-	    
-        List<Review> reviewList = mypageService.findAllReviewPage(user_no, startRow, endRow);
+        
+        List<Review> reviewList = mypageService.findAllReviewPageTest(sortStandard, user_no, startRow, endRow);
         Map<String, Object> map = new HashMap<String, Object>();
-		
 		map.put("reviewList", reviewList);
 		map.put("pi", pi);
+		map.put("sortStandard", sortStandard);
 	
 		return map;
 	}
