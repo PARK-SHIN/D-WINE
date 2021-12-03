@@ -28,4 +28,8 @@ public interface PersonalQnAService {
 
 	List<PersonalQ> findAllQnaListPage(int startRow, int endRow);
 
+	int insertUserQnaNoImage(String qna_title, String qna_content, int user_no);
+
+	int modifyUserQnaNoImage(String qna_title, String qna_content, int qna_no);
+
 }

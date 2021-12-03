@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/qna/adminqnaList.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
@@ -30,7 +31,7 @@
         </div>
         <div class="replyArea" th:each="q : ${adminQnaList}">
         	<div style="float:left;"><th:block th:if="${q.answer_status} == null">
-	        	<div style="float:left; margin-top: 10px;"><button class="wait">답변대기</button></div>
+	        	<div style="float:left; margin-top: 10px;"><button class="wait nocursor">답변대기</button></div>
 	        	<div class="allArea previewArea"><div class="mainArea"><div class="main"> <div class="parent"><div class="first"><label class="date" th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label></div><div class="second"><label onclick="question_detail(this)" class="clickP" style="margin-right: 100px;" th:text="${q.qna_title}"></label></div><div class="third"><button class="openArea openBtn" onclick="openModal(this)">답변하기</button>
                         <form style="display:inline;" th:action="@{/qna/amdinDeleteQna}">
                         	<input type="hidden" name="qna_no" th:value="${q.qna_no}">
@@ -82,7 +83,7 @@
 			</div>
         	</th:block>
         	<th:block th:if="${q.answer_status} == 'Y'">
-        		<div style="float:left; margin-top: 10px;"><button class="success">답변완료</button></div>
+        		<div style="float:left; margin-top: 10px;"><button class="success nocursor">답변완료</button></div>
         		<div class="allArea previewArea"><div class="mainArea"><div class="main"> <div class="parent"><div class="first"><label class="date" th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label></div><div class="second"><label onclick="question_detail(this)" class="clickP" style="margin-right: 100px;" th:text="${q.qna_title}"></label></div><div class="third"><button class="openArea openBtn" onclick="openModal(this)">수정하기</button>
                         <form style="display:inline;" th:action="@{/qna/amdinDeleteQna}">
                         	<input type="hidden" name="qna_no" th:value="${q.qna_no}">
@@ -150,6 +151,7 @@
 					<li><a th:href="@{/qna/adminQnaList(page=${pi.endPage})}">&gt;&gt;</a></li>
 				</ul>
 			</div>
+			
         </div>
         </div>
         <script>
@@ -159,7 +161,7 @@
         	//console.log(allArea); //allArea
 
             var modalopen = allArea.firstChild.firstChild.firstChild.nextSibling.nextSibling.nextSibling;
-            //console.log(modalopen); //모달오픈할 함수있는 태그
+            //console.log(modalopen); //모달오픈할태그
 
             var modalArea = allArea.firstChild.nextSibling.firstChild;
             //console.log(modalArea);
@@ -170,7 +172,7 @@
             //console.log(bg);
 
             var xbtn = bg.nextSibling.firstChild.firstChild;
-            //console.log(xbtn);\
+            //console.log(xbtn);
             const close =()=> {
                 modalArea.classList.add("hidden");
 	    	}
@@ -200,28 +202,11 @@
 
             if (hideArea.style.display == 'none') {
                 hideArea.style.display = '';
-                // mainArea.style.display = 'none';
             } else {
                 hideArea.style.display = 'none';
-                // mainArea.style.display = '';
             }
             elem.style.display = '';
         }
-
-        /* function folding(elem) {
-            console.log(elem);
-            var test2 = elem.parentNode;
-            console.log(test2);
-            var test = elem.parentNode.parentNode;
-            console.log(test);
-
-            var test1 = test.firstChild;
-            console.log(test1);
-
-            if (test1.style.display == '') {
-                test2.style.display = 'none';
-            }
-        } */
         
     </script>
     

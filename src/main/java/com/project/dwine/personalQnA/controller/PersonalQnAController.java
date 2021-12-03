@@ -51,9 +51,7 @@ public class PersonalQnAController {
 		
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
-	    
 		List<PersonalQ> userQnaList = qnaService.findUserQnaListPage(user_no, startRow, endRow);
-		System.out.println(userQnaList);
 		model.addAttribute("qnaList", userQnaList);
 		model.addAttribute("pi", pi);
 		return "/qna/userqnaList";
@@ -67,39 +65,44 @@ public class PersonalQnAController {
 	
 	// 작성버튼 요청
 	@PostMapping("insertQform")
-	public String insertQform(@RequestParam(required = false) MultipartFile singleFile, @RequestParam String qna_title, 
+	public String insertQform(@RequestParam MultipartFile singleFile, @RequestParam String qna_title, 
 			@RequestParam String qna_content, Model model, RedirectAttributes rttr) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
-		String currentDir = System.getProperty("user.dir");
-		System.out.println(user_no);
-	      
-		String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\qna";
-		
-		File mkdir = new File(filePath); if(!mkdir.exists()) mkdir.mkdirs();
-		  
-		String originFileName = singleFile.getOriginalFilename();
-		
-		String ext = originFileName.substring(originFileName.lastIndexOf("."));
-		String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-		  
-		String qna_image = "/images/uploadFiles/qna/" + savedName;
-		try {
-			singleFile.transferTo(new File(filePath + "\\" + savedName));
-			
-			int result = qnaService.insertUserQna(qna_title, qna_content, qna_image, user_no);
-			if(result > 0) {
-				System.out.println("성공");
+	    if(singleFile.isEmpty()) {
+	    	int result1 = qnaService.insertUserQnaNoImage(qna_title, qna_content, user_no);
+	    	if(result1 > 0) {
 				rttr.addFlashAttribute("message", "1:1문의 작성에 성공하였습니다.");
 			} else {
-				System.out.println("실패");
 				rttr.addFlashAttribute("message", "1:1문의 작성에 실패하였습니다.");
 			}
-		} catch (IllegalStateException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	    } else {
+	    	String currentDir = System.getProperty("user.dir");
+			System.out.println(user_no);
+		      
+			String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\qna";
+			
+			File mkdir = new File(filePath); if(!mkdir.exists()) mkdir.mkdirs();
+			  
+			String originFileName = singleFile.getOriginalFilename();
+			
+			String ext = originFileName.substring(originFileName.lastIndexOf("."));
+			String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+			  
+			String qna_image = "/images/uploadFiles/qna/" + savedName;
+			try {
+				singleFile.transferTo(new File(filePath + "\\" + savedName));
+				
+				int result = qnaService.insertUserQna(qna_title, qna_content, qna_image, user_no);
+				if(result > 0) {
+					rttr.addFlashAttribute("message", "1:1문의 작성에 성공하였습니다.");
+				} else {
+					rttr.addFlashAttribute("message", "1:1문의 작성에 실패하였습니다.");
+				}
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+	    }
 		return "redirect:/qna/userqna";
 	}
 	
@@ -108,13 +111,10 @@ public class PersonalQnAController {
 	public String deleteUserQna(@PathVariable int qna_no, RedirectAttributes rttr) {
 		int result = qnaService.deleteUserQna(qna_no);
 		if(result > 0) {
-			System.out.println("삭제성공");
-			rttr.addFlashAttribute("message", "글이 삭제되었습니다.");
+			rttr.addFlashAttribute("message", "삭제되었습니다.");
 		} else {
-			System.out.println("삭제 실패");
 			rttr.addFlashAttribute("message", "삭제에 실패하였습니다.");
 		}
-		
 		return "redirect:/qna/userqna";
 	}
 	
@@ -130,32 +130,40 @@ public class PersonalQnAController {
 	@PostMapping("/modifyform")
 	public String qnaUpdateForm(@RequestParam MultipartFile singleFile, @RequestParam String qna_title, 
 			@RequestParam String qna_content, @RequestParam int qna_no , RedirectAttributes rttr) {
-		String currentDir = System.getProperty("user.dir");
-	      
-		String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\qna";
-      
-		File mkdir = new File(filePath);
-		if(!mkdir.exists()) mkdir.mkdirs();
-      
-		String originFileName = singleFile.getOriginalFilename();
-		String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 추출
-		String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-      
-		String qna_image = "/images/uploadFiles/qna/" + savedName;
-		
-		try {
-			singleFile.transferTo(new File(filePath + "\\" + savedName));
-			
-			int result = qnaService.modifyUserQna(qna_title, qna_content, qna_image, qna_no);
-			if(result > 0) {
-				System.out.println("성공");
-				rttr.addFlashAttribute("message", "글이 수정되었습니다.");
+		System.out.println("modify singleFile : " + singleFile);
+		if(singleFile.isEmpty()) {
+			int result2 = qnaService.modifyUserQnaNoImage(qna_title, qna_content, qna_no);
+			if(result2 > 0) {
+				rttr.addFlashAttribute("message", "수정되었습니다.");
 			} else {
-				System.out.println("실패");
 				rttr.addFlashAttribute("message", "글 수정에 실패하였습니다.");
 			}
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
+		} else {
+			String currentDir = System.getProperty("user.dir");
+		      
+			String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\qna";
+	      
+			File mkdir = new File(filePath);
+			if(!mkdir.exists()) mkdir.mkdirs();
+	      
+			String originFileName = singleFile.getOriginalFilename();
+			String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 추출
+			String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+	      
+			String qna_image = "/images/uploadFiles/qna/" + savedName;
+			
+			try {
+				singleFile.transferTo(new File(filePath + "\\" + savedName));
+				
+				int result = qnaService.modifyUserQna(qna_title, qna_content, qna_image, qna_no);
+				if(result > 0) {
+					rttr.addFlashAttribute("message", "수정되었습니다.");
+				} else {
+					rttr.addFlashAttribute("message", "글 수정에 실패하였습니다.");
+				}
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return "redirect:/qna/userqna";
 	}
@@ -165,7 +173,6 @@ public class PersonalQnAController {
 	@GetMapping("adminQnaList")
 	public String findAllQnaList(Model model, @RequestParam(value="page", required=false) String page) {
 		int listCount = qnaService.getTotalQnaListCount();
-		System.out.println(listCount + " listCount");
 	    int resultPage = 1;
 	    
 	    if(page != null) {
@@ -178,7 +185,6 @@ public class PersonalQnAController {
         int endRow = startRow + pi.getBoardLimit() - 1;
 		
         List<PersonalQ> adminQnaList = qnaService.findAllQnaListPage(startRow, endRow);
-		System.out.println(adminQnaList);
 		model.addAttribute("adminQnaList", adminQnaList);
 		model.addAttribute("pi", pi);
 		return "/qna/adminqnaList";
@@ -202,10 +208,8 @@ public class PersonalQnAController {
 		int result = qnaService.adminAnswerModify(qna_no, answer_content);
 		if(result > 0) {
 			rttr.addFlashAttribute("message", "답변이 수정되었습니다.");
-			System.out.println("admin UPDATE success");
 		} else {
 			rttr.addFlashAttribute("message", "답변 수정에 실패하였습니다.");
-			System.out.println("admin UPDATE fail");
 		}
 		return "redirect:/qna/adminQnaList";
 	}
@@ -215,12 +219,9 @@ public class PersonalQnAController {
 		int result = qnaService.adminDeleteUserQna(qna_no);
 		if(result > 0) {
 			rttr.addFlashAttribute("message", "답변이 삭제되었습니다.");
-			System.out.println("admin delete success");
 		} else {
 			rttr.addFlashAttribute("message", "답변 삭제에 실패하였습니다.");
-			System.out.println("admin delete fail");
 		}
 		return "redirect:/qna/adminQnaList";
 	}
-
 }

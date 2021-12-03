@@ -45,6 +45,22 @@
 		)
 	</insert>
 	
+	<insert id="insertUserQnaNoImage">
+		INSERT INTO QNA
+		(QNA_NO, QNA_TITLE, QNA_CONTENT,
+		 QNA_STATUS, QNA_DATE, QNA_ANSWER, USER_NO)
+		VALUES
+		(
+			SEQ_QNA_NO.NEXTVAL, 
+			#{qna_title}, 
+			#{qna_content},
+			'Y', 
+			SYSDATE, 
+			'N', 
+			#{user_no}
+		)
+	</insert>
+	
 	<update id="deleteUserQna" parameterType="com.project.dwine.personalQnA.model.vo.PersonalQ">
 		UPDATE QNA
 		SET QNA_STATUS = 'N'
@@ -70,6 +86,13 @@
 		SET QNA_TITLE = #{qna_title},
 		QNA_CONTENT = #{qna_content},
 		QNA_IMAGE = #{qna_image}
+		WHERE QNA_NO = #{qna_no}
+	</update>
+	
+	<update id="modifyUserQnaNoImage" parameterType="com.project.dwine.personalQnA.model.vo.PersonalQ">
+		UPDATE QNA
+   		SET  QNA_TITLE = #{qna_title},
+   		   	QNA_CONTENT = #{qna_content}
 		WHERE QNA_NO = #{qna_no}
 	</update>
 	
@@ -111,7 +134,7 @@
             ANSWER_STATUS,
             USER_ID
 		FROM (SELECT ROWNUM RNUM, QLIST.* FROM (SELECT
-        Q.QNA_NO,
+            Q.QNA_NO,
 			QNA_TITLE,
 			QNA_CONTENT,
 			QNA_IMAGE,
@@ -124,17 +147,17 @@
             ANSER_DATE,
             ANSWER_STATUS,
             USER_ID FROM QNA Q
-            LEFT JOIN ANSWER A ON (Q.QNA_NO = A.QNA_NO)
-        LEFT JOIN MEMBER M ON (M.USER_NO = Q.USER_NO)
+            LEFT  JOIN ANSWER A ON (Q.QNA_NO = A.QNA_NO)
+            LEFT JOIN MEMBER M ON (M.USER_NO = Q.USER_NO)
 		WHERE QNA_STATUS = 'Y'
         AND Q.USER_NO = #{user_no}
         ORDER BY QNA_DATE DESC) QLIST
-        )WHERE RNUM BETWEEN  #{startRow} AND #{endRow}
+        ) WHERE RNUM BETWEEN  #{startRow} AND #{endRow}
 	</select>
 	
 	<select id="getTotalQnaListCount" resultType="_int">
-		SELECT COUNT(*) FROM QNA 
-		<if test="user_no != null">WHERE USER_NO = #{user_no}</if>
+		SELECT COUNT(*) FROM QNA WHERE QNA_STATUS = 'Y'
+		<if test="user_no != null">AND USER_NO = #{user_no}</if>
 	</select>
 	
 	<select id="findAllQnaListPage" resultMap="PersonalQResultMap">
