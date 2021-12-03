@@ -1,7 +1,9 @@
 package com.project.dwine.manage.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +23,7 @@ import com.project.dwine.manage.model.service.ReviewMgService;
 import com.project.dwine.manage.model.vo.Report;
 import com.project.dwine.manage.model.vo.Review;
 import com.project.dwine.mypage.model.service.MypageService;
+import com.project.dwine.notice.model.vo.Notice;
 import com.project.dwine.paging.PageInfo;
 
 @Controller
@@ -47,19 +51,49 @@ public class ReviewMgController {
 		}
 		
 		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
-		System.out.println(pi);
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
 	    
 		
 		List<Review> reviewMgList = reviewMgService.selectReviewList(startRow, endRow);
 		
-		System.out.println(reviewMgList);
 		mv.addObject("reviewMgList", reviewMgList);
 		mv.addObject("pi", pi);
 		mv.setViewName("manage/reviewMg/main");
 		return mv;
 	}
+	
+	//인벤토리 검색
+ 	@PostMapping("/reviewMg/main")
+ 	@ResponseBody
+ 	public Map<String, Object> seachMainNotice(@RequestParam(value="page", required=false) String page) throws IOException {
+ 		
+ 		int listCount = reviewMgService.reviewMgTotalListCnt();
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+			//System.out.println();
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+		int endRow = startRow + pi.getBoardLimit() - 1;
+	//	System.out.println(pi);
+		List<Review> reviewMgList = reviewMgService.selectReviewList(startRow, endRow);
+ 	//	System.out.println("포스트방식"+reviewMgList);
+ 		Map<String, Object> map = new HashMap<>();
+ 		map.put("pi", pi);
+ 		map.put("reviewMgList", reviewMgList);
+ 		
+ 		return map;
+ 	}
+	
+	
+	
+	
+	
+	
 	
 	//detail
 	@GetMapping("/reviewMg/rdetail/{review_no}")

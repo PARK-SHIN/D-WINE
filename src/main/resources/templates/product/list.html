@@ -5,436 +5,327 @@
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>product main list</title>
-<script>
-	const successMessgae = '[[${ message }]]';
-	
-	if(successMessgae){
-		alert(successMessgae);
-	}
-</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/product/list.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-<style>
-	* {
-          font-family: 'Gowun Batang', serif;
-       }
-	.wrapper {
-		display : flex;
-		width: 1100px;
-		margin : 0 auto;
-	}
-	#header_area {
-		display: flex;
-		justify-content: space-between;
-	}
-	#top_area {
-		display: flex;
-		justify-content: space-between;
-		margin: 30px 0;
-	}
-	#open_regist_btn {
-		background: #83131E;
-		color: white;
-		width: 100px;
-		height: 40px;
-		border-radius: 5px;
-		margin-top: auto;
-		margin-bottom: auto;
-		border: 0;
-	}
-	h1 {
-		display: inline;
-	}
-	#table_area {
-		width: 100%;
-		margin-top: 20px;
-		margin-left: auto;
-		margin-right: auto;
-		border-collapse: collapse;
-		font-size: 15px;
-	}
-	#table_area th {
-		background: rgba(196, 196, 196, 0.3);
-	}
-	
-	.list_area {
-		height: 450px;
-	}
-	
-	#deleteMulti_btn {
-		background: white;
-		border-radius: 5px;
-		color: #525252;
-		border: 1px solid #525252;
-	}
-	.center {
-		text-align: center
-	}
-	.choose:hover{
-		background:  rgba(196, 196, 196, 0.1);
-		cursor : pointer;
-	}
-	#deleteMulti_btn {
-		margin-left: 5px;
-	}
-	#hash_btn {
-		background: #83131E;
-		color: white;
-		margin-left: 5px;
-		border-radius: 5px;
-		border: 1px solid #83131E;
-	}
-	tr, td {
-		 height: 35px;
-	}
-	.change-bg{
-		background: rgba(180,19,30,0.1);
-	}
-	.change-color{
-		color: red;
-		font-weight: bold;
-	}
-	/* 페이징 부분 */
-	.paging_ul {
-		height: 50px;
-		line-height: 50px;
-		display: flex;
-		justify-content: center;
-		list-style: none;
-		width: 480px;
-		margin: 30px auto;
-	}
-	.paging_ul li {
-		text-decoration: none;
-		display: block;
-		text-align: center;
-		border: 1px solid #dae0e9;
-	    margin-left: 10px;
-		width: 37px;
-		height: 37px;
-		line-height : 37px;
-	    font-size: 12px;
-	    border-radius : 5px;
-	}
-	.current_page {
-		border: 1px solid  #83131E;
-	    background:  #83131E;
-	    color: white;
-	    border-radius : 5px;
-	}
-</style>
+<script>
+   const successMessgae = '[[${ message }]]';
+   
+   if(successMessgae){
+      alert(successMessgae);
+   }
+</script>
 </head>
 <body>
-	<header th:include="common/header :: header"></header>
-	<div class="wrapper">
-		<nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
-		<div class="contents">
-			<div id="header_area">
-				<h1>상품관리</h1>
-	        	<button id="open_regist_btn" onclick="location.href='/product/regist'">상품 등록</button>
-			</div>
-			<hr>
-			<div id="top_area">
-				<div>
-					<button id="deleteMulti_btn">선택 삭제</button>
-					<button id="hash_btn" onclick="openHashForm()">해시태그 관리</button>
-				</div>
-				<div>
-					<select name="searchStandard">
-						<option value="no">상품번호</option>
-						<option value="name">상품명</option>
-					</select> <input type="text" name="searchValue">
-					<button id="search_btn">검색</button>
-				</div>
-			</div> <!-- top_area -->
-			<div class="list_area">
-				<div class="sort_area">
-					<form id="sortForm" th:action="@{/product/list}" method="get">
-						<select name="sortStandard">
-							<option value="no_low" th:selected="${ sortStandard }=='no_low'">상품번호
-								낮은 순</option>
-							<option value="no_high"
-								th:selected="${ sortStandard }=='no_high'">상품번호 높은 순</option>
-							<option value="stock_low"
-								th:selected="${ sortStandard }=='stock_low'">재고 적은 순</option>
-							<option value="stock_high"
-								th:selected="${ sortStandard }=='stock_high'">재고 많은 순</option>
-						</select>
-					</form>
-				</div>
-				<form id="deleteMultiForm" th:action="@{/product/deleteMulti}"
-					method="post" onsubmit="return checkConfirm()">
-					<table id="table_area">
-						<thead>
-							<tr>
-								<th><input type="checkbox" id="delete_all"
-									name="delete_all"></th>
-								<th>상품번호</th>
-								<th>상품명</th>
-								<th>판매가</th>
-								<th>재고</th>
-								<th>등록일</th>
-								<th>수정일</th>
-							</tr>
-						</thead>
-						<tbody id="productList">
-							<tr th:each="product : ${ productList }">
-								<td class="center"><input type="checkbox"
-									name="delete_nums" th:value="${ product.productNo }"></td>
-								<td class="center" th:text="${ product.productNo }"></td>
-								<td class="choose" th:text="${ product.productKName }"
-									th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|"></td>
-								<td class="center" th:text="${ product.salePrice }"></td>
-								<td class="center choose" th:text="${ product.productCount }"
-									th:onclick="|location.href='@{/manage/inventoryMg/main}'|"></td>
-								<td class="center"
-									th:text="${#dates.format(product.createDate, 'yyyy-MM-dd')}"></td>
-								<td class="center"
-									th:text="${#dates.format(product.modifyDate, 'yyyy-MM-dd')}"></td>
-							</tr>
-						</tbody>
-					</table>
-				</form>
-			</div> <!-- list_area -->
+   <header th:include="common/header :: header"></header>
+   <div class="wrapper">
+      <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+      <div class="contents">
+         <div id="header_area">
+            <h1>상품관리</h1>
+              <button id="open_regist_btn" onclick="location.href='/product/regist'">상품 등록</button>
+         </div>
+         <hr>
+         <div id="top_area">
+            <div>
+               <button id="deleteMulti_btn">선택 삭제</button>
+               <button id="hash_btn" onclick="openHashForm()">해시태그 관리</button>
+            </div>
+            <div>
+               <select name="searchStandard">
+                  <option value="no">상품번호</option>
+                  <option value="name">상품명</option>
+               </select> <input type="text" name="searchValue">
+               <button id="search_btn">검색</button>
+            </div>
+         </div> <!-- top_area -->
+         <div class="list_area">
+            <div class="sort_area">
+               <select name="sortStandard">
+               	<option value="no_low">상품번호 낮은 순</option>
+                <option value="no_high">상품번호 높은 순</option>
+                <option value="stock_low">재고 적은 순</option>
+                <option value="stock_high">재고 많은 순</option>
+               </select>
+            </div>
+            <form id="deleteMultiForm" th:action="@{/product/deleteMulti}"
+               method="post" onsubmit="return checkConfirm()">
+               <table id="table_area">
+                  <thead>
+                     <tr>
+                        <th><input type="checkbox" id="delete_all"
+                           name="delete_all"></th>
+                        <th>상품번호</th>
+                        <th>상품명</th>
+                        <th>판매가</th>
+                        <th>재고</th>
+                        <th>등록일</th>
+                        <th>수정일</th>
+                     </tr>
+                  </thead>
+                  <tbody id="productList">
+                     <tr th:each="product : ${ productList }">
+                        <td class="center"><input type="checkbox"
+                           name="delete_nums" th:value="${ product.productNo }"></td>
+                        <td class="center" th:text="${ product.productNo }"></td>
+                        <td class="choose" th:text="${ product.productKName }"
+                           th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|"></td>
+                        <td class="center" th:text="${ product.salePrice }"></td>
+                        <td class="center choose" th:text="${ product.productCount }"
+                           th:onclick="|location.href='@{/manage/inventoryMg/main}'|"></td>
+                        <td class="center"
+                           th:text="${#dates.format(product.createDate, 'yyyy-MM-dd')}"></td>
+                        <td class="center"
+                           th:text="${#dates.format(product.modifyDate, 'yyyy-MM-dd')}"></td>
+                     </tr>
+                  </tbody>
+               </table>
+            </form>
+         </div> <!-- list_area -->
 
- 			<!-- 페이징 -->
- 			<div class="paging__area">
-			 	<ul class="paging_ul">
-					<li class="go_first">&lt;&lt;</li>
-					<li class="go_prev">&lt;</li>
-					<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
-					<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
-					<li class="go_next">&gt;</li>
-					<li class="go_end">&gt;&gt;</li>
-				</ul> 
-			</div>
- 			<!-- 페이징 -->
- 			
-		</div>
-	</div>
-	<footer th:include="common/footer :: footer"></footer>
-	
-	<script>
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		$(document).ajaxSend(function(e, xhr, options) {
-			xhr.setRequestHeader(header, token);
-		});
+          <!-- 페이징 -->
+          <div class="paging__area">
+             <ul class="paging_ul">
+               <li class="go_first">&lt;&lt;</li>
+               <li class="go_prev">&lt;</li>
+               <li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
+               <li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
+               <li class="go_next">&gt;</li>
+               <li class="go_end">&gt;&gt;</li>
+            </ul> 
+         </div>
+         <!-- 페이징 -->
+      </div>
+   </div>
+   <footer th:include="common/footer :: footer"></footer>
+   
+   <script>
+      var token = $("meta[name='_csrf']").attr("content");
+      var header = $("meta[name='_csrf_header']").attr("content");
+      $(document).ajaxSend(function(e, xhr, options) {
+         xhr.setRequestHeader(header, token);
+      });
 
-		$(function() {
-			change_bg();
-		})
+      $(function() {
+         change_bg();
+      })
 
-		// 선택 삭제 버튼 클릭 시 deleteMultiForm submit
-		$("#deleteMulti_btn").on("click", function() {
-			$("#deleteMultiForm").submit();
-		})
+      // 선택 삭제 버튼 클릭 시 deleteMultiForm submit
+      $("#deleteMulti_btn").on("click", function() {
+         $("#deleteMultiForm").submit();
+      })
 
-		// 삭제 확인 confirm 출력
-		function checkConfirm() {
-			if (confirm("정말 삭제하시겠습니까?"))
-				return true
-			else
-				return false;
-		}
+      // 삭제 확인 confirm 출력
+      function checkConfirm() {
+         if (confirm("정말 삭제하시겠습니까?"))
+            return true
+         else
+            return false;
+      }
 
-		// 체크박스 전체 선택, 전체 해제
-		$("#delete_all").click(function() {
-			if ($("#delete_all").is(":checked"))
-				$("input[name=delete_nums]").prop("checked", true);
-			else
-				$("input[name=delete_nums]").prop("checked", false);
-		});
+      // 체크박스 전체 선택, 전체 해제
+      $("#delete_all").click(function() {
+         if ($("#delete_all").is(":checked"))
+            $("input[name=delete_nums]").prop("checked", true);
+         else
+            $("input[name=delete_nums]").prop("checked", false);
+      });
 
-		$("input[name=delete_nums]").click(function() {
-			var total = $("input[name=delete_nums]").length;
-			var checked = $("input[name=delete_nums]:checked").length;
+      $("input[name=delete_nums]").click(function() {
+         var total = $("input[name=delete_nums]").length;
+         var checked = $("input[name=delete_nums]:checked").length;
 
-			if (total != checked)
-				$("#delete_all").prop("checked", false);
-			else
-				$("#delete_all").prop("checked", true);
-		});
+         if (total != checked)
+            $("#delete_all").prop("checked", false);
+         else
+            $("#delete_all").prop("checked", true);
+      });
+      
+      endPage = $(".pageNo").last().val();
+      clickPage = 1;
+      
+      // 정렬 select, 검색 버튼 눌렀을 때
+      $(document).on("click", "#search_btn", function(){
+         clickPage = 1;
+         var page = 1;
+         var sortStandard = $("select[name=sortStandard]").val();
+         var searchStandard = $("select[name=searchStandard]").val();
+         var searchValue = $("input[name=searchValue]").val();
+         
+         ajaxPaging(page, sortStandard, searchStandard, searchValue);
+      });
+      
+      // 정렬 select change 됐을 때
+      $(document).on("change", "select[name=sortStandard]", function(){
+         clickPage = 1;
+         var page = 1;
+         var sortStandard = $("select[name=sortStandard]").val();
+         var searchStandard = $("select[name=searchStandard]").val();
+         var searchValue = $("input[name=searchValue]").val();
+         
+         ajaxPaging(page, sortStandard, searchStandard, searchValue);
+      });
+      
+      // 페이지 <li> 눌렀을 때
+      $(document).on("click", ".pageNo", function(){
+         var page = $(this).val();
+         var sortStandard = $("select[name=sortStandard]").val();
+         var searchStandard = $("select[name=searchStandard]").val();
+         var searchValue = $("input[name=searchValue]").val();
+         
+         clickPage = page;
+         
+         ajaxPaging(page, sortStandard, searchStandard, searchValue);
+         
+      });
+      
+      // "<<" 버튼
+      $(document).on("click", ".go_first", function() {
+         clickPage = 1;
+         var page = 1;
+         var sortStandard = $("select[name=sortStandard]").val();
+         var searchStandard = $("select[name=searchStandard]").val();
+         var searchValue = $("input[name=searchValue]").val();
+         
+         ajaxPaging(page, sortStandard, searchStandard, searchValue);
+      });
+      
+      
+      // ">>" 버튼
+      $(document).on("click", ".go_end", function() {
+         clickPage = endPage;
+         var page = endPage;
+         var sortStandard = $("select[name=sortStandard]").val();
+         var searchStandard = $("select[name=searchStandard]").val();
+         var searchValue = $("input[name=searchValue]").val();
+         
+         ajaxPaging(page, sortStandard, searchStandard, searchValue);
+      });
+      
+      // "<" 버튼
+      $(document).on("click", ".go_prev", function() {
+         if(clickPage != 1) {
+            var page = clickPage - 1;
+            clickPage = clickPage - 1;
+            var sortStandard = $("select[name=sortStandard]").val();
+            var searchStandard = $("select[name=searchStandard]").val();
+            var searchValue = $("input[name=searchValue]").val();
+            
+            ajaxPaging(page, sortStandard, searchStandard, searchValue);
+         }
+         
+         
+      });
+      
+      // ">" 버튼
+      $(document).on("click", ".go_next", function() {
+         if(clickPage != endPage) {
+            var page = clickPage + 1;
+            clickPage = clickPage + 1;
+            var sortStandard = $("select[name=sortStandard]").val();
+            var searchStandard = $("select[name=searchStandard]").val();
+            var searchValue = $("input[name=searchValue]").val();
+            
+            ajaxPaging(page, sortStandard, searchStandard, searchValue);
+         }
+         
+      });
 
-		function dateFormat(date) {
-			let month = date.getMonth() + 1;
-			let day = date.getDate();
+      function ajaxPaging(page, sortStandard, searchStandard, searchValue) {
+         
+         $.ajax({
+            url : "/product/list",
+            data : {page : page, sortStandard: sortStandard, searchStandard : searchStandard, searchValue : searchValue},
+            type : "post",
+            success : function(data) {
+               var productList = data.productList;
+               var pi = data.pi;
+               var sortStandard = data.sortStandard;
+               var searchStandard = data.searchStandard;
+               var searchValue = data.searchValue;
+               
+               endPage = pi.endPage;
+               
+               if(productList.length == 0) {
+                  alert("찾으시는 상품이 없습니다.");
+                  $("input[name=searchValue]").val("");
+               } else {
+            
+                  var tableHTML = '';
+                  var pagingHTML = '<li class="go_first">&lt;&lt;</li><li class="go_prev">&lt;</li>';
+               
+               
+                  for(var i = parseInt(pi.startPage); i <= parseInt(pi.endPage) ; i++) {
+                     
+                     pagingHTML += '<li class="pageNo" value="' + i + '">' + i +'</li>';
+                  }  
+                  
+                  pagingHTML += '<li class="go_next">&gt;</li><li class="go_end">&gt;&gt;</li>';   
+                  $(".paging_ul").html(pagingHTML);
+                  
+                   $.each(productList, function(index, item) {
+   
+                     let createDate = new Date(item.createDate);
+                     let modifyDate = new Date(item.modifyDate);
+   
+                     tableHTML += "<tr><td class='center'><input type='checkbox' name='delete_nums' value='" + item.productNo + "'></td>"
+                              + "<td class='center'>"+ item.productNo+ "</td>"
+                              + "<td class=\"choose\" onclick=\"location.href='/product/detail/" + item.productNo + "'\">"+ item.productKName+ "</td>"
+                              + "<td class='center'>"+ item.salePrice + "</td>"
+                              + "<td class='center stoke choose' onclick=\"location.href='/manage/inventoryMg/main'\">"+ item.productCount + "</td>"
+                              + "<td class='center'>"+ dateFormat(createDate) + "</td>"
+                              + "<td class='center'>"+ dateFormat(modifyDate) + "</td></tr>";
+                              onclick="|location.href='@{/manage/inventoryMg/main}'|"
+                     $("#productList").html(tableHTML);
+                     change_bg();
+                  }); 
+                   
+                  $('li[value='+ page + ']').addClass("current_page");
+                  
+               }
+            },
+            error : function(e) {
+               console.log(e);
+            }         
+         });
+      
+      }
+      
+      function dateFormat(date) {
+         let month = date.getMonth() + 1;
+         let day = date.getDate();
 
-			month = month >= 10 ? month : '0' + month;
-			day = day >= 10 ? day : '0' + day;
+         month = month >= 10 ? month : '0' + month;
+         day = day >= 10 ? day : '0' + day;
 
-			return date.getFullYear() + '-' + month + '-' + day;
-		}
-		
-		endPage = $(".pageNo").last().val();
-		clickPage = 1;
-		
-		// 정렬 select, 검색 버튼 눌렀을 때
-		$(document).on("click", "#search_btn", function(){
-			var page = 1;
-			var sortStandard = $("select[name=sortStandard]").val();
-			var searchStandard = $("select[name=searchStandard]").val();
-			var searchValue = $("input[name=searchValue]").val();
-			
-			ajaxPaging(page, sortStandard, searchStandard, searchValue);
-		});
-		
-		// 정렬 select change 됐을 때
-		$(document).on("change", "select[name=sortStandard]", function(){
-			var page = 1;
-			var sortStandard = $("select[name=sortStandard]").val();
-			var searchStandard = $("select[name=searchStandard]").val();
-			var searchValue = $("input[name=searchValue]").val();
-			
-			ajaxPaging(page, sortStandard, searchStandard, searchValue);
-		});
-		
-		// 페이지 <li> 눌렀을 때
-		$(document).on("click", ".pageNo", function(){
-			var page = $(this).val();
-			var sortStandard = $("select[name=sortStandard]").val();
-			var searchStandard = $("select[name=searchStandard]").val();
-			var searchValue = $("input[name=searchValue]").val();
-			
-			clickPage = page;
-			
-			ajaxPaging(page, sortStandard, searchStandard, searchValue);
-			
-		});
-		
-		// "<<" 버튼
-		$(document).on("click", ".go_first", function() {
-			clickPage = 1;
-			var page = 1;
-			var sortStandard = $("select[name=sortStandard]").val();
-			var searchStandard = $("select[name=searchStandard]").val();
-			var searchValue = $("input[name=searchValue]").val();
-			
-			ajaxPaging(page, sortStandard, searchStandard, searchValue);
-		});
-		
-		
-		// ">>" 버튼
-		$(document).on("click", ".go_end", function() {
-			clickPage = endPage;
-			var page = endPage;
-			var sortStandard = $("select[name=sortStandard]").val();
-			var searchStandard = $("select[name=searchStandard]").val();
-			var searchValue = $("input[name=searchValue]").val();
-			
-			ajaxPaging(page, sortStandard, searchStandard, searchValue);
-		});
-		
-		// "<" 버튼
-		$(document).on("click", ".go_prev", function() {
-			if(clickPage != 1) {
-				var page = clickPage - 1;
-				clickPage = clickPage - 1;
-				var sortStandard = $("select[name=sortStandard]").val();
-				var searchStandard = $("select[name=searchStandard]").val();
-				var searchValue = $("input[name=searchValue]").val();
-				
-				ajaxPaging(page, sortStandard, searchStandard, searchValue);
-			}
-			
-			
-		});
-		
-		// ">" 버튼
-		$(document).on("click", ".go_next", function() {
-			if(clickPage != endPage) {
-				var page = clickPage + 1;
-				clickPage = clickPage + 1;
-				var sortStandard = $("select[name=sortStandard]").val();
-				var searchStandard = $("select[name=searchStandard]").val();
-				var searchValue = $("input[name=searchValue]").val();
-				
-				ajaxPaging(page, sortStandard, searchStandard, searchValue);
-			}
-			
-		});
+         return date.getFullYear() + '-' + month + '-' + day;
+      }
+      
+      
+      // 페이징바 마우스 커서 변경
+      $(document).on("mouseover", ".paging_ul li", function(){
+         $(this).css("cursor", "pointer");
+      });
+      
+      // 재고가 5 이하면 tr 배경색 바꾸기
+      function change_bg() {
+         $('#productList tr').each(function() {
+            var stock = $(this).children().eq(4).text();
 
-		function ajaxPaging(page, sortStandard, searchStandard, searchValue) {
-			
-			$.ajax({
-				url : "/product/list",
-				data : {page : page, sortStandard: sortStandard, searchStandard : searchStandard, searchValue : searchValue},
-				type : "post",
-				success : function(data) {
-					var productList = data.productList;
-					var pi = data.pi;
-					var sortStandard = data.sortStandard;
-					var searchStandard = data.searchStandard;
-					var searchValue = data.searchValue;
-					
-					endPage = pi.endPage;
-					
-					console.log("page : " + page);
-					console.log("clickPage : " + clickPage);
-					
-					if(productList.length == 0) {
-						alert("찾으시는 상품이 없습니다.");
-					} else {
-				
-						var tableHTML = '';
-						var pagingHTML = '<li class="go_first">&lt;&lt;</li><li class="go_prev">&lt;</li>';
-					
-					
-						for(var i = parseInt(pi.startPage); i <= parseInt(pi.endPage) ; i++) {
-							
-							pagingHTML += '<li class="pageNo" value="' + i + '">' + i +'</li>';
-						}  
-						
-						pagingHTML += '<li class="go_next">&gt;</li><li class="go_end">&gt;&gt;</li>';	
-						$(".paging_ul").html(pagingHTML);
-						
-						 $.each(productList, function(index, item) {
-	
-							let createDate = new Date(item.createDate);
-							let modifyDate = new Date(item.modifyDate);
-	
-							tableHTML += "<tr><td class='center'><input type='checkbox' name='delete_nums' value='" + item.productNo + "'></td>"
-										+ "<td class='center'>"+ item.productNo+ "</td>"
-										+ "<td class=\"choose\" onclick=\"location.href='/product/detail/" + item.productNo + "'\">"+ item.productKName+ "</td>"
-										+ "<td class='center'>"+ item.salePrice + "</td>"
-										+ "<td class='center stoke'>"+ item.productCount + "</td>"
-										+ "<td class='center'>"+ dateFormat(createDate) + "</td>"
-										+ "<td class='center'>"+ dateFormat(modifyDate) + "</td></tr>";
-		
-							$("#productList").html(tableHTML);
-							change_bg();
-						}); 
-						 
-						$('li[value='+ page + ']').addClass("current_page");
-					}
-				},
-				error : function(e) {
-					console.log(e);
-				}			
-			});
-		
-		}
-		
-		
-		// 재고가 5 이하면 배경색 바꾸기
-		function change_bg() {
-			$('#productList tr').each(function() {
-				var stock = $(this).children().eq(4).text();
-
-				if (stock <= 5) {
-					$(this).addClass("change-bg");
-					$(this).children().eq(4).addClass("change-color");
-				}
-			});
-		}
-		
-		// 해시태그 관리 팝업
-		function openHashForm() {
-			window.open("/hashtag/form", "popup", "width=800, height=600");
-		}
-	</script>
-	
-	
+            if (stock <= 5) {
+               $(this).addClass("change-bg");
+               $(this).children().eq(4).addClass("change-color");
+            }
+         });
+      }
+      
+      // 해시태그 관리 팝업
+      function openHashForm() {
+    	  window.open("/hashtag/form", "popup", "width=830, height=655");
+      }
+   </script>
+   
+   
 </body>
 </html>

@@ -32,6 +32,13 @@
 		<collection property="hashtagList" resultMap="hashtagResultMap"/>
 	</resultMap>
 	
+	<resultMap id="weatherResultMap" type="com.project.dwine.product.model.vo.Product">
+		<id property="productNo" column="PRODUCT_NO"/>
+		<result property="productKName" column="PRODUCT_KNAME"/>
+		<result property="productEName" column="PRODUCT_ENAME"/>
+		<result property="thumbnail" column="THUMBNAIL"/>
+	</resultMap>
+	
 	<resultMap id="countryResultMap" type="com.project.dwine.product.model.vo.Country">
 		<id property="countryNo" column="COUNTRY_NO"/>
 		<result property="countryName" column="COUNTRY_NAME"/>
@@ -131,5 +138,17 @@
 		 LEFT JOIN PRODUCT_HASHTAG PH ON(P.PRODUCT_NO = PH.PRODUCT_NO)
 		 LEFT JOIN HASHTAG H ON(H.HASH_NO = PH.HASH_NO)
 		 WHERE H.HASH_NAME = #{ hashName }
+	</select>
+	
+	<select id="selectProductByWeather" resultMap="weatherResultMap">
+		SELECT 
+		      PRODUCT_NO
+		    , PRODUCT_KNAME
+		    , PRODUCT_ENAME
+		    , THUMBNAIL
+		FROM PRODUCT 
+		WHERE STATUS = 'Y'
+		AND TYPE_NO IN (#{ typeNo })
+		OR VARIETY_NO IN (#{ varietyNo1 }, #{ varietyNo2 })
 	</select>
 </mapper>

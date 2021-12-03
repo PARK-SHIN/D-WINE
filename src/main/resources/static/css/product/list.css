@@ -1,0 +1,112 @@
+@charset "UTF-8";
+	* {
+          font-family: 'Gowun Batang', serif;
+       }
+	.wrapper {
+		display : flex;
+		width: 1100px;
+		margin : 0 auto;
+	}
+	#header_area {
+		display: flex;
+		justify-content: space-between;
+	}
+	#top_area {
+		display: flex;
+		justify-content: space-between;
+		margin: 30px 0;
+	}
+	#open_regist_btn {
+		background: #83131E;
+		color: white;
+		width: 100px;
+		height: 40px;
+		border-radius: 5px;
+		margin-top: auto;
+		margin-bottom: auto;
+		border: 0;
+	}
+	h1 {
+		display: inline;
+	}
+	#table_area {
+		width: 100%;
+		margin-top: 20px;
+		margin-left: auto;
+		margin-right: auto;
+		border-collapse: collapse;
+		font-size: 15px;
+	}
+	#table_area th {
+		background: rgba(196, 196, 196, 0.3);
+	}
+	
+	.list_area {
+		height: 450px;
+	}
+	
+	#deleteMulti_btn {
+		background: white;
+		border-radius: 5px;
+		color: #525252;
+		border: 1px solid #525252;
+	}
+	.center {
+		text-align: center
+	}
+	.choose:hover{
+		background:  rgba(196, 196, 196, 0.1);
+		cursor : pointer;
+	}
+	#deleteMulti_btn {
+		margin-left: 5px;
+	}
+	#hash_btn {
+		background: #83131E;
+		color: white;
+		margin-left: 5px;
+		border-radius: 5px;
+		border: 1px solid #83131E;
+	}
+	tr, td {
+		 height: 35px;
+	}
+	.change-bg{
+		background: rgba(180,19,30,0.1);
+	}
+	.change-color{
+		color: red;
+		font-weight: bold;
+	}
+	/* 페이징 부분 */
+	.paging_ul {
+		height: 50px;
+		line-height: 50px;
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		width: 480px;
+		margin: 30px auto;
+	}
+	.paging_ul li {
+		text-decoration: none;
+		display: block;
+		text-align: center;
+		border: 1px solid #dae0e9;
+	    margin-left: 10px;
+		width: 37px;
+		height: 37px;
+		line-height : 37px;
+	    font-size: 12px;
+	    border-radius : 5px;
+	}
+	.paging_ul li:hover {
+		cursor: pointer;
+	}
+	.current_page {
+		border: 1px solid  #83131E;
+	    background:  #83131E;
+	    color: white;
+	    border-radius : 5px;
+	}
+	

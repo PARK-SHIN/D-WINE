@@ -205,3 +205,6 @@ input[type="checkbox"]:checked::before {
 .movePno:hover {
 	cursor : pointer;
 }
+.paging__area {
+	margin-top : 100px;
+}

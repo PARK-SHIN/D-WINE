@@ -6,129 +6,64 @@
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/recommendWine/main.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-<title>recommend wine main</title>
-<style>
-	* {
-          font-family: 'Gowun Batang', serif;
-       }
-	.wrapper {
-		width: 1300px;
-		margin: 0 auto;
-	}
-    .content {
-        text-align: center;
-    }
-    #content_area {
-        display: flex;
-        justify-content: space-between;
-    }
-    .img {
-        width: 80%;
-        height: 300px;
-        border-radius: 3px;
-    }
-    .wine_area {
-        width: 50%;
-    }
-    #search_area {
-       margin: 4em 0;
-    }
-	
-	#search_btn {
-		height: 30px;
-		background: #83131E;
-		color: #ffffff;
-		border: none;
-		border-radius: 5px;
-	}
-    #input_box {
-        border: none;
-        border-bottom: #83131E 1px solid;
-        width: 800px;
-        height : 30px;
-        text-align: center;
-    }
-    
-    #input_box:focus {
-    	outline: none;
-    }
-    
-    ul {
-    	list-style: none;
-    	padding-left: 70px;
-    }
-    
-    li {
-    	text-align: left;
-    }
-    li:hover {
-    	cursor: pointer;
-    	text-decoration: underline;
-    }
-    .list_area1, .list_area2 {
-    	display: flex;
-    }
-</style>
+<title>recommend wine by hashtag(main)</title>
 </head>
 <body>
+	
 	<header th:include="common/header :: header"></header>
 	<div class="wrapper">
-		<h1>#해시태그 와인 추천</h1>
-	    <hr>
-	    <div class="content">	
-	        <div id="search_area">
-	            <form id="searchForm" th:action="@{/recommendWine/search}" method="post" onsubmit="return validate()">
-	                <input id="input_box" type="text" name="search_hash" placeholder="#해시태그를 입력하세요.">
-	                <button id="search_btn">검색</button>
-	            </form>
-	        </div>
-			<div id="content_area">
-				<div class="wine_area">
-					<img class="img" src="/images/recommendWine/mood.webp">
-					<div class="list_area1">
-						<ul>
-							<li th:each="mood : ${ moodList }" th:value="${ mood.hashNo }" th:text="|#${mood.hashName}|"></li>
-						</ul>
+		<div class="weather" th:include="recommendWine/weather"></div>
+		<div class="container">
+			<h1>#해시태그 와인 추천</h1>
+			<hr>
+			<div class="content">
+				<div id="search_area">
+					<form id="searchForm" th:action="@{/recommendWine/search}"
+						method="post" onsubmit="return validate()">
+						<input id="input_box" type="text" name="search_hash"
+							placeholder="#해시태그를 입력하세요.">
+						<button id="search_btn">검색</button>
+					</form>
+				</div>
+				<div id="content_area">
+					<div class="wine_area">
+						<img class="img" src="/images/recommendWine/mood.webp">
+						<div class="list_area1">
+							<ul>
+								<li th:each="mood : ${ moodList }" th:value="${ mood.hashNo }"
+									th:text="|#${mood.hashName}|"></li>
+							</ul>
+						</div>
+					</div>
+					<div class="wine_area">
+						<img class="img" src="/images/recommendWine/food.webp">
+						<div class="list_area2">
+							<ul>
+								<li th:each="food : ${ foodList }" th:value="${ food.hashNo }"
+									th:text="|#${food.hashName}|"></li>
+							</ul>
+						</div>
 					</div>
 				</div>
-				<div class="wine_area">
-					<img class="img" src="/images/recommendWine/food.webp">
-					<div class="list_area2">
-						<ul>
-							<li th:each="food : ${ foodList }" th:value="${ food.hashNo }" th:text="|#${food.hashName}|"></li>
-						</ul>
-					</div>
-				</div>
+				<form id="hashListForm" th:action="@{/recommendWine/list}"
+					method="post">
+					<input type="hidden" name="hashNo"> <input type="hidden"
+						name="hashName">
+				</form>
 			</div>
-			<form id="hashListForm" th:action="@{/recommendWine/list}" method="post">
-				<input type="hidden" name="hashNo">		
-				<input type="hidden" name="hashName">	
-	        </form>
 		</div>
 	</div>
-    
-    <footer th:include="common/footer :: footer"></footer>
+
+	<footer th:include="common/footer :: footer"></footer>
     
     <script>
-	
 	    var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		$(document).ajaxSend(function(e, xhr, options) {
 			xhr.setRequestHeader(header, token);
 		});
-	
-		/*
-		var targets1 = $(".list_area1").children();
-		for(var i=0; i<targets1.length; i+=10){
-		$("<ul></ul>").append(targets1.slice(i, i+10)).appendTo(".list_area1");
-		}
-		
-		var targets2 = $(".list_area2").children();
-		for(var i=0; i<targets2.length; i+=10){
-		$("<ul></ul>").append(targets2.slice(i, i+10)).appendTo(".list_area2");
-		}
-		 */
 		 
 		 function validate() {
 			 

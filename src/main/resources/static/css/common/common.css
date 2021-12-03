@@ -4,6 +4,10 @@
 	font-family: 'Gowun Batang', sans-serif;
 }
 
+a {
+	text-decoration: none;
+}
+
 html, body {
 	padding: 0;
 	margin: 0;
@@ -21,19 +25,6 @@ button {
 
 input[type=button] {
 	cursor: pointer;
-}
-
-.menu_nav a {
-	text-decoration: none;
-	color: #808080;
-	font-size: 20px;
-	font-weight: bold;
-	transition: 0.5s;
-}
-
-.menu_nav a:hover {
-	color: #6B0E1F;
-	font-size: 25px;
 }
 
 header {
@@ -62,6 +53,22 @@ header {
 	cursor: pointer;
 }
 
+.menu_nav a {
+	color: #808080;
+	font-size: 20px;
+	font-weight: bold;
+	transition: 0.5s;
+}
+
+.menu_nav a:not(.customer):hover {
+	color: #6B0E1F;
+	font-size: 25px;
+}
+
+.customer:hover {
+	color: #6B0E1F;
+}
+
 .menu_nav li {
 	list-style: none;
 	padding: 8px 0 8px 50px;
@@ -72,16 +79,22 @@ header {
 	text-align: center;
 }
 
+.menu_nav li:hover .customer {
+	color: #6B0E1F;
+}
+
 .customer_sub {
 	display: none;
 	position: absolute;
-	padding-left: 0px;
+	left: 255px;
 	text-align: center;
+	width: 120px;
+	text-align: center;
+	padding-top: 5px;
 }
 
 .customer_sub li {
-	margin-top: 5px;
-	padding: 5px;
+	padding: 0px;
 }
 
 .member_nav {
@@ -166,6 +179,28 @@ footer {
 	font-size: 0.9rem;
 }
 
+.goUp {
+	position: fixed;
+	text-align: center;
+	z-index: 10;
+	bottom: 20px;
+	right: 20px;
+}
+
+.goUp_btn {
+	background: white;
+	border: 2px solid #6B0E1F;
+	border-radius: 15px;
+	width: 40px;
+	height: 40px;
+	font-size: 20px;
+}
+
+.goUp_btn:hover {
+	transition: 1s;
+	padding-bottom: 10px;
+}
+
 @media screen and (max-width: 1100px) {
 	header {
 		flex-direction: column;
@@ -185,7 +220,8 @@ footer {
 		padding: 5px 0px;
 		width: 100%;
 	}
-		.customer_sub {padding: 0;
+	.customer_sub {
+		padding: 0;
 		width: 100%;
 	}
 	.member_nav {
@@ -202,11 +238,13 @@ footer {
 		justify-content: end;
 		padding: 0px;
 		margin: 0px;
+	}
+	.customer_sub {
+		left: 0;
 	}
 }
 
 @media screen and (max-width: 800px) {
-
 	.member_nav {
 		position: absolute;
 		order: 1;
@@ -216,7 +254,6 @@ footer {
 		margin: 0px;
 		width: 100px;
 	}
-	
 	.submenu {
 		position: absolute;
 		right: -20px;

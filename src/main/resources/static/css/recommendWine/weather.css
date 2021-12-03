@@ -1,0 +1,41 @@
+@charset "UTF-8";
+	 * {
+          font-family: 'Gowun Batang', serif;
+       }
+	.weather_container {
+		width: 170px;
+		height : 350px;
+		border : 1px solid black;
+		text-align: center;
+		margin-left: 20px;
+		position: fixed;
+		bottom : 20%;
+	}
+	.weather_content {
+		height: 340px;
+		margin: 5px 0;
+	}
+	#weather_img {
+		width: 50px;
+		height: 50px;
+	}
+	#current_temp {
+		font-size: 20px;
+		margin: 10px 0;
+		color : #83131E;
+	}
+	#wine_img {
+		width: 100px;
+		height: 100px;
+	}
+	.font_small {
+		font-size: 8px;
+	}
+	.weather_message {
+		margin: 5px 0;
+		font-size: 12px;
+	}
+	.weather_name {
+		font-size: 6px;
+	} 
+	

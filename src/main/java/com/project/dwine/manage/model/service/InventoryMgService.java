@@ -10,7 +10,13 @@ public interface InventoryMgService {
 	List<Inventory> selectInvenMgList();
 	
 	//검색결과ajax용
-	List<Inventory> searchInvenList(String searchStandard, String searchValue);
+	int invenTotalListCnt();
+	List<Inventory> invenTotalList(int startRow, int endRow);
+	
+	int invenSearchListCnt(String searchStandard, String searchValue);
+	List<Inventory> searchInvenList(String searchStandard, String searchValue, 
+			String startDate, String endDate, int startRow, int endRow);
+	
 	
 	//cnt 세개
 	Inventory selectTotalStock();
@@ -22,6 +28,10 @@ public interface InventoryMgService {
 	int registInventory(Inventory inven);
 	//입고취소
 	int cancleInventory(int inven_no);
+
+
+
+	
 
 	
 	

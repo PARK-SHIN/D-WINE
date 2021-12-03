@@ -3,12 +3,19 @@
 <head>
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <title>찜 리스트</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/wish.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
+<script>
+	const successMessgae = '[[${ message }]]';
+	
+	if(successMessgae){
+		alert(successMessgae);
+	}
+</script>
 <style>
 	label {
 		margin : 0;
@@ -104,8 +111,132 @@
                     }
                 });	
             }
-            
+        </script>
         
+        <script>
+        var token = $("meta[name='_csrf']").attr("content");
+    	var header = $("meta[name='_csrf_header']").attr("content");
+    	$(document).ajaxSend(function(e, xhr, options) {
+    		xhr.setRequestHeader(header, token);
+    	});
+    	
+    	endPage = $(".pageNo").last().val();
+    	clickPage = 1;
+    	
+    	function dateFormat(date) {
+    		let month = date.getMonth() + 1;
+    		let day = date.getDate();
+    		month = month >= 10 ? month : '0' + month;
+    		day = day >= 10 ? day : '0' + day;
+    		return date.getFullYear() + '-' + month + '-' + day;
+    	}
+    	
+     // 페이지 <li> 눌렀을 때
+    	$(document).on("click", ".pageNo", function(){
+    		var page = $(this).val();
+    		clickPage = page;
+    		ajaxPaging(page);
+    		
+    	});
+    	
+    	// "<<" 버튼
+    	$(document).on("click", ".go_first", function() {
+    		clickPage = 1;
+    		var page = 1;
+    		ajaxPaging(page);
+    	});
+    	
+    	
+    	// ">>" 버튼
+    	$(document).on("click", ".go_end", function() {
+    		clickPage = endPage;
+    		var page = endPage;
+    		ajaxPaging(page);
+    	});
+    	
+    	// "<" 버튼
+    	$(document).on("click", ".go_prev", function() {
+    		if(clickPage != 1) {
+    			var page = clickPage - 1;
+    			clickPage = clickPage - 1;
+    			ajaxPaging(page);
+    		}
+    	});
+    	
+    	// ">" 버튼
+    	$(document).on("click", ".go_next", function() {
+    		if(clickPage != endPage) {
+    			var page = clickPage + 1;
+    			clickPage = clickPage + 1;
+    			ajaxPaging(page);
+    		}
+    	});
+        
+        function ajaxPaging(page) {
+    		
+    		$.ajax({
+    			url : "/mypage/wish",
+    			data : {"page" : page},
+    			type : "post",
+    			success : function(data) {
+    				var wishList = data.wishList;
+    				var pi = data.pi;
+    				
+    				endPage = pi.endPage;
+    				
+    				if(wishList.length == 0) {
+    					alert("찜 목록이 존재하지 않습니다");
+    				} else {
+    			
+    					var tableHTML = "<ul class='wish_header'><li class='title'>상품정보</li>"
+							+ "<li class='wish_date'>찜한날짜</li><li class='del'>삭제</li></ul>";	
+    					var pagingHTML = '<li class="go_first">&lt;&lt;</li><li class="go_prev">&lt;</li>';
+    				
+    					for(var i = parseInt(pi.startPage); i <= parseInt(pi.endPage) ; i++) {
+    						
+    						pagingHTML += '<li class="pageNo" value="' + i + '">' + i +'</li>';
+    					}  
+    					
+    					pagingHTML += '<li class="go_next">&gt;</li><li class="go_end">&gt;&gt;</li>';	
+    					$(".paging_ul").html(pagingHTML);
+    					
+    					 $.each(wishList, function(index, item) {
+
+    						let wish_date = new Date(item.wish_date);
+
+    						tableHTML += "<ul style='height: 100px;'>"
+    									+ "<li class='title'>"
+    									+ "<div class='parent'><div class='first'>"
+    									+ "<input type='checkbox' name='ck_code' value='"+ item.product_no + "'></div>"
+    									+ "<div class='second'><a class='movePno' href=\'/purchase/" + item.product_no + "'\" >"
+    									+ "<img src='"+ item.thumbnail + "'" + "width='80px' height='80px' alt='wineImg'></a></div>"
+    									+ "<div class='third'><a href=\"/purchase/" + item.product_no + "\" >" 
+    									+ "<label class='movePno'>" + item.product_kname + "</label></a></div></div></li>"
+    									+ "<li class='wish_date date1'><label>"+ dateFormat(wish_date) + " </label></li>"
+    									+ "<li class='del del1'>"
+    									+ "<input type='hidden' value='" + item.product_no + "' name='product_no'/>"
+    									+ "<input type='hidden'value='" + item.user_no + "' name='user_no'/>"
+    									+ "<a href=\"/mypage/wish/" + item.wish_no + "\">"
+    									+ "<img class='closeImg' width='20px' height='20px' src='/images/mypage/close.png'></a>"
+    									+ "</li></ul>";
+    						/* tableHTML = tableHTML +  "<div class='cartBtnArea'>"
+                    			+ "<input class='cartBtn' type='submit' value='선택한 상품 장바구니 담기'></div>"; */
+                    		var btnHTML = "<div class='cartBtnArea'>"
+                    			+ "<input class='cartBtn' type='submit' value='선택한 상품 장바구니 담기'></div>";
+    	
+    						$(".wish_list").html(tableHTML + btnHTML);
+    						
+    					}); 
+    					 
+    					$('li[value='+ page + ']').addClass("current_page");
+    				}
+    			},
+    			error : function(e) {
+    				console.log(e);
+    			}			
+    		});
+    	
+    	}
         </script>
    
  <footer th:include="common/footer :: footer"></footer>

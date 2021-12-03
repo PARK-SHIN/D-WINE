@@ -3,6 +3,7 @@ package com.project.dwine.mypage.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -165,6 +167,7 @@ public class MypageController{
 	    int user_no = user.getUser_no();
 	    
 	    int listCount = mypageService.getTotalListCount(user_no);
+	    System.out.println("주문목록 listCount : " + listCount);
 	    int resultPage = 1;
 	    
 	    if(page != null) {
@@ -232,6 +235,7 @@ public class MypageController{
 	// 나의 리뷰 리스트
 	@GetMapping("/mypage/review")
 	public ModelAndView reviewList(ModelAndView mv, @RequestParam(value="page", required=false) String page) {
+	//public Map<String, Object> reviewList(@RequestParam(value="page", required=false) String page) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
 	    
@@ -242,16 +246,43 @@ public class MypageController{
 			resultPage = Integer.parseInt(page);
 		}
 		
-		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 7);
 		
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
 	    
         List<Review> reviewList = mypageService.findAllReviewPage(user_no, startRow, endRow);
+        
 		mv.addObject("reviewList", reviewList);
 		mv.addObject("pi", pi);
 		mv.setViewName("mypage/review");
 		return mv;
+	}
+	
+	@PostMapping("/mypage/review")
+	@ResponseBody
+	public Map<String, Object> pageList(@RequestParam(value="page", required=false) String page) throws Exception{
+		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    int user_no = user.getUser_no();
+	    
+	    int listCount = mypageService.getTotalReviewListCount(user_no);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 7);
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+        List<Review> reviewList = mypageService.findAllReviewPage(user_no, startRow, endRow);
+        Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("reviewList", reviewList);
+		map.put("pi", pi);
+	
+		return map;
 	}
 	
 	@GetMapping("/mypage/reviewInsert")
@@ -400,6 +431,35 @@ public class MypageController{
 	    return mv;
 	}
 	
+	// ajax 페이징 
+	@PostMapping("/mypage/wish")
+	@ResponseBody
+	public Map<String, Object> wishList(@RequestParam (value="page", required=false) String page) throws Exception {
+		
+		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    int user_no = user.getUser_no();
+	    int listCount = mypageService.getTotalWishListCount(user_no);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+        List<Wish> wishList = mypageService.selectWishListPage(user_no, startRow, endRow);
+		
+        Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("wishList", wishList);
+		map.put("pi", pi);
+	
+		return map;
+	}
+	
 	// 찜 목록에서 삭제
 	@GetMapping("/mypage/wish/{wish_no}")
 	public String deleteOneWish(@PathVariable int wish_no, Model model, HttpServletResponse response) throws IOException {
@@ -421,25 +481,24 @@ public class MypageController{
 	
 	// 찜 목록에서 장바구니 담기
 	@PostMapping("/mypage/wishToCart")
-	public String insertWishToCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	@ResponseBody
+	public void insertWishToCart(HttpServletRequest request, HttpServletResponse response, RedirectAttributes rttr) throws IOException {
 		String checkValue[] = request.getParameterValues("ck_code");
 		int user_no = Integer.parseInt(request.getParameter("user_no"));
-		response.setContentType("text/html; charset=euc-kr");
+		response.setContentType("text/html; charset=utf-8");
+		//response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
 		int result = 0;
 		for (String product_no : checkValue) {
             result = mypageService.insertWishToCart(user_no, product_no);
         }
 		if(result > 0) {
-        	out.println("<script>alert('장바구니 담기에 성공하였습니다.'); location.href='/mypage/wish' </script>");
+        	out.println("<script>alert('장바구니 담기에 성공하였습니다.'); location.href='/mypage/wish'</script>");
 			out.flush();
-			return "/mypage/wish";
         } else {
-        	out.println("<script>alert('장바구니 담기에 실패하였습니다.'); location.href='/mypage/wish' </script>");
+        	out.println("<script>alert('장바구니 담기에 실패하였습니다.'); location.href='/mypage/wish'</script>");
 			out.flush();
-			return "/mypage/wish";
         }
-		
 	}
 	
 	// 내 포인트 확인
