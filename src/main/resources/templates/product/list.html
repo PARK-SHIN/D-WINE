@@ -42,18 +42,12 @@
          </div> <!-- top_area -->
          <div class="list_area">
             <div class="sort_area">
-               <form id="sortForm" th:action="@{/product/list}" method="get">
-                  <select name="sortStandard">
-                     <option value="no_low" th:selected="${ sortStandard }=='no_low'">상품번호
-                        낮은 순</option>
-                     <option value="no_high"
-                        th:selected="${ sortStandard }=='no_high'">상품번호 높은 순</option>
-                     <option value="stock_low"
-                        th:selected="${ sortStandard }=='stock_low'">재고 적은 순</option>
-                     <option value="stock_high"
-                        th:selected="${ sortStandard }=='stock_high'">재고 많은 순</option>
-                  </select>
-               </form>
+               <select name="sortStandard">
+               	<option value="no_low">상품번호 낮은 순</option>
+                <option value="no_high">상품번호 높은 순</option>
+                <option value="stock_low">재고 적은 순</option>
+                <option value="stock_high">재고 많은 순</option>
+               </select>
             </div>
             <form id="deleteMultiForm" th:action="@{/product/deleteMulti}"
                method="post" onsubmit="return checkConfirm()">
@@ -328,7 +322,7 @@
       
       // 해시태그 관리 팝업
       function openHashForm() {
-         window.open("/hashtag/form", "popup", "width=800, height=600");
+    	  window.open("/hashtag/form", "popup", "width=830, height=655");
       }
    </script>
    

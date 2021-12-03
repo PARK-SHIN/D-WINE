@@ -7,16 +7,14 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/recommendWine/main.css" rel="stylesheet">
-<link href="/css/recommendWine/weather.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <title>recommend wine by hashtag(main)</title>
 </head>
 <body>
 	
 	<header th:include="common/header :: header"></header>
-	
 	<div class="wrapper">
-		<div th:include="recommendWine/weather"></div>
+		<div class="weather" th:include="recommendWine/weather"></div>
 		<div class="container">
 			<h1>#해시태그 와인 추천</h1>
 			<hr>

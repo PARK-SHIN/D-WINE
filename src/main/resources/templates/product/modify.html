@@ -218,9 +218,7 @@
 			body.val(arr[2]);
 			var tannin = $("input[name=tannin]")
 			tannin.val(arr[3]);
-			
-			/* background: linear-gradient(to right, #83131E 0%, #83131E 50%, #c4c4c4 50%, #fff 100%); */
-			
+		
 			sweetness.css('background', 'linear-gradient(to right, #83131E ' + sweetness.val() * 20 + '%, #c4c4c4 ' + sweetness.val() + '%, #c4c4c4 100%');
 			acidity.css('background', 'linear-gradient(to right, #83131E ' + acidity.val() * 20 + '%, #c4c4c4 ' + acidity.val() + '%, #c4c4c4 100%');
 			body.css('background','linear-gradient(to right, #83131E 0%, #83131E ' + body.val() * 20 + '%, #c4c4c4 ' + body.val() + '%, #c4c4c4 100%)');
@@ -270,6 +268,7 @@
     		} else {
     			if(!isUsable) {
         			alert("상품명 중복체크를 진행해주세요.");
+        			$("#nameCheck").focus();
         			return false;
         		}
     		}
@@ -318,7 +317,7 @@
 		
 		// 해시태그 관리 팝업
         function openHashForm(){
-            window.open("/hashtag/form", "popup", "width=800, height=600");
+        	window.open("/hashtag/form", "popup", "width=830, height=655");
 		}
 		
 		// 이미지 프리뷰

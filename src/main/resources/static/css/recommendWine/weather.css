@@ -7,8 +7,9 @@
 		height : 350px;
 		border : 1px solid black;
 		text-align: center;
-		position : fixed;
 		margin-left: 20px;
+		position: fixed;
+		bottom : 20%;
 	}
 	.weather_content {
 		height: 340px;
@@ -30,10 +31,11 @@
 	.font_small {
 		font-size: 8px;
 	}
-	.message_area {
+	.weather_message {
 		margin: 5px 0;
 		font-size: 12px;
 	}
-	.name_area {
+	.weather_name {
 		font-size: 6px;
 	} 
+	

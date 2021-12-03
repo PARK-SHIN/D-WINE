@@ -30,25 +30,17 @@ public interface ProductService {
 	int modifyProductHash(int productNo, int hashNo, int preHashNo);
 
 	int deleteMultiProduct(int productNo);
-
-	List<Product> searchProductList(String searchStandard, String searchValue);
 	
 	int productNameCheck(String kname);
 
-	// List<Product> sortProductList(String sortStandard, int startRow, int endRow);
-
 	Product selectImgPath(int productNo);
 
-	int getTotalListCount();
+	int getListCount(String sortStandard, String searchStandard, String searchValue);
 
-	List<Product> selectProductList(int startRow, int endRow);
-
-	List<Product> selectSortProductList(String sortStandard, int startRow, int endRow);
-
-	int getsearchListCount(String sortStandard, String searchStandard, String searchValue);
-
-	List<Product> selectSearchProductList(String sortStandard, String searchStandard, String searchValue, int startRow,
+	List<Product> selectProductList(String sortStandard, String searchStandard, String searchValue, int startRow,
 			int endRow);
+	
+	List<Product> searchProductList(String searchStandard, String searchValue);
 
 
 

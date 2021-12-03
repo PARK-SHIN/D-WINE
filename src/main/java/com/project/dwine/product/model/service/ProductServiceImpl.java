@@ -79,21 +79,9 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<Product> searchProductList(String searchStandard, String searchValue) {
-		return productMapper.searchProductList(searchStandard, searchValue);
-	}
-
-	@Override
 	public int productNameCheck(String kname) {
 		return productMapper.productNameCheck(kname);
 	}
-
-	/*
-	@Override
-	public List<Product> sortProductList(String sortStandard, int startRow, int endRow) {
-		return productMapper.sortProductList(sortStandard, startRow, endRow);
-	}
-	*/
 
 	@Override
 	public Product selectImgPath(int productNo) {
@@ -101,31 +89,20 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public int getTotalListCount() {
-		return productMapper.getTotalListCount();
+	public int getListCount(String sortStandard, String searchStandard, String searchValue) {
+		return productMapper.getListCount(sortStandard, searchStandard, searchValue);
 	}
-
+	
 	@Override
-	public List<Product> selectProductList(int startRow, int endRow) {
-		return productMapper.selectProductList(startRow, endRow);
-	}
-
-	@Override
-	public List<Product> selectSortProductList(String sortStandard, int startRow, int endRow) {
-		return productMapper.selectSortProductList(sortStandard, startRow, endRow);
-	}
-
-	@Override
-	public int getsearchListCount(String sortStandard, String searchStandard, String searchValue) {
-		return productMapper.getsearchListCount(sortStandard, searchStandard, searchValue);
-	}
-
-	@Override
-	public List<Product> selectSearchProductList(String sortStandard, String searchStandard, String searchValue,
+	public List<Product> selectProductList(String sortStandard, String searchStandard, String searchValue,
 			int startRow, int endRow) {
-		return productMapper.selectSearchProductList(sortStandard, searchStandard, searchValue, startRow, endRow);
+		return productMapper.selectProductList(sortStandard, searchStandard, searchValue, startRow, endRow);
 	}
 
+	@Override
+	public List<Product> searchProductList(String searchStandard, String searchValue) {
+		return productMapper.searchProductList(searchStandard, searchValue);
+	}
 	
 	
 

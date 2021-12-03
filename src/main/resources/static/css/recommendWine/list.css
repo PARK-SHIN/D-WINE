@@ -80,3 +80,8 @@
     	font-size : 40px;
     	padding-top: 200px;
     }
+    @media screen and (max-width: 1500px) {
+		.weather {
+			display:none;
+		}
+	}

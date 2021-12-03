@@ -60,8 +60,7 @@
 		<result property="labelImage" column="LABEL_IMAGE"/>
 	</resultMap>
 	
-	<!-- ajax 테스트 -->
-	<select id="getsearchListCount" resultType="_int">
+	<select id="getListCount" resultType="_int">
 		SELECT
 			COUNT(*)
 		FROM PRODUCT
@@ -86,7 +85,7 @@
 		</if>
 	</select>
 	
-	<select id="selectSearchProductList" resultMap="productListResultMap">
+	<select id="selectProductList" resultMap="productListResultMap">
 		SELECT
                PRODUCT_NO
 				, PRODUCT_KNAME
@@ -120,64 +119,6 @@
 				ORDER BY PRODUCT_COUNT DESC, PRODUCT_NO		  
 			  </if>	) PLIST)
       WHERE RNUM BETWEEN #{startRow} AND #{endRow}
-	</select>
-	<!-- ajax 테스트 -->
-	
-	<select id="selectProductList" resultMap="productListResultMap" parameterType="_int">
-		SELECT
-               PRODUCT_NO
-				, PRODUCT_KNAME
-				, SALE_PRICE
-				, PRODUCT_COUNT
-				, CREATE_DATE
-				, MODIFY_DATE
-      FROM (SELECT 
-               ROWNUM RNUM
-              , PLIST.*
-       FROM(SELECT
-               *
-               FROM PRODUCT
-              WHERE STATUS = 'Y'
-              ORDER BY PRODUCT_NO) PLIST)
-      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
-	</select>
-	 
-	<select id="selectSortProductList" resultMap="productListResultMap">
-		SELECT
-               PRODUCT_NO
-				, PRODUCT_KNAME
-				, SALE_PRICE
-				, PRODUCT_COUNT
-				, CREATE_DATE
-				, MODIFY_DATE
-      FROM (SELECT 
-               ROWNUM RNUM
-              , PLIST.*
-       FROM(SELECT
-               *
-               FROM PRODUCT
-              WHERE STATUS = 'Y'
-              <if test="sortStandard == 'no_low'">
-			  	ORDER BY PRODUCT_NO		  
-			  </if>	
-			  <if test="sortStandard == 'no_high'">
-			  	ORDER BY PRODUCT_NO	DESC
-			  </if>	
-			  <if test="sortStandard == 'stock_low'">
-			  	ORDER BY PRODUCT_COUNT, PRODUCT_NO			  
-			  </if>	
-			  <if test="sortStandard == 'stock_high'">
-			  	ORDER BY PRODUCT_COUNT DESC, PRODUCT_NO		  
-			  </if>	) PLIST)
-      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
-	</select>
-	
-	 
-	<select id="getTotalListCount" resultType="_int">
-		SELECT
-			COUNT(*)
-		FROM PRODUCT
-		WHERE STATUS = 'Y'		
 	</select>
 
 	<select id="selectProductByNo" resultMap="productResultMap">
@@ -387,26 +328,7 @@
 			SET STATUS = 'N'
 		WHERE PRODUCT_NO = #{ productNo }
 	</update>
-	
-	<select id="searchProductList" resultMap="productListResultMap">
-		SELECT 
-			  PRODUCT_NO
-			, PRODUCT_KNAME
-			, SALE_PRICE
-			, PRODUCT_COUNT
-			, CREATE_DATE
-			, MODIFY_DATE
-		  FROM PRODUCT
-		  WHERE STATUS = 'Y'
-		  <if test="searchStandard == 'no'">
-   		  AND PRODUCT_NO LIKE '%' || #{ searchValue } || '%'
-   		  </if>
-   		  <if test="searchStandard == 'name'">
-   		  AND PRODUCT_KNAME LIKE '%' || #{ searchValue } || '%'
-   		  OR PRODUCT_ENAME LIKE '%' || #{ searchValue } || '%'
-   		  </if>
-		  ORDER BY PRODUCT_NO
-	</select>
+
 	
 	<select id="productNameCheck" parameterType="string" resultType="_int">
 		SELECT
@@ -415,38 +337,6 @@
 		WHERE PRODUCT_KNAME = #{ kname }
 	</select>
 	
-	<!--  
-	<select id="sortProductList" resultMap="productListResultMap">
-		SELECT
-               PRODUCT_NO
-				, PRODUCT_KNAME
-				, SALE_PRICE
-				, PRODUCT_COUNT
-				, CREATE_DATE
-				, MODIFY_DATE
-      FROM (SELECT 
-               ROWNUM RNUM
-              , PLIST.*
-       FROM(SELECT
-               *
-               FROM PRODUCT
-              WHERE STATUS = 'Y'
-              <if test="sortStandard == 'no_low'">
-			  	ORDER BY PRODUCT_NO		  
-			  </if>	
-			  <if test="sortStandard == 'no_high'">
-			  	ORDER BY PRODUCT_NO	DESC
-			  </if>	
-			  <if test="sortStandard == 'stock_low'">
-			  	ORDER BY PRODUCT_COUNT, PRODUCT_NO			  
-			  </if>	
-			  <if test="sortStandard == 'stock_high'">
-			  	ORDER BY PRODUCT_COUNT DESC, PRODUCT_NO		  
-			  </if>	) PLIST)
-      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
-	</select>
-	-->
-	
 	<select id="selectImgPath" resultMap="imgPathResultMap" parameterType="_int">
 		SELECT
 			THUMBNAIL
@@ -454,4 +344,24 @@
 		FROM PRODUCT
 		WHERE PRODUCT_NO = #{ productNo }
 	</select>
+	
+	<select id="searchProductList" resultMap="productListResultMap">
+		SELECT
+			PRODUCT_NO
+		  , PRODUCT_KNAME
+		  , SALE_PRICE
+		  , PRODUCT_COUNT
+		  , CREATE_DATE
+		  , MODIFY_DATE
+		FROM PRODUCT
+		WHERE STATUS = 'Y' 
+		<if test="searchStandard == 'no'">
+		AND PRODUCT_NO LIKE '%' || #{ searchValue } || '%' 
+		</if>
+		<if test="searchStandard == 'name'">
+		AND PRODUCT_KNAME LIKE '%' || #{ searchValue } || '%'OR PRODUCT_ENAME LIKE '%' || #{ searchValue } || '%' 
+		</if>
+		ORDER BY PRODUCT_NO 
+	</select>
+	
 </mapper>
