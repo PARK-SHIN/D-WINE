@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-<link href="css/footer.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-</head>
+<div th:fragment="goUp">
+	<div class="goUp">
+		<input type="button" class="goUp_btn" value="▲" onclick="goUp()">
+	</div>
+	<script>
+		function goUp() {
+			window.scrollTo(0, 0);
+		}
+	</script>
+</div>
 <footer th:fragment="footer">
 	<div class="footer_content">
 		<p class="footer_info">
@@ -15,4 +21,5 @@
 		</p>
 	</div>
 </footer>
+
 </html>
