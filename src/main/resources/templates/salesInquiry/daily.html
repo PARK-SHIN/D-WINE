@@ -13,9 +13,6 @@
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   
-   <!--  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
     <!-- <link href="/css/orderManage/list.css" rel="stylesheet"> -->
 <style>
 	* {
@@ -23,13 +20,13 @@
     }
     	
     #container {
-            width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-            border: 1px solid red;
-            /* height: 1400px; */
+        width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        border: 1px solid red;
+        /* height: 1400px; */
     }
 
     .snb {
@@ -181,7 +178,7 @@
                 <form name="searchDateForm" method="get">
                     <div class="searchDate">
                         <label>조회 기간</label>
-                        <input type="text" id="selectDate">
+                        <input type="text" id="selectDate" placeholder="날짜를 입력해주세요">
 ​
                         <input type="button" value="오늘" class="dateBtn">
                         <input type="button" value="1주일" class="dateBtn">
@@ -305,7 +302,7 @@
 	    	$(this).children().eq(6).text(c6);	
 	    });
 	    
-	 	// 날짜포맷
+	 	// 날짜포맷1
         function dateFormat1(date){
         	let month = date.getMonth() + 1;
         	let day = date.getDate();
@@ -341,10 +338,7 @@
 			clickPage = page;
 			var startDate = start;
     		var endDate = end;
-	     	console.log(startDate);
-	     	console.log(endDate);
- 
-    		
+ 	
 			ajaxPaging(page, startDate, endDate);
 		});
 		
@@ -392,7 +386,7 @@
 			}	
 		});
 		
-		// 날짜포맷
+		// 날짜포맷2
 		function dateFormat2(date) {
 			let month = date.getMonth() + 1;
 			let day = date.getDate();
@@ -474,12 +468,7 @@
 						    $("tfoot tr td").eq(5).text(result5);
 						    $("tfoot tr td").eq(6).text(result6);
 					    });
-					    
-					    // 자릿수 포맷
-					    function comma(value){
-					        return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");; 
-					    }
-					    
+
 					    $("tbody tr, tfoot tr").each(function(){
 					    	let c2 = comma($(this).children().eq(2).text());
 					    	let c3 = comma($(this).children().eq(3).text());

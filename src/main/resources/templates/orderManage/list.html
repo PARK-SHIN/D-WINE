@@ -12,10 +12,6 @@
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link href="/css/orderManage/list.css" rel="stylesheet">
-    <style>
-    	.refundCss > div {
-    	width: 5px;}
-    </style>
     
 </head>
 <body>
@@ -52,7 +48,7 @@
                 <form name="searchDateForm" method="get">
                     <div class="searchDate">
                         <label>조회 기간</label>
-                        <input type="text" id="selectDate" placeholder="">
+                        <input type="text" id="selectDate" placeholder="날짜를 입력해주세요">
                         <input type="button" value="오늘" class="dateBtn">
                         <input type="button" value="1주일" class="dateBtn">
                         <input type="button" value="1개월" class="dateBtn">
@@ -75,7 +71,7 @@
                             <button type="button" class="deleteBtn">선택 삭제</button>
                             <button type="button" onclick="" class="changeBtn" id="changeBtn" disabled>상태 일괄 변경</button>
                         </div>
-                        <div class="infoArea">총 주문 수 : <span id="totalCnt" th:text="${ orderListCount }"></span>, 검색 주문 수 : <span id="searchCnt">0</span></div>    
+                        <div class="infoArea">총 주문 수 : <span id="totalCnt" th:text="${ originCount }"></span>, 검색 주문 수 : <span id="searchCnt">0</span></div>    
                     </div>
 			
                     <table id="orderList">
@@ -113,7 +109,6 @@
 	                        </tr>
                         </tbody>
                     </table>
-                    </form>
                 </div>
 
 				<!-- 상태 일괄 변경 모달 -->
@@ -247,38 +242,6 @@
 		        });
         	}
         });
-        
-        // 주문 건수 출력
-        /* $(function(){
-        	$.ajax({
-        		url : "/orderManage/totalCnt",
-        		success : function(data){
-					$("#totalCnt").text(data.totalCnt);
-					$("#searchCnt").text(data.totalCnt);
-					
-        		},
-        		error : function(e){
-        			console.log(e);
-        		}
-        	});
-        }); */
-        
-        // 날짜포맷
-        function dateFormat(date){
-        	let month = date.getMonth() + 1;
-        	let day = date.getDate();
-        	let hour = date.getHours();
-        	let minute = date.getMinutes();
-            let second = date.getSeconds();
-            
-            month = month >= 10 ? month : '0' + month;
-            day = day >= 10 ? day : '0' + day;
-            hour = hour >= 10 ? hour : '0' + hour;
-            minute = minute >= 10 ? minute : '0' + minute;
-            second = second >= 10 ? second : '0' + second;
-            
-            return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-        }
        
         // 주문상태로 조회
         $("#orderState").change(function(){
@@ -294,53 +257,6 @@
 			var searchStatus = $("#orderState").val();
     		
 			ajaxPaging(1, startDate, endDate, searchCondition, searchValue, searchStatus);
-			
-        	/* $.ajax({
-        		url : "/orderManage/state",
-        		data : {state : state},
-        		type : "post",
-        		success : function(data){
-        			
-        			var dataSize = data.length;
-        			$("#searchCnt").text(dataSize);
-        			
-            		var tableHTML = '';
-            		
-        			if(data.length != 0) {
-        				$.each(data, function(index, item){
-            				
-            				let date = new Date(item.purchaseDate);
-            				
-           					tableHTML += "<tr><td><input type='checkbox'></td>"
-   		                	 	   	   + "<td class='purchaseNo'>" + item.purchaseNo + "</td>"
-   		                 		       + "<td>" + dateFormat(date) + "</td>"
-   		                 		       + "<td>" + item.userName + "</td>"
-   		                 		       + "<td>" + item.purchasePrice + "</td>"
-   		                 		   	   + "<td class='userNo'><input type='hidden' value='" + item.userNo + "'></td>"
-   		                 		       + "<td class='usePoint'><input type='hidden' value='" + item.usePoint + "'></td>"
-   		                 	           + "<td><select class='odStatus'>"
-   		                               + "<option value='결제완료'>결제완료</option>"
-   		                               + "<option value='결제취소'>결제취소</option>"
-   		                               + "<option value='픽업대기중'>픽업대기중</option>"
-   		                               + "<option value='픽업완료'>픽업완료</option>"
-   		                               + "<option value='환불완료'>환불완료</option></select></td>"
-   		                   		       + "<td><button type='button' class='applyBtn'>적용</button>"
-   		                 		       + "<button type='button' class='detailBtn'>상세보기</button></td></tr>";
-   		           		
-        					$("#odList").html(tableHTML);
-   		                	$(".odStatus").val(item.orderStatus).prop("selected", true);
-            				
-            			});	
-        			} else {
-        				tableHTML += "<tr><td colspan='7' rowspan='7'>검색 결과가 존재하지 않습니다.</td></tr>"
-        						   + "<tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>";
-        				$("#odList").html(tableHTML);
-        			}
-        		},
-        		error : function(e){
-        			console.log(e);
-        		}
-        	}); */
         });
 
         // 주문상태 변경 & 동일상태 변경 불가
@@ -420,7 +336,7 @@
         			let date = new Date(data.purchaseDate);
         			let refundDate = '';
         			if(data.refundDate != null){
-        				refundDate = dateFormat(new Date(data.refundDate));
+        				refundDate = dateFormat2(new Date(data.refundDate));
         			} else {
         				refundDate = '-';
         			}
@@ -431,7 +347,7 @@
         			orderHTML += '<td>' + data.payMethod + '</td>';
         			orderHTML += '</tr><tr>';
         			orderHTML += '<th>주문일시</th>';
-        			orderHTML += '<td>' + dateFormat(date) + '</td>';
+        			orderHTML += '<td>' + dateFormat2(date) + '</td>';
         			orderHTML += '<th>사용적립금</th>';
         			orderHTML += '<td>' + data.usePoint + '</td>';
         			orderHTML += '</tr><tr>';
@@ -517,54 +433,9 @@
 			var searchStatus = $("#orderState").val();
     		
 			ajaxPaging(1, startDate, endDate, searchCondition, searchValue, searchStatus);
-			/* $.ajax({
-				url : "/orderManage/search",
-				type : "post",
-				data : {searchStatus : searchStatus,
-						searchCondition : searchCondition,
-						searchValue : searchValue},
-						
-				success : function(data){
-					var dataSize = data.length;
-					$("#searchCnt").text(dataSize);
-					
-					tableHTML = '';
-					
-					if(data.length != 0) {
-        				$.each(data, function(index, item){
-            				
-            				let date = new Date(item.purchaseDate);
-            				
-           					tableHTML += "<tr><td><input type='checkbox'></td>"
-   		                	 	   	   + "<td class='purchaseNo'>" + item.purchaseNo + "</td>"
-   		                 		       + "<td>" + dateFormat(date) + "</td>"
-   		                 		       + "<td>" + item.userName + "</td>"
-   		                 		       + "<td>" + item.purchasePrice + "</td>"
-   		                 	           + "<td><select class='odStatus'>"
-   		                               + "<option value='결제완료'>결제완료</option>"
-   		                               + "<option value='결제취소'>결제취소</option>"
-   		                               + "<option value='픽업대기중'>픽업대기중</option>"
-   		                               + "<option value='픽업완료'>픽업완료</option>"
-   		                               + "<option value='환불완료'>환불완료</option></select></td>"
-   		                   		       + "<td><button type='button' class='applyBtn'>적용</button>"
-   		                 		       + "<button type='button' class='detailBtn'>상세보기</button></td></tr>";
-   		           		
-        					$("#odList").html(tableHTML);
-   		                	$(".odStatus").val(item.orderStatus).prop("selected", true);
-            			});	
-        			} else {
-        				tableHTML += "<tr><td colspan='7' rowspan='7'>검색 결과가 존재하지 않습니다.</td></tr>"
-        						   + "<tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>";
-        				$("#odList").html(tableHTML);
-        			}
-				},
-				error : function(e){
-					console.log(e);
-				}
-			});	 */
 		});
 		
-		// 날짜포맷
+		// 날짜포맷(flatpickr 전용)
         function dateFormat1(date){
         	let month = date.getMonth() + 1;
         	let day = date.getDate();
@@ -667,18 +538,23 @@
 				ajaxPaging(page, startDate, endDate, searchCondition, searchValue, searchStatus);
 			}	
 		});
-		
-		// 날짜포맷
-		function dateFormat2(date) {
-			let month = date.getMonth() + 1;
-			let day = date.getDate();
-			let week = date.getUTCDay();
-
-			month = month >= 10 ? month : '0' + month;
-			day = day >= 10 ? day : '0' + day;
-
-			return date.getFullYear() + '.' + month + '.' + day;
-		}
+        
+        // 날짜포맷2
+        function dateFormat2(date){
+        	let month = date.getMonth() + 1;
+        	let day = date.getDate();
+        	let hour = date.getHours();
+        	let minute = date.getMinutes();
+            let second = date.getSeconds();
+            
+            month = month >= 10 ? month : '0' + month;
+            day = day >= 10 ? day : '0' + day;
+            hour = hour >= 10 ? hour : '0' + hour;
+            minute = minute >= 10 ? minute : '0' + minute;
+            second = second >= 10 ? second : '0' + second;
+            
+            return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        }
 
 		// 페이징 전송
 		function ajaxPaging(page, startDate, endDate, searchCondition, searchValue, searchStatus) {
@@ -699,15 +575,15 @@
 					
 					endPage = pi.endPage;
 					
-					if(orderList.length == 0) {
-						alert("조회할 데이터가 없습니다.");
-					} else {
+					$("#searchCnt").text(data.searchCount);
+					
+					tableHTML = '';
+					if(orderList.length != 0) {
 					
 						var pagingHTML = '<li class="go_first">&lt;&lt;</li><li class="go_prev">&lt;</li>';
 					
 					
 						for(var i = parseInt(pi.startPage); i <= parseInt(pi.endPage) ; i++) {
-							tableHTML = '';
 							pagingHTML += '<li class="pageNo" value="' + i + '">' + i +'</li>';
 						}  
 						
@@ -720,7 +596,7 @@
             				
            					tableHTML += "<tr><td><input type='checkbox'></td>"
    		                	 	   	   + "<td class='purchaseNo'>" + item.purchaseNo + "</td>"
-   		                 		       + "<td>" + dateFormat(date) + "</td>"
+   		                 		       + "<td>" + dateFormat2(date) + "</td>"
    		                 		       + "<td>" + item.userName + "</td>"
    		                 		       + "<td>" + item.purchasePrice + "</td>"
    		                 		   	   + "<td class='userNo'><input type='hidden' value='" + item.userNo + "'></td>"
@@ -739,6 +615,11 @@
 						});
 							 
 						$('li[value='+ page + ']').addClass("current_page");
+						
+					} else {
+						tableHTML += "<tr><td colspan='7' rowspan='7'>검색 결과가 존재하지 않습니다.</td></tr>"
+ 						   		   + "<tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>";
+ 						$("#odList").html(tableHTML);
 					}
 				},
 				error : function(e) {

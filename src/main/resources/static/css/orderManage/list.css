@@ -31,7 +31,7 @@
 	    margin-top: 30px;
 	    margin-left: 27px;
 	    width: 795px;
-	    /* height: 100%; */
+	    height: 700px;
 	    border: 1px solid green;
 	}
 	a {
@@ -132,7 +132,7 @@
 	}
 	
 	#orderList {
-	    width: 795px;
+	    width: 836px;
 	    text-align: center;
 	    font-weight: lighter;
 	    border-collapse: collapse;
