@@ -8,6 +8,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="/css/common/common.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link href="/css/orderManage/list.css" rel="stylesheet">
     <style>
     	.refundCss > div {
@@ -37,7 +40,7 @@
                 <div class="orderState">
                     <label>주문 상태</label>
                     <select id="orderState">
-                        <option selected>- 구분 -</option>
+                        <option selected>-구분-</option>
                         <option value="결제완료">결제완료</option>
                         <option value="결제취소">결제취소</option>
                         <option value="픽업대기중">픽업대기중</option>
@@ -49,7 +52,7 @@
                 <form name="searchDateForm" method="get">
                     <div class="searchDate">
                         <label>조회 기간</label>
-                        <input type="date"> ~ <input type="date">
+                        <input type="text" id="selectDate" placeholder="">
                         <input type="button" value="오늘" class="dateBtn">
                         <input type="button" value="1주일" class="dateBtn">
                         <input type="button" value="1개월" class="dateBtn">
@@ -72,7 +75,7 @@
                             <button type="button" class="deleteBtn">선택 삭제</button>
                             <button type="button" onclick="" class="changeBtn" id="changeBtn" disabled>상태 일괄 변경</button>
                         </div>
-                        <div class="infoArea">총 주문 수 : <span id="totalCnt"></span>, 검색 주문 수 : <span id="searchCnt">0</span></div>    
+                        <div class="infoArea">총 주문 수 : <span id="totalCnt" th:text="${ orderListCount }"></span>, 검색 주문 수 : <span id="searchCnt">0</span></div>    
                     </div>
 			
                     <table id="orderList">
@@ -170,8 +173,19 @@
                     </div>
                     <div class="modal_layer"></div>
                 </div>
-                
             </div>
+               <!-- 페이징 -->
+ 			<div class="paging__area">
+			 	<ul class="paging_ul">
+					<li class="go_first">&lt;&lt;</li>
+					<li class="go_prev">&lt;</li>
+					<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
+					<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
+					<li class="go_next">&gt;</li>
+					<li class="go_end">&gt;&gt;</li>
+				</ul> 
+			</div>
+ 			<!-- 페이징 -->
         </div>
     </div>
     <footer th:include="common/footer :: footer"></footer>
@@ -235,7 +249,7 @@
         });
         
         // 주문 건수 출력
-        $(function(){
+        /* $(function(){
         	$.ajax({
         		url : "/orderManage/totalCnt",
         		success : function(data){
@@ -247,7 +261,7 @@
         			console.log(e);
         		}
         	});
-        });
+        }); */
         
         // 날짜포맷
         function dateFormat(date){
@@ -273,7 +287,15 @@
         	if(state == "- 구분 -")
         		location.reload();
         	
-        	$.ajax({
+        	var startDate = start;
+    		var endDate = end;
+			var searchCondition = $("select[name=searchCondition]").val();
+			var searchValue = $("input[name=searchValue]").val();
+			var searchStatus = $("#orderState").val();
+    		
+			ajaxPaging(1, startDate, endDate, searchCondition, searchValue, searchStatus);
+			
+        	/* $.ajax({
         		url : "/orderManage/state",
         		data : {state : state},
         		type : "post",
@@ -318,7 +340,7 @@
         		error : function(e){
         			console.log(e);
         		}
-        	});
+        	}); */
         });
 
         // 주문상태 변경 & 동일상태 변경 불가
@@ -488,11 +510,14 @@
 		
 		// 조건 검색
 		$(document).on("click",".searchBtn", function(){
+			var startDate = start;
+    		var endDate = end;
 			var searchCondition = $("select[name=searchCondition]").val();
 			var searchValue = $("input[name=searchValue]").val();
 			var searchStatus = $("#orderState").val();
-			
-			$.ajax({
+    		
+			ajaxPaging(1, startDate, endDate, searchCondition, searchValue, searchStatus);
+			/* $.ajax({
 				url : "/orderManage/search",
 				type : "post",
 				data : {searchStatus : searchStatus,
@@ -536,8 +561,192 @@
 				error : function(e){
 					console.log(e);
 				}
-			});		
+			});	 */
 		});
+		
+		// 날짜포맷
+        function dateFormat1(date){
+        	let month = date.getMonth() + 1;
+        	let day = date.getDate();
+            
+            month = month >= 10 ? month : '0' + month;
+            day = day >= 10 ? day : '0' + day;
+           
+            return date.getFullYear() + '/' + month + '/' + day;
+        }
+		
+		// 날짜조회 (flatpickr)
+	 	start = null;		// 날짜 선택하면 담기 위한 전역변수
+	 	end = null;
+	    $("#selectDate").flatpickr({ 
+	    	dateFormat: "Y-m-d",
+	    	mode: "range",
+	    	onClose: function(selectDates){
+	    		
+	    		var startDate = dateFormat1(selectDates[0]);
+	    		var endDate = dateFormat1(selectDates[1]);
+	    		var searchCondition = $("select[name=searchCondition]").val();
+				var searchValue = $("input[name=searchValue]").val();
+				var searchStatus = $("#orderState").val();
+	    		start = startDate;
+	    		end = endDate;
+	    		
+	    		ajaxPaging(1, startDate, endDate, searchCondition, searchValue, searchStatus);
+	    	}
+	    });
+	    
+	    endPage = $(".pageNo").last().val();
+		clickPage = 1;
+		
+ 		// 페이지 <li> 눌렀을 때
+		$(document).on("click", ".pageNo", function(){
+			var page = $(this).val();
+			clickPage = page;
+			var startDate = start;
+    		var endDate = end;
+    		var searchCondition = $("select[name=searchCondition]").val();
+			var searchValue = $("input[name=searchValue]").val();
+			var searchStatus = $("#orderState").val();
+			
+			ajaxPaging(page, startDate, endDate, searchCondition, searchValue, searchStatus);
+		});
+		
+		// "<<" 버튼
+		$(document).on("click", ".go_first", function() {
+			clickPage = 1;
+			var page = 1;
+			var startDate = start;
+    		var endDate = end;
+    		var searchCondition = $("select[name=searchCondition]").val();
+			var searchValue = $("input[name=searchValue]").val();
+			var searchStatus = $("#orderState").val();
+			
+			ajaxPaging(page, startDate, endDate, searchCondition, searchValue, searchStatus);
+		});
+
+		// ">>" 버튼
+		$(document).on("click", ".go_end", function() {
+			clickPage = endPage;
+			var page = endPage;
+			var startDate = start;
+    		var endDate = end;
+    		var searchCondition = $("select[name=searchCondition]").val();
+			var searchValue = $("input[name=searchValue]").val();
+			var searchStatus = $("#orderState").val();
+			
+			ajaxPaging(page, startDate, endDate, searchCondition, searchValue, searchStatus);
+		});
+		
+		// "<" 버튼
+		$(document).on("click", ".go_prev", function() {
+			if(clickPage != 1) {
+				var page = clickPage - 1;
+				clickPage = clickPage - 1;
+				var startDate = start;
+	    		var endDate = end;
+	    		var searchCondition = $("select[name=searchCondition]").val();
+				var searchValue = $("input[name=searchValue]").val();
+				var searchStatus = $("#orderState").val();
+				
+				ajaxPaging(page, startDate, endDate, searchCondition, searchValue, searchStatus);
+			}	
+		});
+		
+		// ">" 버튼
+		$(document).on("click", ".go_next", function() {
+			if(clickPage != endPage) {
+				var page = clickPage + 1;
+				clickPage = clickPage + 1;
+				var startDate = start;
+	    		var endDate = end;
+	    		var searchCondition = $("select[name=searchCondition]").val();
+				var searchValue = $("input[name=searchValue]").val();
+				var searchStatus = $("#orderState").val();
+			
+				
+				ajaxPaging(page, startDate, endDate, searchCondition, searchValue, searchStatus);
+			}	
+		});
+		
+		// 날짜포맷
+		function dateFormat2(date) {
+			let month = date.getMonth() + 1;
+			let day = date.getDate();
+			let week = date.getUTCDay();
+
+			month = month >= 10 ? month : '0' + month;
+			day = day >= 10 ? day : '0' + day;
+
+			return date.getFullYear() + '.' + month + '.' + day;
+		}
+
+		// 페이징 전송
+		function ajaxPaging(page, startDate, endDate, searchCondition, searchValue, searchStatus) {
+			
+			$.ajax({
+				url : "/orderManage/list",
+				data : {page : page,
+						startDate : startDate,
+						endDate : endDate,
+						searchCondition : searchCondition,
+						searchValue : searchValue,
+						searchStatus : searchStatus},
+				type : "post",
+				success : function(data) {
+					
+					var orderList = data.orderList;
+					var pi = data.pi;
+					
+					endPage = pi.endPage;
+					
+					if(orderList.length == 0) {
+						alert("조회할 데이터가 없습니다.");
+					} else {
+					
+						var pagingHTML = '<li class="go_first">&lt;&lt;</li><li class="go_prev">&lt;</li>';
+					
+					
+						for(var i = parseInt(pi.startPage); i <= parseInt(pi.endPage) ; i++) {
+							tableHTML = '';
+							pagingHTML += '<li class="pageNo" value="' + i + '">' + i +'</li>';
+						}  
+						
+						pagingHTML += '<li class="go_next">&gt;</li><li class="go_end">&gt;&gt;</li>';	
+						$(".paging_ul").html(pagingHTML);
+						
+						$.each(orderList, function(index, item) {
+	
+							let date = new Date(item.purchaseDate);
+            				
+           					tableHTML += "<tr><td><input type='checkbox'></td>"
+   		                	 	   	   + "<td class='purchaseNo'>" + item.purchaseNo + "</td>"
+   		                 		       + "<td>" + dateFormat(date) + "</td>"
+   		                 		       + "<td>" + item.userName + "</td>"
+   		                 		       + "<td>" + item.purchasePrice + "</td>"
+   		                 		   	   + "<td class='userNo'><input type='hidden' value='" + item.userNo + "'></td>"
+   		                 		       + "<td class='usePoint'><input type='hidden' value='" + item.usePoint + "'></td>"
+   		                 	           + "<td><select class='odStatus'>"
+   		                               + "<option value='결제완료'>결제완료</option>"
+   		                               + "<option value='결제취소'>결제취소</option>"
+   		                               + "<option value='픽업대기중'>픽업대기중</option>"
+   		                               + "<option value='픽업완료'>픽업완료</option>"
+   		                               + "<option value='환불완료'>환불완료</option></select></td>"
+   		                   		       + "<td><button type='button' class='applyBtn'>적용</button>"
+   		                 		       + "<button type='button' class='detailBtn'>상세보기</button></td></tr>";
+   		           		
+        					$("#odList").html(tableHTML);
+        					$(".odStatus").val(item.orderStatus).prop("selected", true);
+						});
+							 
+						$('li[value='+ page + ']').addClass("current_page");
+					}
+				},
+				error : function(e) {
+					console.log(e);
+				}			
+			});
+		
+		}
 
     </script>
 </body>
