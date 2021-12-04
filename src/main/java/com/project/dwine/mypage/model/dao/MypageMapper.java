@@ -78,4 +78,6 @@ public interface MypageMapper {
 	int getTotalReviewListCountTest(String sortStandard, int user_no);
 
 	List<Review> findAllReviewPageTest(String sortStandard, int user_no, int startRow, int endRow);
+
+	Review selectReviewImagePath(int review_no);
 }

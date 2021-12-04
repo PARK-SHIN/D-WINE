@@ -184,4 +184,9 @@ public class MypageServiceImpl implements MypageService{
 		return mypageMapper.findAllReviewPageTest(sortStandard, user_no, startRow, endRow);
 	}
 
+	@Override
+	public Review selectReviewImagePath(int review_no) {
+		return mypageMapper.selectReviewImagePath(review_no);
+	}
+
 }

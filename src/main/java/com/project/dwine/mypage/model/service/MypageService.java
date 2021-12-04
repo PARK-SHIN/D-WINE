@@ -58,7 +58,6 @@ public interface MypageService {
 
 	int getTotalListCount(int user_no);
 
-
 	// ===== wish =====
 	int deleteOneWish(int wish_no);
 	
@@ -80,5 +79,6 @@ public interface MypageService {
 	int getTotalReviewListCountTest(String sortStandard, int user_no);
 
 	List<Review> findAllReviewPageTest(String sortStandard, int user_no, int startRow, int endRow);
-	
+
+	Review selectReviewImagePath(int review_no);
 }

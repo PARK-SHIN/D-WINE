@@ -297,45 +297,45 @@ public class MypageController{
 	
 	// 리뷰작성
 	@PostMapping("/mypage/reviewInsertForm")
-	public String reviewInserForm(@RequestParam MultipartFile singleFile, @RequestParam int od_no, @RequestParam int user_no ,
-			@RequestParam double star, @RequestParam String review_text, HttpServletRequest request, Model model, RedirectAttributes rttr) {
-	      String currentDir = System.getProperty("user.dir");
-	      
-	      String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\review";
-	      
-	      File mkdir = new File(filePath);
-	      if(!mkdir.exists()) mkdir.mkdirs();
-	      
-	      String originFileName = singleFile.getOriginalFilename();
-	      String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 추출
-	      String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-	      
-	      String review_image = "/images/uploadFiles/review/" + savedName;
-	      
-	      try {
-	    	  singleFile.transferTo(new File(filePath + "\\" + savedName));
-	    	  System.out.println("성공");
-				int result = mypageService.reviewInsert(review_text, review_image, star, user_no, od_no);
-				if(result > 0) {
-					int review_no = mypageService.findReviewNo();
-					int result2 = mypageService.insertReviewPoint(user_no, review_no); // 리뷰작성 후 포인트테이블에 insert
-					if(result2 > 0) {
-						int result3 = mypageService.updateAddMemberPoint(user_no);
-						if(result3> 0) {
-							System.out.println("success");
-						}
-					}
-					rttr.addFlashAttribute("message", "리뷰가 등록되었습니다.");
-				} else {
-					System.out.println("insert 실패");
-					rttr.addFlashAttribute("message", "리뷰가 등록에 실패하였습니다.");
+	public String reviewInserForm(@RequestParam MultipartFile reviewImg, @RequestParam int od_no, @RequestParam int user_no ,
+			@RequestParam double star, @RequestParam String review_text, HttpServletRequest request, Model model, RedirectAttributes rttr) throws IllegalStateException, IOException {
+		String review_image;
+		if(!reviewImg.isEmpty()) {
+			String currentDir = System.getProperty("user.dir");
+		      
+		      String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\review";
+		      
+		      File mkdir = new File(filePath);
+		      if(!mkdir.exists()) mkdir.mkdirs();
+		      
+		      String originFileName = reviewImg.getOriginalFilename();
+		      String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 추출
+		      String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+		      
+		      review_image = "/images/uploadFiles/review/" + savedName;
+		      reviewImg.transferTo(new File(filePath + "\\" + savedName));
+		} else {
+			review_image = null;
+		}
+		int result = mypageService.reviewInsert(review_text, review_image, star, user_no, od_no);
+		if(result > 0) {
+			int review_no = mypageService.findReviewNo();
+			int result2 = mypageService.insertReviewPoint(user_no, review_no); // 리뷰작성 후 포인트테이블에 insert
+			if(result2 > 0) {
+				int result3 = mypageService.updateAddMemberPoint(user_no);
+				if(result3> 0) {
+					System.out.println("success");
 				}
-	      } catch (IllegalStateException | IOException e) {
-	         e.printStackTrace();
-	      }
-	      return "redirect:/mypage/orderlist";
+			}
+			rttr.addFlashAttribute("message", "리뷰가 등록되었습니다.");
+		} else {
+			System.out.println("insert 실패");
+			rttr.addFlashAttribute("message", "리뷰가 등록에 실패하였습니다.");
+		}
+	      
+	    return "redirect:/mypage/orderlist";
 	}
-	
+
 	// 리뷰 수정 페이지로 이동
 	@GetMapping("/mypage/review/{review_no}")
 	public String reviewUpdatePage(Model model, @PathVariable int review_no) {
@@ -349,44 +349,45 @@ public class MypageController{
 	
 	// 리뷰 수정하기 버튼 클릭
 	@PostMapping("/mypage/reviewUpdateForm")
-	public String reviewUpdate(HttpServletRequest request, @RequestParam MultipartFile singleFile, 
-			@RequestParam int review_no, @RequestParam String review_text, RedirectAttributes rttr) {
-		 String currentDir = System.getProperty("user.dir");
-	      System.out.println("currentDir" + currentDir); // currentDirC:\Users\OWNER\/\/git\DWine
-	      // System.getProperty("user.dir"); => 현재 작업중인 디렉터리 가져오는 메소드
+	public String reviewUpdate(HttpServletRequest request, @RequestParam MultipartFile reviewImg, 
+			@RequestParam int review_no, @RequestParam String review_text, @RequestParam String old_review_image, RedirectAttributes rttr) throws IllegalStateException, IOException {
+		String review_image;
+		
+		String currentDir = System.getProperty("user.dir");
+		String delete_path = currentDir + "\\src\\main\\resources\\static";
+		
+		if(!reviewImg.isEmpty()) {
+			if(!old_review_image.equals("")) {
+				File deleteImg = new File(delete_path + old_review_image);
+				deleteImg.delete();
+			}
+			 currentDir = System.getProperty("user.dir");
+		      
+		      // 사진이 저장되어야 할 경로
+		      String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\review";
+		      System.out.println("filePath : " + filePath); 
+		      
+		      File mkdir = new File(filePath);
+		      if(!mkdir.exists()) mkdir.mkdirs();
+		      
+		      String originFileName = reviewImg.getOriginalFilename();
+		      String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 추출
+		      String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+		      
+		      review_image = "/images/uploadFiles/review/" + savedName;
+		      reviewImg.transferTo(new File(filePath + "\\" + savedName));
+		} else {
+			review_image = null;
+		}
 	      
-	      // 사진이 저장되어야 할 경로
-	      String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\review";
-	      System.out.println("filePath : " + filePath); 
-	    //filePath : C:\Users\OWNER/\/git/\/DWine/\/src/\main\resources\static\images/\/uploadFiles\review
-	      
-	      // 이미지가 저장 될 폴더 생성
-	      File mkdir = new File(filePath);
-	      // 폴더가 없으면 폴더 생성해라
-	      if(!mkdir.exists()) mkdir.mkdirs();
-	      
-	      String originFileName = singleFile.getOriginalFilename();
-	      System.out.println("originFileName : " + originFileName);
-	      String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 추출
-	      String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-	      System.out.println("savedName : " + savedName);
-	      
-	      String review_image = "/images/uploadFiles/review/" + savedName;
-	      
-	      try {
-	    	  // 파일 저장하기 transferTo
-	    	  singleFile.transferTo(new File(filePath + "\\" + savedName));
-				int result = mypageService.reviewUpdate(review_no, review_text, review_image);
-				if(result > 0) {
-					rttr.addFlashAttribute("message", "리뷰가 수정 되었습니다.");
-				} else {
-					rttr.addFlashAttribute("message", "리뷰 수정에 실패하였습니다.");
-				}
-	      } catch (IllegalStateException | IOException e) {
-	         e.printStackTrace();
-	      }
-	      
-	      return "redirect:/mypage/review";
+		int result = mypageService.reviewUpdate(review_no, review_text, review_image);
+		if(result > 0) {
+			rttr.addFlashAttribute("message", "리뷰가 수정 되었습니다.");
+		} else {
+			rttr.addFlashAttribute("message", "리뷰 수정에 실패하였습니다.");
+		}
+       
+      return "redirect:/mypage/review";
 	}
 	
 	
@@ -395,12 +396,13 @@ public class MypageController{
 	public String reviewDelete(@PathVariable int review_no, RedirectAttributes rttr) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
+	    
 		int result = mypageService.reviewDelete(review_no);
 		if(result > 0) {
 			rttr.addFlashAttribute("message", "리뷰가 삭제되었습니다.");
 			int result2 = mypageService.memberPointReviewDelete(user_no); // 리뷰 삭제 -> 포인트차감
 			if(result2 > 0) {
-				System.out.println("리뷰삭제 동시에 member table 포인트 차감 성공");
+				System.out.println("성공");
 			} else {
 				System.out.println("실패");
 			}
