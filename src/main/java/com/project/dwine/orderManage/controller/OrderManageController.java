@@ -50,7 +50,7 @@ public class OrderManageController {
 		order.put("searchValue", searchValue);
 		order.put("searchStatus", searchStatus);
 		
-		int orderListCount = orderManageService.getSearchListCount(order);
+		int originCount = orderManageService.getSearchListCount(order);
 		
 		int resultPage = 1;
 		
@@ -58,16 +58,15 @@ public class OrderManageController {
 		if(page != null) {
 			resultPage = Integer.parseInt(page);
 		}
-		PageInfo pi = new PageInfo(resultPage, orderListCount, 10, 10);
+		PageInfo pi = new PageInfo(resultPage, originCount, 10, 10);
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
         order.put("startRow", startRow);
         order.put("endRow", endRow);
         
 		List<Purchase> orderList = orderManageService.searchOrderList(order);
-	
 		
-		mv.addObject("orderListCount", orderListCount);
+		mv.addObject("originCount", originCount);
 		mv.addObject("pi", pi);
 		mv.addObject("orderList", orderList);
 		mv.setViewName("orderManage/list");
@@ -90,14 +89,15 @@ public class OrderManageController {
 		order.put("searchValue", searchValue);
 		order.put("searchStatus", searchStatus);
 		
-		int searchListCount = orderManageService.getSearchListCount(order);
-		int resultPage = 1;
+		int searchCount = orderManageService.getSearchListCount(order);
 		
+		int resultPage = 1;
+
 		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
 		if(page != null) {
 		resultPage = Integer.parseInt(page);
 		}
-		PageInfo pi = new PageInfo(resultPage, searchListCount, 10, 10);
+		PageInfo pi = new PageInfo(resultPage, searchCount, 10, 10);
 		
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
 		int endRow = startRow + pi.getBoardLimit() - 1;
@@ -108,38 +108,10 @@ public class OrderManageController {
 		List<Purchase> orderList = orderManageService.searchOrderList(order);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		System.out.println("searchListCount : " + searchListCount);
+		map.put("searchCount", searchCount);
 		map.put("pi", pi);
 		map.put("orderList", orderList);
-		System.out.println(pi);
 		return map;
-	}
-	
-	// 총 주문건 수 불러오기
-	/*
-	 * @GetMapping(value = "totalCnt")
-	 * 
-	 * @ResponseBody public Map<String, Object> totalCnt(){
-	 * 
-	 * int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1; int endRow =
-	 * startRow + pi.getBoardLimit() - 1;
-	 * 
-	 * Map<String, Object> map = new HashMap<>(); int totalCnt =
-	 * orderManageService.selectOrderList(startRow, endRow).size();
-	 * 
-	 * map.put("totalCnt", totalCnt);
-	 * 
-	 * return map; }
-	 */
-	
-	// 주문 상태 선택하여 조회
-	@PostMapping(value = "state")
-	@ResponseBody
-	public List<Purchase> stateChangeList(@RequestParam("state") String state){
-				
-		List<Purchase> stateChangeList = orderManageService.stateChangeList(state);
-		
-		return stateChangeList;
 	}
 	
 	// 주문 상태 변경
@@ -215,16 +187,5 @@ public class OrderManageController {
 		
 		return detail;
 	}
-	
-	// 검색
-/*	@PostMapping(value = "search")
-	@ResponseBody
-	public List<Purchase> selectSearchList(@RequestParam String searchStatus, 
-										@RequestParam String searchCondition, @RequestParam String searchValue){
-		
-		List<Purchase> searchList = orderManageService.selectSearchList(searchStatus, searchCondition, searchValue);
-		
-		return searchList;
-	}*/
 	
 }

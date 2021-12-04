@@ -1,6 +1,7 @@
 package com.project.dwine.salesInquiry.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,24 +30,15 @@ public class SalesInquiryServiceImpl implements SalesInquiryService{
 	}
 
 	@Override
-	public List<Total> dailyList(int startRow, int endRow) {
-		return salesInquiryMapper.dailyList(startRow, endRow);
+	public int getDailyCount(Map<String, Object> daily) {
+		return salesInquiryMapper.getDailyCount(daily);
 	}
 
 	@Override
-	public int getDailyListCount() {
-		return salesInquiryMapper.getDailyListCount();
+	public List<Total> searchDailyList(Map<String, Object> daily) {
+		return salesInquiryMapper.searchDailyList(daily);
 	}
 
-	@Override
-	public List<Total> searchDateList(int startRow, int endRow, String startDate, String endDate) {
-		return salesInquiryMapper.searchDateList(startRow, endRow, startDate, endDate);
-	}
-
-	@Override
-	public int getDateListCount(String startDate, String endDate) {
-		return salesInquiryMapper.getDateListCount(startDate, endDate);
-	}
 
 
 }

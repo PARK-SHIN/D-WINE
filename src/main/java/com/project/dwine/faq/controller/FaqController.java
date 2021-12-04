@@ -33,6 +33,18 @@ public class FaqController {
 		this.faqService = faqService;
 	}
 	
+	// 사용자ver FAQ
+	@GetMapping("user")
+	public ModelAndView userFaqList(ModelAndView mv) {
+		
+		List<Faq> faqList = faqService.selectFaqList();
+		
+		mv.addObject("faqList", faqList);
+		mv.setViewName("faq/user");
+		
+		return mv;
+	}
+	
 	// 리스트 불러오기
 	@GetMapping("list")
 	public ModelAndView selectFaqList(ModelAndView mv) {

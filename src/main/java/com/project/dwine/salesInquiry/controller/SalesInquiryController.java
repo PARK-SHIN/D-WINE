@@ -43,9 +43,15 @@ public class SalesInquiryController {
 	}
 	
 	@GetMapping("daily")
-	public Model dailyList(Model model, @RequestParam(value="page", required=false) String page) {
+	public Model dailyList(Model model, @RequestParam(value="page", required=false) String page,
+										@RequestParam(value="startDate", required=false) String startDate, 
+										@RequestParam(value="endDate", required=false) String endDate) {
 		
-		int dailyListCount = salesInquiryService.getDailyListCount();
+		Map<String, Object> daily = new HashMap<>();
+		daily.put("startDate", startDate);
+		daily.put("endDate", endDate);
+		
+		int dailyCount = salesInquiryService.getDailyCount(daily);
 		
 		int resultPage = 1;
 		
@@ -53,12 +59,15 @@ public class SalesInquiryController {
 		if(page != null) {
 			resultPage = Integer.parseInt(page);
 		}
-		PageInfo pi = new PageInfo(resultPage, dailyListCount, 10, 10);
+		PageInfo pi = new PageInfo(resultPage, dailyCount, 10, 10);
 		
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
 		
-		List<Total> dailyList = salesInquiryService.dailyList(startRow, endRow);
+        daily.put("startRow", startRow);
+        daily.put("endRow", endRow);
+        
+		List<Total> dailyList = salesInquiryService.searchDailyList(daily);
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("dailyList", dailyList);
@@ -69,30 +78,31 @@ public class SalesInquiryController {
 	@PostMapping("daily")
 	@ResponseBody
 	public Map<String, Object> searchDateList(Model model, @RequestParam(value="page", required=false) String page,
-											 @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate) {
+														   @RequestParam(value="startDate", required=false) String startDate, 
+														   @RequestParam(value="endDate", required=false) String endDate) {
+					
+		Map<String, Object> daily = new HashMap<>();
+		daily.put("startDate", startDate);
+		daily.put("endDate", endDate);
 		
-		int dateListCount = salesInquiryService.getDateListCount(startDate, endDate);
+		int dailyCount = salesInquiryService.getDailyCount(daily);
+		
 		int resultPage = 1;
 		
 		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
 		if(page != null) {
 			resultPage = Integer.parseInt(page);
 		}
-		PageInfo pi = new PageInfo(resultPage, dateListCount, 10, 10);
+		PageInfo pi = new PageInfo(resultPage, dailyCount, 10, 10);
 		
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
+        
+        daily.put("startRow", startRow);
+        daily.put("endRow", endRow);
+        
+		List<Total> dailyList = salesInquiryService.searchDailyList(daily);
 		
-		List<Total> dailyList = salesInquiryService.searchDateList(startRow, endRow, startDate, endDate);
-		
-		System.out.println(pi);
-		System.out.println(resultPage);
-		System.out.println(dateListCount);
-		System.out.println(startDate);
-		System.out.println(endDate);
-		/*
-		 * for(Total t : dailyList) { System.out.println(t); }
-		 */
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("pi", pi);
@@ -100,16 +110,6 @@ public class SalesInquiryController {
 		
 		return map;
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }

@@ -10,10 +10,10 @@ import com.project.dwine.orderManage.model.vo.Purchase;
 @Mapper
 public interface OrderManageMapper {
 
-	List<Purchase> selectOrderList(int startRow, int endRow);
+	int getSearchListCount(Map<String, Object> order);
 
-	List<Purchase> stateChangeList(String state);
-	
+	List<Purchase> searchOrderList(Map<String, Object> order);	
+		
 	int updateOrderStatus(String purchaseNo, String orderStatus);
 
 	int updatePoint(String purchaseNo);
@@ -26,11 +26,4 @@ public interface OrderManageMapper {
 
 	int updateAllChange(String purchaseNo, String orderStatus);
 
-	// int getSearchListCount(String startDate, String endDate, String searchStatus, String searchCondition, String searchValue);
-
-	// List<Purchase> searchOrderList(int startRow, int endRow, String startDate, String endDate, String searchStatus, String searchCondition, String searchValue);
-
-	int getSearchListCount(Map<String, Object> order);
-
-	List<Purchase> searchOrderList(Map<String, Object> order);	
 }
