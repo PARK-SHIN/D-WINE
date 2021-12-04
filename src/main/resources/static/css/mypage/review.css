@@ -115,7 +115,13 @@ a {
 	width: 350px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	white-space: nowrap; 
+}
+.limitP {
+	width: 350px;
+	text-overflow: ellipsis;
 	white-space: nowrap;
+	overflow: hidden;
 }
 
 .paging_ul {

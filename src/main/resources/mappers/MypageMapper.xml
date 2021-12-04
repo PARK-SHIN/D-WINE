@@ -122,7 +122,12 @@
 		VALUES
 		(	SEQ_RNO.nextval,
 			#{review_text},
-			#{review_image},
+			<if test="review_image == null">
+				null,
+			</if>
+			<if test="review_image != null">
+				#{review_image},
+			</if>
 			SYSDATE,
 			SYSDATE,
 			#{star},
@@ -252,7 +257,9 @@
 	<update id="reviewUpdate" parameterType="com.project.dwine.mypage.model.vo.Review">
 		UPDATE REVIEW SET
 			REVIEW_TEXT = #{review_text},
-			REVIEW_IMAGE = #{review_image},
+			<if test="review_image != null">
+				REVIEW_IMAGE = #{review_image},
+			</if>
 			REVIEW_MODIFY = SYSDATE
 		WHERE REVIEW_NO = #{review_no}
 	</update>
@@ -275,7 +282,7 @@
 	</select>
 	
 	<select id="orderListCnt" resultType="_int">
-		SELECT COUNT(*) FROM PURCHASE WHERE USER_NO = #{user_no}
+		SELECT COUNT(*) FROM PURCHASE WHERE USER_NO = #{user_no} AND STATUS = 'Y'
 	</select>
 	
 	<update id="updateAddMemberPoint" parameterType="com.project.dwine.member.model.vo.Member">
@@ -284,7 +291,9 @@
 	</update>
 	
 	<select id="getTotalListCount" resultType="_int">
-		SELECT COUNT(*) FROM ORDER_DETAIL OD LEFT JOIN PURCHASE P ON(P.PURCHASE_NO = OD.PURCHASE_NO) WHERE USER_NO = #{user_no}
+		SELECT COUNT(*) FROM ORDER_DETAIL OD 
+		LEFT JOIN PURCHASE P ON(P.PURCHASE_NO = OD.PURCHASE_NO) 
+		WHERE USER_NO = #{user_no}
 	</select>
 	
 	<select id="selectOrderListPage" resultMap="PurchaseResultMap">
@@ -387,7 +396,7 @@
 	</select>
 	
 	<select id="getTotalReviewListCount" resultType="_int">
-		SELECT COUNT(*) FROM REVIEW WHERE USER_NO = #{user_no}
+		SELECT COUNT(*) FROM REVIEW WHERE USER_NO = #{user_no} AND STATUS = 'Y'
 	</select>
 	
 	<update id="memberPointReviewDelete" parameterType="com.project.dwine.member.model.vo.Member">
@@ -410,7 +419,7 @@
 	
 	<!-- 정렬 test -->
 	<select id="getTotalReviewListCountTest" resultType="_int">
-		SELECT COUNT(*) FROM REVIEW WHERE USER_NO = #{user_no}
+		SELECT COUNT(*) FROM REVIEW WHERE USER_NO = #{user_no} AND STATUS = 'Y'
 	</select>
 	
 	<select id="findAllReviewPageTest" resultMap="ReviewResultMap">
@@ -453,5 +462,9 @@
 			ORDER BY product_kname DESC
 		</if>) RLIST
         ) WHERE RNUM BETWEEN  #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="selectReviewImagePath" resultMap="ReviewResultMap">
+		SELECT REVIEW_IMAGE FROM REVIEW WHERE REVIEW_NO = #{review_no}
 	</select>
 </mapper>
