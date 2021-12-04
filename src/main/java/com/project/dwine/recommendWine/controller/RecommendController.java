@@ -41,8 +41,8 @@ public class RecommendController {
 		
 	}
 	
-	@PostMapping("list")
-	public String wineList(@RequestParam String hashNo, @RequestParam String hashName, Model model) {
+	@GetMapping("list")
+	public String getWineList(@RequestParam String hashNo, @RequestParam String hashName, Model model) {
 		
 		List<Product> wineList = recommendService.selectWineList(Integer.parseInt(hashNo));
 		model.addAttribute("wineList", wineList);
@@ -50,9 +50,9 @@ public class RecommendController {
 		
 		return "/recommendWine/list"; 
 	}
-
-	@PostMapping("search")
-	public String searchWineList(@RequestParam String search_hash, Model model) {
+	
+	@GetMapping("search")
+	public String search(@RequestParam String search_hash, Model model) {
 		String hashName = "";
 		
 		if(search_hash.contains("#")) {

@@ -21,7 +21,7 @@
 			<div class="content">
 				<div id="search_area">
 					<form id="searchForm" th:action="@{/recommendWine/search}"
-						method="post" onsubmit="return validate()">
+						method="get" onsubmit="return validate()">
 						<input id="input_box" type="text" name="search_hash"
 							placeholder="#해시태그를 입력하세요.">
 						<button id="search_btn">검색</button>
@@ -47,10 +47,8 @@
 						</div>
 					</div>
 				</div>
-				<form id="hashListForm" th:action="@{/recommendWine/list}"
-					method="post">
-					<input type="hidden" name="hashNo"> <input type="hidden"
-						name="hashName">
+				<form id="hashListForm" th:action="@{/recommendWine/list}" method="get">
+					<input type="hidden" name="hashNo"> <input type="hidden" name="hashName">
 				</form>
 			</div>
 		</div>
