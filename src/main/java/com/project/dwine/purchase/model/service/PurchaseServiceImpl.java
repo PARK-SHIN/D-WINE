@@ -29,16 +29,24 @@ public class PurchaseServiceImpl implements PurchaseService {
 	
 	/* wineList 리턴*/
 	@Override
-	public List<Product> wineList() {
-		return purchaseMapper.wineList();
+	public List<Product> wineList(String sortStandard, int startRow, int endRow) {
+		return purchaseMapper.wineList(sortStandard, startRow, endRow);
 	}
 
+	/* wineList 인기순 리턴 */
+	@Override
+	public List<Product> popularwineList(String sortStandard, int startRow, int endRow) {
+		return purchaseMapper.popularwineList(sortStandard, startRow, endRow);
+	}
+
+	
 	/* WineDetail 리턴 */
 	@Override
 	public Product wineDetail(String id) {
 		return purchaseMapper.wineDetail(id);
 	}
 
+	/* 해시태그 리턴 */
 	@Override
 	public List<Hashtag> hashtag(String id) {
 		return purchaseMapper.hashList();
@@ -138,8 +146,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 	/* 댓글 리스트 불러오기 */
 	@Override
-	public List<Review> reviewList(String id) {
-		return purchaseMapper.reviewList(id);
+	public List<Review> reviewList(String id, int startRow, int endRow) {
+		return purchaseMapper.reviewList(id, startRow, endRow);
 	}
 
 	/* 리뷰 중복 체크 */
@@ -153,6 +161,38 @@ public class PurchaseServiceImpl implements PurchaseService {
 	public int insertReport(int user_no, int userNo, int reviewNo, int reasonNo) {
 		return purchaseMapper.insertReport(user_no, userNo, reviewNo, reasonNo);
 	}
+
+	/* 상품 개수 (페이징) */
+	@Override
+	public int getTotalListCount() {
+		return purchaseMapper.getTotalListCount();
+	}
+
+	/* 검색 상품 상품 개수 조회 */
+	@Override
+	public int getsearchListCount(String sortStandard, String type, String price, String country, String variety,
+			String name) {
+		return purchaseMapper.getsearchListCount(sortStandard, type, price, country, variety, name);
+	}
+
+	/* 검색 상품 조회 */
+	@Override
+	public List<Product> selectSearchProductList(String sortStandard, String type, String price, String country,
+			String variety, String name, int startRow, int endRow) {
+		return purchaseMapper.selectSearchProductList(sortStandard, type, price, country, variety, name, startRow, endRow);
+	}
+
+	/* 댓글 개수 카운팅 */
+	@Override
+	public int getTotalReviewCount(String id) {
+		return purchaseMapper.getTotalReviewCount(id);
+	}
+
+	@Override
+	public List<Review> allReviewList(String id) {
+		return purchaseMapper.allReviewList(id);
+	}
+
 
 
 }

@@ -3,6 +3,7 @@ package com.project.dwine.purchase.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.project.dwine.manage.model.vo.Report;
 import com.project.dwine.member.model.vo.Member;
 import com.project.dwine.member.model.vo.UserImpl;
+import com.project.dwine.paging.PageInfo;
 import com.project.dwine.purchase.model.service.PurchaseService;
 import com.project.dwine.purchase.model.vo.OrderDetail;
 import com.project.dwine.purchase.model.vo.Payment;
@@ -54,27 +56,54 @@ public class PurchaseController {
 	
 	/* 모든 와인 리스트 조회 */
 	@GetMapping("wine_list")
-	public ModelAndView getWineList(ModelAndView mv) {
-		List<Product> wineList = purchaseService.wineList();
-		mv.addObject("wineList", wineList);
-		mv.setViewName("purchase/wine_list");
-		return mv;
-	}
+	public String getWineList(@RequestParam(value="sortStandard", required=false) String sortStandard, @RequestParam(value="page", required=false) String page, Model model)  throws Exception {
+		
+		if(sortStandard == null) {
+			sortStandard = "popular";
+		}
+		
+		int listCount = purchaseService.getTotalListCount();
+		
+		int resultPage = 1;
+		
+		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
+		if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 12);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+		
+		
+       List<Product> wineList = new ArrayList<>();
+        
+        
+		if(sortStandard.equals("popular")) {
+			
+			
+			wineList = purchaseService.popularwineList(sortStandard, startRow, endRow);
+		} else {
 	
+			wineList = purchaseService.wineList(sortStandard, startRow, endRow);
+		}
+		System.out.println("인기순 정렬 : " + sortStandard);
+		System.out.println("정렬 : " + wineList);
+		
+		model.addAttribute("wineList", wineList);
+		model.addAttribute("pi", pi);
+		model.addAttribute("sortStandard", sortStandard);
+		
+		return "/purchase/wine_list";
+	}
 	/* 와인 검색 필터 */
+	/*
 	@ResponseBody
 	@RequestMapping(value = "/filterWineList", method = { RequestMethod.POST })
 	public List<Product> filterWineList(@RequestBody Map<String, String> param){
-		String type = (String)param.get("type");
-	/*	int price = 0;
-		if(param.get("price") == "") {
-			price = 0;
-			System.out.println(price);
-		} else {
-			price = Integer.parseInt(param.get("price"));
-		}
 		
-		*/
+		String type = (String)param.get("type");
 		String price = (String)param.get("price");
 		String country = (String)param.get("country");
 		String variety = (String)param.get("variety");
@@ -89,8 +118,9 @@ public class PurchaseController {
 		
 		return purchaseService.filterWineList(type, price, country, variety, name);
 	}
-	
+	*/
 	/* 와인 정렬 */
+	/*
 	@ResponseBody
 	@RequestMapping(value = "/sortWineList", method = { RequestMethod.POST })
 	public List<Product> sortWineList(@RequestBody String val){
@@ -113,10 +143,58 @@ public class PurchaseController {
 		
 		return lis;
 	}
+	*/
+	
+	
+	
+	@PostMapping("list")
+	@ResponseBody
+	public Map<String, Object> sortList(@RequestParam(value="page", required=false) String page,
+			@RequestParam(value="sortStandard", required=false) String sortStandard, 
+			@RequestParam(value="type", required=false) String type, 
+			@RequestParam(value="price", required=false) String price, 
+			@RequestParam(value="country", required=false) String country, 
+			@RequestParam(value="variety", required=false) String variety, 
+			@RequestParam(value="name", required=false) String name) throws Exception {
+
+		int searchListCount = purchaseService.getsearchListCount(sortStandard, type, price, country, variety, name);
+		
+		int resultPage = 1;
+		
+		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
+		if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, searchListCount, 10, 12);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+		
+        System.out.println(startRow);
+        System.out.println(endRow);
+        
+        
+		List<Product> productList = purchaseService.selectSearchProductList(sortStandard, type, price, country, variety, name, startRow, endRow);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("productList", productList);
+		map.put("pi", pi);
+		map.put("sortStandard", sortStandard);
+		map.put("type", type);
+		map.put("price", price);
+		map.put("country", country);
+		map.put("variety", variety);
+		map.put("name", name);
+		
+		return map;
+	}
+	
 	
 	/* 와인 디테일 페이지 */
 	@GetMapping("{id}")
-	public String wineDetail(@PathVariable String id, Model model, @AuthenticationPrincipal User loginCheck) {
+	public String wineDetail(@PathVariable String id, Model model,  @RequestParam(value="page", required=false) String page, @AuthenticationPrincipal User loginCheck) {
 		
 		Wish wish = null;
 		if(loginCheck != null) {
@@ -134,11 +212,43 @@ public class PurchaseController {
 			wish = new Wish();
 		}
 		
+		System.out.println("id : " + id);
+		
 		Product product = purchaseService.wineDetail(id);
-		List<Review> review = purchaseService.reviewList(id);
+		
+		
+		int product_no = Integer.parseInt(id);
+		
+		
+		int listCount = purchaseService.getTotalReviewCount(id);
+		
+		System.out.println("리뷰개수" + listCount);
+		
+		int resultPage = 1;
+		
+		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
+		if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 5);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+		
+		List<Review> review = purchaseService.reviewList(id, startRow, endRow);
+		List<Review> allReviewList = purchaseService.allReviewList(id);
+		
+		System.out.println("all review : " + allReviewList);
 		
 		// 상품에 review가 없으면 null로 바꿔주고 보내준다.
 		System.out.println(review.size());
+		
+		if(review.size() == 0) {
+			resultPage = 0;
+			pi = new PageInfo(resultPage, listCount, 1, 5);
+		}
 		
 	/*
 		if(review.get(0) == null) {
@@ -149,9 +259,10 @@ public class PurchaseController {
 		} 
 		*/
 		model.addAttribute("review", review);
+		model.addAttribute("allReviewList", allReviewList);
 		model.addAttribute("wish", wish);
 		model.addAttribute("product", product);
-		
+		model.addAttribute("pi", pi);
 	
 		
 
@@ -162,6 +273,54 @@ public class PurchaseController {
 	
 		return "purchase/wine_detail";
 	}
+	
+	
+	
+	
+
+	@PostMapping("reviewlist")
+	@ResponseBody
+	public Map<String, Object> sortList(@RequestParam(value="page", required=false) String page,
+			@RequestParam(value="productNo", required=false) String id) throws Exception {
+
+		
+		System.out.println("dfsdafsdfs : " + id);
+		
+		int searchListCount = purchaseService.getTotalReviewCount(id);
+		int resultPage = 1;
+		
+		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
+		if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, searchListCount, 10, 5);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+		
+        System.out.println(startRow);
+        System.out.println(endRow);
+        
+        
+        List<Review> review = purchaseService.reviewList(id, startRow, endRow);
+        
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		System.out.println("reveiw" + review);
+		
+		map.put("review", review);
+		map.put("pi", pi);
+		
+		return map;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -183,7 +342,7 @@ public class PurchaseController {
 			@RequestParam() String pickup_date,
 			@RequestParam() String pickup_place,
 			@RequestParam() String pickup_time,
-			@RequestParam() int havePoint,  
+			@RequestParam() int havePoint,
 			@RequestParam() String purchase_no){
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
@@ -373,7 +532,7 @@ public class PurchaseController {
 	public ModelAndView purchaseComplete(ModelAndView mv, @PathVariable String purchase_no) {
 		//List<Product> wineList = purchaseService.wineList();
 		//mv.addObject("wineList", wineList);
-		System.out.println(purchase_no);
+		System.out.println("구매번호 : " + purchase_no);
 		
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		int user_no = user.getUser_no();
@@ -433,6 +592,7 @@ public class PurchaseController {
 
 				
 		} else {
+			
 			// 신고한 리뷰인지 확인
 			UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			
@@ -502,7 +662,7 @@ public class PurchaseController {
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('신고처리가 등록되었습니다.'); self.close();</script>");
 			out.flush();
-			SecurityContextHolder.clearContext();
+			//SecurityContextHolder.clearContext();
 			
 		}
 	}

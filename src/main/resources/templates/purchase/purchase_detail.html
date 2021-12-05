@@ -271,7 +271,8 @@
                         </div>
                     </div>
                     <div class="order_value" th:each="orderValue : ${orderList.cart}">
-                        <span class="price" th:text="${orderList.sale_price * orderValue.cart_count}"></span>원
+                    	<input type="hidden" class="p_price" th:value="${orderList.sale_price * orderValue.cart_count}">
+                        <span class="price" th:text="${#numbers.formatInteger(orderList.sale_price * orderValue.cart_count,0,'COMMA')}"></span>원
                         <p class="count" th:text="|${orderValue.cart_count}개|"></p>
                         <input type="hidden" class="product_count" th:value="${orderValue.cart_count}">
                     	<input type="hidden" class="cart_no" th:value="${orderValue.cart_no}">
@@ -345,6 +346,7 @@
         <div class="finalPayment_info">
             <span class="final_price_info">주문금액 <span class="allPrice"></span>원 - 포인트사용 <span class="pointUse">0</span>원 =
             <span class="final_price fp"></span><span class="final_price">원</span>
+            <input type="hidden" class="allPriceValue"><input type="hidden" class="pointUseValue" value="0"><input type="hidden" class="fpValue">
         </div>
 
         <div class="clauses">
@@ -389,20 +391,9 @@
      
       var header = $("meta[name='_csrf_header']").attr('content');
   	  var token = $("meta[name='_csrf']").attr('content');
-     
- 
-  	  
-		var allProductPrice = 0;
-		
-		
 
-		
-		
-		
-		
-		
-		
-		
+	  var allProductPrice = 0;
+	
        
 		/* 페이지 로드시 총상품 금액 보여주기*/
         window.onload = function(){
@@ -410,18 +401,21 @@
         /* 총 상품 금액 (포인트 적용 전 )*/
 		function purchasePrice(){
 		
-				const plusElem = document.querySelectorAll(".price");
+				const plusElem = document.querySelectorAll(".p_price");
 			
 				
 				for(const elem of plusElem){
-					 allProductPrice = allProductPrice + Number(elem.innerText);
+					 allProductPrice = allProductPrice + Number(elem.value);
 		           }
 				 
 				 
-				document.querySelector(".allPrice").innerText = allProductPrice;
+				document.querySelector(".allPrice").innerText = allProductPrice.toString()
+                .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+				document.querySelector(".allPriceValue").value = allProductPrice;
 
-				document.querySelector(".fp").innerText = allProductPrice;
-				document.querySelector(".ofp").innerText = allProductPrice;
+				document.querySelector(".fp").innerText = allProductPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+				document.querySelector(".fpValue").value = allProductPrice;
+				document.querySelector(".ofp").innerText = allProductPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 			}
         
 		}
@@ -449,10 +443,12 @@
 					alert('사용할 포인트를 입력해주세요.')
 				} else{
 					alert('사용가능합니다.');
-					document.querySelector(".pointUse").innerText = usePoint;
+					document.querySelector(".pointUse").innerText = usePoint.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+					document.querySelector(".pointUseValue").value = usePoint;
 					/* 총 결제해야할 금액 */
-			        document.querySelector(".fp").innerText = (allProductPrice - usePoint);
-			        document.querySelector(".ofp").innerText = (allProductPrice - usePoint);
+			        document.querySelector(".fp").innerText = (allProductPrice - usePoint).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+			        document.querySelector(".fpValue").value = (allProductPrice - usePoint);
+			        document.querySelector(".ofp").innerText = (allProductPrice - usePoint).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 				}
 			});
 			
@@ -601,8 +597,8 @@
 				}
 				
 				
-				var ofp = Number(document.querySelector(".ofp").innerText);
-				var pointUse = Number(document.querySelector(".pointUse").innerText);
+				var ofp = Number(document.querySelector(".fpValue").value);
+				var pointUse = Number(document.querySelector(".pointUseValue").value);
 				var param = {};
 				param.use_point = pointUse;
 				param.purchase_price = ofp;
@@ -723,7 +719,7 @@
 				function odInsert(){
 				  	  
 				  	var od_count = document.querySelectorAll(".product_count");
-					var od_price = document.querySelectorAll(".price");
+					var od_price = document.querySelectorAll(".p_price");
 					var product_no = document.querySelectorAll(".product_no");
 					var length = od_count.length;
 				  	  
@@ -739,8 +735,8 @@
 				  	 console.log("배열 : " + productCount_Arr);
 				  	
 				   	for(const elem of od_price){
-						  console.log(elem.innerText);
-						  productPrice_Arr.push(elem.innerText);
+						  console.log(elem.value);
+						  productPrice_Arr.push(elem.value);
 					}
 					
 					 console.log("배열 : " + productPrice_Arr);
@@ -870,13 +866,13 @@
                 	
                 	if(shop.options[shop.selectedIndex].value == "강남"){ 
                 		document.querySelector(".shop_info").innerHTML = 
-                			"<p style='color : #83131E'> 도로명 : 서울특별시 강남구 테헤란로14길 6 남도빌딩 2층, 3층, 4층 <br>지 번 : 서울특별시 강남구 역삼동 823-25 </p>"; 
+                		"<p style='color : #83131E'> 도로명 : 서울특별시 강남구 테헤란로14길 6 남도빌딩 2층, 3층, 4층 <br>지 번 : 서울특별시 강남구 역삼동 823-25 </p>"; 
                 	}else if(shop.options[shop.selectedIndex].value == "당산"){ 
                 		document.querySelector(".shop_info").innerHTML = 
-                			"<p style='color : #83131E'> 도로명 : 서울특별시 영등포구 선유동2로 57 이레빌딩 <br>지 번 : 서울특별시 영등포구 양평동4가 2 </p>"; 
+                		"<p style='color : #83131E'> 도로명 : 서울특별시 영등포구 선유동2로 57 이레빌딩 <br>지 번 : 서울특별시 영등포구 양평동4가 2 </p>"; 
                		}else if(shop.options[shop.selectedIndex].value == "종로"){ 
                			document.querySelector(".shop_info").innerHTML = 
-               				"<p style='color : #83131E'> 도로명 : 서울특별시 중구 남대문로 120 대일빌딩 2층, 3층 <br>지 번 : 서울특별시 중구 남대문로1가 18 </p>";
+               			"<p style='color : #83131E'> 도로명 : 서울특별시 중구 남대문로 120 대일빌딩 2층, 3층 <br>지 번 : 서울특별시 중구 남대문로1가 18 </p>";
                 	} else{
                 		alert('매장을 선택해주세요.');
                 	}

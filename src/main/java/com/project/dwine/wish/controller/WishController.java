@@ -42,42 +42,42 @@ public class WishController {
 	/* 상품 찜 추가 */
 	@ResponseBody
 	@RequestMapping(value = "/add", method = { RequestMethod.POST })
-	public Map<String, String> addWish(@RequestBody int product_no , @AuthenticationPrincipal User users){
+	public Map<String, String> addWish(@RequestBody int product_no){
 
 		Map<String, String> map = new HashMap<>();
-
+/*
 		if(users == null) {
 			String msg = "로그인이 필요합니다.";
 			map.put("msg", msg);
 		} else {
-			
+	*/		
 			UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			int user_no = user.getUser_no();
 
 			String msg = wishService.addWish(user_no, product_no) > 0 ? "찜 등록되었습니다." : "찜 등록에 실패하였습니다.";
 			map.put("msg", msg);
-			}
+			//}
 		return map;
 	}
 	
 	/* 상품 찜 삭제 */
 	@ResponseBody
 	@RequestMapping(value = "/delete", method = { RequestMethod.POST })
-	public Map<String, String> deleteWish(@RequestBody int product_no , @AuthenticationPrincipal User users){
+	public Map<String, String> deleteWish(@RequestBody int product_no){
 
 		Map<String, String> map = new HashMap<>();
-
+/*
 		if(users == null) {
 			String msg = "로그인이 필요합니다.";
 			map.put("msg", msg);
 		} else {
-			
+	*/		
 			UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			int user_no = user.getUser_no();
 
 			String msg = wishService.deleteWish(user_no, product_no) > 0 ? "찜 삭제되었습니다." : "찜 삭제에 실패하였습니다.";
 			map.put("msg", msg);
-			}
+//			}
 		return map;
 	}
 

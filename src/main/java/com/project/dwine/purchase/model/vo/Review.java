@@ -4,13 +4,17 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Review {
 	private int review_no;
 	private String review_text;
 	private String review_image;
-	@DateTimeFormat(pattern = "yyyy.MM.dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm") //데이터 포맷 변환
 	private Date review_date;
-	@DateTimeFormat(pattern = "yyyy.MM.dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm") //데이터 포맷 변환
 	private Date review_modify;
 	private double star;
 	private String status;

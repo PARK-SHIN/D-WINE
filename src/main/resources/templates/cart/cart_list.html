@@ -171,6 +171,12 @@
         line-height: 92px;
     }
     
+    .product_price{
+    	margin-left: 100px;
+   	    width: 300px;
+        line-height: 92px;
+    }
+    
      
 </style>
 <body>
@@ -209,7 +215,9 @@
                         </div>
               			</a>
                     </div>
-					<div class="price p_price" th:text="${cList.sale_price}"></div>
+                    
+					<div class="price product_price" th:text="${#numbers.formatInteger(cList.sale_price,0,'COMMA')}"></div>
+					<input type="hidden" class="p_price" th:value="${cList.sale_price}">
 					<!-- <div class="price p_price"><fmt:formatNumber value="${cList.sale_price}" pattern="#,###,###"></div> -->
                     <div class="order_value" th:each="product : ${cList.cart}">
                         <input class="product_count" type="hidden" th:value="${cList.product_count}">
@@ -225,7 +233,8 @@
 		                 </div>
      			 </div>
      			 <div th:unless="${cList.product_count == 0}"> 
-                        <div class="price t_price" th:text="${cList.sale_price * product.cart_count}"></div>
+                        <div class="price t_price" th:text="${#numbers.formatInteger(cList.sale_price * product.cart_count,0,'COMMA')}"></div>
+						<input type="hidden" class="h_tprice" th:value="${cList.sale_price * product.cart_count}">
 						<div class="price_count">
 		                      <button class="minus" type="button"><i class="fas fa-minus"></i></button>
 		                      <div class='pCount' th:text="${product.cart_count}"></div>
@@ -251,6 +260,7 @@
                 <div class="order_info">
                     <p class="payment_price">결제예정금액</p>&emsp;
                     <p class="total_price allPrice">0</p><span class="total_price">원</span>
+                    <input type="hidden" class="h_allPrice">
                 </div>
                 <div class="order_btn">
                     <button class="productOrder">주문하기</button>
@@ -286,14 +296,14 @@
             
             /* 전체상품 선택*/
             const allSelectBox =  document.getElementsByClassName("all_selectBox")[0];
-            const all =  document.getElementsByClassName("t_price");
+            const all =  document.getElementsByClassName("h_tprice");
       
             allSelectBox.addEventListener('click',function(){
 	            var count = 0;
             	var order_price = 0;
             	if(allSelectBox.checked == true){
 		            for(const elem of all){
-		            	order_price = order_price + Number(elem.innerText);
+		            	order_price = order_price + Number(elem.value);
 		            }
 		            
 	            	 const pCount = document.querySelectorAll(".pCount");
@@ -303,7 +313,9 @@
 	            	 
             	} 
             	 document.getElementsByClassName("pu_count")[0].innerText = count;
-            	 document.getElementsByClassName("allPrice")[0].innerText = order_price;
+            	 document.getElementsByClassName("allPrice")[0].innerText = order_price.toString()
+                 .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+            	 document.getElementsByClassName("h_allPrice")[0].value = order_price;
 
             });
             
@@ -322,20 +334,24 @@
             	var checkbox = this.closest("li").querySelector(".product_checkbox");
            		var pickup_count = Number(document.querySelector(".pu_count").innerText);
            		var product_count = Number(this.closest("li").querySelector(".pCount").innerText);
-            	var product_price = Number(this.closest("li").querySelector(".t_price").innerText);
-            	var order_price = Number(document.getElementsByClassName("allPrice")[0].innerText);
+            	var product_price = Number(this.closest("li").querySelector(".h_tprice").value);
+            	var order_price = Number(document.getElementsByClassName("h_allPrice")[0].value);
             	
            		
             	if(checkbox.checked == true){
             		pickup_count = pickup_count + product_count;
             		document.querySelector(".pu_count").innerText = pickup_count;
             		order_price = order_price + product_price;
-            		document.getElementsByClassName("allPrice")[0].innerText = order_price;
+            		document.getElementsByClassName("allPrice")[0].innerText = order_price.toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+            		document.getElementsByClassName("h_allPrice")[0].value = order_price;
             	} else{
             		pickup_count = pickup_count - product_count;
             		document.querySelector(".pu_count").innerText = pickup_count;
             		order_price = order_price - product_price;
-            		document.getElementsByClassName("allPrice")[0].innerText = order_price;
+            		document.getElementsByClassName("allPrice")[0].innerText = order_price.toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+            		document.getElementsByClassName("h_allPrice")[0].value = order_price;
             	}
             }
             
@@ -382,15 +398,15 @@
             	console.log(this);
             	console.log(this.getAttribute('class'));
             	console.log(this.closest("li"));
-            	console.log(this.closest("li").querySelector(".p_price").innerText);
+            	console.log(this.closest("li").querySelector(".p_price").value);
             	console.log(this.closest("li").querySelector(".pCount"));
-            	console.log("총가격 " + this.closest("li").querySelector(".t_price").innerText);
+            	console.log("총가격 " + this.closest("li").querySelector(".h_tprice").value);
               	console.log(" 재고 : " + this.closest("li").querySelector(".product_count").value);
             	
-              	var Product_Price = Number(this.closest("li").querySelector(".p_price").innerText);
+              	var Product_Price = Number(this.closest("li").querySelector(".p_price").value);
             	var val = Number(this.closest("li").querySelector(".pCount").innerText);
             	var product_count = this.closest("li").querySelector(".product_count").value;
-            	var t_price = Number(this.closest("li").querySelector(".t_price").innerText);
+            	var t_price = Number(this.closest("li").querySelector(".h_tprice").value);
 				var product_no = this.closest("li").querySelector(".product_no").value;
 				var cart_no = this.closest("li").querySelector(".cart_no").value;
             
@@ -429,7 +445,9 @@
 
 	            		val = val + 1;
 
-            			this.closest("li").querySelector(".t_price").innerText = val * Product_Price;
+            			this.closest("li").querySelector(".t_price").innerText = (val * Product_Price).toString()
+                        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+            			this.closest("li").querySelector(".h_tprice").value = (val * Product_Price);
 	            		this.closest("li").querySelector(".pCount").innerText = (val);
 
             		}
@@ -463,10 +481,15 @@
             					return;
             				}
             			});
-            			
                 		val = val - 1;
-	        			this.closest("li").querySelector(".t_price").innerText = t_price - Product_Price;
-	            		this.closest("li").querySelector(".pCount").innerText = (val);	
+            			
+                		var htprice = this.closest("li").querySelector(".h_tprice").value;
+                		
+	        			this.closest("li").querySelector(".t_price").innerText = (t_price - Product_Price).toString()
+                        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+	        			this.closest("li").querySelector(".h_tprice").value = (t_price - Product_Price);
+	            		this.closest("li").querySelector(".pCount").innerText = (val);
+	            		
             		}
                   }
                 } 

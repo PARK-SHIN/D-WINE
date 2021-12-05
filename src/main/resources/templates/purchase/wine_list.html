@@ -38,10 +38,11 @@
         margin: 0;
         width: 49.7%;
         border: none;
+        font-family: 'Gowun Batang', serif;
     }
 
     .search2 select{
-        width: 100px;
+        width: 130px;
         height: 40px;
         margin-top: 20px;
         border: none;
@@ -233,11 +234,11 @@
     </form>
 	
 	<script>
-	
+	/*
 		var header = $("meta[name='_csrf_header']").attr('content');
 		var token = $("meta[name='_csrf']").attr('content');
 		const form = document.querySelector('#wineListForm');
-		
+		*/
 		
 		/*
 		form.addEventListener('submit', (e) => {
@@ -282,7 +283,8 @@
 		});
 		*/
 		
-		
+		/*
+		요거임
 		$(function(){
 			$("#wineListForm input[type=button]").on("click", function(){
 				
@@ -335,25 +337,25 @@
 				});	
 			});
 		});
-	
+	*/
 	</script>
 
 
 
 
-    <form id="wineListForm2">
+    <form id="wineListForm2" th:action="@{/purchase/wine_list}" method="get">
         <div class="search2">
-            <select id="wineSort">
-                <option value="popular">인기순</option>
-                <option value="latest">최신순</option>
-                <option value="hprice">높은가격순</option>
-                <option value="lprice">낮은가격순</option>
+            <select id="wineSort" name="sortStandard">
+                <option value="popular" th:selected="${ sortStandard }=='popular'">판매순</option>
+                <option value="latest"  th:selected="${ sortStandard }=='latest'">최신순</option>
+                <option value="hprice"  th:selected="${ sortStandard }=='hprice'">높은가격순</option>
+                <option value="lprice"  th:selected="${ sortStandard }=='lprice'">낮은가격순</option>
             </select>
-            <!-- <button><img src="./resources/images/search_btn.png"></button> -->
+           
         </div>
     </form>
     <script>
-	
+	/* 요거임
 		var header = $("meta[name='_csrf_header']").attr('content');
 		var token = $("meta[name='_csrf']").attr('content');
 	 
@@ -390,6 +392,8 @@
 				}); 
 			});
 		});
+		
+		*/
 	</script>
 
 <!-- <a th:href="@{/room/{id}(id=${room.id})}">입장하기</a> -->
@@ -404,18 +408,14 @@
             <div class="product_explain">
                 <div class="product_KoreaName" th:text="${product.product_kname}"></div>
                 <div class="product_foreignName" th:text="${product.product_ename}"></div>
-                <span class="product_price" th:text="${product.sale_price}"></span>&nbsp;원<br>
-               <!--  <div class="product_score">
-                    ★★★★★
-                    <span class="review_count"> 25개</span>
-                </div> -->
+                <span class="product_price" th:text="${#numbers.formatInteger(product.sale_price,0,'COMMA')}"></span>&nbsp;원<br>
             </div>
         </div>
     </li>
 </ul>
 
 			<!-- 페이징 -->
- 			<div class="paging__area">
+ 		 	<div class="paging__area">
 			 	<ul class="paging_ul">
 					<li class="go_first">&lt;&lt;</li>
 					<li class="go_prev">&lt;</li>
@@ -426,9 +426,231 @@
 				</ul> 
 			</div>
  			<!-- 페이징 -->
+</div>
+</div>
 
-</div>
-</div>
+		<script>
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
+
+		
+		
+		endPage = $(".pageNo").last().val();
+		clickPage = 1;
+		
+		
+		// 정렬 select, 검색 버튼 눌렀을 때
+		$(document).on("click", ".winebtn", function(){
+			var page = 1;
+			var sortStandard = $("select[name=sortStandard]").val();
+			var type = $("#type option:selected").val();
+			var price = $("#price option:selected").val();
+			var country = $("#country option:selected").val();
+			var variety = $("#variety option:selected").val();
+			var name = document.querySelector("#wine_name").value;
+			
+			ajaxPaging(page, sortStandard, type, price, country, variety, name);
+			
+		});
+		
+		
+		// 정렬 select change 됐을 때
+		$(document).on("change", "select[name=sortStandard]", function(){
+			var page = 1;
+			var sortStandard = $("select[name=sortStandard]").val();
+			
+			var type = $("#type option:selected").val();
+			var price = $("#price option:selected").val();
+			var country = $("#country option:selected").val();
+			var variety = $("#variety option:selected").val();
+			var name = document.querySelector("#wine_name").value;
+
+			
+			ajaxPaging(page, sortStandard, type, price, country, variety, name);
+		});
+
+		
+		// 페이지 <li> 눌렀을 때
+		$(document).on("click", ".pageNo", function(){
+			var page = $(this).val();
+			var sortStandard = $("select[name=sortStandard]").val();
+			
+			var type = $("#type option:selected").val();
+			var price = $("#price option:selected").val();
+			var country = $("#country option:selected").val();
+			var variety = $("#variety option:selected").val();
+			
+			var name = document.querySelector("#wine_name").value;
+			
+	
+			clickPage = page;
+			
+			ajaxPaging(page, sortStandard, type, price, country, variety, name);
+			
+		});
+		
+		// "<<" 버튼
+		$(document).on("click", ".go_first", function() {
+			clickPage = 1;
+			var page = 1;
+			var sortStandard = $("select[name=sortStandard]").val();
+			
+			var type = $("#type option:selected").val();
+			var price = $("#price option:selected").val();
+			var country = $("#country option:selected").val();
+			var variety = $("#variety option:selected").val();
+			var name = document.querySelector("#wine_name").value;
+			
+			
+			clickPage = page;
+			
+			ajaxPaging(page, sortStandard, type, price, country, variety, name);
+			
+
+			
+		});
+		
+		
+		// ">>" 버튼
+		$(document).on("click", ".go_end", function() {
+			clickPage = endPage;
+			var page = endPage;
+			var sortStandard = $("select[name=sortStandard]").val();
+			
+			var type = $("#type option:selected").val();
+			var price = $("#price option:selected").val();
+			var country = $("#country option:selected").val();
+			var variety = $("#variety option:selected").val();
+			var name = document.querySelector("#wine_name").value;
+			
+			
+			ajaxPaging(page, sortStandard, type, price, country, variety, name);
+			
+
+		});
+		
+		// "<" 버튼
+		$(document).on("click", ".go_prev", function() {
+			if(clickPage != 1) {
+				var page = clickPage - 1;
+				clickPage = clickPage - 1;
+				var sortStandard = $("select[name=sortStandard]").val();
+				
+				var type = $("#type option:selected").val();
+				var price = $("#price option:selected").val();
+				var country = $("#country option:selected").val();
+				var variety = $("#variety option:selected").val();
+				var name = document.querySelector("#wine_name").value;
+		
+				
+				ajaxPaging(page, sortStandard, type, price, country, variety, name);
+			}
+			
+			
+		});
+		
+		// ">" 버튼
+		$(document).on("click", ".go_next", function() {
+			if(clickPage != endPage) {
+				var page = clickPage + 1;
+				clickPage = clickPage + 1;
+				var sortStandard = $("select[name=sortStandard]").val();
+				
+				var type = $("#type option:selected").val();
+				var price = $("#price option:selected").val();
+				var country = $("#country option:selected").val();
+				var variety = $("#variety option:selected").val();
+				var name = document.querySelector("#wine_name").value;
+				
+				
+				ajaxPaging(page, sortStandard, type, price, country, variety, name);
+				
+			}
+			
+		});
+		
+		
+		
+		
+		
+		
+		
+		function ajaxPaging(page, sortStandard, type, price, country, variety, name) {
+			
+			$.ajax({
+				url : "/purchase/list",
+				data : {page : page, sortStandard: sortStandard, type: type, price: price, country: country, variety: variety, name: name},
+				type : "post",
+				success : function(data) {
+					var productList = data.productList;
+					var pi = data.pi;
+					var sortStandard = data.sortStandard;
+					var type = data.type;
+					var price = data.price;
+					var country = data.country;
+					var variety = data.variety;
+					var name = data.name;
+					
+					endPage = pi.endPage;
+					
+					console.log("page : " + page);
+					console.log("clickPage : " + clickPage);
+					let html = '';
+					
+					if(productList.length == 0) {
+						alert("해당 상품은 존재하지 않습니다.");
+						location.reload();
+					} else{
+						console.log(productList);
+						var pagingHTML = '<li class="go_first">&lt;&lt;</li><li class="go_prev">&lt;</li>';
+						
+						for(var i = parseInt(pi.startPage); i <= parseInt(pi.endPage) ; i++) {
+							
+							pagingHTML += '<li class="pageNo" value="' + i + '">' + i +'</li>';
+						}  
+						
+						pagingHTML += '<li class="go_next">&gt;</li><li class="go_end">&gt;&gt;</li>';	
+						$(".paging_ul").html(pagingHTML);
+						
+						
+						$.each(productList, function(index, item){
+							 html += '<li><div class="product_explain"><div class="product_img"><a href="/purchase/' + item.product_no + '"><img src="' + item.thumbnail + '"></a></div>'
+							+ '<div class="product_explain"><div class="product_KoreaName"}>' + item.product_kname + '</div><div class="product_foreignName">'
+							+ item.product_ename + '</div><span class="product_price">'+ item.sale_price + '</span>&nbsp;원<br></li>';
+							$(".product_list").html(html);
+						 });
+							
+						
+						$('li[value='+ page + ']').addClass("current_page");
+					}
+				},
+				error : function(e) {
+					console.log(e);
+				}			
+			});
+		
+		}
+		
+		</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <footer th:replace="common/footer :: footer"></footer>
 </body>
 </html>
