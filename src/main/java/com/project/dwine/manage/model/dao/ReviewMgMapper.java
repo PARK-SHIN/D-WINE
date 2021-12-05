@@ -12,11 +12,15 @@ import com.project.dwine.manage.model.vo.Review;
 public interface ReviewMgMapper {
 
 
-	List<Review> selectReviewList();
+	List<Review> selectReviewList(int startRow, int endRow);
 
 	void deleteReviewMg(String user_no);
 
 	Review selectOneReview(int review_no);
+
+	int reviewMgTotalListCnt();
+
+	Review selectReviewList(int review_no);
 
 	
 

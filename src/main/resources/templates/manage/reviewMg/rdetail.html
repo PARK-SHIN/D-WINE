@@ -75,7 +75,7 @@
                     <input name="review_no" type="hidden" th:value=${review.review_no}>
                         <h3>리뷰내용 <span style="font-size: 12px;">(10자 이상 500자 미만)</span></h3>
                         <div>
-                            <input type="text" name="review_text" style="border: 1px solid lightgray; width: 700px; height: 90px;" th:value="${review.review_text}">
+                            <input type="text" name="review_text"  readonly style="border: 1px solid lightgray; width: 700px; height: 90px;" th:value="${review.review_text}">
                         </div>
                     </div>
                     <br>
@@ -88,6 +88,24 @@
                     </div>
                     <br>
                   </form>
+                  <h1>신고 상세창</h1>
+                  <hr>
+                  <div class="reporterList">
+                  	 <table class="reporteTable">
+		                <tr>
+		                <th>신고자</th>
+		                <th>신고 사유</th>
+		                <th>신고날짜</th>
+		                </tr>
+					<tbody class="trArea">                
+						<tr class="allinven" th:each="report: ${ review }">
+                			<td th:text="${ report.user_id1 }"></td>
+		                    <td th:text="${ report.reason_context }"></td>
+                			<td th:text="${ #dates.format(report.report_date, 'yyyy-MM-dd') }"></td>
+		                </tr>
+		                </tbody>
+          			  </table>
+                  </div>
             </div>
         </div>
         

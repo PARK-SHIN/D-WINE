@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<link href="/css/recommendWine/weather.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+<title>recommend wine by weather</title>
+</head>
+<body>
+	<div class="weather_container">
+		<div class="weather_content">
+			<div class="location font_small"><img id="coor_img" src="/images/recommendWine/coordinate.png">서울</div>
+			<div class="weather_icon"><img id="weather_img"></div>
+			<div class="weather_contents">
+				<div class="weather_area">
+					<div id="temp_min" class="font_small"></div>
+					<div id="temp_max" class="font_small"></div>
+					<div id="current_temp"></div>
+					<div class="weather_wine">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
+	
+		$(function(){
+			/* 서울 온도, &units=metric는 섭씨 온도로 변환 */
+			$.ajax({
+				url : "https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=ce98ed3f80ca669d5b47153229d5e377&units=metric",
+				dataType : "jsonp",
+				type : 'get',
+				success:function(data) {
+					console.log(data);
+			
+					// 날씨 아이콘
+					var iconUrl = "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png";
+					$("#weather_img").attr("src", iconUrl);
+					
+					// 최저 기온
+					$("#temp_min").html("최저기온 : " + Math.round(data.main.temp_min) + "°");
+					//  최고 기온 
+					$("#temp_max").html("최고기온 : " + Math.round(data.main.temp_max) + "°");
+					// 현재 기온
+					var current_temp = Math.round(data.main.temp);
+					$("#current_temp").html(current_temp + "°");
+					
+					$.ajax({
+						url : "/recommendWine/weather",
+						data : {current_temp : current_temp},
+						type : 'post',
+						success:function(data) {
+							
+							var product = data.product;
+							var message = data.message;
+							
+							var html = "";
+				
+							if(product != null) {
+								html = '<input type="hidden" name="pno" value="' + product.productNo + '">';
+								html += '<div class="weather_message font_small">\"' + message + '\"</div>';
+								html += '<div class="weather_thumb"><img id="wine_img" src="' + product.thumbnail + '"></div>';
+								html += '<div id="weaher_kname" class="weather_name">' + product.productKName + '</div>';
+								html += '<div id="weaher_ename" class="weather_name">' + product.productEName + '</div>';
+							} else {
+								html = '<div class="weather_thumb"><img id="wine_img" src="/images/common/main_logo.png"></div>';
+								html += '<div class="weather_message font_small">' + message + '</div>';
+							}
+							
+							$(".weather_wine").html(html);
+							
+						},
+						error : function(e) {
+							console.log(e);
+						}
+					});
+	
+				},
+				error : function(e) {
+					console.log(e);
+				}
+			});
+		
+		});
+		
+		$(document).on("click", ".weather_wine" , function() {
+			location.href ='/purchase/' + $("input[name=pno]").val();
+		});
+	
+	</script>
+</body>
+</html>

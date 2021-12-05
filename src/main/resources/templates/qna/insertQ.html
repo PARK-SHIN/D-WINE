@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>1:1문의작성</title>
+<link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/qna/insertQ.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
+</head>
+<body>
+<header th:include="common/header :: header"></header>
+<div class="weather" th:include="recommendWine/weather"></div>
+	<div id="container">
+        <div>
+            <h3 style="font-size: 24px; margin-left: 30px;">문의하기</h3>
+        </div>
+        <hr style="width: 900px; padding-right: 130px; margin-bottom: 20px;">
+        <form th:action="@{/qna/insertQform}" method="post" enctype="multipart/form-data">
+            <div>
+                <label>문의제목  <span class="colorred">*</span> </label>
+                <br>
+                <input type="text" class="marginClass" name="qna_title" style="width: 800px; height: 40px;">
+            </div>
+            <div>
+                <label>문의내용  <span class="colorred">*</span> </label><br>
+                	<textarea placeholder="픽업문의는 주문번호를 적어주세요" class="marginClass" style="width: 800px; height: 300px;" name="qna_content"></textarea>
+            </div>
+            <div>
+                <label>파일첨부(1장)</label>
+                <input class="marginClass" type="file" id="imgfile" name="singleFile" accept=".gif, .jpg, .png">
+                <div id="fileArea" style="margin-left: 30px;">
+                    
+                </div>
+            </div>
+            <div class="cmd"> 
+                <input type="submit" name="save" id="save" value="등록">
+            </div>
+        </form>
+    </div>
+     <footer th:include="common/footer :: footer"></footer>
+     
+     <script>
+       document.getElementById('imgfile').addEventListener('change', function(){
+           if(this.files && this.files[0]){
+               let reader = new FileReader();
+               reader.readAsDataURL(this.files[0]);
+               reader.onload = function(){
+                   console.log(reader.result);
+                   document.getElementById('fileArea').innerHTML = "<img src='" + reader.result + "' width='500px' height='500px'>";
+               }
+           }
+       });
+    </script>
+</body>
+</html>

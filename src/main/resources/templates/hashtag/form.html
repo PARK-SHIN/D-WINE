@@ -4,62 +4,10 @@
 <meta charset="UTF-8">
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
-<title>Hashtag Form</title>
+<title>hashtag form</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-<style>
-	* {
-          font-family: 'Gowun Batang', serif;
-      }
-    #content {
-        display: flex;
-        width: fit-content;
-        padding: 20px;
-    }
-    #left_box {
-        display: flex;
-        margin-right: 30px;
-    }
-    .list_box {
-        width: 150px;
-        height: 400px;
-        overflow-y: scroll;
-        border: 1px solid black;
-        margin-right: 10px;
-        padding: 10px;
-    }
-    .list_box > li {
-    	list-style: none;
-    	text-align: left;
-    }
-    
-    .list_box > li:hover {
-    	background:  rgba(196, 196, 196, 0.3);
-    }
-    
-    #right_box {
-        margin : auto 0;
-    }
-    .label {
-        display: inline-block;
-        width: 130px;
-    }
-    .center {
-        text-align: center;
-    }
-    .center > label {
-        text-align: center;
-    }
-    .controll {
-    	margin-bottom: 20px;
-    }
-    li:hover {
-    	background: #c4c4c4;
-    }
-    .btn_area {
-    	margin-top: 20px;
-    }
-</style>
+<link href="/css/hashtag/form.css" rel="stylesheet">
 </head>
 <body>
 	<h1 class="center">해시태그 관리</h1>
@@ -317,6 +265,7 @@
 				console.log(e);
 			}
 		}); 
+	 
 	});
     </script>
 </body>

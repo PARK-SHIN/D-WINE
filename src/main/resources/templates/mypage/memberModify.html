@@ -6,6 +6,11 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <meta charset="UTF-8">
 <title>정보수정</title>
+<style>
+	*{
+		font-family: 'Gowun Batang', serif;
+	}
+</style>
 <script>
 	const successMessgae = '[[${ message }]]';
 	
@@ -18,14 +23,16 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/memberModify.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
 </head>
 <body>
 <header th:include="common/header :: header"></header>
+<div class="weather" th:include="recommendWine/weather"></div>
 	<div id="container">
         <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
         </nav>
         <script>
-        $(document).ready(function () { 
+        $(document).ready(function () {
             $('.memberM').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
             $('.memberM').css('color', 'rgb(131,19,30)'); 
             $('.memberM').css('font-weight', 'bold'); 
@@ -33,7 +40,6 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
         </script>
         <div class="contents">
             <div class="inner">
-                
                 <div>
                     <h3 style="font-size: 24px;">정보수정</h3>
                 </div>
@@ -44,7 +50,8 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
                     <input type="text" name="user_id" class="inputbox" readonly th:value="${m.user_id}">
                     <p style="font-size: 18px;">비밀번호</p>
                     <input type="password" name="user_pw" class="inputbox" th:value="${m.user_pw}"> 
-                    <button onclick="modifyPwd()">변경</button>
+                   <!--  <button onclick="modifyPwd()" class="openBtn">변경</button> -->
+                   	<button class="openBtn" type="button">변경</button>
                     <p style="font-size: 18px;">닉네임</p>
                     <input type="text" name="user_nickname" id="user_nickname" class="inputbox" th:value="${m.user_nickname}"> 
                     <!-- <button type="button" id="nickname_check" name="nickname_check">중복확인</button> -->
@@ -55,15 +62,82 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
                     <input type="text" name="user_birth" class="inputbox" readonly th:value="${#dates.format(m.user_birth, 'yyyy-MM-dd')}">
                     <p style="font-size: 18px;">전화번호</p>
                     <input type="tel" name="user_phone" class="inputbox" th:value="${m.user_phone}">
-
                     <div class="cmd">
                         <!-- <input type="submit" name="save" id="save" value="저장"> -->
                         <button name="save" id="save" type="submit">저장</button>
                     </div>
                 </form>
+                <div class="modal hidden">
+				  <div class="bg"></div>
+				  <div class="modalBox">
+				  		<div class="closeArea"><img src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px"></div>
+				   		<div class="pwdOuter">
+						<div class="pwdHeader">
+							<h2 align="center">비밀번호 변경</h2>
+							<div class="pwdForm">
+								<form id="updatePwdForm" th:action="@{/mypage/pwdModifyForm}" method="post"
+									onsubmit="return checkPwd();">
+									<input type="hidden" id="user_no" name="user_no" th:value="${m.user_no}">
+									<h4>현재 비밀번호</h4>
+									<span class="input_area"> <input type="password"
+										name="user_pwd" id="user_pwd"  maxlength="16" required>
+									</span>
+									<h4>변경할 비밀번호</h4>
+									<span class="input_area"> <input type="password"
+										name="newPwd" id="newPwd" maxlength="16" required>
+									</span>
+									<h4>변경할 비밀번호 확인</h4>
+									<span class="input_area"> <input type="password"
+										name="newPwd2" id="newPwd2" maxlength="16" required>
+									</span>
+									<div class="btnArea">
+										<button id="updatePwdBtn" type="submit">변경하기</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				  </div>
+				</div>
             </div>
         </div>
     </div>
+    
+    <script>
+		function checkPwd(){
+			const userPwd = document.getElementById('userPwd');
+			const newPwd = document.getElementById('newPwd');
+			const newPwd2 = document.getElementById('newPwd2');
+			
+			if(userPwd.value ==""|| newPwd.value =="" || newPwd2.value ==""){
+				alert('비밀번호를 입력해주세요');
+				return false;
+			}
+			
+			if(newPwd.value != newPwd2.value){
+				alert('비밀번호가 다릅니다.');
+				newPwd2.select();
+				return false;
+			}
+			
+			return true;
+		}
+	</script>
+    
+    <script>
+	  const open = () => {
+	    document.querySelector(".modal").classList.remove("hidden");
+	  }
+	
+	  const close = () => {
+	    document.querySelector(".modal").classList.add("hidden");
+	  }
+	
+	  document.querySelector(".openBtn").addEventListener("click", open);
+	  document.querySelector(".closeBtn").addEventListener("click", close);
+	  document.querySelector(".bg").addEventListener("click", close);
+	
+	</script>
 
 	<!-- 닉네임 중복 검사 -->
     <script>
@@ -92,7 +166,7 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
 				}
 			},
 			error : function(e){
-				alert('다시 시도해주세요');
+				alert('error');
 			}
 		});
     }

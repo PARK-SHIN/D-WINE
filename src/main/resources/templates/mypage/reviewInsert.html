@@ -5,11 +5,13 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <title>리뷰작성</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="/css/mypage/reviewInsert.css" rel="stylesheet">
 </head>
 <body>
-	<header th:include="common/header :: header"></header>
+<header th:include="common/header :: header"></header>
+<div class="weather" th:include="recommendWine/weather"></div>
 	<div id="container">
         <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
         </nav>
@@ -55,12 +57,13 @@
                     <div>
                         <h3>리뷰내용 <span style="font-size: 12px;">(10자 이상 500자 미만)</span></h3>
                         <div>
-                            <input type="text" name="review_text" style="border: 1px solid lightgray; width: 700px; height: 90px;">
+                            <input type="text" name="review_text" maxlength="500" placeholder="내용을 입력해주세요"
+                            style="border: 1px solid lightgray; width: 700px; height: 90px;">
                         </div>
                     </div>
                     <br>
                     <div>
-                        <h3>리뷰이미지 첨부 <span style="font-size: 12px;">(1장만 첨부 가능합니다.)&nbsp;</span><input name="singleFile" type="file" id="imgfile" accept="image/gif,image/jpeg,image/png"></h3>
+                        <h3>리뷰이미지 첨부 <span style="font-size: 12px;">(1장만 첨부 가능합니다.)&nbsp;</span><input name="reviewImg" type="file" id="imgfile" accept=".gif, .jpg, .png"></h3>
                         <div id="fileArea" style="max-width: 500px; max-height: 500px;">
                             <!-- 이미지 첨부 영역 -->
                         </div>

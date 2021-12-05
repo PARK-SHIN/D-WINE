@@ -56,9 +56,29 @@ public class InventoryMgServiceImpl implements InventoryMgService {
 	}
 
 
+
+
 	@Override
-	public List<Inventory> searchInvenList(String searchStandard, String searchValue) {
-		return inventoryMgMapper.searchInvenList(searchStandard, searchValue);
+	public int invenTotalListCnt() {
+		return inventoryMgMapper.invenTotalListCnt();
+	}
+
+	@Override
+	public List<Inventory> invenTotalList(int startRow, int endRow) {
+		return inventoryMgMapper.invenTotalList(startRow, endRow);
+	}
+
+	@Override
+	public int invenSearchListCnt(String searchStandard, String searchValue) {
+		return inventoryMgMapper.invenSearchListCnt(searchStandard, searchValue);
+	}
+
+
+	@Override
+	public List<Inventory> searchInvenList(String searchStandard, String searchValue, String startDate, 
+			String endDate, int startRow, int endRow) {
+		return inventoryMgMapper.searchInvenList(searchStandard, searchValue, startDate, 
+				endDate, startRow, endRow);
 	}
 
 }

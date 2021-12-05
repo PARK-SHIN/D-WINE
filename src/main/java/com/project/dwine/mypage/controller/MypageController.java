@@ -3,6 +3,7 @@ package com.project.dwine.mypage.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -33,10 +35,10 @@ import com.project.dwine.mypage.model.vo.Point;
 import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
 import com.project.dwine.mypage.model.vo.Wish;
+import com.project.dwine.paging.PageInfo;
 
 @Transactional
 @Controller
-//@RequestMapping("/mypage")
 public class MypageController{
 	
 	private MypageService mypageService;
@@ -108,8 +110,6 @@ public class MypageController{
 			System.out.println("비밀번호변경실패");
 			return "redirect:/mypage/memberModify";
 		}
-		
-		//return "/mypage/memberModify";
 	}
 	
 	// 닉네임 변경
@@ -162,14 +162,27 @@ public class MypageController{
 	//----------------------------------------------
 	// 주문목록
 	@GetMapping("/mypage/orderlist")
-	public ModelAndView orderList(ModelAndView mv) {
+	public ModelAndView orderList(ModelAndView mv,@RequestParam(value="page", required=false) String page) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
-	    // 전체 글 개수
-	    int orderListCnt = mypageService.orderListCnt(user_no);
 	    
-	    List<Purchase> purchaseList = mypageService.selectOrderList(user_no);
-	    mv.addObject("purchaseList", purchaseList);
+	    int listCount = mypageService.getTotalListCount(user_no);
+	    System.out.println("주문목록 listCount : " + listCount);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+	    List<Purchase> purchaseList = mypageService.selectOrderListPage(user_no, startRow, endRow);
+        mv.addObject("purchaseList", purchaseList);
+        System.out.println(purchaseList + " : 주문목록");
+        mv.addObject("pi", pi);
 	    mv.setViewName("mypage/orderlist");
 		return mv;
 	}
@@ -200,32 +213,80 @@ public class MypageController{
 	// 결제취소 
 	@PostMapping("/mypage/updateCancelPayment")
 	public String CancelPaymentForm(String purchase_no, RedirectAttributes rttr) {
+		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    int user_no = user.getUser_no();
+	    
 		int result = mypageService.updateCancelPayment(purchase_no);
+		System.out.println("purchase_no : " + purchase_no);
+		Point p = mypageService.findPurchasePoint(purchase_no);
+		int point = p.getPoint();
+		int use_point = p.getUse_point();
+		System.out.println("findPurchasePoint : " + p);
 		if(result > 0) {
-			System.out.println("성공");
+			int result2 = mypageService.memberPointPayCancelDelete(user_no, point, use_point);
 			rttr.addFlashAttribute("message", "결제취소 되었습니다.");
 		} else {
-			System.out.println("실패");
 			rttr.addFlashAttribute("message", "결제취소에 실패하였습니다.");
 		}
 		return "redirect:/mypage/orderlist";
 	}
 	
-	// -----------------------------------------------
-//	@GetMapping("/review")
-//	public void reviewList() {
-//	}
-	
+	// review ------------------------------
 	// 나의 리뷰 리스트
 	@GetMapping("/mypage/review")
-	public ModelAndView reviewList(ModelAndView mv) {
+	public ModelAndView reviewList(ModelAndView mv, @RequestParam(value="page", required=false) String page) {
+	//public Map<String, Object> reviewList(@RequestParam(value="page", required=false) String page) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
 	    
-	    List<Review> reviewList = mypageService.findAllReview(user_no);
+	    int listCount = mypageService.getTotalReviewListCount(user_no);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 7);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+        List<Review> reviewList = mypageService.findAllReviewPage(user_no, startRow, endRow);
+        
 		mv.addObject("reviewList", reviewList);
+		mv.addObject("pi", pi);
 		mv.setViewName("mypage/review");
 		return mv;
+	}
+	
+	@PostMapping("/mypage/review")
+	@ResponseBody
+	public Map<String, Object> pageList(@RequestParam(value="page", required=false) String page, @RequestParam(value="sortStandard", required=false) String sortStandard) throws Exception{
+		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    int user_no = user.getUser_no();
+	    
+	    if(sortStandard == null) {
+	         sortStandard = "recent";
+	      }
+	    
+	    int listCount = mypageService.getTotalReviewListCountTest(sortStandard, user_no);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 7);
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+        
+        List<Review> reviewList = mypageService.findAllReviewPageTest(sortStandard, user_no, startRow, endRow);
+        Map<String, Object> map = new HashMap<String, Object>();
+		map.put("reviewList", reviewList);
+		map.put("pi", pi);
+		map.put("sortStandard", sortStandard);
+	
+		return map;
 	}
 	
 	@GetMapping("/mypage/reviewInsert")
@@ -236,45 +297,45 @@ public class MypageController{
 	
 	// 리뷰작성
 	@PostMapping("/mypage/reviewInsertForm")
-	public String reviewInserForm(@RequestParam MultipartFile singleFile, @RequestParam int od_no, @RequestParam int user_no ,
-			@RequestParam double star, @RequestParam String review_text, HttpServletRequest request, Model model, RedirectAttributes rttr) {
-	      String currentDir = System.getProperty("user.dir");
-	      
-	      String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\review";
-	      
-	      File mkdir = new File(filePath);
-	      if(!mkdir.exists()) mkdir.mkdirs();
-	      
-	      String originFileName = singleFile.getOriginalFilename();
-	      String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 추출
-	      String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-	      
-	      String review_image = "/images/uploadFiles/review/" + savedName;
-	      
-	      try {
-	    	  singleFile.transferTo(new File(filePath + "\\" + savedName));
-	    	  System.out.println("성공");
-				int result = mypageService.reviewInsert(review_text, review_image, star, user_no, od_no);
-				if(result > 0) {
-					int review_no = mypageService.findReviewNo();
-					int result2 = mypageService.insertReviewPoint(user_no, review_no); // 리뷰작성 후 포인트테이블에 insert
-					if(result2 > 0) {
-						int result3 = mypageService.updateAddMemberPoint(user_no);
-						if(result3> 0) {
-							System.out.println("success");
-						}
-					}
-					rttr.addFlashAttribute("message", "리뷰가 등록되었습니다.");
-				} else {
-					System.out.println("insert 실패");
-					rttr.addFlashAttribute("message", "리뷰가 등록에 실패하였습니다.");
+	public String reviewInserForm(@RequestParam MultipartFile reviewImg, @RequestParam int od_no, @RequestParam int user_no ,
+			@RequestParam double star, @RequestParam String review_text, HttpServletRequest request, Model model, RedirectAttributes rttr) throws IllegalStateException, IOException {
+		String review_image;
+		if(!reviewImg.isEmpty()) {
+			String currentDir = System.getProperty("user.dir");
+		      
+		      String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\review";
+		      
+		      File mkdir = new File(filePath);
+		      if(!mkdir.exists()) mkdir.mkdirs();
+		      
+		      String originFileName = reviewImg.getOriginalFilename();
+		      String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 추출
+		      String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+		      
+		      review_image = "/images/uploadFiles/review/" + savedName;
+		      reviewImg.transferTo(new File(filePath + "\\" + savedName));
+		} else {
+			review_image = null;
+		}
+		int result = mypageService.reviewInsert(review_text, review_image, star, user_no, od_no);
+		if(result > 0) {
+			int review_no = mypageService.findReviewNo();
+			int result2 = mypageService.insertReviewPoint(user_no, review_no); // 리뷰작성 후 포인트테이블에 insert
+			if(result2 > 0) {
+				int result3 = mypageService.updateAddMemberPoint(user_no);
+				if(result3> 0) {
+					System.out.println("success");
 				}
-	      } catch (IllegalStateException | IOException e) {
-	         e.printStackTrace();
-	      }
-	      return "redirect:/mypage/orderlist";
+			}
+			rttr.addFlashAttribute("message", "리뷰가 등록되었습니다.");
+		} else {
+			System.out.println("insert 실패");
+			rttr.addFlashAttribute("message", "리뷰가 등록에 실패하였습니다.");
+		}
+	      
+	    return "redirect:/mypage/orderlist";
 	}
-	
+
 	// 리뷰 수정 페이지로 이동
 	@GetMapping("/mypage/review/{review_no}")
 	public String reviewUpdatePage(Model model, @PathVariable int review_no) {
@@ -288,53 +349,63 @@ public class MypageController{
 	
 	// 리뷰 수정하기 버튼 클릭
 	@PostMapping("/mypage/reviewUpdateForm")
-	public String reviewUpdate(HttpServletRequest request, @RequestParam MultipartFile singleFile, 
-			@RequestParam int review_no, @RequestParam String review_text, RedirectAttributes rttr) {
-		 String currentDir = System.getProperty("user.dir");
-	      System.out.println("currentDir" + currentDir); // currentDirC:\Users\OWNER\/\/git\DWine
-	      // System.getProperty("user.dir"); => 현재 작업중인 디렉터리 가져오는 메소드
+	public String reviewUpdate(HttpServletRequest request, @RequestParam MultipartFile reviewImg, 
+			@RequestParam int review_no, @RequestParam String review_text, @RequestParam String old_review_image, RedirectAttributes rttr) throws IllegalStateException, IOException {
+		String review_image;
+		
+		String currentDir = System.getProperty("user.dir");
+		String delete_path = currentDir + "\\src\\main\\resources\\static";
+		
+		if(!reviewImg.isEmpty()) {
+			if(!old_review_image.equals("")) {
+				File deleteImg = new File(delete_path + old_review_image);
+				deleteImg.delete();
+			}
+			 currentDir = System.getProperty("user.dir");
+		      
+		      // 사진이 저장되어야 할 경로
+		      String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\review";
+		      System.out.println("filePath : " + filePath); 
+		      
+		      File mkdir = new File(filePath);
+		      if(!mkdir.exists()) mkdir.mkdirs();
+		      
+		      String originFileName = reviewImg.getOriginalFilename();
+		      String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 추출
+		      String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+		      
+		      review_image = "/images/uploadFiles/review/" + savedName;
+		      reviewImg.transferTo(new File(filePath + "\\" + savedName));
+		} else {
+			review_image = null;
+		}
 	      
-	      // 사진이 저장되어야 할 경로
-	      String filePath = currentDir + "\\src\\main\\resources\\static\\images\\uploadFiles\\review";
-	      System.out.println("filePath : " + filePath); 
-	    //filePath : C:\Users\OWNER/\/git/\/DWine/\/src/\main\resources\static\images/\/uploadFiles\review
-	      
-	      // 이미지가 저장 될 폴더 생성
-	      File mkdir = new File(filePath);
-	      // 폴더가 없으면 폴더 생성해라
-	      if(!mkdir.exists()) mkdir.mkdirs();
-	      
-	      String originFileName = singleFile.getOriginalFilename();
-	      System.out.println("originFileName : " + originFileName);
-	      String ext = originFileName.substring(originFileName.lastIndexOf(".")); // 확장자 추출
-	      String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-	      System.out.println("savedName : " + savedName);
-	      
-	      String review_image = "/images/uploadFiles/review/" + savedName;
-	      
-	      try {
-	    	  // 파일 저장하기 transferTo
-	    	  singleFile.transferTo(new File(filePath + "\\" + savedName));
-				int result = mypageService.reviewUpdate(review_no, review_text, review_image);
-				if(result > 0) {
-					rttr.addFlashAttribute("message", "리뷰가 수정 되었습니다.");
-				} else {
-					rttr.addFlashAttribute("message", "리뷰 수정에 실패하였습니다.");
-				}
-	      } catch (IllegalStateException | IOException e) {
-	         e.printStackTrace();
-	      }
-	      
-	      return "redirect:/mypage/review";
+		int result = mypageService.reviewUpdate(review_no, review_text, review_image);
+		if(result > 0) {
+			rttr.addFlashAttribute("message", "리뷰가 수정 되었습니다.");
+		} else {
+			rttr.addFlashAttribute("message", "리뷰 수정에 실패하였습니다.");
+		}
+       
+      return "redirect:/mypage/review";
 	}
 	
 	
 	// 리뷰 삭제
 	@GetMapping("/mypage/reviewDelete/{review_no}")
 	public String reviewDelete(@PathVariable int review_no, RedirectAttributes rttr) {
+		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    int user_no = user.getUser_no();
+	    
 		int result = mypageService.reviewDelete(review_no);
 		if(result > 0) {
 			rttr.addFlashAttribute("message", "리뷰가 삭제되었습니다.");
+			int result2 = mypageService.memberPointReviewDelete(user_no); // 리뷰 삭제 -> 포인트차감
+			if(result2 > 0) {
+				System.out.println("성공");
+			} else {
+				System.out.println("실패");
+			}
 		} else {
 			rttr.addFlashAttribute("message", "리뷰 삭제에 실패하였습니다.");
 		}
@@ -344,14 +415,55 @@ public class MypageController{
 	//-------------------------------------------
 	// 찜 목록 보여주기
 	@GetMapping("/mypage/wish")
-	public ModelAndView wishListPage(ModelAndView mv) {
+	public ModelAndView wishListPage(ModelAndView mv, @RequestParam(value="page", required=false) String page) {
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
-	    List<Wish> wishList = mypageService.selectWishList(user_no);
+	    int listCount = mypageService.getTotalWishListCount(user_no);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+        List<Wish> wishList = mypageService.selectWishListPage(user_no, startRow, endRow);
 	    mv.addObject("wishList",wishList);
+	    mv.addObject("pi", pi);
 	    mv.setViewName("mypage/wish");
-	    System.out.println("WISHLIST : " + wishList);
 	    return mv;
+	}
+	
+	// ajax 페이징 
+	@PostMapping("/mypage/wish")
+	@ResponseBody
+	public Map<String, Object> wishList(@RequestParam (value="page", required=false) String page) throws Exception {
+		
+		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    int user_no = user.getUser_no();
+	    int listCount = mypageService.getTotalWishListCount(user_no);
+	    int resultPage = 1;
+	    
+	    if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		
+		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+	    
+        List<Wish> wishList = mypageService.selectWishListPage(user_no, startRow, endRow);
+		
+        Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("wishList", wishList);
+		map.put("pi", pi);
+	
+		return map;
 	}
 	
 	// 찜 목록에서 삭제
@@ -375,25 +487,24 @@ public class MypageController{
 	
 	// 찜 목록에서 장바구니 담기
 	@PostMapping("/mypage/wishToCart")
-	public String insertWishToCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	@ResponseBody
+	public void insertWishToCart(HttpServletRequest request, HttpServletResponse response, RedirectAttributes rttr) throws IOException {
 		String checkValue[] = request.getParameterValues("ck_code");
 		int user_no = Integer.parseInt(request.getParameter("user_no"));
-		response.setContentType("text/html; charset=euc-kr");
+		response.setContentType("text/html; charset=utf-8");
+		//response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
 		int result = 0;
 		for (String product_no : checkValue) {
             result = mypageService.insertWishToCart(user_no, product_no);
         }
 		if(result > 0) {
-        	out.println("<script>alert('장바구니 담기에 성공하였습니다.'); location.href='/mypage/wish' </script>");
+        	out.println("<script>alert('장바구니 담기에 성공하였습니다.'); location.href='/mypage/wish'</script>");
 			out.flush();
-			return "/mypage/wish";
         } else {
-        	out.println("<script>alert('장바구니 담기에 실패하였습니다.'); location.href='/mypage/wish' </script>");
+        	out.println("<script>alert('장바구니 담기에 실패하였습니다.'); location.href='/mypage/wish'</script>");
 			out.flush();
-			return "/mypage/wish";
         }
-		
 	}
 	
 	// 내 포인트 확인
@@ -404,11 +515,9 @@ public class MypageController{
 	    List<Point> pointList = mypageService.pointList(user_no);
 	    Member m = mypageService.selectMemberPoint(user_no);
 	    model.addAttribute("m", m);
-	    System.out.println(m);
 	    List<Purchase> purchaseList = mypageService.purchaseList(user_no);
 	    mv.addObject("purchaseList", purchaseList);
 	    mv.addObject("pointList", pointList);
-	    System.out.println(pointList);
 	    mv.setViewName("mypage/point");
 	    return mv;
 	}

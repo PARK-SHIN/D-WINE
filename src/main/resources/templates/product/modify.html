@@ -5,113 +5,16 @@
 <title>product modify</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/product/modify.css" rel="stylesheet">
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-<style>
-	* {
-          font-family: 'Gowun Batang', serif;
-       }
-	.wrapper {
-		display : flex;
-		width: 1100px;
-		margin : 0 auto;
-	}
-	.input_area {
-		display: flex;
-		margin-bottom: 20px;
-	}
-	
-	.label_area {
-		width: 200px;
-	}
-	
-	.text_area {
-		resize: none;
-		width: 400px;
-		height: 300px;
-		overflow-y: scroll;
-	}
-	
-	input[type=range] {
-		display: inline;
-		background: #c4c4c4;
-		-webkit-appearance: none;
-		border-radius: 5px;
-		height: 0.5em;
-	}
-	
-	input[type=range]::-webkit-slider-thumb {
-		-webkit-appearance: none;
-		background: #83131E;
-		cursor: pointer;
-		border: 1px solid #000000;
-		height: 1em;
-		width: 1em;
-		border-radius: 50%;
-	}
-	
-	.image_area {
-		width: 350px;
-		height: 350px;
-		border: 1px solid black;
-	}
-	
-	.cancle_btn {
-		border: 1px solid #83131E;
-		border-radius: 5px;
-		background: white;
-		color: #83131E;
-	}
-	
-	.modify_btn {
-		border: 1px solid #83131E;
-		border-radius: 5px;
-		background: #83131E;
-		color: white;
-	}
-	
-	.btn {
-		height: 40px;
-		width: 100px;
-		left: 0px;
-		top: 0px;
-		border-radius: 5px;
-	}
-	
-	#modifyForm {
-		width: 800px;
-	}
-	
-	#btn_area {
-		text-align: center;
-	}
-	
-	#hash_btn {
-		background: #83131E;
-		color: white;
-		margin-left: 20px;
-		border-radius: 5px;
-		border: 1px solid #83131E;
-	}
-	.category > select {
-		width: 140px;
-	}
-	.name_area {
-		width: 400px;
-	}
-	.img {
-		width: 350px;
-		height: 350px;
-	}
-	
-</style>    
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">  
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
 	<div class="wrapper">
 		<nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
-		<div class="contens">
+		<div class="contents">
 		    <h1>상품 수정</h1>
 		    <hr>
 		    <form id="modifyForm" th:action="@{/product/modify(${_csrf.parameterName}=${_csrf.token})}" method="post" encType="multipart/form-data" onsubmit="return validate()">
@@ -315,15 +218,17 @@
 			body.val(arr[2]);
 			var tannin = $("input[name=tannin]")
 			tannin.val(arr[3]);
-			
-			/* background: linear-gradient(to right, #83131E 0%, #83131E 50%, #c4c4c4 50%, #fff 100%); */
-			
+		
 			sweetness.css('background', 'linear-gradient(to right, #83131E ' + sweetness.val() * 20 + '%, #c4c4c4 ' + sweetness.val() + '%, #c4c4c4 100%');
 			acidity.css('background', 'linear-gradient(to right, #83131E ' + acidity.val() * 20 + '%, #c4c4c4 ' + acidity.val() + '%, #c4c4c4 100%');
 			body.css('background','linear-gradient(to right, #83131E 0%, #83131E ' + body.val() * 20 + '%, #c4c4c4 ' + body.val() + '%, #c4c4c4 100%)');
 			tannin.css('background','linear-gradient(to right, #83131E 0%, #83131E ' + tannin.val() * 20 + '%, #c4c4c4 ' + tannin.val() + '%, #c4c4c4 100%)');
 		});
 				
+			
+		isUsable = false; // 중복체크 여부 체크
+		isChange = false; // 상품명 변경되었는지 체크
+		
 		// 해시태그 중복 안되게 처리
 		function validate() {
 			var mood1 = $("#mood1");
@@ -357,17 +262,25 @@
     			return false;
     		}
     		
-    		if(!isUsable) {
-    			alert("상품명 중복체크를 진행해주세요.");
-    			return false;
+    		// 상품명 변경이 안되었으면 중복체크 안함
+    		if(!isChange) {
+    			return true;
+    		} else {
+    			if(!isUsable) {
+        			alert("상품명 중복체크를 진행해주세요.");
+        			$("#nameCheck").focus();
+        			return false;
+        		}
     		}
+    		
 			
 			return true;
 		}
 		
-		var isUsable = false;
 		
-		/* $(".modify_btn").attr("disabled", true); */
+		$("input[name=kname]").on("change", function(){
+			isChange = true;
+		});
     	
     	function productNameCheck(){
     		var kname = $("input[name=kname]").val();
@@ -393,11 +306,7 @@
     							isUsable = false;
     						}
     					}
-    					/* if(isUsable) {
-    						$(".modify_btn").removeAttr("disabled");
-    					} else {
-    						$(".modify_btn").attr("disabled", true);
-    					} */
+    					
     				}, 
     				error : function(e) {
     					console.log(e);
@@ -408,7 +317,7 @@
 		
 		// 해시태그 관리 팝업
         function openHashForm(){
-            window.open("/hashtag/form", "popup", "width=800, height=600");
+        	window.open("/hashtag/form", "popup", "width=830, height=655");
 		}
 		
 		// 이미지 프리뷰

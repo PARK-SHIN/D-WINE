@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.project.dwine.orderManage.model.service.OrderManageService;
 import com.project.dwine.orderManage.model.vo.Purchase;
+import com.project.dwine.paging.PageInfo;
+import com.project.dwine.salesInquiry.model.vo.Total;
 
 @Controller
 @RequestMapping("/orderManage")
@@ -34,36 +37,81 @@ public class OrderManageController {
 	
 	// 주문리스트 조회
 	@GetMapping("list")
-	public ModelAndView orderList(ModelAndView mv) {
+	public ModelAndView orderList(ModelAndView mv, @RequestParam(value="page", required=false) String page,
+			 @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate,
+			 @RequestParam(value="searchCondition", required=false) String searchCondition, @RequestParam(value="searchValue", required=false) String searchValue,
+			 @RequestParam(value="searchStatus", required=false) String searchStatus) {
 		
-		List<Purchase> orderList = orderManageService.selectOrderList();
+		Map<String, Object> order = new HashMap<String, Object>();
+
+		order.put("startDate", startDate);
+		order.put("endDate", endDate);
+		order.put("searchCondition", searchCondition);
+		order.put("searchValue", searchValue);
+		order.put("searchStatus", searchStatus);
 		
+		int originCount = orderManageService.getSearchListCount(order);
+		
+		int resultPage = 1;
+		
+		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
+		if(page != null) {
+			resultPage = Integer.parseInt(page);
+		}
+		PageInfo pi = new PageInfo(resultPage, originCount, 10, 10);
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+        int endRow = startRow + pi.getBoardLimit() - 1;
+        order.put("startRow", startRow);
+        order.put("endRow", endRow);
+        
+		List<Purchase> orderList = orderManageService.searchOrderList(order);
+		
+		mv.addObject("originCount", originCount);
+		mv.addObject("pi", pi);
 		mv.addObject("orderList", orderList);
 		mv.setViewName("orderManage/list");
 		
 		return mv;
 	}
 	
-	// 총 주문건 수 불러오기
-	@GetMapping(value = "totalCnt")
+	@PostMapping("list")
 	@ResponseBody
-	public Map<String, Object> totalCnt(){
-		Map<String, Object> map = new HashMap<>();
-		int totalCnt = orderManageService.selectOrderList().size();
-		
-		map.put("totalCnt", totalCnt);
-		
-		return map;
-	}
+	public Map<String, Object> searchDateList(Model model, @RequestParam(value="page", required=false) String page,
+			 @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate,
+			 @RequestParam(value="searchCondition", required=false) String searchCondition, @RequestParam(value="searchValue", required=false) String searchValue,
+			 @RequestParam(value="searchStatus", required=false) String searchStatus) {
 	
-	// 주문 상태 선택하여 조회
-	@PostMapping(value = "state")
-	@ResponseBody
-	public List<Purchase> stateChangeList(@RequestParam("state") String state){
-				
-		List<Purchase> stateChangeList = orderManageService.stateChangeList(state);
+		Map<String, Object> order = new HashMap<String, Object>();
+
+		order.put("startDate", startDate);
+		order.put("endDate", endDate);
+		order.put("searchCondition", searchCondition);
+		order.put("searchValue", searchValue);
+		order.put("searchStatus", searchStatus);
 		
-		return stateChangeList;
+		int searchCount = orderManageService.getSearchListCount(order);
+		
+		int resultPage = 1;
+
+		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
+		if(page != null) {
+		resultPage = Integer.parseInt(page);
+		}
+		PageInfo pi = new PageInfo(resultPage, searchCount, 10, 10);
+		
+		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
+		int endRow = startRow + pi.getBoardLimit() - 1;
+		
+		order.put("startRow", startRow);
+        order.put("endRow", endRow);
+        
+		List<Purchase> orderList = orderManageService.searchOrderList(order);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("searchCount", searchCount);
+		map.put("pi", pi);
+		map.put("orderList", orderList);
+		return map;
 	}
 	
 	// 주문 상태 변경
@@ -136,19 +184,8 @@ public class OrderManageController {
 	public Purchase selectOrderDetail(@RequestParam String purchaseNo) {
 			
 		Purchase detail = orderManageService.selectOrderDetail(purchaseNo);
-
+		
 		return detail;
-	}
-	
-	// 검색
-	@PostMapping(value = "search")
-	@ResponseBody
-	public List<Purchase> selectSearchList(@RequestParam String searchStatus, 
-										@RequestParam String searchCondition, @RequestParam String searchValue){
-		
-		List<Purchase> searchList = orderManageService.selectSearchList(searchStatus, searchCondition, searchValue);
-		
-		return searchList;
 	}
 	
 }

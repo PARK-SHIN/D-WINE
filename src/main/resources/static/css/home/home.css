@@ -1,13 +1,29 @@
 @charset "UTF-8";
 
+* {
+	scroll-behavior: smooth;
+}
+
 .main_select {
+	position: sticky;
 	text-align: center;
+	top: 10px;
+	z-index: 10;
+}
+
+.select_btns {
+	border: 2px solid #6B0E1F;
+	width: 220px;
+	padding: 10px;
+	border-radius: 15px;
+	background: white;
+	margin: auto;
+	margin-top: 100px;
 }
 
 .main_btn {
 	border: none;
 	padding: 8px 16px;
-	margin-top: 20px;
 	text-align: center;
 	font-weight: bold;
 	color: #808080;
@@ -17,122 +33,107 @@
 	border-top-right-radius: 20px;
 	border-top-left-radius: 20px;
 	border-bottom: 2px solid #6B0E1F;
-}
-
-.recommend{
-	background-color: #6B0E1F;
-	color: white;
-	border-radius: 20px;
+	padding: 8px 16px;
 }
 
 
-figure {
-	width: 200px;
-	height: 200px;
-	animation: rotation 20s linear infinite;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: -100px;
-	margin-left: -100px;
-	transform-style: preserve-3d;
-	user-select: none;
+.slider {
+	display: inline-block;
+	width: 60%;
+	border: 2px solid #6B0E1F;
+	padding: 20px;
+	border-radius: 15px;
 }
 
-.face {
-	width: 220px;
-	height: 280px;
-	position: absolute;
-	transform-origin: center;
-	background: white;
-	text-align: center;
-	font-weight: bold;
+.slide img {
+	display: block;
+	width: 100%;
 }
 
-.face img {
-	width: 120px;
+.slick-dots {
+	display: flex;
+	justify-content: center;
+	margin: 0;
+	padding: 1rem 0;
+	list-style-type: none;
+	top: 400px !important;
+	left: 600px !important;
+}
+
+.slick-dots li {
+	margin: 0 0.25rem;
+}
+
+.slick-dots button {
+	display: block;
+	width: 0.5rem;
+	height: 0.5rem;
+	padding: 0;
+	border: none;
+	border-radius: 15px;
+	background-color: #808080;
+	color: #808080;
 	cursor: pointer;
-	-webkit-box-reflect: below 0
-		linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.4));
+	text-indent: -9999px;
 }
 
-.a {
-	transform: translate3d(0, 0, 400px);
+.slick-dots li.slick-active button {
+	width: 5rem;
+	background-color: #6B0E1F;
+	color: #6B0E1F;
 }
 
-.b {
-	transform: rotateY(30deg) translate3d(0, 0, 400px);
+.slick-prev, .slick-next {
+	font-size: 0;
+	position: absolute;
+	bottom: 20px;
+	color: #6B0E1F;
+	border: 0;
+	background: none;
+	z-index: 1;
+	top: 20px;
+	cursor: pointer;
 }
 
-.c {
-	transform: rotateY(60deg) translate3d(0, 0, 400px);
+.slick-prev {
+	left: 20px;
 }
 
-.d {
-	transform: rotateY(90deg) translate3d(0, 0, 400px);
+.slick-prev:after {
+	content: "\25C0";
+	font: 20px 'FontAwesome';
 }
 
-.e {
-	transform: rotateY(120deg) translate3d(0, 0, 400px);
+.slick-next {
+	right: 20px;
+	text-align: right;
 }
 
-.f {
-	background-color: balck;
-	transform: rotateY(150deg) translate3d(0, 0, 400px);
+.slick-next:after {
+	content: "\25B6";
+	font: 20px 'FontAwesome';
 }
 
-.g {
-	background-color: balck;
-	transform: rotateY(180deg) translate3d(0, 0, 400px);
+.slick-prev:hover:after, .slick-next:hover:after {
+	color: black;
 }
 
-.h {
-	background-color: balck;
-	transform: rotateY(-150deg) translate3d(0, 0, 400px);
+.main_wine_list {
+	text-align: center;
+	margin-top: 100px;
 }
 
-.i {
-	background-color: balck;
-	transform: rotateY(-120deg) translate3d(0, 0, 400px);
-}
-
-.j {
-	background-color: balck;
-	transform: rotateY(-90deg) translate3d(0, 0, 400px);
-}
-
-.k {
-	background-color: balck;
-	transform: rotateY(-60deg) translate3d(0, 0, 400px);
-}
-
-.l {
-	background-color: balck;
-	transform: rotateY(-30deg) translate3d(0, 0, 400px);
-}
-
-@keyframes rotation {
-	from { 
-		transform:rotateY(0);
-	}
-	
-	to {
-		transform: rotateY(-360deg);
-	}
-}
- 
 .about_content {
-	display: none;
 	min-height: 100%;
 	padding-top: 20px;
 	margin: auto;
-	height: 800px;
+	height: 1000px;
 }
 
 .about_text {
 	font-size: large;
 	font-weight: bold;
-	width: 40%;
+	width: 620px;
 	margin: auto;
 	border-radius: 15px;
 	border: 2px solid #6B0E1F;
@@ -140,28 +141,28 @@ figure {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, -0%);
 	z-index: 2;
 	background: white;
 }
 
 .about_text b {
-	font-size:larger;
+	font-size: larger;
 }
 
 #waveArea {
-	width: 100%;	
-	height: 800px;
+	width: 100%;
+	height: 1000px;
 }
 
 canvas {
-	position:relative;
+	position: relative;
 	width: 100%;
 	height: 100%;
 	z-index: 1
 }
 
 footer {
-	z-index:3;
+	z-index: 3;
 	margin-top: 0;
 }

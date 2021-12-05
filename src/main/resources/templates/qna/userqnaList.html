@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<title>1:1문의내역</title>
+<link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/qna/userqnaList.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
+<script>
+	const successMessgae = '[[${ message }]]';
+	
+	if(successMessgae){
+		alert(successMessgae);
+	}
+</script>
+</head>
+<body>
+<header th:include="common/header :: header"></header>
+<div class="weather" th:include="recommendWine/weather"></div>
+<div id="container">
+	<div class="contents">
+        <div>
+            <h3 style="font-size: 24px; margin-left: 30px;">나의 문의 내역
+                <button onclick="insertQ();" class="openArea"style="margin-left: 790px;">글 작성</button>
+            </h3>
+        </div>
+        <hr style="width: 800px; padding-right: 230px; margin-bottom: 20px;">
+        <div class="previewArea">
+            <span style="margin-left: 55px;" class="titleBold">문의날짜</span> <span style="margin-left:350px;" class="titleBold">문의제목</span>
+        </div>
+        <div class="replyArea" th:each="q : ${ qnaList }">
+        	<th:block th:if="${q.answer_status} == null">
+	        	<div style="float:left; margin-top: 17px; margin-left: 30px;"><button class="wait nocursor" disabled>답변대기</button></div>
+        	</th:block>
+        	<th:block th:if="${q.answer_status} == 'Y'">
+        		<div style="float:left; margin-top: 17px; margin-left: 30px;"><button class="success nocursor" disabled>답변완료</button></div>
+        	</th:block>
+        <div class="allArea previewArea"><div class="main" style="margin-left: 25px;">
+                <label th:text="${#dates.format(q.qna_date, 'yyyy.MM.dd')}"></label>
+                <label onclick="question_detail(this)" class="clickP" style="margin-left: 280px;" th:text="${q.qna_title}"></label>
+            </div><div style="display: none;" class="hide">
+                <div style="margin-left: 30px;">
+                    <p th:text="${q.qna_content}"></p>
+                </div>
+                <div>
+                    <img th:src="${q.qna_image}">
+                </div>
+                <div class="btnArea">
+                	<th:block th:if="${q.answer_status} == 'Y'">
+                		<a class="wait delhover successA" th:href="@{/qna/delete/{qna_no}(qna_no=${q.qna_no})}">삭제</a>
+        			</th:block>
+        			<th:block th:if="${q.answer_status} == null">
+        				<a class="openArea" th:href="@{/qna/modify/{qna_no}(qna_no=${q.qna_no})}">수정</a>
+                		<a class="wait delhover" th:href="@{/qna/delete/{qna_no}(qna_no=${q.qna_no})}">삭제</a>	
+		        	</th:block>
+                	
+                </div>
+                <div class="answer" style="margin-left: 30px;">
+                	<p style="margin-top:10px;" th:text="${q.answer_content}">
+                	</p>
+                </div>
+                <p onclick="folding(this)" class="clickP" style="margin-left: 888px;">▲ 접기</p>
+            </div>
+        </div>
+        </div>
+        <div class="paging__area">
+        		<ul class="paging_ul">
+					<li><a th:href="@{/qna/userqna(page=1)}">&lt;&lt;</a></li>
+					<li th:if="${ pi.page > 1 }"><a th:href="@{/qna/userqna(page=${pi.page - 1})}">&lt;</a></li>
+					<li th:unless="${ pi.page > 1 }"><a href="#">&lt;</a></li>
+					<li th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}">
+						<a th:if="${ pi.page == page }" class="current_page" th:text="${page}" href="#"></a>
+						<a th:unless="${ pi.page == page }" th:text="${page}" th:href="@{/qna/userqna(page=${page})}"></a>
+					</li>
+					<li th:if="${ pi.page < pi.maxPage }"><a th:href="@{/qna/userqna(page=${pi.page + 1})}">&gt;</a></li>
+					<li th:unless="${ pi.page < pi.maxPage }"><a href="#">&gt;</a></li>
+					<li><a th:href="@{/qna/userqna(page=${pi.endPage})}">&gt;&gt;</a></li>
+				</ul>
+		</div>
+    </div>
+   </div>
+
+    <script>
+	    var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	       xhr.setRequestHeader(header, token);
+	    });
+        function question_detail(elem) {
+           // console.log(elem); //p영역나옴
+            var mainArea = elem.parentNode; // main영역
+           // console.log(mainArea);
+
+            var hideArea = mainArea.nextSibling;
+          //  console.log(hideArea);
+
+            var allArea = mainArea.parentNode;
+           // console.log(allArea); // allArea영역나옴
+
+            var a = allArea.firstChild.nextSibling;
+          //  console.log(a);
+            
+            var main = document.querySelector('.main');
+            let hide = document.querySelector('.hide');
+
+            if (hideArea.style.display == 'none') {
+                hideArea.style.display = '';
+                // mainArea.style.display = 'none';
+            } else {
+                hideArea.style.display = 'none';
+                // mainArea.style.display = '';
+            }
+            elem.style.display = '';
+        }
+
+        function folding(elem) {
+            console.log(elem);
+            var test2 = elem.parentNode;
+            console.log(test2);
+            var test = elem.parentNode.parentNode;
+            console.log(test);
+
+            var test1 = test.firstChild;
+            console.log(test1);
+
+            if (test1.style.display == '') {
+                test2.style.display = 'none';
+            }
+        }
+        
+        function insertQ(){
+        	location.href = "/qna/insertQ";
+        }
+        
+        //var sortStandard = $("select[name=sortStandard]").val();
+        
+        /* $(document).on("change", "select[name=sortStandard]", function(){
+        	 var page = 1;
+        	 var sortStandard = $("select[name=sortStandard]").val();
+        	 console.log(sortStandard);
+        	$.ajax({ 
+        		url : "/qna/userqna",
+             	data : {page : page, sortStandard: sortStandard},
+             	type : "get"
+        	});
+        }); */
+    </script>
+    
+ <footer th:include="common/footer :: footer"></footer>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.project.dwine.salesInquiry.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,5 +13,10 @@ public interface SalesInquiryMapper {
 
 	Total selectTodayStatus();
 
-	List<Total> dailyList();
+	List<Total> yearSales();
+
+	int getDailyCount(Map<String, Object> daily);
+
+	List<Total> searchDailyList(Map<String, Object> daily);
+
 }

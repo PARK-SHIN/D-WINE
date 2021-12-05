@@ -9,8 +9,9 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Nanum+Gothic&display=swap" rel="stylesheet">
     <style>
-        .star-ratings {
+.star-ratings {
   color: #aaa9a9; 
   position: relative;
   unicode-bidi: bidi-override;
@@ -40,14 +41,15 @@
     </style>
 </head>
 <body>
-	<header th:include="common/header :: header"></header>
+<header th:include="common/header :: header"></header>
+<div class="weather" th:include="recommendWine/weather"></div>
 	<div id="container">
         <nav class="snb" th:replace="/mypage/mypageSubmenu.html">
         </nav>
         <div class="contents">
             <div class="inner">
                 <div>
-                    <h3 style="font-size: 24px;">리뷰 작성</h3>
+                    <h3 style="font-size: 24px;">리뷰 수정</h3>
                 </div>
                 <hr style="width: 700px; padding-right: 130px;">
                 <form id="reviewUpdateForm" th:action="@{/mypage/reviewUpdateForm}" method="post" enctype="multipart/form-data">   
@@ -97,17 +99,18 @@
                     <input name="user_no" type="hidden" th:value=${review.user_no}>
                     <input name="od_no" type="hidden" th:value=${review.od_no}>
                     <input name="review_no" type="hidden" th:value=${review.review_no}>
+                    <input name="old_review_image" type="hidden" th:value=${review.review_image}>
                         <h3>리뷰내용 <span style="font-size: 12px;">(10자 이상 500자 미만)</span></h3>
                         <div>
-                            <input type="text" name="review_text" style="border: 1px solid lightgray; width: 700px; height: 90px;" th:value="${review.review_text}">
+                            <input maxlength="500" type="text" name="review_text" style="border: 1px solid lightgray; width: 700px; height: 90px;" th:value="${review.review_text}">
                         </div>
                     </div>
                     <br>
                     <div>
-                        <h3>리뷰이미지 첨부 <span style="font-size: 12px;">(1장만 첨부 가능합니다.)&nbsp;</span><input name="singleFile" type="file" id="imgfile"></h3>
-                        <div id="fileArea" style="border: 1px solid lightgray; width: 500px; height: 500px;">
+                        <h3>리뷰이미지 첨부 <span style="font-size: 12px;">(1장만 첨부 가능합니다.)&nbsp;</span><input name="reviewImg" type="file" id="imgfile"></h3>
+                        <div id="fileArea">
                             <!-- 이미지 첨부 영역 -->
-                            <img alt="" th:src="${review.review_image}" width="500px" height="500px">
+                            <img alt="" th:src="${review.review_image}">
                         </div>
                     </div>
                     <br>

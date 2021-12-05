@@ -1,6 +1,7 @@
 package com.project.dwine.orderManage.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,13 +20,13 @@ public class OrderManageServiceImpl implements OrderManageService {
 	}
 
 	@Override
-	public List<Purchase> selectOrderList() {
-		return orderManageMapper.selectOrderList();
+	public int getSearchListCount(Map<String, Object> order) {
+		return orderManageMapper.getSearchListCount(order);
 	}
 
 	@Override
-	public List<Purchase> stateChangeList(String state) {
-		return orderManageMapper.stateChangeList(state);
+	public List<Purchase> searchOrderList(Map<String, Object> order) {
+		return orderManageMapper.searchOrderList(order);
 	}
 
 	@Override public int updateOrderStatus(String purchaseNo, String orderStatus) {
@@ -41,6 +42,11 @@ public class OrderManageServiceImpl implements OrderManageService {
 	public int updateMember(int userNo, int usePoint) {
 		return orderManageMapper.updateMember(userNo, usePoint);
 	}
+	
+	@Override
+	public int updateAllChange(String purchaseNo, String orderStatus) {
+		return orderManageMapper.updateAllChange(purchaseNo, orderStatus);
+	}
 	 
 	@Override
 	public int deleteOrder(String purchaseNo) {
@@ -52,14 +58,10 @@ public class OrderManageServiceImpl implements OrderManageService {
 		return orderManageMapper.selectOrderDetail(purchaseNo);
 	}
 
-	@Override
-	public int updateAllChange(String purchaseNo, String orderStatus) {
-		return orderManageMapper.updateAllChange(purchaseNo, orderStatus);
-	}
 
-	@Override
-	public List<Purchase> selectSearchList(String searchStatus, String searchCondition, String searchValue) {
-		return orderManageMapper.selectSearchList(searchStatus, searchCondition, searchValue);
-	}
+
+
+
+
 	
 }

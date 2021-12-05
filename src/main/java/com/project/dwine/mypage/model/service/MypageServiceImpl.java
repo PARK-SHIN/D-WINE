@@ -1,15 +1,12 @@
 package com.project.dwine.mypage.model.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.project.dwine.member.model.vo.Member;
 import com.project.dwine.mypage.model.dao.MypageMapper;
-import com.project.dwine.mypage.model.vo.Payment;
 import com.project.dwine.mypage.model.vo.Point;
 import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
@@ -30,22 +27,10 @@ public class MypageServiceImpl implements MypageService{
 		return mypageMapper.memberModify(user_no, user_pw, user_nickname, user_name, user_phone);
 	}
 
-
-	@Override
-	public List<Review> findAllReview(int userNo) {
-		return mypageMapper.findAllReview(userNo);
-	}
-
 	@Override
 	public Member selectMember(int user_no) {
 		return mypageMapper.selectMember(user_no);
 	}
-
-	@Override
-	public int memberDelete(int user_no, String user_pw) {
-		return mypageMapper.memberDelete(user_no, user_pw);
-	}
-
 
 	@Override
 	public Review selectOneReview(int review_no) {
@@ -63,11 +48,6 @@ public class MypageServiceImpl implements MypageService{
 	}
 
 	@Override
-	public List<Purchase> selectOrderList(int user_no) {
-		return mypageMapper.selectOrderList(user_no);
-	}
-
-	@Override
 	public int pickupModify(String purchase_no, String pickup_place, String pickup_date, String pickup_time) {
 		return mypageMapper.pickupModify(purchase_no, pickup_place, pickup_date, pickup_time);
 	}
@@ -80,11 +60,6 @@ public class MypageServiceImpl implements MypageService{
 	@Override
 	public int pwdModify(int user_no, String user_pwd, String newPw) {
 		return mypageMapper.pwdModify(user_no, user_pwd, newPw);
-	}
-
-	@Override
-	public List<Wish> selectWishList(int user_no) {
-		return mypageMapper.selectWishList(user_no);
 	}
 
 	@Override
@@ -154,9 +129,64 @@ public class MypageServiceImpl implements MypageService{
 		return mypageMapper.updateAddMemberPoint(user_no);
 	}
 
+	@Override
+	public List<Purchase> selectOrderListPage(int user_no, int startRow, int endRow) {
+		return mypageMapper.selectOrderListPage(user_no, startRow, endRow);
+	}
 
+	@Override
+	public int getTotalListCount(int user_no) {
+		return mypageMapper.getTotalListCount(user_no);
+	}
 
+	@Override
+	public int getTotalWishListCount(int user_no) {
+		return mypageMapper.getTotalWishListCount(user_no);
+	}
 
-	
+	@Override
+	public List<Wish> selectWishListPage(int user_no, int startRow, int endRow) {
+		return mypageMapper.selectWishListPage(user_no, startRow, endRow);
+	}
+
+	@Override
+	public List<Review> findAllReviewPage(int user_no, int startRow, int endRow) {
+		return mypageMapper.findAllReviewPage(user_no, startRow, endRow);
+	}
+
+	@Override
+	public int getTotalReviewListCount(int user_no) {
+		return mypageMapper.getTotalReviewListCount(user_no);
+	}
+
+	@Override
+	public int memberPointReviewDelete(int user_no) {
+		return mypageMapper.memberPointReviewDelete(user_no);
+	}
+
+	@Override
+	public Point findPurchasePoint(String purchase_no) {
+		return mypageMapper.findPurchasePoint(purchase_no);
+	}
+
+	@Override
+	public int memberPointPayCancelDelete(int user_no, int point, int use_point) {
+		return mypageMapper.memberPointPayCancelDelete(user_no, point, use_point);
+	}
+
+	@Override
+	public int getTotalReviewListCountTest(String sortStandard, int user_no) {
+		return mypageMapper.getTotalReviewListCountTest(sortStandard, user_no);
+	}
+
+	@Override
+	public List<Review> findAllReviewPageTest(String sortStandard, int user_no, int startRow, int endRow) {
+		return mypageMapper.findAllReviewPageTest(sortStandard, user_no, startRow, endRow);
+	}
+
+	@Override
+	public Review selectReviewImagePath(int review_no) {
+		return mypageMapper.selectReviewImagePath(review_no);
+	}
 
 }

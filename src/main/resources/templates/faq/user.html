@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <title>FAQ</title>
+    <script>
+	const successMessgae = '[[${ message }]]';
+	
+	if(successMessgae){
+		alert(successMessgae);
+	}
+	</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="/css/common/common.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+    <!-- <link href="/css/orderManage/list.css" rel="stylesheet"> -->
+    <style>
+    	* {
+    		font-family: 'Gowun Batang', serif;
+    	}
+    	
+        #container {
+            width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            border: 1px solid red;
+            height: 1400px;
+        }
+
+        .snb {
+            width: 200px;
+            /* height: 2500px; */
+            height: 100%;
+            border: 1px solid blue;
+        }
+
+        .contents {
+            width: 888px;
+            height: 100%;
+            /*2500px -> 100%*/
+            /* border: 1px solid black; */
+        }
+
+        .inner {
+            margin-top: 30px;
+            margin-left: 100px;
+            width: 900px;
+            /* height: 100%; */
+            border: 1px solid green;
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .snb {
+            width: 210px;
+        }
+
+        .snb_inner {
+            width: 170px;
+            margin: 30px auto 0;
+        }
+        
+        .btnArea {
+        	float: right;
+        	margin-bottom: 20px;
+        }
+
+        [class $= "Btn"] {
+            cursor: pointer;
+        }
+        
+        input:focus, textarea:focus {
+        	outline: none;
+        }
+
+        .insertBtn {
+            width: 80px;
+            height: 30px;
+            background: #6B0E1F;
+            border-radius: 5px;
+            color: white;
+            margin-top: auto;
+            margin-bottom: auto;
+            border: none;
+            font-size: 14px;
+        }
+
+        .deleteBtn {
+            border: 1px solid #C4C4C4;
+            background: #FFFFFF;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #525252;
+            width: 80px;
+            height: 30px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .searchBox {
+            width: 200px;
+            height: 30px;
+            background: #FFFFFF;
+            border: 1px solid #C4C4C4;
+            margin-top: 20px;
+        }
+
+        .searchBtn {
+            width: 40px;
+            height: 30px;
+        }
+
+        table {
+            width: 900px;
+            text-align: center;
+            font-weight: lighter;
+            font-size: 15px;
+            border-collapse: collapse; 
+        }
+
+        tr {
+            height: 35px;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(196, 196, 196, 0.1);
+            cursor: pointer;
+        }
+        
+        th {
+            font-weight: lighter;
+            background-color: rgba(196, 196, 196, 0.3);
+        }
+        
+        table .listContent {
+        	width: 600px;
+        }
+
+        /* 모달 */       
+        #modal.modal-overlay {
+            position: fixed;
+            top: 20%;
+            left: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            display: none;
+        }
+
+        
+        #modal .modal-window {
+            background: #FFFFFF;
+            border-radius: 5px;
+            border: 1px solid #C4C4C4;
+            width: 600px;
+            height: 350px;
+            position: relative;
+        }
+        
+        #modal .title {
+            text-align: center;
+            display: inline;
+            font-size: 16px;
+        }
+
+       #modal .title h2 {
+            display: inline;
+        }
+
+        #modal .close-area {
+            display: inline;
+            float: right;
+            padding-right: 10px;
+            cursor: pointer;
+            color: black;
+        }
+        
+       	span {
+        	font-size: 12px;
+       	}
+        
+       	#modal .content {
+            margin-top: 20px;
+            padding: 0px 10px;
+            color: black;
+        }
+
+        #modal label {
+            margin-right: 40px;
+            font-size: 14px;
+        }
+
+        #modal input {
+            border: none;
+            width: 480px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        
+        textarea {
+        	border: none;
+        }
+
+        .cancleBtn {
+            width: 300px;
+            height: 35px;
+            border-radius: 5px;
+            border: none;
+            color: #FFFFFF;
+            margin-top: 15px;
+            background: #6B0E1F;
+            margin-left: 150px;
+        }
+
+        #modal .modal_layer {
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0, 0, 0, 0.3);
+            z-index:-1;
+        }
+        
+        .innerTitle, .innerContent {
+        	display: flex;
+        }
+        
+        .dateDiv {
+        	text-align: right;
+        	margin-right: 10px;
+        }
+
+    </style>
+</head>
+<body>
+	<header th:include="common/header :: header"></header>
+    <div id="container">
+        <div class="contents">
+            <div class="inner">
+                <div class="headerArea">    
+                    <h3 style="font-size: 24px; margin-bottom: 15px;">FAQ</h3>
+                </div>
+                <hr style="padding-right: 130px;">
+
+                <div>
+                    <div class="btnArea">
+                    	<input type="search" class="searchBox" name="searchValue" placeholder="제목 검색">
+                    	<button type="button" class="searchBtn">이미지</button>
+                    </div>
+
+                    <table>
+                    	<thead>
+	                        <tr>
+	                            <th>번호</th>
+	                            <th>제목</th>
+	                            <th>내용</th>
+	                        </tr>
+                        </thead>
+                        <tbody id="fList">
+	                        <tr th:each="f : ${ faqList }" class="trFaq">
+	                            <td th:text="${ f.faqNo }"></td>
+	                            <td th:text="${ f.faqTitle }"></td>
+	                            <td th:text="${ f.faqContent }" class="listContent"></td>
+	                        </tr>
+                        </tbody>
+                    </table>
+                </div>    
+
+                <!-- 조회 모달 -->
+                <div id="modal" class="modal-overlay">
+                    <div class="modal-window">
+                        <div class="close-area">X</div>
+                        <div class="title">
+                            <h4>FAQ 조회</h4>
+                        </div>
+                        <div class="content">
+                            <hr style="color: #C4C4C4;">
+	                           	<label>제목</label>
+	                            <input type="text" name="title" id="modalTitle" maxlength="100" readonly="readonly">
+                            <hr style="color: #C4C4C4;">
+                            <div class="innerContent">
+	                            <div><label>내용</label></div>
+	                            <div><textarea rows="6" cols="70" name="content" id="modalContent" 
+	                            		maxlength="500" style="resize: none" readonly="readonly"></textarea></div>
+	                        </div>    		
+                            <hr style="color: #C4C4C4;">
+                            <button type="button" class="cancleBtn">닫기</button>
+                        </div>
+                    </div>
+
+                    <div class="modal_layer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:include="common/footer :: footer"></footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script>
+	    var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+	    
+		// 모달창 이벤트
+        $(document).on("click",".trFaq", function(){
+            $("#modal").css("display", "block");
+        });
+
+        $(document).on("click",".close-area", function(){
+            $("#modal").css("display", "none");
+        });
+
+        $(document).on("click",".cancleBtn", function(){
+            $("#modal").css("display", "none");
+        });
+ 
+        // 목록 내용 말줄임 처리
+       $(".listContent").each(function(){
+        	var content = $(this).text();
+        	
+        	if(content.length > 50){
+            	content = content.substr(0, 50) + '...';
+            	$(this).text(content);
+    	    } else {
+    	    	$(this).text(content);
+    	    }
+        });
+ 
+    	// 제목 검색
+    	$(document).on("click",".searchBtn", function(){
+			var searchValue = $("input[name=searchValue]").val();
+						
+			$.ajax({
+				url : "/faq/search",
+				type : "post",
+				data : {searchValue : searchValue},
+				success : function(data){
+					tableHTML = '';
+					
+					if(data.length != 0) {
+        				$.each(data, function(index, item){
+        					
+        					tableHTML += "<tr  class='trFaq'><td>" + item.faqNo + "</td>"
+                            		   + "<td>" + item.faqTitle + "</td>"
+                            		   + "<td class='listContent'>" + item.faqContent + "</td></tr>";
+   		           		
+        					$("#fList").html(tableHTML);
+        					
+        					$(".listContent").each(function(){
+        			        	var content = $(this).text();
+        			        	
+        			        	if(content.length > 40){
+        			            	content = content.substr(0, 40) + '...';
+        			            	$(this).text(content);
+        			    	    } else {
+        			    	    	$(this).text(content);
+        			    	    }
+        			        });
+            			});	
+        			} else {
+        				tableHTML += "<tr><td colspan='4' rowspan='5'>검색 결과가 존재하지 않습니다.</td></tr>"
+        						   + "<tr></tr><tr></tr><tr></tr><tr></tr>";
+        				$("#fList").html(tableHTML);
+        			}
+				},
+				error : function(e){
+					console.log(e);
+				}
+			});
+		});
+
+    	
+    	// 상세보기
+    	$(document).on('click', "tbody tr", function(){
+    		var faqNo = $(this).children().eq(0).text();
+    		console.log(faqNo);
+    		
+    		$.ajax({
+    			url : "/faq/detail",
+    			type : "post",
+    			data : {faqNo : faqNo},
+    			success : function(data){
+    				
+    				$("#modalTitle").val(data.faqTitle);
+    				$("#modalContent").val(data.faqContent);
+    				
+    			},
+    			error : function(e){
+    				console.log(e);
+    			}
+    		});
+    	});
+        
+    </script>
+</body>
+</html>

@@ -34,4 +34,9 @@ public class RecommendServiceImpl implements RecommendService{
 		return recommendMapper.searchWineList(hashName);
 	}
 
+	@Override
+	public List<Product> selectProductByWeather(int typeNo, int varietyNo1, int varietyNo2) {
+		return recommendMapper.selectProductByWeather(typeNo, varietyNo1, varietyNo2);
+	}
+
 }

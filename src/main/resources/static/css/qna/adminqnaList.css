@@ -1,0 +1,250 @@
+@charset "UTF-8";
+
+#container {
+	width: 1100px;
+	margin: 0 auto;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+	height: auto;
+}
+
+.snb {
+	width: 210px;
+}
+
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+.contents {
+	width: 888px;
+	height: 100%;
+}
+
+.inner {
+	margin-top: 30px;
+	margin-left: 27px;
+	width: 836px;
+	height: 100%;
+}
+
+label {
+	/*  font-size: 15px; */
+	margin-left: 30px;
+}
+
+.marginClass {
+	margin-bottom: 20px;
+	margin-top: 20px;
+	margin-left: 30px;
+}
+
+.cmd {
+	margin-top: 20px;
+	margin-left: 500px;
+}
+
+#save {
+	padding: 10px 20px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 0px;
+	cursor: pointer;
+}
+
+.colorred {
+	color: red;
+}
+
+.clickP:hover {
+	cursor: pointer;
+}
+
+.clickP {
+	width: 200px;
+	text-overflow: ellipsis; /* 위에 설정한 200px 보다 길면 말줄임표처럼 표시합니다. */
+	white-space: nowrap; /* 줄바꿈을 하지 않습니다. */
+	overflow: hidden; /* 내용이 길면 감춤니다 */
+	display: block;
+}
+
+.previewArea {
+	margin-left: 120px;
+	padding-bottom: 15px;
+}
+
+.main {
+	background-color: #ebebeb;
+	border-radius: 10px;
+	height: 48px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	width: 700px;
+}
+
+.answer {
+	border-top: 1px solid #000;
+	margin-top: 5px;
+}
+
+.openArea {
+	padding: 5px 15px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 0px;
+	cursor: pointer;
+	margin-right: 30px;
+}
+
+.wait {
+	padding: 5px 15px;
+	border-radius: 5px;
+	background-color: #fff;
+	color: #83131E;
+	border: 1px solid #83131E;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal .bg {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modalBox {
+	position: absolute;
+	background-color: #fff;
+	width: 700px;
+	height: 640px;
+	padding: 15px;
+}
+
+.hidden {
+	display: none;
+}
+
+.labelSize {
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.closeBtn {
+	margin-left: 680px;
+}
+
+.submitInput {
+	padding: 10px 15px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 0px;
+	cursor: pointer;
+	width: 80px;
+	margin-left: 310px;
+}
+
+.labelBold {
+	font-weight: bold;
+}
+
+.parent {
+	width: 90%;
+	margin: 10px auto;
+}
+
+.first {
+	float: left;
+	width: 20%;
+	box-sizing: border-box;
+	height: 50px;
+}
+
+.second {
+	float: left;
+	margin-left: 5%;
+	width: 40%;
+	box-sizing: border-box;
+	height: 50px;
+}
+
+.third {
+	float: right;
+	width: 30%;
+	box-sizing: border-box;
+	height: 50px;
+}
+
+.date {
+	margin-left: 8px;
+}
+
+.closeBtn:hover {
+	cursor: pointer;
+}
+
+.delBtn:hover {
+	cursor: pointer;
+}
+
+.success {
+	padding: 5px 15px;
+	border-radius: 5px;
+	background-color: #83131E;
+	color: #fff;
+	border: 1px solid #83131E;
+}
+
+.titleBold {
+	font-weight: bold;
+}
+/* 페이징 부분 1201 변경*/
+.paging_ul {
+	height: 50px;
+	line-height: 50px;
+	display: flex;
+	justify-content: center;
+	list-style: none;
+	width: 480px;
+	margin: 30px auto;
+}
+
+.paging_ul a {
+	text-decoration: none;
+	color: #282A35;
+	display: block;
+	text-align: center;
+	border: 1px solid #dae0e9;
+	margin-left: 10px;
+	width: 37px;
+	height: 37px;
+	line-height: 37px;
+	font-size: 12px;
+	border-radius: 5px;
+}
+
+.paging_ul a.current_page {
+	border: 1px solid #83131E;
+	background: #83131E;
+	color: #fff;
+	border-radius: 5px;
+}
+/*수정*/
+footer {
+	position: static;
+}
+.nocursor {
+	cursor : default;
+}

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dwine.personalQnA.model.dao.PersonalQnAMapper">
+
+	<resultMap type="com.project.dwine.personalQnA.model.vo.PersonalQ"	id="PersonalQResultMap">
+		<id property="qna_no" column="QNA_NO" />
+		<result property="qna_title" column="QNA_TITLE" />
+		<result property="qna_content" column="QNA_CONTENT" />
+		<result property="qna_image" column="QNA_IMAGE" />
+		<result property="qna_status" column="QNA_STATUS" />
+		<result property="qna_date" column="QNA_DATE" />
+		<result property="qna_answer" column="QNA_ANSWER" />
+		<result property="user_no" column="USER_NO" />
+		<result property="a_no" column="a_no" />
+		<result property="answer_content" column="answer_content" />
+		<result property="anser_date" column="anser_date" />
+		<result property="answer_status" column="answer_status" />
+		<result property="user_id" column="user_id" />
+		<!-- <collection property="answerList" resultMap="PersonalAResultMap"/> -->
+	</resultMap>
+	
+	<resultMap type="com.project.dwine.personalQnA.model.vo.PersonalA"	id="PersonalAResultMap">
+		<id property="a_no" column="A_NO" />
+		<result property="answer_content" column="ANSWER_CONTENT" />
+		<result property="anser_date" column="ANSER_DATE" />
+		<result property="answer_status" column="ANSWER_STATUS" />
+		<result property="qna_no" column="QNA_NO" />
+	</resultMap>
+	
+	<insert id="insertUserQna" parameterType="com.project.dwine.personalQnA.model.vo.PersonalQ">
+		INSERT INTO QNA
+		(QNA_NO, QNA_TITLE, QNA_CONTENT, 
+		 QNA_IMAGE,
+		 QNA_STATUS, QNA_DATE, QNA_ANSWER, USER_NO)
+		VALUES
+		(
+			SEQ_QNA_NO.NEXTVAL, 
+			#{qna_title}, 
+			#{qna_content}, 
+			#{qna_image},
+			'Y', 
+			SYSDATE, 
+			'N', 
+			#{user_no}
+		)
+	</insert>
+	
+	<insert id="insertUserQnaNoImage">
+		INSERT INTO QNA
+		(QNA_NO, QNA_TITLE, QNA_CONTENT,
+		 QNA_STATUS, QNA_DATE, QNA_ANSWER, USER_NO)
+		VALUES
+		(
+			SEQ_QNA_NO.NEXTVAL, 
+			#{qna_title}, 
+			#{qna_content},
+			'Y', 
+			SYSDATE, 
+			'N', 
+			#{user_no}
+		)
+	</insert>
+	
+	<update id="deleteUserQna" parameterType="com.project.dwine.personalQnA.model.vo.PersonalQ">
+		UPDATE QNA
+		SET QNA_STATUS = 'N'
+		WHERE QNA_NO = #{qna_no}
+	</update>
+	
+	<select id="selectOneQna" resultMap="PersonalQResultMap">
+		SELECT
+			QNA_NO,
+			QNA_TITLE,
+			QNA_CONTENT,
+			QNA_IMAGE,
+			QNA_STATUS,
+			QNA_DATE,
+			QNA_ANSWER,
+			USER_NO
+		FROM QNA
+		WHERE QNA_NO = #{qna_no}
+	</select>
+	
+	<update id="modifyUserQna" parameterType="com.project.dwine.personalQnA.model.vo.PersonalQ">
+		UPDATE QNA
+		SET QNA_TITLE = #{qna_title},
+		QNA_CONTENT = #{qna_content},
+		QNA_IMAGE = #{qna_image}
+		WHERE QNA_NO = #{qna_no}
+	</update>
+	
+	<update id="modifyUserQnaNoImage" parameterType="com.project.dwine.personalQnA.model.vo.PersonalQ">
+		UPDATE QNA
+   		SET  QNA_TITLE = #{qna_title},
+   		   	QNA_CONTENT = #{qna_content}
+		WHERE QNA_NO = #{qna_no}
+	</update>
+	
+	<insert id="insertAdminAnswer" parameterType="com.project.dwine.personalQnA.model.vo.PersonalA">
+		INSERT INTO ANSWER 
+			(A_NO,
+			ANSWER_CONTENT,
+			ANSER_DATE,
+			ANSWER_STATUS,
+			QNA_NO)
+		VALUES (SEQ_ANSWER_NO.NEXTVAL, #{answer_content}, SYSDATE, 'Y', #{qna_no})
+	</insert>
+	
+	<update id="adminDeleteUserQna" parameterType="com.project.dwine.personalQnA.model.vo.PersonalQ">
+		UPDATE QNA
+		SET QNA_STATUS = 'N'
+		WHERE QNA_NO = #{qna_no}
+	</update>
+	
+	<update id="adminAnswerModify" parameterType="com.project.dwine.personalQnA.model.vo.PersonalA">
+		UPDATE ANSWER
+		SET ANSWER_CONTENT = #{answer_content}
+		WHERE QNA_NO = #{qna_no}
+	</update>
+	
+	<select id="findUserQnaListPage" resultMap="PersonalQResultMap">
+		SELECT
+			QNA_NO,
+			QNA_TITLE,
+			QNA_CONTENT,
+			QNA_IMAGE,
+			QNA_STATUS,
+			QNA_DATE,
+			QNA_ANSWER,
+			USER_NO,
+            A_NO,
+            ANSWER_CONTENT,
+            ANSER_DATE,
+            ANSWER_STATUS,
+            USER_ID
+		FROM (SELECT ROWNUM RNUM, QLIST.* FROM (SELECT
+            Q.QNA_NO,
+			QNA_TITLE,
+			QNA_CONTENT,
+			QNA_IMAGE,
+			QNA_STATUS,
+			QNA_DATE,
+			QNA_ANSWER,
+			Q.USER_NO,
+            A_NO,
+            ANSWER_CONTENT,
+            ANSER_DATE,
+            ANSWER_STATUS,
+            USER_ID FROM QNA Q
+            LEFT  JOIN ANSWER A ON (Q.QNA_NO = A.QNA_NO)
+            LEFT JOIN MEMBER M ON (M.USER_NO = Q.USER_NO)
+		WHERE QNA_STATUS = 'Y'
+        AND Q.USER_NO = #{user_no}
+        ORDER BY QNA_DATE DESC) QLIST
+        ) WHERE RNUM BETWEEN  #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="getTotalQnaListCount" resultType="_int">
+		SELECT COUNT(*) FROM QNA WHERE QNA_STATUS = 'Y'
+		<if test="user_no != null">AND USER_NO = #{user_no}</if>
+	</select>
+	
+	<select id="findAllQnaListPage" resultMap="PersonalQResultMap">
+		 SELECT
+			QNA_NO,
+			QNA_TITLE,
+			QNA_CONTENT,
+			QNA_IMAGE,
+			QNA_STATUS,
+			QNA_DATE,
+			QNA_ANSWER,
+			USER_NO,
+            A_NO,
+            ANSWER_CONTENT,
+            ANSER_DATE,
+            ANSWER_STATUS,
+            USER_ID,
+            USER_NAME
+		FROM (SELECT ROWNUM RNUM, AQLIST.* FROM (SELECT
+            Q.QNA_NO,
+			QNA_TITLE,
+			QNA_CONTENT,
+			QNA_IMAGE,
+			QNA_STATUS,
+			QNA_DATE,
+			QNA_ANSWER,
+			Q.USER_NO,
+            A_NO,
+            ANSWER_CONTENT,
+            ANSER_DATE,
+            ANSWER_STATUS,
+            USER_ID,
+            M.USER_NAME FROM QNA Q
+        LEFT JOIN ANSWER A ON (Q.QNA_NO = A.QNA_NO)
+        LEFT JOIN MEMBER M ON (M.USER_NO = Q.USER_NO)
+		WHERE QNA_STATUS = 'Y'
+        ORDER BY QNA_DATE DESC) AQLIST
+        ) WHERE RNUM BETWEEN  #{startRow} AND #{endRow}
+	</select>
+</mapper>
