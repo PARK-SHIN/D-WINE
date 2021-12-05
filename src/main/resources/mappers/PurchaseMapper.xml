@@ -106,21 +106,24 @@
 		<result property="purchase_no" column="PURCHASE_NO"/>
 		<result property="product_no" column="PRODUCT_NO"/>
 	</resultMap>
-<!-- 	<resultMap id="purchaseResultMap" type="com.project.dwine.purchase.model.vo.Purchase">
-		<id property="product_no" column="PRODUCT_NO"/>
-		<result property="purchase_date" column="PURCHASE_DATE"/>
-		<result property="use_point" column="USE_POINT"/>
-		<result property="purchase_price" column="PURCHASE_PRICE"/>
-		<result property="pickup_date" column="PICKUP_DATE"/>
-		<result property="pickup_place" column="PICKUP_PLACE"/>
-		<result property="pickup_time" column="PICKUP_TIME"/>
-		<result property="order_status" column="ORDER_STATUS"/>
-		<result property="status" column="STATUS"/>
-		<result property="refund_date" column="REFUND_DATE"/>
-		<result property="use_no" column="USER_NO"/>
-		<collection property="orderDetail" resultMap="OD"/>
-	</resultMap>
-	-->
+
+	<select id="getTotalListCount" resultType="_int">
+		SELECT
+			COUNT(*)
+		FROM PRODUCT
+		WHERE STATUS = 'Y'		
+	</select>
+
+
+	<select id="getTotalReviewCount" resultType="_int">
+		SELECT
+	    	COUNT(*)
+	    FROM REVIEW R
+	    JOIN ORDER_DETAIL O ON(R.OD_NO = O.OD_NO)
+	    JOIN PRODUCT P ON(O.PRODUCT_NO = P.PRODUCT_NO)
+	   WHERE R.STATUS = 'Y'
+	     AND P.PRODUCT_NO = #{ id }
+	</select>
  
 	<select id="hashList" resultMap="hashAllNames">
 		SELECT
@@ -133,10 +136,57 @@
            WHERE P.PRODUCT_NO = #{ id }
 	</select>
 	
-	<select id="wineList" parameterType="String" resultType="com.project.dwine.purchase.model.vo.Product">
-			SELECT
-	        DISTINCT(PRODUCT_NO)
-	      , NVL(SUM(OD_COUNT) OVER(PARTITION BY PRODUCT_NO),0)
+	
+	
+	
+	
+	
+	<select id="wineList" resultMap="productResultMap">
+		SELECT
+			PRODUCT_NO, 
+			PRODUCT_KNAME, 
+			PRODUCT_ENAME, 
+			SALE_PRICE, 
+			PRODUCT_COUNT, 
+			WINERY, 
+			THUMBNAIL, 
+			CAPACITY, 
+			ABV, 
+			TASTE_GRAPH, 
+			INFORMATION, 
+			AWARD, 
+			TIP, 
+			LABEL_IMAGE, 
+			STATUS, 
+			CREATE_DATE, 
+			MODIFY_DATE, 
+			VARIETY_NO, 
+			TYPE_NO, 
+			COUNTRY_NO
+      FROM (SELECT 
+               ROWNUM RNUM
+              , PLIST.*
+       FROM(SELECT
+               *
+               FROM PRODUCT
+              WHERE STATUS = 'Y'		
+			<if test="sortStandard!=null and !sortStandard.equals('')">
+				<if test="sortStandard.equals('hprice')">
+					ORDER BY SALE_PRICE DESC
+				</if>
+				<if test="sortStandard.equals('lprice')">
+					ORDER BY SALE_PRICE
+				</if>
+				<if test="sortStandard.equals('latest')">
+					ORDER BY CREATE_DATE
+				</if>
+			</if> ) PLIST)
+	WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="popularwineList"  resultType="com.project.dwine.purchase.model.vo.Product">
+		SELECT
+	        PRODUCT_NO
 	      , PRODUCT_KNAME
 	      , PRODUCT_ENAME
 	      , SALE_PRICE
@@ -156,11 +206,83 @@
 	      , VARIETY_NO
 	      , TYPE_NO
 	      , COUNTRY_NO
+	      , ORDER_COUNT
+     FROM (SELECT 
+            ROWNUM RNUM
+           , PLIST.*
+     FROM(SELECT
+            DISTINCT(PRODUCT_NO)
+	      , PRODUCT_KNAME
+	      , PRODUCT_ENAME
+	      , SALE_PRICE
+	      , PRODUCT_COUNT
+	      , WINERY
+	      , THUMBNAIL
+	      , CAPACITY
+	      , ABV
+	      , TASTE_GRAPH
+	      , INFORMATION
+	      , AWARD
+	      , TIP
+	      , LABEL_IMAGE
+	      , STATUS
+	      , CREATE_DATE
+	      , MODIFY_DATE
+	      , VARIETY_NO
+	      , TYPE_NO
+	      , COUNTRY_NO
+	      , NVL(SUM(OD_COUNT) OVER(PARTITION BY PRODUCT_NO),0) AS ORDER_COUNT
 	      FROM PRODUCT
 	      LEFT JOIN ORDER_DETAIL USING (PRODUCT_NO)
 	      WHERE STATUS = 'Y'
-	      ORDER BY 2 DESC
+	      ORDER BY ORDER_COUNT DESC) PLIST)
+      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
+	
+	<select id="allReviewList" resultMap="reviews">
+	SELECT
+			    G.REVIEW_NO
+		      , G.REVIEW_TEXT
+		      , G.REVIEW_IMAGE
+		      , G.REVIEW_DATE
+		      , G.REVIEW_MODIFY
+		      , G.STAR
+		      , G.STATUS
+		      , G.USER_NO
+		      , G.OD_NO
+		      , H.USER_NICKNAME
+		    FROM PRODUCT P
+		    JOIN ORDER_DETAIL O ON(P.PRODUCT_NO = O.PRODUCT_NO)
+		    JOIN REVIEW G ON(O.OD_NO = G.OD_NO)
+		    JOIN MEMBER H ON(G.USER_NO = H.USER_NO)
+		    WHERE P.PRODUCT_NO = #{ id }
+		     AND G.STATUS = 'Y'
+		    ORDER BY REVIEW_MODIFY DESC
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<select id="wineDetail" resultMap="productDetailResultMap">
 		 	 SELECT
@@ -205,25 +327,44 @@
 	
 	<select id="reviewList" resultMap="reviews">
 		SELECT
-	        G.REVIEW_NO
-	      , G.REVIEW_TEXT
-	      , G.REVIEW_IMAGE
-	      , G.REVIEW_DATE
-	      , G.REVIEW_MODIFY
-	      , G.STAR
-	      , G.STATUS
-	      , G.USER_NO
-	      , G.OD_NO
-	      , H.USER_NICKNAME
-	    FROM PRODUCT P
-	    JOIN ORDER_DETAIL O ON(P.PRODUCT_NO = O.PRODUCT_NO)
-	    JOIN REVIEW G ON(O.OD_NO = G.OD_NO)
-	    JOIN MEMBER H ON(G.USER_NO = H.USER_NO)
-	    WHERE P.PRODUCT_NO = #{ id }
-	     AND G.STATUS = 'Y'
+	        REVIEW_NO
+	      , REVIEW_TEXT
+	      , REVIEW_IMAGE
+	      , REVIEW_DATE
+	      , REVIEW_MODIFY
+	      , STAR
+	      , STATUS
+	      , USER_NO
+	      , OD_NO
+	      , USER_NICKNAME
+     FROM (SELECT
+              ROWNUM RNUM
+             , PLIST.* 
+	 FROM (SELECT
+			    G.REVIEW_NO
+		      , G.REVIEW_TEXT
+		      , G.REVIEW_IMAGE
+		      , G.REVIEW_DATE
+		      , G.REVIEW_MODIFY
+		      , G.STAR
+		      , G.STATUS
+		      , G.USER_NO
+		      , G.OD_NO
+		      , H.USER_NICKNAME
+		    FROM PRODUCT P
+		    JOIN ORDER_DETAIL O ON(P.PRODUCT_NO = O.PRODUCT_NO)
+		    JOIN REVIEW G ON(O.OD_NO = G.OD_NO)
+		    JOIN MEMBER H ON(G.USER_NO = H.USER_NO)
+		    WHERE P.PRODUCT_NO = #{ id }
+		     AND G.STATUS = 'Y'
+		    ORDER BY REVIEW_MODIFY DESC) PLIST)
+	      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
 	
-
+	
+	
+	
+<!-- 
 	<select id="filterWineList" parameterType="String" resultMap="productResultMap">
 		SELECT
 				P.PRODUCT_NO
@@ -323,7 +464,193 @@
 				</if>
 			</if>
 	</select>
+	 -->
+	 
+	 
+	 <select id="getsearchListCount" resultType="_int">
+	 SELECT
+			COUNT(*)
+		   FROM PRODUCT P
+           LEFT JOIN COUNTRY C ON (P.COUNTRY_NO = C.COUNTRY_NO)
+           LEFT JOIN TYPE D ON(P.TYPE_NO = D.TYPE_NO)
+           LEFT JOIN VARIETY E ON(P.VARIETY_NO = E.VARIETY_NO)
+           WHERE 1=1
+           AND P.STATUS = 'Y'
+			<if test="country!=null and !country.equals('')">
+					AND COUNTRY_NAME = #{ country }		
+			</if>
+			<if test="type!=null and !type.equals('')">
+					AND TYPE_NAME = #{ type }		
+			</if>
+			<if test="name!=null and !name.equals('')">
+					AND (UPPER(REPLACE(PRODUCT_KNAME,' ','')) LIKE REPLACE(UPPER('%' ||  #{name} || '%'),' ','') OR UPPER(REPLACE(PRODUCT_ENAME,' ','')) LIKE REPLACE(UPPER('%' ||  #{name} || '%'),' ',''))
+			</if>
+			<if test="variety!=null and !variety.equals('')">
+					AND VARIETY_NAME = #{ variety }
+			</if>
+			<if test="price!=null and !price.equals('')">
+				<if test="price.equals('10000')">
+					AND SALE_PRICE &lt;= 10000
+				</if>
+				<if test="price.equals('30000')">
+					AND SALE_PRICE BETWEEN 10000 AND 30000
+				</if>
+				<if test="price.equals('50000')">
+					AND SALE_PRICE BETWEEN 30000 AND 50000
+				</if>
+				<if test="price.equals('100000')">
+					AND SALE_PRICE BETWEEN 50000 AND 100000
+				</if>
+				<if test="price.equals('200000')">
+					AND SALE_PRICE BETWEEN 100000 AND 200000
+				</if>
+				<if test="price.equals('300000')">
+					AND SALE_PRICE BETWEEN 200000 AND 300000
+				</if>
+			</if>
+	 		<if test="sortStandard!=null and !sortStandard.equals('')">
+				<if test="sortStandard.equals('hprice')">
+					ORDER BY SALE_PRICE DESC
+				</if>
+				<if test="sortStandard.equals('lprice')">
+					ORDER BY SALE_PRICE
+				</if>
+				<if test="sortStandard.equals('latest')">
+					ORDER BY CREATE_DATE
+				</if>
+			</if>
+	 </select>
+	 
+	 <select id="selectSearchProductList" resultMap="productResultMap">
+		SELECT
+		    PRODUCT_NO, 
+			PRODUCT_KNAME, 
+			PRODUCT_ENAME, 
+			SALE_PRICE, 
+			PRODUCT_COUNT, 
+			WINERY, 
+			THUMBNAIL, 
+			CAPACITY, 
+			ABV, 
+			TASTE_GRAPH, 
+			INFORMATION, 
+			AWARD, 
+			TIP, 
+			LABEL_IMAGE, 
+			STATUS, 
+			CREATE_DATE, 
+			MODIFY_DATE, 
+			VARIETY_NO, 
+			TYPE_NO, 
+			COUNTRY_NO
+      FROM (SELECT
+               ROWNUM RNUM
+              , PLIST.*
+       FROM(SELECT
+               P.PRODUCT_NO
+			, P.PRODUCT_KNAME
+			, P.PRODUCT_ENAME
+			, P.SALE_PRICE
+			, P.PRODUCT_COUNT
+			, P.WINERY
+			, P.THUMBNAIL
+			, P.CAPACITY
+			, P.ABV
+			, P.TASTE_GRAPH
+			, P.INFORMATION
+			, P.AWARD
+			, P.TIP
+			, P.LABEL_IMAGE
+			, P.STATUS
+			, P.CREATE_DATE
+			, P.MODIFY_DATE
+			, P.VARIETY_NO
+			, P.TYPE_NO
+			, P.COUNTRY_NO
+              FROM PRODUCT P
+           LEFT JOIN COUNTRY C ON (P.COUNTRY_NO = C.COUNTRY_NO)
+           LEFT JOIN TYPE D ON(P.TYPE_NO = D.TYPE_NO)
+           LEFT JOIN VARIETY E ON(P.VARIETY_NO = E.VARIETY_NO)
+           WHERE 1=1
+           AND P.STATUS = 'Y'
+			<if test="country!=null and !country.equals('')">
+					AND COUNTRY_NAME = #{ country }
+			</if>
+			<if test="type!=null and !type.equals('')">
+					AND TYPE_NAME = #{ type }
+			</if>
+			<if test="name!=null and !name.equals('')">
+					AND (UPPER(REPLACE(PRODUCT_KNAME,' ','')) LIKE REPLACE(UPPER('%' ||  #{name} || '%'),' ','') OR UPPER(REPLACE(PRODUCT_ENAME,' ','')) LIKE REPLACE(UPPER('%' ||  #{name} || '%'),' ',''))
+			</if>
+			<if test="variety!=null and !variety.equals('')">
+					AND VARIETY_NAME = #{ variety }
+			</if>
+			<if test="price!=null and !price.equals('')">
+				<if test="price.equals('10000')">
+					AND SALE_PRICE &lt;= 10000
+				</if>
+				<if test="price.equals('30000')">
+					AND SALE_PRICE BETWEEN 10000 AND 30000
+				</if>
+				<if test="price.equals('50000')">
+					AND SALE_PRICE BETWEEN 30000 AND 50000
+				</if>
+				<if test="price.equals('100000')">
+					AND SALE_PRICE BETWEEN 50000 AND 100000
+				</if>
+				<if test="price.equals('200000')">
+					AND SALE_PRICE BETWEEN 100000 AND 200000
+				</if>
+				<if test="price.equals('300000')">
+					AND SALE_PRICE BETWEEN 200000 AND 300000
+				</if>
+			</if>
+	 		<if test="sortStandard!=null and !sortStandard.equals('')">
+				<if test="sortStandard.equals('hprice')">
+					ORDER BY SALE_PRICE DESC
+				</if>
+				<if test="sortStandard.equals('lprice')">
+					ORDER BY SALE_PRICE
+				</if>
+				<if test="sortStandard.equals('latest')">
+					ORDER BY CREATE_DATE
+				</if>
+			</if> ) PLIST)
+      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
 	
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 	<select id="popularList" parameterType="String" resultType="com.project.dwine.purchase.model.vo.Product">
 		SELECT
 	        DISTINCT(PRODUCT_NO)

@@ -18,7 +18,9 @@ import com.project.dwine.wish.model.vo.Wish;
 @Mapper
 public interface PurchaseMapper {
 
-	List<Product> wineList();
+	List<Product> wineList(String sortStandard, int startRow, int endRow);
+	
+	List<Product> popularwineList(String sortStandard, int startRow, int endRow);
 
 	Product wineDetail(String id);
 
@@ -54,12 +56,23 @@ public interface PurchaseMapper {
 
 	Point selectPoint(String purchase_no);
 
-	List<Review> reviewList(String id);
+	List<Review> reviewList(String id, int startRow, int endRow);
 
 	Report checkReport(int user_no, int reviewNo);
 
 	int insertReport(int user_no, int userNo, int reviewNo, int reasonNo);
 
+	int getTotalListCount();
 
+	int getsearchListCount(String sortStandard, String type, String price, String country, String variety, String name);
+
+	List<Product> selectSearchProductList(String sortStandard, String type, String price, String country,
+			String variety, String name, int startRow, int endRow);
+
+	int getTotalReviewCount(String id);
+
+	List<Review> allReviewList(String id);
+
+	
 
 }

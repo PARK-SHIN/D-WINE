@@ -39,14 +39,14 @@ public class CartController {
 	
 	// cartList 출력
 	@GetMapping("list")
-	public ModelAndView getCartList(ModelAndView mv, @AuthenticationPrincipal User user){
+	public ModelAndView getCartList(ModelAndView mv){
 		
-		System.out.println(user);
-	
+/*
 		if(user == null) {
 			mv.setViewName("/member/login");
 			System.out.println("비회원입니다.");
 		}else {
+	*/		
 			UserImpl User = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			int user_no = User.getUser_no();
 			
@@ -59,7 +59,7 @@ public class CartController {
 			// System.out.println("장바구니 확인 : " + cartList);
 			
 			mv.setViewName("cart/cart_list");
-		}
+		//}
 		return mv;
 	}
 	
@@ -67,18 +67,21 @@ public class CartController {
 	// cart에 상품 추가
 	@ResponseBody
 	@RequestMapping(value = "/add", method = { RequestMethod.POST })
-	public Map<String, String> addCart(@RequestBody Cart cart, @AuthenticationPrincipal User users){
+	public Map<String, String> addCart(@RequestBody Cart cart){
 
 		// String loginId = (String) httpSession.getAttribute("loginId");
 		// System.out.println("로그인 확인" + loginId);
 		
 		Map<String, String> map = new HashMap<>();
 	
+		/*
 		if(users == null) {
 			String msg = "로그인이 필요합니다.";
 			map.put("msg", msg);
 			System.out.println("비로그인입니다.");
 		} else {
+			*/
+			
 			UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			cart.setUser_no(user.getUser_no());
 			
@@ -102,7 +105,7 @@ public class CartController {
 				map.put("msg", "장바구니에 이미 있는 상품입니다.");
 			}
 	
-		}
+		// }
 
 		return map;
 	}

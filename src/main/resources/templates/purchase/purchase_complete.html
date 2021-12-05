@@ -6,6 +6,7 @@
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">    
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2abd06745bbc257210e3730b1c6379ea"></script>
 </head>
 <style>
 	* {
@@ -185,7 +186,7 @@
                 <td class="order_title">
                     상품금액
                 </td>
-                <td th:text="|${purchase.use_point + purchase.purchase_price}원|">
+                <td th:text="|${#numbers.formatInteger((purchase.use_point + purchase.purchase_price),0,'COMMA')}원|">
                    
                 </td>
             </tr>
@@ -193,7 +194,7 @@
                 <td class="order_title">
                     적립금사용
                 </td>
-                <td th:text="|${purchase.use_point}원|">
+                <td th:text="|${#numbers.formatInteger(purchase.use_point,0,'COMMA')}원|">
                   
                 </td>
             </tr>
@@ -201,7 +202,7 @@
                 <td class="order_title">
                     결제금액
                 </td>
-                <td th:text="|${purchase.purchase_price}원|">
+                <td th:text="|${#numbers.formatInteger(purchase.purchase_price,0,'COMMA')}원|">
                   
                 </td>
             </tr>
@@ -209,7 +210,7 @@
                 <td class="order_title">
                     구매 적립금
                 </td>
-                <td th:text="|${point.point}원|">
+                <td th:text="|${#numbers.formatInteger(point.point,0,'COMMA')}원|">
 
                 </td>
             </tr>
@@ -222,7 +223,7 @@
                 <td class="pickUp_title">
                     픽업매장
                 </td>
-                <td class="pickUp_content" th:text="|D.WINE ${purchase.pickup_place}점|">
+                <td class="pickUp_content place" th:text="|D.WINE ${purchase.pickup_place}점|">
                     
                 </td>
             </tr>
@@ -243,6 +244,10 @@
                 </td>
             </tr>
         </table>
+        <br>
+        <!-- 카카오 맵 -->
+        <div id="map" style="width:500px;height:400px;"></div>
+        <p class="shop_info"></p>
 
         <h3 class="info_head">매장픽업 안내</h3>
         <div class="pickUp_info">
@@ -263,7 +268,7 @@
                         <p class="wine_name" th:text="${orderList.product_kname}"></p>
                         <p class="wine_name" th:text="${orderList.product_ename}"></p>
                        <span th:text="|${orderdetail.od_count}개|"></span>&emsp;&emsp;
-                       <span class="wine_price" th:text="|${orderdetail.od_price}원|"></span><br>
+                       <span class="wine_price" th:text="|${#numbers.formatInteger(orderdetail.od_price,0,'COMMA')}원|"></span><br>
 
                     </div>
                 </div>
@@ -288,6 +293,50 @@
         </div> 
     </div>
     <div th:replace="common/footer :: footer"></div>
+    
+    
+    <script>
+    
+    	var pickupPlace = document.querySelector(".place").innerText;
+    	
+    	var latitude = 0;
+    	var longitude = 0;
+    	
+    	if(pickupPlace == "D.WINE 강남점"){
+    		latitude = 37.498980764189895;
+    		longitude = 127.03257502221864;
+    		document.querySelector(".shop_info").innerHTML = 
+    		"<p style='color : #83131E'> 도로명 : 서울특별시 강남구 테헤란로14길 6 남도빌딩 2층, 3층, 4층 <br>지 번 : 서울특별시 강남구 역삼동 823-25 </p>"; 
+    	} else if(pickupPlace == "D.WINE 당산점"){
+    		latitude = 37.533896830420744;
+    		longitude = 126.89677601877654;
+    		document.querySelector(".shop_info").innerHTML = 
+    		"<p style='color : #83131E'> 도로명 : 서울특별시 영등포구 선유동2로 57 이레빌딩 <br>지 번 : 서울특별시 영등포구 양평동4가 2 </p>"; 
+    	} else if(pickupPlace == "D.WINE 종로점"){
+    		latitude = 37.567966931325664;
+    		longitude = 126.98307209187963;
+    		document.querySelector(".shop_info").innerHTML = 
+   			"<p style='color : #83131E'> 도로명 : 서울특별시 중구 남대문로 120 대일빌딩 2층, 3층 <br>지 번 : 서울특별시 중구 남대문로1가 18 </p>";
+    	
+    	}
+    
+    
+		var container = document.getElementById('map');
+		var options = {
+			center: new kakao.maps.LatLng(latitude, longitude),
+			level: 3
+		};
+		var map = new kakao.maps.Map(container, options);
+
+		var marker = new kakao.maps.Marker({ 
+		    // 지도 중심좌표에 마커를 생성합니다 
+		    position: map.getCenter() 
+		}); 
+		// 지도에 마커를 표시합니다
+		marker.setMap(map);
+		
+	</script>
+    
     
 </body>
 </html>
