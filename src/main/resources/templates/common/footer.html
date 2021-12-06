@@ -13,13 +13,36 @@
 <footer th:fragment="footer">
 	<div class="footer_content">
 		<p class="footer_info">
-			<a href="#">개인정보 처리 방침</a> | <a href="#">이용약관</a>
+			<a onclick="privacy_policy()">개인정보 처리 방침</a> | <a
+				onclick="use_policy()">이용약관</a>
 		</p>
 		<p class="footer_contact">
 			06234 서울특별시 강남구 테헤란로10길 9 (그랑프리빌딩) 7층 | TEL. 02-1234-5678 |
 			www.DWine.com<br> &copy; DWine all rights reserved
 		</p>
 	</div>
+	<script>
+		function privacy_policy() {
+			var left = (document.body.clientWidth / 2) - 250;
+			left += window.screenLeft;
+			var top = (screen.availHeight / 2) - 250;
+			top += window.screenTop;
+
+			window.open('/privacy_policy', '_blank',
+					'width=410, height=330, left=' + left + ', top=' + top);
+
+		}
+
+		function use_policy() {
+			var left = (document.body.clientWidth / 2) - 250;
+			left += window.screenLeft;
+			var top = (screen.availHeight / 2) - 250;
+			top += window.screenTop;
+
+			window.open('/use_policy', '_blank',
+					'width=410, height=330, left=' + left + ', top=' + top);
+		}
+	</script>
 </footer>
 
 </html>

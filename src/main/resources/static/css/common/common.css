@@ -6,6 +6,7 @@
 
 a {
 	text-decoration: none;
+	cursor: pointer;
 }
 
 html, body {
@@ -50,7 +51,6 @@ header {
 	list-style: none;
 	text-align: center;
 	padding-left: 60px;
-	cursor: pointer;
 }
 
 .menu_nav a {
@@ -58,6 +58,7 @@ header {
 	font-size: 20px;
 	font-weight: bold;
 	transition: 0.5s;
+	cursor: pointer;
 }
 
 .menu_nav a:not(.customer):hover {
@@ -102,13 +103,13 @@ header {
 	display: flex;
 	padding: 8px 60px 8px 0;
 	justify-content: end;
-	cursor: pointer;
 }
 
 .member_nav img {
 	padding: 20px;
 	height: 50px;
 	padding-bottom: 10px;
+	cursor: pointer;
 }
 
 .member_nav li {
