@@ -9,22 +9,11 @@
 	    display: flex;
 	    justify-content: space-between;
 	    flex-wrap: nowrap;
-	    border: 1px solid red;
-	    /* height: 1400px; */
-	}
-	
-	.snb {
-	    width: 200px;
-	    /* height: 2500px; */
-	    height: 100%;
-	    border: 1px solid blue;
 	}
 	
 	.contents {
 	    width: 888px;
 	    height: 100%;
-	    /*2500px -> 100%*/
-	    /* border: 1px solid black; */
 	}
 	
 	.inner {
@@ -32,8 +21,8 @@
 	    margin-left: 27px;
 	    width: 795px;
 	    height: 700px;
-	    border: 1px solid green;
 	}
+	
 	a {
 	    text-decoration: none;
 	    color: #000;
@@ -78,6 +67,15 @@
 	    border: 1px solid #C4C4C4;
 	    border-radius: 10px;
 	}
+	
+	.searchBtn {
+		width: 40px;
+		height: 30px;
+		margin: 5px;
+		background: white;
+		border: 1px solid #83131E;
+		color: #83131E;
+    }
 	
 	.dateBtn:hover {
 	    background: rgba(107, 14, 31, 0.8);

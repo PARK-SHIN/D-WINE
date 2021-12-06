@@ -31,15 +31,29 @@ public class SalesInquiryController {
 
 	@GetMapping("list")
 	public ModelAndView selectTodayStatus(ModelAndView mv) {
-		
 		Total total = salesInquiryService.selectTodayStatus();
+		List<Total> years = salesInquiryService.selectYear();
 		List<Total> yearSales = salesInquiryService.yearSales();
+		List<Total> salesProduct = salesInquiryService.salesProduct();
 
 		mv.addObject("total", total);
+		mv.addObject("years", years);
 		mv.addObject("yearSales", yearSales);
+		mv.addObject("salesProduct", salesProduct);
 		mv.setViewName("salesInquiry/list");
 		
 		return mv;
+	}
+	
+	@PostMapping("selectChangeYear")
+	@ResponseBody
+	public List<Total> selectChangeYear(@RequestParam String year) {
+		List<Total> changeYearSales = salesInquiryService.changeYearSales(year);
+		for(Total t : changeYearSales) {
+			System.out.println(t);
+		}
+		
+		return changeYearSales;
 	}
 	
 	@GetMapping("daily")

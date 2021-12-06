@@ -23,6 +23,11 @@ public class SalesInquiryServiceImpl implements SalesInquiryService{
 	public Total selectTodayStatus() {
 		return salesInquiryMapper.selectTodayStatus();
 	}
+	
+	@Override
+	public List<Total> selectYear() {
+		return salesInquiryMapper.selectYear();
+	}
 
 	@Override
 	public List<Total> yearSales() {
@@ -37,6 +42,16 @@ public class SalesInquiryServiceImpl implements SalesInquiryService{
 	@Override
 	public List<Total> searchDailyList(Map<String, Object> daily) {
 		return salesInquiryMapper.searchDailyList(daily);
+	}
+
+	@Override
+	public List<Total> salesProduct() {
+		return salesInquiryMapper.salesProduct();
+	}
+
+	@Override
+	public List<Total> changeYearSales(String year) {
+		return salesInquiryMapper.changeYearSales(year);
 	}
 
 
