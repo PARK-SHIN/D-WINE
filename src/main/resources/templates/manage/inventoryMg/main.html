@@ -252,7 +252,7 @@
 
         
   <div class="content">
-       
+    <div th:include="common/footer :: goUp"></div>   
    <h2>입고관리</h2>    
     <hr>
     <div class="totalList">
@@ -350,55 +350,60 @@
 	$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
 	
 	
-	//날짜포맷함수
+	// 날짜포맷
+    function dateFormat(date){
+    	let month = date.getMonth() + 1;
+    	let day = date.getDate();
+    	let hour = date.getHours();
+    	let minute = date.getMinutes();
+        let second = date.getSeconds();
+        
+        month = month >= 10 ? month : '0' + month;
+		day = day >= 10 ? day : '0' + day;
 
-        function dateFormat1(date){
-        	let month = date.getMonth() + 1;
-        	let day = date.getDate();
-            
-            month = month >= 10 ? month : '0' + month;
-            day = day >= 10 ? day : '0' + day;
-           
-            return date.getFullYear() + '/' + month + '/' + day;
-        }
+		return date.getFullYear() + '-' + month + '-' + day;
+	}
+	
+   
+	//날짜포맷1
+    function dateFormat1(date){
+    	let month = date.getMonth() + 1;
+    	let day = date.getDate();
+        
+        month = month >= 10 ? month : '0' + month;
+        day = day >= 10 ? day : '0' + day;
+       
+        return date.getFullYear() + '/' + month + '/' + day;
+    }
+	
+ 	
+ 
 	
 	//기간 날짜조회 (flatpickr)
 	
-	 	start = null;	
-	 	end = null;
+	 	var start = null;	
+	 	var end = null;
 	    $("#selectDate").flatpickr({ 
 	    	dateFormat: "Y-m-d",
 	    	mode: "range",
 	    	onClose: function(selectDates){
 	    		var startDate = dateFormat1(selectDates[0]);
 	    		var endDate = dateFormat1(selectDates[1]);
-	    		 var searchStandard = $("select[name=searchStandard]").val();
-	             var searchValue = $("input[name=searchValue]").val();
+	    		var searchStandard = $("select[name=searchStandard]").val();
+	            var searchValue = $("input[name=searchValue]").val();
 	    		
 	    		start = startDate;
 	    		end = endDate;
-	    		
-	    		//console.log(startDate); 둘 다 잘 나옴
-	    		//console.log(endDate);
-	    		
+	  	    		
+	    		//console.log(startDate);
+	      	 	//log(endDate); 
 	    		
 	    		ajaxPaging(1, startDate, endDate, searchStandard, searchValue);
 	    	}
 	    });
-	    
-	 	// 날짜포맷2
-		function dateFormat2(date) {
-			let month = date.getMonth() + 1;
-			let day = date.getDate();
-			let week = date.getUTCDay();
-
-			month = month >= 10 ? month : '0' + month;
-			day = day >= 10 ? day : '0' + day;
-
-			return date.getFullYear() + '.' + month + '.' + day + '(' + '일월화수목금토'.charAt(week) + ')';
-		}
+	   
 	 	
-	//페이징 시작
+	 //페이징 시작
 	  endPage = $(".pageNo").last().val();
       clickPage = 1;
       
@@ -413,7 +418,7 @@
  		 var endDate = end;
          clickPage = page;
          
-         ajaxPaging(page, searchStandard, searchValue, startDate, endDate);         
+         ajaxPaging(page, startDate, endDate, searchValue, searchStandard);         
       });
       
       // "<<" 버튼
@@ -426,7 +431,7 @@
  		 var endDate = end;
        
          
-         ajaxPaging(page, searchStandard, searchValue, startDate, endDate);         
+         ajaxPaging(page, startDate, endDate, searchValue, searchStandard);         
       });
       
       
@@ -439,8 +444,7 @@
          var startDate = start;
  		 var endDate = end;
        
-         
-         ajaxPaging(page, searchStandard, searchValue, startDate, endDate);         
+         ajaxPaging(page, startDate, endDate, searchValue, searchStandard);         
       });
       
       // "<" 버튼
@@ -454,7 +458,7 @@
     		 var endDate = end;
           
             
-            ajaxPaging(page, searchStandard, searchValue, startDate, endDate);         
+            ajaxPaging(page, startDate, endDate, searchValue, searchStandard);         
            }
          });
       
@@ -470,12 +474,13 @@
     		 var endDate = end;
           
             
-            ajaxPaging(page, searchStandard, searchValue, startDate, endDate);         
+            ajaxPaging(page, startDate, endDate, searchValue, searchStandard);         
            }         
          });
 
-      function ajaxPaging(page, searchStandard, searchValue, startDate, endDate) {
-         
+      //총 검색
+      function ajaxPaging(page, startDate, endDate, searchValue, searchStandard) {
+    	    	  
          $.ajax({
         	 url : "/manage/inventoryMg/main",
             data : {page : page, startDate : startDate, endDate : endDate,
@@ -518,7 +523,7 @@
                      + "<td>"+ item.inven_count + "</td>"
                      + "<td>"+ item.inven_cost + "</td>"
                      + "<td>"+ item.inven_price + "</td>"
-                     + "<td>"+ dateFormat2(inven_date)+ "</td>"
+                     + "<td>"+ dateFormat(inven_date)+ "</td>"
                      + "<td><button class='cancleBtn' id='cancleBtn'>취소</btton></td>"
                      + "<td>"+ item.status + "</td></tr>";
 
@@ -556,11 +561,23 @@
 	}
 
 	
+	//검색
+		  $(document).on("click", "#search_btn", function() {	
+			var page = 1;
+			clickPage = 1;
+			var startDate = start;
+	  		var endDate = end;
+			var searchStandard = $("select[name=searchStandard]").val();
+	        var searchValue = $("input[name=searchValue]").val();
+			
+			ajaxPaging(page, startDate, endDate, searchValue, searchStandard);
+		});
+	 
+	
 	
 //입고주문취소
 	$(".cancleBtn").click(function(){
 		var inven_no= $(this).parent().parent().children().eq(0).text();
-		console.log(inven_no);
 		
 		var chk = confirm("정말 취소하시겠습니까?");	
 		if(chk == true){

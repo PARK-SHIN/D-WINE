@@ -70,6 +70,7 @@
 <body>
 <header th:include="common/header :: header"></header>
     <div class="content">
+    <div th:include="common/footer :: goUp"></div>
         <h1>회원 정보 창</h1>
             <div class="memberDetailArea">
              <div class="memberNo"><label>회원 번호 : </label> <span th:text="${member.user_no}" readonly/></div><br>

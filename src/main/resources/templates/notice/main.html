@@ -10,13 +10,19 @@
 <link href="/css/notice/main.css" rel="stylesheet">    
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 </head>
+<style>
+
+
+</style>
 <body>
 <header th:include="common/header :: header"></header>
+<div class="wrapper">
+  <div class="weather" th:include="recommendWine/weather"></div>
 <div id="container">
+<div th:include="common/footer :: goUp"></div>
   <div class="content">
     	<h2>공지사항</h2> 
     <hr>
-   
     <button id="insertBtn" onclick="location.href='/notice/regist'">등록</button><br>
    
     <button id="deleteBtn" onclick="deleteValue();" >선택삭제</button>
@@ -53,6 +59,7 @@
 				</ul> 
 			</div>
    </div>
+</div>
 </div>
 <div th:replace="common/footer :: footer"></div>
 
@@ -144,8 +151,6 @@
 		// 페이지 <li> 눌렀을 때
 		$(document).on("click", ".pageNo", function(){
 			var page = $(this).val();
-			console.log(page);
-			//var searchStandard = $("select[name=searchStandard]").val();
 			var searchValue = $("input[name=searchValue]").val();
 			
 			clickPage = page;
@@ -158,7 +163,6 @@
 		$(document).on("click", ".go_first", function() {
 			clickPage = 1;
 			var page = 1;
-			//var searchStandard = $("select[name=searchStandard]").val();
 			var searchValue = $("input[name=searchValue]").val();
 			
 			ajaxPaging(page);
@@ -169,7 +173,6 @@
 		$(document).on("click", ".go_end", function() {
 			clickPage = endPage;
 			var page = endPage;
-			//var searchStandard = $("select[name=searchStandard]").val();
 			var searchValue = $("input[name=searchValue]").val();
 			
 			ajaxPaging(page);
@@ -180,7 +183,6 @@
 			if(clickPage != 1) {
 				var page = clickPage - 1;
 				clickPage = clickPage - 1;
-			//	var searchStandard = $("select[name=searchStandard]").val();
 				var searchValue = $("input[name=searchValue]").val();
 				
 				ajaxPaging(page);
@@ -194,7 +196,6 @@
 			if(clickPage != endPage) {
 				var page = clickPage + 1;
 				clickPage = clickPage + 1;
-			//	var searchStandard = $("select[name=searchStandard]").val();
 				var searchValue = $("input[name=searchValue]").val();
 				
 				ajaxPaging(page,searchValue);
@@ -212,9 +213,6 @@
 				success : function(data) {
 					var pi = data.pi;
 					var noticeList = data.searchNoticeList;
-					console.log("noticeList: " + noticeList );
-					//var searchStandard = data.searchStandard;
-					//console.log("searchStandard: " + searchStandard );
 					var searchValue = data.searchValue;
 					      
 					endPage = pi.endPage;
