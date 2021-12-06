@@ -34,24 +34,28 @@
 				<div class="main_img slide">
 					<div>
 						<img src="images/member/lolailo.PNG" width="200px"
-							onclick="alert('a')" /> <b>a</b>
+							onclick="alert('lolailo')" /> <b>lolailo</b>
 					</div>
 					<div>
 						<img src="images/member/malbec.PNG" width="200px"
-							onclick="alert('b')" /> <b>b</b>
+							onclick="location.href='/purchase/2'" /> <b>malbec</b>
 					</div>
 					<div>
 						<img src="images/member/michelle.PNG" width="200px"
-							onclick="alert('c')" /> <b>c</b>
+							onclick="alert('michelle')" /> <b>michelle</b>
 					</div>
 					<div>
 						<img src="images/member/rose.PNG" width="200px"
-							onclick="alert('d')" /> <b>d</b>
+							onclick="alert('rose')" /> <b>rose</b>
 					</div>
 
 					<div>
 						<img src="images/member/blanc.PNG" width="200px"
-							onclick="alert('e')" /> <b>e</b>
+							onclick="alert('blanc')" /> <b>blanc</b>
+					</div>
+					<div>
+						<img src="images/member/Cabernet_Sauvignon.PNG" width="200px"
+							onclick="alert('Cabernet_Sauvignon')" /> <b>카베르네 소비뇽</b>
 					</div>
 
 				</div>
@@ -81,6 +85,7 @@
 	<div th:include="common/footer :: goUp"></div>
 	<footer th:include="common/footer :: footer"></footer>
 	<script>
+		// 물별 효과 캔버스 객체 실행
 		$(document).ready(function(){
 			new BG();
 		})
@@ -111,7 +116,19 @@
 			window.scrollTo(0,$('.about_content').offset().top-50);
 			
 		}
-		
+		function goUp() {
+			$('.recommend').css({
+				"background-color" : "white",
+				"color" : "#808080",
+				"border-radius" : "0"
+			})
+			$('.about').css({
+				"background-color" : "white",
+				"color" : "#808080",
+				"border-radius" : "0"
+			})
+			window.scrollTo(0, 0);
+		}
 	</script>
 	<script>
 		class BG {
