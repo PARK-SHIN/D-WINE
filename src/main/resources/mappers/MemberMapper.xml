@@ -39,6 +39,7 @@
 		from member m
 		left join authority a on(m.authority_no = a.authority_no)
 		where m.user_id = #{ userId }
+		and m.user_status = 'Y'
 	</select>
 	
 	<select id="findMemberId" parameterType="String" resultType="String">
@@ -47,6 +48,7 @@
 		from member
 		where user_name = #{ user_name }
 		and user_phone = #{ user_phone }
+		and user_status = 'Y'
 	</select>
 	
 	<select id="findMemberByName_Id" parameterType="String" resultType="_int">
@@ -55,22 +57,24 @@
 		from member
 		where user_name = #{ user_name }
 		and user_id = #{ user_id }
+		and user_status = 'Y'
 	</select>
 	
 	<select id="checkUser" parameterType="String" resultType="_int">
 		select
 			COUNT(*)
 		from member
-		where user_name = #{ user_name }
-		or user_phone = #{ user_phone }
+		where (user_name = #{ user_name }
+		or user_phone = #{ user_phone })
+		and user_status = 'Y'
 	</select>
 	
 	<select id="checkId" resultType="_int">
-		select COUNT(*) from member where user_id = #{ userEmail }
+		select COUNT(*) from member where user_id = #{ userEmail } and user_status = 'Y'
 	</select>
 	
 	<select id="findMemberByNickname" resultType="_int">
-		select COUNT(*) from member where user_nickname = #{ nickName }
+		select COUNT(*) from member where user_nickname = #{ nickName } and user_status = 'Y'
 	</select>
 	
 	<insert id="joinMember" parameterType="java.util.Map">
@@ -106,6 +110,7 @@
 	<update id="updateTempPassword" parameterType="String">
 		update member set user_pw = #{ user_pw }
 		where user_id = #{ user_id }
+		and user_status = 'Y'
 	</update>
 	
 	

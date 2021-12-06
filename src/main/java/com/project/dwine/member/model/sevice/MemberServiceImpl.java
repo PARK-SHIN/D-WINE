@@ -29,8 +29,6 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-		System.out.println(username);
 		Member member = memberMapper.findMemberById(username);
 
 		if (member == null) {
