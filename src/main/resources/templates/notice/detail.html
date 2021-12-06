@@ -128,7 +128,7 @@
         <button id="backBtn" th:onclick="history.back();">뒤로</button> 
         <input id="modifyBtn" type="submit" value="수정" th:onclick="|location.href='@{/notice/modify/{noticeNo}(noticeNo=${notice.notice_no})}'|">
     </div>
-
+<div th:include="common/footer :: goUp"></div>
 </div>
 <footer th:include="common/footer :: footer"></footer>
 </body>

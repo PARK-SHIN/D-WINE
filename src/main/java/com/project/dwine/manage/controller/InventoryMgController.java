@@ -44,7 +44,7 @@ public class InventoryMgController {
 	
 	//메인화면
 	@GetMapping("/inventoryMg/main")
-	public ModelAndView invenList(ModelAndView mv, @RequestParam(value="page", required=false) String page) {
+	public ModelAndView invenList(ModelAndView mv, @RequestParam(value="page", required=false) String page){
 		int listCount = inventoryMgService.invenTotalListCnt();
 	    int resultPage = 1;
 	    
@@ -55,8 +55,12 @@ public class InventoryMgController {
 		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
+        
+        Map<String, Object> inven = new HashMap<String, Object>();
+		inven.put("startRow", startRow);
+		inven.put("endRow", endRow);
 	    
-		List<Inventory> invenList = inventoryMgService.invenTotalList(startRow, endRow);
+		List<Inventory> invenList = inventoryMgService.invenTotalList(inven);
 		
 		Inventory totalStock = inventoryMgService.selectTotalStock();
 		Inventory totalShop = inventoryMgService.selectTotalShop();
@@ -73,9 +77,20 @@ public class InventoryMgController {
 	//인벤토리 검색
 	@PostMapping("/inventoryMg/main")
 	@ResponseBody
-	public Map<String, Object> seachMainNotice(@RequestParam(value="page", required=false) String page, @RequestParam(value="searchStandard", required=false) String searchStandard, @RequestParam(value="searchValue", required=false) String searchValue, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate) throws IOException {
+	public Map<String, Object> seachMainInven(@RequestParam(value="page", required=false) String page, 
+			@RequestParam(value="searchStandard", required=false) String searchStandard, 
+			@RequestParam(value="searchValue", required=false) String searchValue, 
+			@RequestParam(value="startDate", required=false) String startDate, 
+			@RequestParam(value="endDate", required=false) String endDate) throws IOException {
  		
- 		int listCount = inventoryMgService.invenSearchListCnt(searchStandard, searchValue);
+		Map<String, Object> inven = new HashMap<String, Object>();
+		inven.put("searchStandard", searchStandard);
+		inven.put("searchValue", searchValue);
+		inven.put("startDate", startDate);
+		inven.put("endDate", endDate);
+		
+		
+ 		int listCount = inventoryMgService.invenSearchListCnt(inven);
 	    int resultPage = 1;
 	    
 	    if(page != null) {
@@ -86,8 +101,11 @@ public class InventoryMgController {
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
 		int endRow = startRow + pi.getBoardLimit() - 1;
 		
- 		List<Inventory> searchInvenList = inventoryMgService.searchInvenList(searchStandard, searchValue, 
- 				startDate, endDate, startRow, endRow);
+		inven.put("startRow", startRow);
+		inven.put("endRow", endRow);
+		
+		
+ 		List<Inventory> searchInvenList = inventoryMgService.searchInvenList(inven);
  		
 		
 		Inventory totalStock = inventoryMgService.selectTotalStock();

@@ -1,7 +1,7 @@
 package com.project.dwine.manage.model.service;
 
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,21 +64,33 @@ public class InventoryMgServiceImpl implements InventoryMgService {
 	}
 
 	@Override
-	public List<Inventory> invenTotalList(int startRow, int endRow) {
-		return inventoryMgMapper.invenTotalList(startRow, endRow);
-	}
-
-	@Override
-	public int invenSearchListCnt(String searchStandard, String searchValue) {
-		return inventoryMgMapper.invenSearchListCnt(searchStandard, searchValue);
+	public List<Inventory> invenTotalList(Map<String, Object> inven) {
+		return inventoryMgMapper.invenTotalList(inven);
 	}
 
 
 	@Override
-	public List<Inventory> searchInvenList(String searchStandard, String searchValue, String startDate, 
-			String endDate, int startRow, int endRow) {
-		return inventoryMgMapper.searchInvenList(searchStandard, searchValue, startDate, 
-				endDate, startRow, endRow);
+	public int invenSearchListCnt(Map<String, Object> inven) {
+		return inventoryMgMapper.invenSearchListCnt(inven);
 	}
+
+
+	@Override
+	public List<Inventory> searchInvenList(Map<String, Object> inven) {
+		return inventoryMgMapper.searchInvenList(inven);
+	}
+
+	/*
+	 * @Override public int invenSearchListCnt(String searchStandard, String
+	 * searchValue, String startDate, String endDate) { return
+	 * inventoryMgMapper.invenSearchListCnt(searchStandard, searchValue, startDate,
+	 * endDate); }
+	 * 
+	 * 
+	 * @Override public List<Inventory> searchInvenList(String searchStandard,
+	 * String searchValue, String startDate, String endDate, int startRow, int
+	 * endRow) { return inventoryMgMapper.searchInvenList(searchStandard,
+	 * searchValue, startDate, endDate, startRow, endRow); }
+	 */
 
 }

@@ -15,7 +15,7 @@ public class Inventory {
 	private int inven_no;	//입고번호
 	private int inven_count; 	//입고수량
 	private int inven_cost;		//입고단가
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy.MM.dd HH:mm:ss")
 	private Date inven_date;	//입고날짜
 	private char status; 		//입고상태	
 	private int product_no;		//상품번호
