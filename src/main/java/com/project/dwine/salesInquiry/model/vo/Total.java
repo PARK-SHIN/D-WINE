@@ -8,20 +8,27 @@ public class Total {
 	private int totalPickup;
 	private int totalPrice;
 	private int totalRefund;
+	private int salesCount;
+	private String productName;
 	private Date daily;
 	private int point;
+	private int year;
 	private int month;
 	
 	public Total() {}
 
-	public Total(int totalOrder, int totalPickup, int totalPrice, int totalRefund, Date daily, int point, int month) {
+	public Total(int totalOrder, int totalPickup, int totalPrice, int totalRefund, int salesCount, String productName,
+			Date daily, int point, int year, int month) {
 		super();
 		this.totalOrder = totalOrder;
 		this.totalPickup = totalPickup;
 		this.totalPrice = totalPrice;
 		this.totalRefund = totalRefund;
+		this.salesCount = salesCount;
+		this.productName = productName;
 		this.daily = daily;
 		this.point = point;
+		this.year = year;
 		this.month = month;
 	}
 
@@ -57,6 +64,22 @@ public class Total {
 		this.totalRefund = totalRefund;
 	}
 
+	public int getSalesCount() {
+		return salesCount;
+	}
+
+	public void setSalesCount(int salesCount) {
+		this.salesCount = salesCount;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
 	public Date getDaily() {
 		return daily;
 	}
@@ -73,6 +96,14 @@ public class Total {
 		this.point = point;
 	}
 
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
 	public int getMonth() {
 		return month;
 	}
@@ -84,7 +115,8 @@ public class Total {
 	@Override
 	public String toString() {
 		return "Total [totalOrder=" + totalOrder + ", totalPickup=" + totalPickup + ", totalPrice=" + totalPrice
-				+ ", totalRefund=" + totalRefund + ", daily=" + daily + ", point=" + point + ", month=" + month + "]";
+				+ ", totalRefund=" + totalRefund + ", salesCount=" + salesCount + ", productName=" + productName
+				+ ", daily=" + daily + ", point=" + point + ", year=" + year + ", month=" + month + "]";
 	}
 
 }

@@ -60,8 +60,8 @@
     }
 
     [class $= "Area"] {
-        width: 793px;
-        height: 250px;
+        width: 835px;
+        height: 260px;
         border: 1px solid #C4C4C4;
         margin-top: 15px;
         margin-bottom: 15px;
@@ -84,7 +84,7 @@
     .areas {
         display: flex;
         margin-top: 40px;
-        margin-left: 40px;
+        margin-left: 60px;
         text-align: center;
     }
 
@@ -100,7 +100,7 @@
         height: 180px;
         background: #C8AAD9;
         color: white;
-        margin-left: 20px;
+        margin-left: 25px;
     }
 
     .area3 {
@@ -108,7 +108,7 @@
         height: 180px;
         background: #FFB428;
         color: white;
-        margin-left: 20px;
+        margin-left: 25px;
     }
 
     .area4 {
@@ -116,7 +116,7 @@
         height: 180px;
         background: #AAC87B;
         color: white;
-        margin-left: 20px;
+        margin-left: 25px;
     }
 
     p {
@@ -127,7 +127,40 @@
     b {
         font-size: 25px;
     }
-
+    
+    #years {
+    	width: 65px;
+    	height: 25px;
+    }
+    
+    #pieChart {
+    	margin-top: 15px;
+    	margin-left: 25px;
+    }
+    
+    #pieChart-div {
+    	margin-left: 30px;
+    	margin-top: 30px;
+    }
+    
+    .top5Area {
+    	display: flex;
+    }
+    
+    .pieChart-div ul li {
+        margin: 10px 0;
+        list-style: none;
+    }
+    
+    .pieChart-div ul li span {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+    
     </style>
 </head>
 <body>
@@ -148,20 +181,7 @@
                 </div>
                 <hr style="padding-right: 130px;">
 
-                <label>TOP5 현황</label>
-                <div class="top5Area">
-					<span>2021.09.01</span> ~ <span>2021.10.27</span>
-                </div>
-
-                <label>연도별 현황</label>
-                <div class="yearArea">
-                	<select>
-                        <option>2021</option>
-                        <option>2020</option>
-                    </select>
-                </div>
-
-                <label>일별 현황</label>
+				<label>일별 현황</label>
                 <div class="dailyArea">
                     <button type="button" class="detailBtn" onclick="location.href='/salesInquiry/daily'">전체보기 ></button>
 
@@ -188,15 +208,190 @@
                         </div>
                     </div>
                 </div>
+
+                <label>연도별 현황</label>
+                <div class="yearArea">
+                	<select id="years" name="years">
+                        <!-- ajax 조회 -->
+                    </select>
+                    
+                    <canvas id="barChart" style="display: block; height: 220px; width: 800px;"></canvas>
+                </div>
+                
+                <label>TOP5 현황</label>
+                <div class="top5Area">
+					<!-- <span>2021.09.01</span> ~ <span>2021.10.27</span> -->
+					
+					<div id="pieChart-div" class="pieChart-div"></div>
+					<canvas id="pieChart" width="400" height="230"></canvas>
+                </div>
             </div>
         </div>
     </div>
 	<footer th:include="common/footer :: footer"></footer>
-
-    <script>
+	
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script th:inline="javascript">
 	    var token = $("meta[name='_csrf']").attr("content");
 	    var header = $("meta[name='_csrf_header']").attr("content");
 	    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+	    
+	    
+		// 월별 매출액(막대 그래프)
+	    /*<![CDATA[*/
+	    yearSales = /*[[${yearSales}]]*/ 'null';
+		/*]]>*/
+
+		var label = [];
+		var data = [];
+		
+		$.each(yearSales, function(index, item){
+			label.push(item.month + "월");
+			data.push(item.totalPrice);
+		});
+
+	    const bct = document.getElementById('barChart').getContext('2d');
+	    const barChart = new Chart(bct, {			
+	    	
+	        type: 'bar',
+	        data: {
+	            labels: label,
+	            datasets: [{
+	                label: '매출액(단위 : 원)',
+	                data: data,
+	                borderWidth: 1
+	            }]
+	        },
+	        options: {
+	            scales: {
+	                yAxes: [{
+	                	ticks: {
+	                		min: 0,
+	                		stepSize: 100
+	                	}
+	                }]
+                }
+	        }
+	    });
+	    
+	 	// 연도 리스트 가져오기 (select option)
+	    /*<![CDATA[*/
+	    year = /*[[${years}]]*/ 'null';
+		/*]]>*/
+		
+	    const years = $("#years");
+	    for(let index in year){
+   					years.append($("<option>").val(year[index]).text(year[index]));
+   		}
+	    
+	    $("#years").change(function(){
+	    	var year = $(this).val();
+	    	console.log($(this).val());
+	    	
+	    	$.ajax({
+	    		url : "/salesInquiry/selectChangeYear",
+	    		type : "post",
+	    		data : {year : year},
+	    		success : function(data){
+	    			console.log(data);
+	    			
+	    			var label = [];
+	    			var data = [];
+	    			
+	    			$.each(data, function(index, item){
+	    				label.push(item.month + "월");
+	    				data.push(item.totalPrice);
+	    			});
+
+	    		    const bct = document.getElementById('barChart').getContext('2d');
+	    		    const barChart = new Chart(bct, {			
+	    		    	
+	    		        type: 'bar',
+	    		        data: {
+	    		            labels: label,
+	    		            datasets: [{
+	    		                label: '매출액(단위 : 원)',
+	    		                data: data,
+	    		                borderWidth: 1
+	    		            }]
+	    		        },
+	    		        options: {
+	    		            scales: {
+	    		                yAxes: {
+	    		                	ticks: {
+	    		                		min: 0,
+	    		                		stepSize: 100
+	    		                	}
+	    		                }
+	    	                }
+	    		        }
+	    		    });
+	    		},
+	    		error : function(e){
+	    			console.log(e);
+	    		}
+	    	});
+	    });
+	    
+	    
+	    
+	    // 상품판매순위(원형그래프)
+	    /*<![CDATA[*/
+	    salesProduct = /*[[${salesProduct}]]*/ 'null';
+		/*]]>*/
+
+		var label = [];
+		var data = [];
+		
+		$.each(salesProduct, function(index, item){
+			label.push(item.productName);
+			data.push(item.salesCount);
+		});
+		
+		let pieChartData = {
+		    labels: label,
+		    datasets: [{
+		        data: data,
+		        backgroundColor: ['rgb(255, 99, 132)', 
+					        	  'rgb(255, 159, 64)', 
+					        	  'rgb(255, 205, 86)', 
+					        	  'rgb(75, 192, 192)', 
+					        	  'rgb(54, 162, 235)']
+		    }] 
+		};
+		
+		let pieChartDraw = function () {
+		    let pct = document.getElementById('pieChart').getContext('2d');
+		    
+		    window.pieChart = new Chart(pct, {
+		        type: 'pie',
+		        data: pieChartData,
+		        options: {
+		            responsive: false,
+		            legend: {
+		                display: false
+		            },
+		            legendCallback: customLegend
+		        }
+		    });
+		};
+	    
+	    let customLegend = function(chart) {
+	        let ul = document.createElement('ul');
+	        let color = chart.data.datasets[0].backgroundColor;
+
+	        chart.data.labels.forEach(function (label, index) {
+	            ul.innerHTML += '<li><span style="background-color: ' + color[index] + '"></span> ' + (index+1) + '위 - ' + label + '</li>';
+	        });
+
+	        return ul.outerHTML;
+	    };
+	    
+	    window.onload = function () {
+	        pieChartDraw();
+	        document.getElementById('pieChart-div').innerHTML = window.pieChart.generateLegend();
+	    }
+	    
     </script>
 </body>
 </html>

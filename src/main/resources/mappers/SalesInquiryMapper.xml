@@ -27,6 +27,25 @@
 		<result property="odPrice" column="OD_PRICE"/>
 	</resultMap>
 	
+	<resultMap id="totalResultMap" type="com.project.dwine.salesInquiry.model.vo.Total">
+		<id property="productNo" column="PRODUCT_NO"/>
+		<result property="productKname" column="PRODUCT_KNAME"/>
+	</resultMap>
+	
+	<select id="salesProduct" resultMap="totalResultMap">
+		SELECT 
+		       salesCount
+		     , productName
+		  FROM (SELECT 
+		               COUNT(PRODUCT_NO) salesCount
+		             , PRODUCT_KNAME productName
+		          FROM ORDER_DETAIL
+		          JOIN PRODUCT USING(PRODUCT_NO)
+		         GROUP BY PRODUCT_NO, PRODUCT_KNAME
+		         ORDER BY salesCount DESC)
+		 WHERE ROWNUM <![CDATA[ <= ]]> 5
+	</select>
+	
 	<select id="selectTodayStatus" resultType="com.project.dwine.salesInquiry.model.vo.Total">
 		SELECT DISTINCT
 		       (SELECT 
@@ -50,13 +69,31 @@
 		 WHERE PURCHASE_DATE = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')
 		 GROUP BY PURCHASE_PRICE
 	</select>
+	
+	<select id="selectYear" resultType="_int">
+		SELECT
+		       TO_CHAR(PURCHASE_DATE, 'yyyy') year
+		  FROM PURCHASE
+		 GROUP BY TO_CHAR(PURCHASE_DATE, 'yyyy')
+		 ORDER BY year DESC
+	</select>
 
 	<select id="yearSales" resultType="com.project.dwine.salesInquiry.model.vo.Total">
 		SELECT
 		       TO_CHAR(PURCHASE_DATE, 'MM') month
 		     , SUM(PURCHASE_PRICE) totalPrice
 		  FROM PURCHASE
-		 WHERE TO_CHAR(PURCHASE_DATE, 'yyyy') = '2021'
+		 WHERE TO_CHAR(PURCHASE_DATE, 'yyyy') = TO_CHAR(SYSDATE, 'yyyy')
+		 GROUP BY TO_CHAR(PURCHASE_DATE, 'MM')
+		 ORDER BY TO_CHAR(PURCHASE_DATE, 'MM') ASC
+	</select>
+	
+	<select id="changeYearSales" resultType="com.project.dwine.salesInquiry.model.vo.Total">
+		SELECT
+		       TO_CHAR(PURCHASE_DATE, 'MM') month
+		     , SUM(PURCHASE_PRICE) totalPrice
+		  FROM PURCHASE
+		 WHERE TO_CHAR(PURCHASE_DATE, 'yyyy') = #{ year }
 		 GROUP BY TO_CHAR(PURCHASE_DATE, 'MM')
 		 ORDER BY TO_CHAR(PURCHASE_DATE, 'MM') ASC
 	</select>
