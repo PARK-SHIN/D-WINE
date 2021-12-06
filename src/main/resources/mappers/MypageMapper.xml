@@ -336,7 +336,7 @@
 		left join product pro on(pro.product_no = od.product_no)
 		left join review r on (r.od_no = od.od_no)
 		where p.user_no = #{user_no}
-		order by p.purchase_date DESC) PLIST )
+		order by p.purchase_date DESC, purchase_no DESC) PLIST )
         WHERE RNUM BETWEEN  #{startRow} AND #{endRow}
 	</select>
 	
