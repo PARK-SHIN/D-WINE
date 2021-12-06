@@ -76,7 +76,7 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
 							<h2 align="center">비밀번호 변경</h2>
 							<div class="pwdForm">
 								<form id="updatePwdForm" th:action="@{/mypage/pwdModifyForm}" method="post"
-									onsubmit="return checkPwd();">
+									name="memberModify">
 									<input type="hidden" id="user_no" name="user_no" th:value="${m.user_no}">
 									<h4>현재 비밀번호</h4>
 									<span class="input_area"> <input type="password"
@@ -84,14 +84,14 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
 									</span>
 									<h4>변경할 비밀번호</h4>
 									<span class="input_area"> <input type="password"
-										name="newPwd" id="newPwd" maxlength="16" required>
+										name="newPwd" id="newPwd" maxlength="16" placeholder="8~16자 영문 대 소문자, 숫자, 특수문자 포함" required>
 									</span>
 									<h4>변경할 비밀번호 확인</h4>
 									<span class="input_area"> <input type="password"
 										name="newPwd2" id="newPwd2" maxlength="16" required>
 									</span>
 									<div class="btnArea">
-										<button id="updatePwdBtn" type="submit">변경하기</button>
+										<button id="updatePwdBtn" type="button" onclick="checkPassword();">변경하기</button>
 									</div>
 								</form>
 							</div>
@@ -104,6 +104,31 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
     </div>
     
     <script>
+    function checkPassword() {
+    	const userPwd = document.getElementById('userPwd');
+		const newPwd = document.getElementById('newPwd');
+		const newPwd2 = document.getElementById('newPwd2');
+
+		var pwdCheck = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,16}/;
+
+    	  if (!pwdCheck.test(newPwd.value)) {
+    	    alert("비밀번호는 영문 대소문자, 숫자, 특수문자 조합으로 8~16자리 사용해야합니다.");
+    	    newPwd.focus();
+    	    return false;
+    	  };
+
+    	  if (newPwd.value !== newPwd2.value) {
+    	    alert("비밀번호가 일치하지 않습니다.");
+    	    newPwd.focus();
+    	    return false;
+    	  };
+
+    	  //입력 값 전송
+    	  document.memberModify.submit();
+    	}
+    </script>
+    
+    <!-- <script>
 		function checkPwd(){
 			const userPwd = document.getElementById('userPwd');
 			const newPwd = document.getElementById('newPwd');
@@ -122,7 +147,7 @@ xmlns:sec="https://www.thymelaf.org/thymeleaf-extras-springsecurity5">
 			
 			return true;
 		}
-	</script>
+	</script> -->
     
     <script>
 	  const open = () => {
