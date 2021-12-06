@@ -106,7 +106,7 @@ public class MypageController{
 			return "redirect:/mypage/memberModify";
 		} else {
 			System.out.println("no match");
-			rttr.addFlashAttribute("message", "비밀번호가 변경에 실패하였습니다.");
+			rttr.addFlashAttribute("message", "비밀번호 변경에 실패하였습니다.");
 			System.out.println("비밀번호변경실패");
 			return "redirect:/mypage/memberModify";
 		}
@@ -330,7 +330,7 @@ public class MypageController{
 			rttr.addFlashAttribute("message", "리뷰가 등록되었습니다.");
 		} else {
 			System.out.println("insert 실패");
-			rttr.addFlashAttribute("message", "리뷰가 등록에 실패하였습니다.");
+			rttr.addFlashAttribute("message", "리뷰 등록에 실패하였습니다.");
 		}
 	      
 	    return "redirect:/mypage/orderlist";
