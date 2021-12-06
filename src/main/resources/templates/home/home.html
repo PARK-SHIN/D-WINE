@@ -89,6 +89,8 @@
 		$(document).ready(function(){
 			new BG();
 		})
+		
+		// 대표 와인으로 이동
 		function recommend() {
 			$('.about').css({
 				"background-color" : "white",
@@ -100,8 +102,9 @@
 				"color" : "white",
 				"border-radius" : "20px"
 			})
-			window.scrollTo(0, $('.main_wine_list').offset().top-150);
+			window.scrollTo(0, $('.main_wine_list').offset().top-161);
 		}
+		// About Wine으로 이동
 		function about() {
 			$('.recommend').css({
 				"background-color" : "white",
@@ -113,9 +116,10 @@
 				"color" : "white",
 				"border-radius" : "20px"
 			})
-			window.scrollTo(0,$('.about_content').offset().top-50);
+			window.scrollTo(0,$('.about_content').offset().top-36);
 			
 		}
+		// 최상단으로 이동
 		function goUp() {
 			$('.recommend').css({
 				"background-color" : "white",
@@ -129,10 +133,54 @@
 			})
 			window.scrollTo(0, 0);
 		}
+		
+		// 스크롤 위치에 따른 소형 네비게이션 변경
+		window.addEventListener("scroll", function(e){
+			var curScroll = document.documentElement.scrollTop;
+			
+			if(curScroll<300){
+				$('.recommend').css({
+					"background-color" : "white",
+					"color" : "#808080",
+					"border-radius" : "0"
+				})
+				$('.about').css({
+					"background-color" : "white",
+					"color" : "#808080",
+					"border-radius" : "0"
+				})
+			}
+			else if(curScroll>= 300 && curScroll<900){
+				$('.recommend').css({
+					"background-color" : "#6B0E1F",
+					"color" : "white",
+					"border-radius" : "20px"
+				})
+				$('.about').css({
+					"background-color" : "white",
+					"color" : "#808080",
+					"border-radius" : "0"
+				})
+			}else{
+				$('.recommend').css({
+					"background-color" : "white",
+					"color" : "#808080",
+					"border-radius" : "0"
+				})
+				$('.about').css({
+					"background-color" : "#6B0E1F",
+					"color" : "white",
+					"border-radius" : "20px"
+				})
+			}
+		});
 	</script>
+	
+	<!-- 배경 물결 그리는 캔버스 스크립트 -->
 	<script>
 		class BG {
 	      constructor() {
+	    	
 	        this.canvas = document.getElementById('canvas');
 	        this.ctx = this.canvas.getContext('2d');
 
@@ -164,6 +212,7 @@
 	      }
 	    }
 
+		// 물결의 기준점이 되는 지점
 	    class Point {
 	      constructor(index, x, y) {
 	        this.x = x;
