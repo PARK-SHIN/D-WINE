@@ -63,7 +63,8 @@
         font-weight: bolder;
         color: #83131E;   
         }
-
+        
+        
        span#counts{
         font-size: 45px;
         font-weight: bolder;
@@ -73,6 +74,10 @@
        span#countTitle{
         width: 70px;
         }
+        
+       
+/*시도*/
+
         
 
         .label_area{
@@ -278,7 +283,7 @@
         
         <div id="todayReceiving">
             <span id="count" th:text="${todayReceiving.todayReceiving}">9</span>
-            <span id="countTitle">Today Receiving</span>
+            <span id="countTitle">Today Inventory</span>
         </div>
         
         <div id="totalShop">
@@ -477,6 +482,8 @@
 	        document.getElementById('inven_price').value = inven_price;
 	    }
 	}	
+
+	//ficker날짜 css
 
 	
 </script>
