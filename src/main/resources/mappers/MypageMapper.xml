@@ -228,7 +228,6 @@
 		UPDATE PURCHASE
 		SET
 		ORDER_STATUS = '결제취소',
-		REFUND_DATE = SYSDATE,
 		STATUS = 'N'
 		WHERE PURCHASE_NO = #{purchase_no}
 	</update>
@@ -467,4 +466,10 @@
 	<select id="selectReviewImagePath" resultMap="ReviewResultMap">
 		SELECT REVIEW_IMAGE FROM REVIEW WHERE REVIEW_NO = #{review_no}
 	</select>
+	
+	<update id="pointModifyStatus">
+		UPDATE POINT SET
+		STATUS = 'N'
+		WHERE PURCHASE_NO = #{purchase_no}
+	</update>
 </mapper>

@@ -189,4 +189,9 @@ public class MypageServiceImpl implements MypageService{
 		return mypageMapper.selectReviewImagePath(review_no);
 	}
 
+	@Override
+	public int pointModifyStatus(String purchase_no) {
+		return mypageMapper.pointModifyStatus(purchase_no);
+	}
+
 }

@@ -80,4 +80,6 @@ public interface MypageMapper {
 	List<Review> findAllReviewPageTest(String sortStandard, int user_no, int startRow, int endRow);
 
 	Review selectReviewImagePath(int review_no);
+
+	int pointModifyStatus(String purchase_no);
 }
