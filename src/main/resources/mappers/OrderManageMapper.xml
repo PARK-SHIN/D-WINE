@@ -16,6 +16,7 @@
 		<result property="userNo" column="USER_NO"/>
 		<result property="userName" column="USER_NAME"/>
 		<result property="userPhone" column="USER_PHONE"/>
+		<result property="payNo" column="PAY_NO"/>
 		<result property="payMethod" column="PAY_METHOD"/>
 		<collection property="orderDetail" resultMap="orderDetailResultMap"/>
 	</resultMap>
@@ -119,6 +120,7 @@
 		     , PR.PRODUCT_KNAME
 		     , O.OD_COUNT
 		     , O.OD_PRICE
+		     , PA.PAY_NO
 		     , PA.PAY_METHOD
 		  FROM PURCHASE P
 		  LEFT JOIN MEMBER M ON(P.USER_NO = M.USER_NO)

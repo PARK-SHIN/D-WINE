@@ -1,0 +1,138 @@
+@charset "UTF-8";
+	
+	* {
+		font-family: 'Gowun Batang', serif;
+	}
+	
+	.wrapper {
+		display: flex;
+		width: 1100px;
+		margin: 0 auto;
+	}
+	
+	.contents {
+		width: 888px;
+		height: 100%;
+	}
+	
+	.inner {
+		margin-top: 30px;
+		margin-left: 27px;
+		width: 795px;
+	}
+	
+	a {
+		text-decoration: none;
+		color: #000;
+	}
+	
+	.snb {
+		width: 210px;
+	}
+	
+	.snb_inner {
+		width: 170px;
+		margin: 30px auto 0;
+	}
+	
+	[class$="Area"] {
+		width: 835px;
+		height: 260px;
+		border: 1px solid #C4C4C4;
+		margin-top: 15px;
+		margin-bottom: 15px;
+	}
+	
+	label {
+		font-size: 15px;
+		font-weight: bold;
+	}
+	
+	.detailBtn {
+		float: right;
+		background-color: white;
+		border-color: white;
+		border: none;
+		cursor: pointer;
+		margin-top: 3px;
+	}
+	
+	.areas {
+		display: flex;
+		margin-top: 40px;
+		margin-left: 60px;
+		text-align: center;
+	}
+	
+	.area1 {
+		width: 160px;
+		height: 180px;
+		background: #96C8E6;
+		color: white;
+	}
+	
+	.area2 {
+		width: 160px;
+		height: 180px;
+		background: #C8AAD9;
+		color: white;
+		margin-left: 25px;
+	}
+	
+	.area3 {
+		width: 160px;
+		height: 180px;
+		background: #FFB428;
+		color: white;
+		margin-left: 25px;
+	}
+	
+	.area4 {
+		width: 160px;
+		height: 180px;
+		background: #AAC87B;
+		color: white;
+		margin-left: 25px;
+	}
+	
+	p {
+		margin-top: 50px;
+		font-size: 14px;
+	}
+	
+	b {
+		font-size: 25px;
+	}
+	
+	#years {
+		width: 65px;
+		height: 25px;
+	}
+	
+	#pieChart {
+		margin-top: 15px;
+		margin-left: 25px;
+	}
+	
+	#pieChart-div {
+		margin-left: 30px;
+		margin-top: 30px;
+	}
+	
+	.top5Area {
+		display: flex;
+	}
+	
+	.pieChart-div ul li {
+		margin: 10px 0;
+		list-style: none;
+	}
+	
+	.pieChart-div ul li span {
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		margin-right: 5px;
+		vertical-align: middle;
+	}
