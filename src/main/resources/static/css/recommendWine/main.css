@@ -25,12 +25,20 @@
        margin: 4em 0;
     }
 	
-	#search_btn {
+	#search_btn{
+        margin: 5px;
+		background: white;
+		border: 1px solid #83131E;
+		color: #83131E;
+		width: 50px;
 		height: 30px;
-		background: #83131E;
-		color: #ffffff;
-		border: none;
 		border-radius: 5px;
+	}
+	#search_btn:hover {
+		cursor: pointer;
+		transform: scale(1.1);
+		background: #83131E;
+		color: white;
 	}
     #input_box {
         border: none;
@@ -53,7 +61,7 @@
     li {
     	text-align: left;
     }
-    li:hover {
+    #content_area  li:hover {
     	cursor: pointer;
     	text-decoration: underline;
     }
