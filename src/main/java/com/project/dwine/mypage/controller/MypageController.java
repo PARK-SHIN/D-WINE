@@ -224,6 +224,7 @@ public class MypageController{
 		System.out.println("findPurchasePoint : " + p);
 		if(result > 0) {
 			int result2 = mypageService.memberPointPayCancelDelete(user_no, point, use_point);
+			int result3 = mypageService.pointModifyStatus(purchase_no);
 			rttr.addFlashAttribute("message", "결제취소 되었습니다.");
 		} else {
 			rttr.addFlashAttribute("message", "결제취소에 실패하였습니다.");
