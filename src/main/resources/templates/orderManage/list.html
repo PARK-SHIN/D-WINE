@@ -180,6 +180,7 @@
  			<!-- 페이징 -->
         </div>
     </div>
+    <div th:include="common/footer :: goUp"></div>
     <footer th:include="common/footer :: footer"></footer>
 
     <script>
@@ -338,8 +339,8 @@
         				refundDate = '-';
         			}
         			
-        			orderHTML += '<tr><th>주문번호</th>';
-        			orderHTML += '<td>' + data.purchaseNo + '</td>';
+        			orderHTML += '<tr><th>결제번호</th>';
+        			orderHTML += '<td>' + data.payNo + '</td>';
         			orderHTML += '<th>결제수단</th>';
         			orderHTML += '<td>' + data.payMethod + '</td>';
         			orderHTML += '</tr><tr>';

@@ -12,138 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  
-    <!-- <link href="/css/orderManage/list.css" rel="stylesheet"> -->
-<style>
-	* {
-    	font-family: 'Gowun Batang', serif;
-    }
-    	
-    .wrapper {
-		display : flex;
-		width: 1100px;
-		margin : 0 auto;
-	}
-
-    .contents {
-        width: 888px;
-        height: 100%;
-    }
-
-    .inner {
-        margin-top: 30px;
-        margin-left: 27px;
-        width: 795px;
-    }
-    
-    a {
-        text-decoration: none;
-        color: #000;
-    }
-
-    .snb {
-        width: 210px;
-    }
-
-    .snb_inner {
-        width: 170px;
-        margin: 30px auto 0;
-    }
-
-    .subHeader {
-        font-weight: bold;
-        font-size: 16px;
-        margin-top: 20px;
-        margin-bottom: 30px;
-    }
-
-    label {
-        font-size: 14px;
-        margin-right: 30px;
-    }
-
-    [class $= "Btn"] {
-        cursor: pointer;
-    }
-    
-    #selectDate {
-    	margin-right: 10px;
-    	width: 180px;
-    	text-align: center;
-    }
-
-    .dateBtn {
-        width: 50px;
-        height: 30px;
-        background: #FFFFFF;
-        border: 1px solid #C4C4C4;
-        border-radius: 10px;
-    }
-
-    .dateBtn:hover {
-        background: rgba(107, 14, 31, 0.8);
-        color: #FFFFFF;
-    }
-    
-    .list_area {
-		height: 500px;
-	}
-
-    table {
-        width: 836px;
-        text-align: center;
-        font-weight: lighter;
-        font-size: 15px;
-        border-collapse: collapse;
-        margin-top: 30px;
-    }
-    
-    table th, table td {
-        border: 1px solid rgba(196, 196, 196, 0.3) ;
-    }
-
-    tr {
-        height: 35px;
-    }
-    
-    th, tfoot {
-        font-weight: lighter;
-        background-color: rgba(196, 196, 196, 0.3);
-        border: none;
-    }
-    
-    /* 페이징 부분 */
-	.paging_ul {
-		height: 50px;
-		line-height: 50px;
-		display: flex;
-		justify-content: center;
-		list-style: none;
-		width: 480px;
-		margin: 30px auto;
-	}
-	
-	.paging_ul li {
-		text-decoration: none;
-		display: block;
-		text-align: center;
-		border: 1px solid #dae0e9;
-	    margin-left: 10px;
-		width: 37px;
-		height: 37px;
-		line-height : 37px;
-	    font-size: 12px;
-	    border-radius : 5px;
-	}
-	
-	.current_page {
-		border: 1px solid  #83131E;
-	    background:  #83131E;
-	    color: white;
-	    border-radius : 5px;
-	}
-
-    </style>
+    <link href="/css/salesInquiry/daily.css" rel="stylesheet">
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
@@ -238,6 +107,7 @@
  			<!-- 페이징 -->
         </div>
     </div>
+    <div th:include="common/footer :: goUp"></div>
 	<footer th:include="common/footer :: footer"></footer>
 
     <script>
