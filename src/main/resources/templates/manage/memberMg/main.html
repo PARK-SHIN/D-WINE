@@ -21,7 +21,6 @@
 	    justify-content: space-between;
 	    flex-wrap: nowrap;
 	    border: none;
-	    height: 1400px;
 		}
 	
 	.snb {
@@ -31,15 +30,19 @@
 	    border: 1px solid blue;
 	}
 	
-
+  		.content {
+             width: 888px;
+	    	height: 100%;
+	    
+        }
+        
+        .inner {
+		    margin-top: 30px;
+		    margin-left: 27px;
+		    width: 836px;
+		    height: 100%;
+		}
 	
-	.inner {
-	    margin-top: 30px;
-	    margin-left: 27px;
-	    width: 795px;
-	    /* height: 100%; */
-	    border: 1px solid green;
-	}
 	a {
 	    text-decoration: none;
 	    color: #000;
@@ -61,10 +64,10 @@
     
     	
         .content {
-             width: 840px;
-	    	height: 100%;
-	    
+            width: 888px;
+    		height: 100%;
         }
+        
         #deleteBtn{
             float: right;
             background: #83131E ;
@@ -296,6 +299,7 @@
         });
         </script>
 <div class="content">
+<div class="inner">  
     <h2>회원관리</h2>    
     <hr>
     <div th:include="common/footer :: goUp"></div>
@@ -354,6 +358,7 @@
 					<li class="go_end">&gt;&gt;</li>
 				</ul> 
 			</div>
+</div>
 </div>
 </div>
 <div th:replace="common/footer :: footer"></div>
