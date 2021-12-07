@@ -21,14 +21,11 @@
     		font-family: 'Gowun Batang', serif;
     	}
     	
-        #container {
-            width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-            height: 1400px;
-        }
+        .wrapper {
+			display : flex;
+			width: 1100px;
+			margin : 0 auto;
+		}
 
         .contents {
             width: 888px;
@@ -107,6 +104,10 @@
 		    background: white;
 		    border: 1px solid #83131E;
 		    color: #83131E;
+        }
+        
+        .list_area {
+        	height: 600px;
         }
 
         table {
@@ -264,7 +265,7 @@
 <body>
 	<header th:include="common/header :: header"></header>
     <div id="container">
-        <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+        <nav class="snb" th:replace="/common/adminSubmenu.html"></nav>
         <script>
         $(document).ready(function () { 
             $('.faq').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
@@ -280,7 +281,7 @@
                 </div>
                 <hr style="padding-right: 130px;">
 
-                <div>
+                <div class="list_area">
                     <div class="btnArea">
                         <button type="button" class="deleteBtn">선택 삭제</button>
                         <div>

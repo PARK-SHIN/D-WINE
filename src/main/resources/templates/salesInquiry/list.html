@@ -14,37 +14,23 @@
     	font-family: 'Gowun Batang', serif;
     }
     	
-    #container {
-        width: 1100px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: nowrap;
-        border: 1px solid red;
-        height: 1400px;
-    }
-
-    .snb {
-        width: 200px;
-        /* height: 2500px; */
-        height: 100%;
-        border: 1px solid blue;
-    }
+    .wrapper {
+		display : flex;
+		width: 1100px;
+		margin : 0 auto;
+	}
 
     .contents {
         width: 888px;
         height: 100%;
-        /*2500px -> 100%*/
-        /* border: 1px solid black; */
     }
 
     .inner {
         margin-top: 30px;
         margin-left: 27px;
         width: 795px;
-        /* height: 100%; */
-        border: 1px solid green;
     }
+    
     a {
         text-decoration: none;
         color: #000;
@@ -165,8 +151,8 @@
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
-    <div id="container">
-        <nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+    <div class="wrapper">
+        <nav class="snb" th:replace="/common/adminSubmenu.html"></nav>
         <script>
         $(document).ready(function () { 
             $('.salesInquiry').css('background-color', 'rgba(131, 19, 30, 0.2)'); 

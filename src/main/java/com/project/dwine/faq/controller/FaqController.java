@@ -98,7 +98,8 @@ public class FaqController {
 	public String registFaq(HttpServletRequest request, RedirectAttributes rttr) {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
-		int userNo = Integer.parseInt(request.getParameter("use_no"));
+		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		int userNo = user.getUser_no();
 		
 		int result = faqService.registFaq(title, content, userNo);
 		
