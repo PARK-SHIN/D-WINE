@@ -63,6 +63,9 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter im
 				.antMatchers("/purchase/cartDelete").authenticated()
 				.antMatchers("/purchase/complete").authenticated()
 				// ----------
+				.antMatchers("/product/**").hasRole("ADMIN")
+				.antMatchers("/hashtag/**").hasRole("ADMIN")
+				// ----------
 				.anyRequest().permitAll()
 			.and()
 				.formLogin()

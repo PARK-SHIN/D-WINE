@@ -38,7 +38,7 @@
 			<div class="input_area">
 				<div class="label_area">판매가</div>
 				<div>
-					<input type="number" name="sale_price" min="0" th:value="${product.salePrice}" readonly>
+					<input type="text" name="sale_price" min="0" th:value="${#numbers.formatInteger(product.salePrice, 3, 'COMMA')}" readonly>
 				</div>
 			</div>
 			<div class="input_area">
@@ -52,7 +52,7 @@
 			<div class="input_area">
 				<div class="label_area">수량</div>
 				<div>
-					<input type="number" name="product_count" th:value="${product.productCount}" readonly>
+					<input type="text" name="product_count" th:value="${#numbers.formatInteger(product.productCount, 3, 'COMMA')}" readonly>
 				</div>
 			</div>
 		
@@ -157,6 +157,12 @@
 			if(confirm("정말 삭제하시겠습니까?")) return true
 			else return false;
 		}	
+		
+		$(document).ready(function () { 
+            $('.product').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
+            $('.product').css('color', 'rgb(131,19,30)'); 
+            $('.product').css('font-weight', 'bold'); 
+        });
 	</script>
 </body>
 </html>
