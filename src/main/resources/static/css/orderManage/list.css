@@ -66,14 +66,24 @@
 	    border-radius: 10px;
 	}
 	
-	.searchBtn {
+/* 	.searchBtn {
 		width: 40px;
 		height: 30px;
 		margin: 5px;
 		background: white;
 		border: 1px solid #83131E;
 		color: #83131E;
-    }
+    } */
+    
+    .searchBtn {
+		margin: 5px;
+		background: white;
+		border: 1px solid #83131E;
+		color: #83131E;
+		width: 45px;
+		height: 25px;
+		border-radius: 5px;
+	}
 	
 	.dateBtn:hover {
 	    background: rgba(107, 14, 31, 0.8);
