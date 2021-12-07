@@ -126,7 +126,9 @@
 
     <div class="btnArea">
         <button id="backBtn" th:onclick="history.back();">뒤로</button> 
+        <th:block sec:authorize="hasRole('ADMIN')">
         <input id="modifyBtn" type="submit" value="수정" th:onclick="|location.href='@{/notice/modify/{noticeNo}(noticeNo=${notice.notice_no})}'|">
+    	</th:block>
     </div>
 <div th:include="common/footer :: goUp"></div>
 </div>

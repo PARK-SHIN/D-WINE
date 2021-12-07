@@ -23,9 +23,12 @@
   <div class="content">
     	<h2>공지사항</h2> 
     <hr>
+    <th:block sec:authorize="hasRole('ADMIN')">
     <button id="insertBtn" onclick="location.href='/notice/regist'">등록</button><br>
    
+   
     <button id="deleteBtn" onclick="deleteValue();" >선택삭제</button>
+    </th:block>
     <div id=searchdiv><input type="text" id="searchTitle" name="searchValue"> 
         <button id="searchBtn">검색</button> 
     </div>
