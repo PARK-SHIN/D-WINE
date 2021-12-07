@@ -7,14 +7,28 @@
 		width: 1100px;
 		margin : 0 auto;
 	}
+	.contents {
+	    width: 888px;
+	    height: 100%;
+	}
+	h3 {
+		margin-top: 0;
+	}
+	.inner {
+	    margin-top: 30px;
+	    margin-left: 27px;
+	    width: 795px;
+	    height: 700px;
+	}
 	#header_area {
 		display: flex;
 		justify-content: space-between;
+
 	}
 	#top_area {
 		display: flex;
 		justify-content: space-between;
-		margin: 30px 0;
+		margin: 10px 0;
 	}
 	#open_regist_btn {
 		background: #83131E;
@@ -22,12 +36,7 @@
 		width: 100px;
 		height: 40px;
 		border-radius: 5px;
-		margin-top: auto;
-		margin-bottom: auto;
 		border: 0;
-	}
-	h1 {
-		display: inline;
 	}
 	#table_area {
 		width: 100%;
@@ -143,4 +152,12 @@
 	input[type="checkbox"]:checked::before {
 	    border-radius: 2px;
 	    transform: scale(1) translate(-50%, -50%)
+	}
+	.snb {
+	    width: 210px;
+	}
+	
+	.snb_inner {
+	    width: 170px;
+	    margin: 30px auto 0;
 	}
