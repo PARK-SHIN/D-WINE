@@ -131,6 +131,10 @@
         });
         
         $(function(){
+        	$('.product').css('background-color', 'rgba(131, 19, 30, 0.2)'); 
+            $('.product').css('color', 'rgb(131,19,30)'); 
+            $('.product').css('font-weight', 'bold'); 
+        	
         	$.get("/product/category", function(map) {
         	
         		$.each(map['type'], function(index, value){
