@@ -1,0 +1,143 @@
+@charset "UTF-8";
+* {
+	font-family: 'Gowun Batang', serif;
+}
+
+.wrapper {
+	margin: 100px 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+.payment_complete_header {
+	width: 800px;
+	margin: 0 auto;
+}
+
+#ulwrapper {
+	list-style: none;
+	margin: 0%;
+}
+
+table tr {
+	padding: 2px;
+}
+
+.nick {
+	font-size: 20px;
+	color: #83131E;
+	font-weight: bold;
+	text-align: center;
+	padding: 10px 0;
+	margin: 0;
+}
+
+.order_detail {
+	font-size: 15px;
+	margin-top: 20px;
+}
+
+.order_detail tr td {
+	padding: 10px 40px;
+}
+
+.order_title {
+	font-size: 17px;
+	background-color: #f2f5f9;
+	color: #83131E;
+}
+
+.add_point {
+	font-size: 15px;
+	margin: 10px 0 0 0px;
+}
+
+.pickUp_title {
+	background-color: #f2f5f9;
+	font-size: 17px;
+	padding: 10px 40px;
+	color: #83131E;
+	text-align: center;
+}
+
+.pickUp_content {
+	padding-left: 20px;
+}
+
+.info_head {
+	margin-top: 50px;
+}
+
+.pickUp_info {
+	background-color: #f2f5f9;
+	text-align: center;
+	padding: 20px;
+	width: 800px;
+}
+
+.order_info {
+	display: flex;
+	margin: 50px 0 0 0;
+	justify-content: space-between;
+	font-weight: bold;
+}
+
+.wine_info {
+	display: flex;
+	justify-content: space-between;
+	height: 120px;
+}
+
+.wine_img {
+	width: 150px;
+	height: 130px;
+	padding-top: 20px;
+}
+
+.wine_price {
+	font-size: 20px;
+}
+
+.wine_value {
+	width: 300px;
+	text-align: center;
+}
+
+#ulwrapper {
+	width: 800px;
+	padding: 0;
+}
+
+.payment_wine {
+	border-bottom: 5px solid #f2f5f9;
+	width: 800px;
+	height: 150px;
+	padding: 20px;
+}
+
+.btns {
+	display: flex;
+	width: 800px;
+	justify-content: center;
+	margin-top: 50px;
+}
+
+.main_btn {
+	width: 120px;
+	height: 50px;
+	background-color: #ffff;
+	border-color: #83131E;
+	color: #83131E;
+	margin-right: 30px;
+}
+
+.my_payment_btn {
+	width: 120px;
+	height: 50px;
+	margin-left: 30px;
+	background-color: #83131E;
+	border: none;
+	color: white;
+}

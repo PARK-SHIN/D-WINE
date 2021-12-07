@@ -285,7 +285,7 @@
 	
 	
 	<select id="wineDetail" resultMap="productDetailResultMap">
-		 	 SELECT
+		 	 	 SELECT
 			    P.PRODUCT_NO
 			  , P.PRODUCT_KNAME
 			  , P.PRODUCT_ENAME
@@ -890,6 +890,12 @@
 	    , #{user_no}
 	    , SYSDATE
 	)
+	</insert>
+	<insert id="memberReportedCount">
+	UPDATE
+	MEMBER SET
+	REPORTED_COUNT = REPORTED_COUNT + 1
+	WHERE USER_NO = #{userNo}
 	</insert>
 	
 </mapper>

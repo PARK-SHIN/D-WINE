@@ -1,0 +1,201 @@
+@charset "UTF-8";
+* {
+	font-family: 'Gowun Batang', serif;
+}
+
+#ulwrapper {
+	list-style: none;
+	padding: 0%;
+	margin: 0;
+}
+
+.payment {
+	width: 800px;
+	margin: 0 auto;
+	padding: 100px 0;
+}
+
+.line {
+	border-top: 3px solid black;
+}
+
+#ulwrapper li {
+	display: flex;
+}
+
+.payment_member_head {
+	display: flex;
+}
+
+.payement_member {
+	margin-bottom: 20px;
+}
+
+.payement_member p {
+	font-size: 20px;
+	color: #83131E;
+	font-weight: bold;
+}
+
+.order_btn button {
+	width: 100%;
+	height: 60px;
+	background-color: rgb(247, 81, 26);
+	border: none;
+	color: #ffff;
+	font-size: 20px;
+	margin-top: 50px;
+}
+
+/* ----------------------  */
+.point_head {
+	margin-top: 60px;
+}
+
+.point_main {
+	padding-top: 30px;
+}
+
+.point {
+	font-size: 13px;
+	margin-right: 40px;
+	font-weight: bold;
+}
+
+.member_point {
+	font-size: 11px;
+}
+
+.point_value {
+	width: 200px;
+	height: 33px;
+	padding: 0 20px;
+	border: none;
+	text-align: right;
+}
+
+.point_main button {
+	width: 98px;
+	height: 35px;
+	border: none;
+}
+/****************************/
+.block {
+	background: #535455;
+	width: 100%;
+	height: 40px;
+	margin-bottom: 10px;
+}
+
+.order_info {
+	display: flex;
+}
+
+.order_pickUp {
+	margin-top: 60px;
+}
+
+.wine_info {
+	display: flex;
+	width: 650px;
+}
+
+.order_value {
+	text-align: center;
+	padding-top: 10px;
+}
+
+.order_value .price {
+	font-size: 22px;
+	font-weight: 500;
+}
+
+.order_value .count {
+	width: 50px;
+	font-size: 15px
+}
+
+.wine_img {
+	width: 90px;
+	height: 90px;
+}
+
+.pickUp_value {
+	height: 70px;
+	text-align: center;
+	line-height: 70px;
+	background-color: rgb(249, 249, 249);
+}
+
+.pickUp {
+	font-size: 13px;
+	font-weight: 700;
+	margin: 10px;
+}
+
+select {
+	width: 160px;
+	height: 35px;
+}
+
+.place_info {
+	width: 80px;
+	height: 35px;
+	background: #fff;
+	border-color: #d1d1d1;
+}
+
+.deliver_head {
+	display: flex;
+	height: 50px;
+}
+
+.deliver_head h3 {
+	margin-left: 10px;
+}
+
+.map_icon {
+	line-height: 62px;
+}
+
+.deliver_head .fas {
+	font-size: 24px;
+}
+
+.deliver_info {
+	margin: 0;
+	font-size: 13px;
+}
+
+/* ----------------------  */
+.finalPayment_info {
+	border: 5px solid rgb(238, 238, 238);
+	margin: 100px 0 20px 0;
+	padding: 50px 20px;
+	text-align: center;
+}
+
+.final_price_info {
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.final_price {
+	color: rgb(255, 91, 89);
+	font-weight: bold;
+	font-size: 22px;
+}
+
+.clauses label {
+	font-size: 13px;
+}
+
+.clause_all span {
+	font-weight: bold;
+}
+
+.clause span {
+	text-decoration: underline;
+	font-size: 13px;
+	cursor: pointer;
+}

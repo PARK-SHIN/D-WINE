@@ -7,394 +7,168 @@
 <title>Insert title here</title>
 <link rel="icon" type="image/png" href="http://example.com/myicon.png">
 <link href="/css/common/common.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">     
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+<link href="/css/purchase/purchase_detail.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 </head>
-<style>
-	* {
-          font-family: 'Gowun Batang', serif;
-       }
-    #ulwrapper{
-        list-style: none;
-        padding: 0%;
-        margin: 0;
-    }
-
-    .payment{
-        width: 800px;
-        margin: 0 auto;
-        padding : 100px 0;
-        
-    }
-    
-    .line{
-        border-top: 3px solid black;
-        
-    }
-
-    #ulwrapper li{
-        display: flex;
-    }
-
-    .payment_member_head{
-        display: flex;
-    }
-
-    .payement_member{
-        margin-bottom: 20px;
-    }
-
-    .payement_member p{
-        font-size: 20px;
-        color: #83131E;
-        font-weight: bold;
-    }
-  
-    
-   
-  
-     
-    
-
-  
-
-    .order_btn button{
-        width: 100%;
-        height: 60px;
-        background-color: rgb(247, 81, 26);
-        border: none;
-        color: #ffff;
-        font-size: 20px;
-        margin-top: 50px;
-    }
-
-
-    /* ----------------------  */
-
-    .point_head{
-        margin-top: 60px;
-    }
-
-    .point_main{
-        padding-top: 30px;
-    }
-
-    .point{
-        font-size: 13px;
-        margin-right: 40px;
-        font-weight: bold;
-    }
-
-    .member_point{
-        font-size: 11px;
-    }
-
-    .point_value{
-        width: 200px;
-        height: 33px;
-        padding: 0 20px;
-        border: none;
-        text-align: right;
-    }
-    
-    .point_main button{
-        width: 98px;
-        height: 35px;
-        border: none;
-    }
-    /****************************/
-
-
-    .block{
-        background: #535455;
-        width: 100%;
-        height: 40px;
-        margin-bottom: 10px;
-    }
-
-    .order_info{
-        display: flex;
-    }
-    
-    .order_pickUp{
-    	margin-top: 60px;
-    }
-
-    .wine_info{
-        display: flex;
-        width: 650px;
-    }
-    
-  /*   .price{
-    	font-size: 20px;
-    }
-    
-    .order_value .count{
-    	font-size: 20px;
-    } */
-
-    .order_value{
-        text-align: center;
-        padding-top: 10px;
-    }
-
-    .order_value .price{
-        font-size: 22px;
-        font-weight: 500;
-    }
-
-    .order_value .count{
-    	width:50px;
-        font-size: 15px
-    }
-    
-    .wine_img{
-        width: 90px;
-        height: 90px;
-    }
-
-    .pickUp_value{
-        height: 70px;
-        text-align: center;
-        line-height: 70px;
-        background-color: rgb(249, 249, 249);
-    }
-
-    .pickUp{
-        font-size: 13px;
-        font-weight: 700;
-        margin: 10px;
-    }
-
-    select{
-        width: 160px;
-        height: 35px;
-        /* padding: 20px; */
-    }
-
-    .place_info{
-        width: 80px;
-        height: 35px;
-        background: #fff;
-        border-color: #d1d1d1;
-    }
-
-    .deliver_head{
-        display: flex;
-        height: 50px;
-    }
-
-    .deliver_head h3{
-        margin-left: 10px;
-    }
-
-    .map_icon{
-        line-height: 62px;
-    }
-
-    .deliver_head .fas{
-        font-size: 24px;
-    }
-
-    .deliver_info{
-        margin: 0;
-        font-size: 13px;
-    }
-
-
-    
-    
-    /* ----------------------  */
-    .finalPayment_info{
-        border: 5px solid rgb(238, 238, 238);
-        margin: 100px 0 20px 0;
-        padding: 50px 20px;
-        text-align: center;
-    }
-    
-    .final_price_info{
-        font-size: 17px;
-        font-weight: bold;
-    }
-
-    .final_price{
-        color: rgb(255, 91, 89);
-        font-weight: bold;
-        font-size: 22px;
-    }
-
-    .clauses label{
-        font-size: 13px;
-    }
-
-    .clause_all span{
-        font-weight: bold;
-    }
-
-    .clause span{
-        text-decoration: underline;
-        font-size: 13px;
-        cursor: pointer;
-    }
-</style>
 <body>
-    <header th:include="common/header :: header"></header>
+	<header th:include="common/header :: header"></header>
+	<div th:include="common/footer :: goUp"></div>
+	<div class="weather" th:include="recommendWine/weather"></div>
 	<div class="wrapper">
-    <div class="payment">
-        <h2 class="head">회원 정보</h2>
-        <div class="payement_member line">
-            <div class="payment_member_head">
-                <div class="member_info">
-                    <p class="nick" th:text="|ID : ${member.user_id}|"></p>
-                    <p class="nick" th:text="|NICKNAME : ${member.user_nickname}님|"></p>
-                </div>
-                
-            </div>
-        </div>
-  
+		<div class="payment">
+			<h2 class="head">회원 정보</h2>
+			<div class="payement_member line">
+				<div class="payment_member_head">
+					<div class="member_info">
+						<p class="nick" th:text="|ID : ${member.user_id}|"></p>
+						<p class="nick" th:text="|NICKNAME : ${member.user_nickname}님|"></p>
+					</div>
 
-        <div class="order_pickUp">
-            <h2>상품  매장픽업 매장 / 일자 선택</h3>
-            <div class="block"></div>
-            <div class="main">
-            <ul id="ulwrapper">
-            	<li th:each="orderList : ${purchaseList}" style="padding : 30px 0">
-            		<div class="order_info">
-                    <div class="wine_info">
-                        <img class="wine_img" th:src="${orderList.thumbnail}">
-                        <div class="wine_name">
-                            <p class="product_kname" th:text="${orderList.product_kname}"></p>
-                            <p th:text="${orderList.product_ename}"></p>
-                            <input type="hidden" class="product_no" th:value="${orderList.product_no}">
-                            <input type="hidden" class="stock" th:value="${orderList.product_count}">   
-                        </div>
-                    </div>
-                    <div class="order_value" th:each="orderValue : ${orderList.cart}">
-                    	<input type="hidden" class="p_price" th:value="${orderList.sale_price * orderValue.cart_count}">
-                        <span class="price" th:text="${#numbers.formatInteger(orderList.sale_price * orderValue.cart_count,0,'COMMA')}"></span>원
-                        <p class="count" th:text="|${orderValue.cart_count}개|"></p>
-                        <input type="hidden" class="product_count" th:value="${orderValue.cart_count}">
-                    	<input type="hidden" class="cart_no" th:value="${orderValue.cart_no}">
-                    </div>
-                </div>
-            	</li>
-            </ul>
-                
-                
-                <!-- <form id="purchaseForm" method="post" onsubmit="return checkForm();"> -->
-                <div class="pickUp_value">
-                    <span class="pickUp">매장</span>
-                    <select id="shop">
-                        <option value="">매장을 선택하세요.</option>
-                        <option value="강남">강남</option>
-                        <option value="당산">당산</option>
-                        <option value="종로">종로</option>
-                    </select>
-                    <button class="place_info" onclick="shopInfo();" type="button">매장정보</button>
-                    <span class="pickUp">일자</span>
-                    <select id="pickupDate">
-     					<option value="">일자를 선택하세요.</option>
-                    </select>
-                    <span class="pickUp">시간</span>
-                    <select id="time">
-                        <option value="">픽업시간을 선택하세요.</option>
-                        <option value="12:00~17:00">12:00 ~ 17:00</option>
-                        <option value="17:00~21:00">17:00 ~ 21:00</option>
-                    </select>
-                </div>
-
-            </div>
-            
-            <p class="shop_info"></p>
-            
-            <div class="deliver_head">
-                <div class="map_icon">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <h3>배송방법 : 매장픽업</h3>
-            </div>
-            
-            <p class="deliver_info">&emsp;해당 매장을 방문하셔서 주문하신 상품을 직접 픽업하세요.</p>
+				</div>
+			</div>
 
 
+			<div class="order_pickUp">
+				<h2>
+					상품 매장픽업 매장 / 일자 선택
+					</h3>
+					<div class="block"></div>
+					<div class="main">
+						<ul id="ulwrapper">
+							<li th:each="orderList : ${purchaseList}" style="padding: 30px 0">
+								<div class="order_info">
+									<div class="wine_info">
+										<img class="wine_img" th:src="${orderList.thumbnail}">
+										<div class="wine_name">
+											<p class="product_kname" th:text="${orderList.product_kname}"></p>
+											<p th:text="${orderList.product_ename}"></p>
+											<input type="hidden" class="product_no"
+												th:value="${orderList.product_no}"> <input
+												type="hidden" class="stock"
+												th:value="${orderList.product_count}">
+										</div>
+									</div>
+									<div class="order_value"
+										th:each="orderValue : ${orderList.cart}">
+										<input type="hidden" class="p_price"
+											th:value="${orderList.sale_price * orderValue.cart_count}">
+										<span class="price"
+											th:text="${#numbers.formatInteger(orderList.sale_price * orderValue.cart_count,0,'COMMA')}"></span>원
+										<p class="count" th:text="|${orderValue.cart_count}개|"></p>
+										<input type="hidden" class="product_count"
+											th:value="${orderValue.cart_count}"> <input
+											type="hidden" class="cart_no"
+											th:value="${orderValue.cart_no}">
+									</div>
+								</div>
+							</li>
+						</ul>
 
 
+						<div class="pickUp_value">
+							<span class="pickUp">매장</span> <select id="shop">
+								<option value="">매장을 선택하세요.</option>
+								<option value="강남">강남</option>
+								<option value="당산">당산</option>
+								<option value="종로">종로</option>
+							</select>
+							<button class="place_info" onclick="shopInfo();" type="button">매장정보</button>
+							<span class="pickUp">일자</span> <select id="pickupDate">
+								<option value="">일자를 선택하세요.</option>
+							</select> <span class="pickUp">시간</span> <select id="time">
+								<option value="">픽업시간을 선택하세요.</option>
+								<option value="12:00~17:00">12:00 ~ 17:00</option>
+								<option value="17:00~21:00">17:00 ~ 21:00</option>
+							</select>
+						</div>
 
+					</div>
 
+					<p class="shop_info"></p>
+
+					<div class="deliver_head">
+						<div class="map_icon">
+							<i class="fas fa-map-marker-alt"></i>
+						</div>
+						<h3>배송방법 : 매장픽업</h3>
+					</div>
+
+					<p class="deliver_info">&emsp;해당 매장을 방문하셔서 주문하신 상품을 직접 픽업하세요.</p>
 
 
 
+					<!-- --------------------    -->
+					<h2 class="point_head head">포인트 사용</h2>
+					<div class="point_main line">
+						<span class="point">적립금</span> <input class="point_value"
+							type="number" onchange='usePoints()'
+							placeholder="사용할 적립금을 입력해주세요." />
+						<button id="usePoint" type="button">사용</button>
+						<input type="hidden" class="hiddenPoint"
+							th:value="${member.user_point}"> <span
+							class="member_point"
+							th:text="|보유 : ( ${member.user_point} Point )|"></span>
+					</div>
+
+					<!---------------- -->
+
+					<div class="finalPayment_info">
+						<span class="final_price_info">주문금액 <span class="allPrice"></span>원
+							- 포인트사용 <span class="pointUse">0</span>원 = <span
+							class="final_price fp"></span><span class="final_price">원</span>
+							<input type="hidden" class="allPriceValue"><input
+							type="hidden" class="pointUseValue" value="0"><input
+							type="hidden" class="fpValue">
+					</div>
+
+					<div class="clauses">
+						<div class="clause_all">
+							<input id="cbx_chkAll" type="checkbox"> <label
+								for="cbx_chkAll">주문 상품정보 및 서비스 이용약관에 모두 동의하십니까?</label>
+						</div>
+						<div class="clause">
+							<input id="check1" type="checkbox" name="chk"> <label
+								for="check1">주문할 상품정보(상품명,상품가격,배송정보)에 동의 하십니까?(전자상거래법
+								제8조 2항)</label>
+						</div>
+						<div class="clause">
+							<input id="check2" type="checkbox" name="chk"> <label
+								for="check2">전자금융거래 이용약관 동의&emsp;</label> <span
+								onclick="clause()">약관보기</span>
+						</div>
+					</div>
+
+					<div class="order_btn">
+						<button type="submit" onclick="return checkForm()">
+							<span class="ofp"></span>원 결제하기
+						</button>
+					</div>
+			</div>
+
+			<input type="hidden" class="username" th:value="${member.user_name}">
+			<input type="hidden" class="phone" th:value="${member.user_phone}">
+			<input type="hidden" class="userId" th:value="${member.user_id}">
+
+		</div>
 
 
 
 
 
 
-        <!-- --------------------    -->
-        <h2 class="point_head head">포인트 사용</h2>
-        <div class="point_main line">
-            <span class="point">적립금</span>
-            <input class="point_value" type="number" onchange='usePoints()'  placeholder="사용할 적립금을 입력해주세요." />
-            <button id="usePoint" type="button">사용</button>
-            <input type="hidden" class="hiddenPoint" th:value="${member.user_point}">
-            <span class="member_point" th:text="|보유 : ( ${member.user_point} Point )|"></span>
-        </div>
 
-        <!---------------- -->
 
-        <div class="finalPayment_info">
-            <span class="final_price_info">주문금액 <span class="allPrice"></span>원 - 포인트사용 <span class="pointUse">0</span>원 =
-            <span class="final_price fp"></span><span class="final_price">원</span>
-            <input type="hidden" class="allPriceValue"><input type="hidden" class="pointUseValue" value="0"><input type="hidden" class="fpValue">
-        </div>
 
-        <div class="clauses">
-            <div class="clause_all">
-                <input id="cbx_chkAll" type="checkbox">
-                <label for="cbx_chkAll">주문 상품정보 및 서비스 이용약관에 모두 동의하십니까?</label>
-            </div>
-            <div class="clause">
-                <input id="check1" type="checkbox" name="chk">
-                <label for="check1">주문할 상품정보(상품명,상품가격,배송정보)에 동의 하십니까?(전자상거래법 제8조 2항)</label>
-            </div>
-            <div class="clause">
-                <input id="check2" type="checkbox" name="chk">
-                <label for="check2">전자금융거래 이용약관 동의&emsp;</label>
-                <span onclick="clause()">약관보기</span>
-            </div>
-        </div>
 
-        <div class="order_btn">
-            <button type="submit" onclick="return checkForm()"><span class="ofp"></span>원 결제하기</button>
-        </div>
-     </div>
-    <!-- </form> -->
-    <input type="hidden" class="username" th:value="${member.user_name}">
-    <input type="hidden" class="phone" th:value="${member.user_phone}">
-    <input type="hidden" class="userId" th:value="${member.user_id}">
-    
-    </div> 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-     <script>
-     
-     
+
+	<script>
       var header = $("meta[name='_csrf_header']").attr('content');
   	  var token = $("meta[name='_csrf']").attr('content');
 
 	  var allProductPrice = 0;
 	
-       
 		/* 페이지 로드시 총상품 금액 보여주기*/
         window.onload = function(){
 			purchasePrice();
@@ -420,8 +194,7 @@
         
 		}
 
-		
-        
+    
         var havePoint = Number(document.querySelector(".hiddenPoint").value);
      	var usePoint = Number(document.querySelector(".point_value").innerText);
         var userPointBtn = document.getElementsByClassName("userPoint");
@@ -466,13 +239,12 @@
 		  			orderNames = orderNames + "," + elem.innerText;
 		        }
 		    	
+		    	
+		    	
 		    var username = document.querySelector(".username").value;
 		    var phone = document.querySelector(".phone").value;
 		    var userId = document.querySelector(".userId").value;
 		    orderNames = orderNames.substring(1); 
-		   // console.log(orderNames);
-		   // console.log(document.querySelector(".username").value);
-		    
 			 
 		    
 		    /* 주문번호 만들기 로직 */
@@ -495,11 +267,7 @@
 			}
 		
 			var purchase_no = today+ "_" + random;
-		    
-		   // console.log(purchase_no);
-		    
-		    
-		    
+
 		    
 		    /* 결제하기 버튼 눌렀을때 유효성 검사 및 결제 창 띄워주기(import) */
 		    function checkForm(){
@@ -534,20 +302,6 @@
 				
 				iamport();
 				
-				/// var pay_method = "";
-				// var pay_no = "";
-				/* var od_count = document.querySelectorAll(".count");
-				var od_price = document.querySelectorAll(".price");
-				var product_no = document.querySelectorAll(".product_no");
-				var length = od_count.length;
-				
-				
-				console.log("반복문 길이 : " + length);
-				console.log("해당상품 총구매개수 : " + od_count);
-				console.log("해당상품 총결제금액 : " + od_price);
-				console.log("해당상품 번호 : " + product_no);
-				 */
-				
 				function iamport(){
 					//가맹점 식별코드
 					IMP.init('imp88153348');
@@ -564,9 +318,6 @@
 					}, function(rsp) {
 						console.log(rsp);
 						pay_no = rsp.imp_uid;
-						/* console.log("값 결제번호 : " + rsp.imp_uid);
-						console.log("값 결제금액 : " + rsp.paid_amount);
-						console.log("값 은행점 : " + rsp.card_name); */
 						
 						pay_method = rsp.card_name;
 						// 결제검증
@@ -678,17 +429,10 @@
 							 productNo :productNo_Arr,
 					         stockArr : updateStock_Arr
 					         }
-
 					});
-
-					
 			  	}
 								
-				
-				
-				
-				
-				
+		
 				
 				/* payment에 값 추가 */
 				function paymentInsert(pay_no, pay_method){
@@ -773,46 +517,6 @@
 					} 
 				}
 		    
-				/* 구매한 상품 재고 minus */
-				/* function productCountMinus(){
-					
-					var productNo = document.querySelectorAll(".product_no");
-					var productCount = document.querySelectorAll(".product_count")
-					
-					var productNo_Arr = new Array;
-					var productCount_Arr  = new Array;
-					
-					for(const elem of productNo){
-						  console.log(elem.value);
-						  productNo_Arr.push(elem.value);
-					}
-					
-					for(const elem of productCount){
-						  console.log(elem.value);
-						  productCount_Arr.push(elem.value);
-					}
-					 
-					// location.href="purchase/cartDelete/" + cartNo_Arr;
-					// console.log(cartNo_Arr);
-					 
-						$.ajax({
-							url : "/purchase/cartDelete",
-							beforeSend: function(xhr){
-						        xhr.setRequestHeader(header, token);
-						    },
-							type : "POST",
-							// dataType : 'json', 
-							data : {
-						         valueArr : cartNo_Arr
-						         }
-
-						});
-
-				}
- */
-			
-				
-				
 				
 				/* 구매한 상품 장바구니에서 삭제 */
 				function cartDelete(){
@@ -827,39 +531,26 @@
 						  cartNo_Arr.push(elem.value);
 					}
 					 
-					// location.href="purchase/cartDelete/" + cartNo_Arr;
-					 
-					 
 						$.ajax({
 							url : "/purchase/cartDelete",
 							beforeSend: function(xhr){
 						        xhr.setRequestHeader(header, token);
 						    },
 							type : "POST",
-							// dataType : 'json', 
 							data : {
 						         valueArr : cartNo_Arr
 						         }
-
 						});
 
-						location.href="/purchase/complete/" + purchase_no;
-						
-				}
-			
-				
-			
-			
-			
-				
+						location.href="/purchase/complete/" + purchase_no;	
+				}	
 				
 		    }
 		    
-		    
         </script>
-     
-     <!-- 매장 정보 출력 -->
-     <script>
+
+		<!-- 매장 정보 출력 -->
+		<script>
                 function shopInfo(){
                 	const shop_info = document.querySelector("shop_info");
                 	var shop = document.getElementById("shop");
@@ -880,9 +571,9 @@
    
                 }
      </script>
-     
 
-     <script type="text/javascript">
+
+		<script type="text/javascript">
      
      function clause(){
          window.open("/purchase/clause", "popup1", "width=500, height=600");
@@ -940,20 +631,7 @@
 				else $("#cbx_chkAll").prop("checked", true); 
 			});
 		});
-	
-	
-	
-		
-	
-	
-	
-	
-	
-	
-	
-	
 	</script>
-<div th:replace="common/footer :: footer"></div>
-
+		<div th:replace="common/footer :: footer"></div>
 </body>
 </html>
