@@ -87,12 +87,13 @@
 			                WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS INVEN_PRICE
 		FROM INVENTORY I, PRODUCT P
 		WHERE I.PRODUCT_NO = P.PRODUCT_NO
+		AND STATUS = 'Y'
 		ORDER BY INVEN_DATE DESC
 	</select>
 	
 	<!-- 전체 페이징 -->
 	<select id="invenTotalListCnt" resultType="_int">
-	SELECT COUNT(*) FROM INVENTORY 
+	SELECT COUNT(*) FROM INVENTORY WHERE STATUS = 'Y'
 	</select>
 
 	
@@ -105,9 +106,9 @@
 			      , PRODUCT_NO
 			      , INVEN_COST
 			      , SALE_PRICE
-			      , PRODUCT_COUNT 
 			      , PRODUCT_KNAME 
-			      , PRODUCT_ENAME      
+			      , PRODUCT_ENAME 
+			      , PRODUCT_COUNT     
 			      , INVEN_PRICE
 		FROM (SELECT 
                 ROWNUM RNUM
@@ -129,6 +130,7 @@
                      WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS INVEN_PRICE
         FROM INVENTORY I, PRODUCT P 
 		WHERE I.PRODUCT_NO = P.PRODUCT_NO
+		AND I.STATUS = 'Y'
 		ORDER BY INVEN_DATE DESC) RLIST)
         WHERE RNUM BETWEEN #{ startRow } AND #{ endRow }
 		
@@ -186,6 +188,7 @@
                      WHERE I.PRODUCT_NO IN P.PRODUCT_NO)AS INVEN_PRICE
         FROM INVENTORY I, PRODUCT P 
 		WHERE I.PRODUCT_NO = P.PRODUCT_NO
+		AND I.STATUS = 'Y'
         <if test="searchStandard == 'no' and searchValue != '' and searchValue != null">
    		AND P.PRODUCT_NO LIKE '%' || #{ searchValue } || '%'
    		</if>
@@ -221,6 +224,7 @@
 			COUNT(INVEN_NO)AS TODAYRECEIVING   
 	FROM INVENTORY 
 	WHERE TO_CHAR(INVEN_DATE, 'YYYYMMDD') = TO_CHAR(SYSDATE, 'YYYYMMDD')
+	AND STATUS = 'Y'
 	</select>
 
 	<!-- 입고주문 -->

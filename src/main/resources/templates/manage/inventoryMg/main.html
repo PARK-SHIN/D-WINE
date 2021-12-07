@@ -95,7 +95,7 @@
         span#countTitle{
            width: 70px;
         }
-        .dayArrayBtn{
+      /*   .dayArrayBtn{
            margin: 5px;
            background: white ;
            border: 1px solid #83131E ;
@@ -103,8 +103,13 @@
            width: 50px;
            height: 25px;
            border-radius: 5px; 
-        }
+        } */
 
+		.selectDay{
+			margin-bottom : 15px;		
+		}
+		
+		
         .dayArrayBtn:hover {
             cursor: pointer;
             transform:scale(1.1);
@@ -278,11 +283,10 @@
     </div> 
     
     <div class="searchArea">
+    <div class="selectDay">
         <label>기간 조회 : </label>
          <input type="text" id="selectDate" placeholder="날짜를 입력하세요">
-        <button class="dayArrayBtn">오늘</button>
-        <button class="dayArrayBtn">1주일</button>
-        <button class="dayArrayBtn">1개월</button>
+        </div>
         <div class="searchArea"><label>조건 검색 : </label>
             <select id="selectCategory" name="searchStandard">
                     <option value="name">상품명</option>
@@ -323,6 +327,7 @@
                     <td th:text="${ #dates.format(inven.inven_date, 'yyyy-MM-dd') }"/>
                     <td><button class="cancleBtn" id="cancleBtn">취소</button></td>
                     <td class="tdStatus" th:text="${ inven.status }"></td>
+                    <td class="product_count" th:thex="${ inven.product_count }"></td>
                 </tr>
                 </tbody>
             </table>
@@ -528,8 +533,9 @@
                      + "<td>"+ item.inven_price + "</td>"
                      + "<td>"+ dateFormat(inven_date)+ "</td>"
                      + "<td><button class='cancleBtn' id='cancleBtn'>취소</btton></td>"
-                     + "<td>"+ item.status + "</td></tr>";
-
+                     + "<td>"+ item.status + "</td>"
+                     + "<td>" + item.product_count+"<td></tr>";
+					
            			 $(".trArea").html(tableHTML);
            			changeCss();
                   }); 
@@ -545,23 +551,29 @@
       
       }
 		
-	
+
 	function changeCss(){
 		$(".trArea tr").each(function(){
 			   var status = $(this).children().eq(10).text();
 			   var cancleBtn = $(this).children().eq(9).children();
+			  
 			   
 			   if(status == 'N'){
 			       $(this).css('background', 'rgba(180,19,30,0.1)');
-			       $(this).css("text-decoration", "line-through");
 			       cancleBtn.hide();
 			       
 			    }else{
 			       $(this).css('background', 'none');
 			       cancleBtn.show();
 			    }
+			   
+			   if(invenCount < productCount){
+				   cancleBtn.hide();
+			   }
+			   
+			   
 		});
-	}
+	} 
 
 	
 	//검색
@@ -601,7 +613,7 @@
 	  }
 	}); 
 	
-	
+	/* 
 	//관련 메인css
 	$(function(){	
 	   $(".trArea tr").each(function(){
@@ -618,7 +630,7 @@
 		       cancleBtn.show();
 		    }
 	   });
-	 });
+	 }); */
 	
 	
 	
