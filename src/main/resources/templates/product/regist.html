@@ -183,16 +183,16 @@
 			}
 			
     		// 한글명, 영문명 데이터 유효성 체크 
-    		let regExp1 = /^[가-힣\d\s]+$/;
+    		let regExp1 = /^[가-힣\d\s&]+$/;
     		if(!regExp1.test($("input[name=kname]").val())) {
-    			alert("한글명은 한글, 숫자만 입력 가능합니다.");
+    			alert("한글명은 한글, 숫자, 특수문자(&)만 입력 가능합니다.");
     			$("input[name=kname]").focus();
     			return false;
     		}
     		
-    		let regExp2 = /^[a-zA-Z\d\s]+$/;
+    		let regExp2 = /^[a-zA-Z\d\s&]+$/;
     		if(!regExp2.test($("input[name=ename]").val())) {
-    			alert("영문명은 대소문자, 숫자만 입력 가능합니다.");
+    			alert("영문명은 대소문자, 숫자, 특수문자(&)만 입력 가능합니다.");
     			$("input[name=ename]").focus();
     			return false;
     		}
