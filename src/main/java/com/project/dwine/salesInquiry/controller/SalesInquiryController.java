@@ -49,9 +49,6 @@ public class SalesInquiryController {
 	@ResponseBody
 	public List<Total> selectChangeYear(@RequestParam String year) {
 		List<Total> changeYearSales = salesInquiryService.changeYearSales(year);
-		for(Total t : changeYearSales) {
-			System.out.println(t);
-		}
 		
 		return changeYearSales;
 	}

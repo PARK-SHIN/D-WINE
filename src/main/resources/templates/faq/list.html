@@ -56,7 +56,7 @@
                         </thead>
                         <tbody id="fList">
 	                        <tr th:each="f : ${ faqList }" class="trFaq">
-	                            <td><input name="chk" type="checkbox" th:value="${ f.faqNo }"></td>
+	                            <td onclick="event.cancelBubble=true"><input name="chk" type="checkbox" th:value="${ f.faqNo }"></td>
 	                            <td th:text="${ f.faqNo }" class="selectRow"></td>
 	                            <td th:text="${ f.faqTitle }" class="selectRow"></td>
 	                            <td th:text="${ f.faqContent }" class="listContent selectRow"></td>
@@ -271,7 +271,8 @@
         }
     	
     	// 상세보기
-    	$(document).on('click', "tbody tr", function(){
+    	$(document).on('click', "tbody tr:not(1)", function(){
+    		console.log(this);
     		var faqNo = $(this).children().eq(1).text();
     		
     		$.ajax({

@@ -61,7 +61,7 @@
 						<tbody id="dailyList">
                         <tr th:each="d : ${ dailyList }">
                             <!-- 일자 -->
-                            <td th:text="${#dates.format(d.daily, 'yyyy.MM.dd (E)')}">2021.10.28(목)</td>
+                            <td th:text="${#dates.format(d.daily, 'yyyy.MM.dd (E)')}"></td>
                             <!-- 주문수 -->
                             <td th:text="${d.totalOrder}"></td>
                             <!-- 상품구매합계 -->
@@ -81,12 +81,12 @@
                         <tfoot>
                             <tr>
                                 <td>합계</td>
-                                <td>120</td>
-                                <td>1,500,000</td>
-                                <td>10,000</td>
-                                <td>1,490,000</td>
-                                <td>210,000</td>
-                                <td>1,280,000</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tfoot>
                     </table>

@@ -4,10 +4,16 @@
 		font-family: 'Gowun Batang', serif;
 	}
 	
+	@media screen and (max-width: 1500px) {
+      .weather {
+         display:none;
+      }
+   	}
+	
 	.wrapper {
 		display: flex;
-		width: 1100px;
 		margin: 0 auto;
+		width: 1100px;
 	}
 	
 	.contents {
@@ -18,7 +24,7 @@
 	.inner {
 		height: 100%;
 		margin: auto;
-		width: 1000px;
+		width: 1100px;
 	}
 	
 	a {
@@ -102,7 +108,7 @@
 	}
 	
 	table {
-		width: 1000px;
+		width: 1100px;
 		text-align: center;
 		font-weight: lighter;
 		font-size: 15px;

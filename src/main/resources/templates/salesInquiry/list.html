@@ -62,13 +62,11 @@
                         <!-- ajax 조회 -->
                     </select>
                     
-                    <canvas id="barChart" style="display: block; height: 220px; width: 800px;"></canvas>
+                    <canvas id="barChart" style="height: 220px; width: 800px;"></canvas>
                 </div>
                 
                 <label>TOP5 현황</label>
                 <div class="top5Area">
-					<!-- <span>2021.09.01</span> ~ <span>2021.10.27</span> -->
-					
 					<div id="pieChart-div" class="pieChart-div"></div>
 					<canvas id="pieChart" width="400" height="230"></canvas>
                 </div>
@@ -111,6 +109,8 @@
 	            }]
 	        },
 	        options: {
+	        	responsive: false,
+	        	maintainAspectRatio: false,
 	            scales: {
 	                yAxes: [{
 	                	ticks: {
@@ -134,14 +134,13 @@
 	    
 	    $("#years").change(function(){
 	    	var year = $(this).val();
-	    	console.log($(this).val());
 	    	
 	    	$.ajax({
 	    		url : "/salesInquiry/selectChangeYear",
 	    		type : "post",
 	    		data : {year : year},
 	    		success : function(list){
-					console.log(list);
+
 	    			var label = [];
 	    			var data = [];
 	    			
@@ -149,9 +148,12 @@
 	    				data.push(item.totalPrice);
 	    				label.push(item.month + "월");
 	    			});
-
-	    		    var bct = document.getElementById('barChart').getContext('2d');
-	    		    var barChart = new Chart(bct, {			
+					
+	    			
+	    			barChart.destroy();
+	    			
+	    		    bct = document.getElementById('barChart').getContext('2d');
+	    		    barChart = new Chart(bct, {			
 	    		    	
 	    		        type: 'bar',
 	    		        data: {
@@ -163,16 +165,18 @@
 	    		            }]
 	    		        },
 	    		        options: {
+	    		        	responsive: false,
+	    		        	maintainAspectRatio: false,
 	    		            scales: {
-	    		                yAxes: {
+	    		                yAxes: [{
 	    		                	ticks: {
 	    		                		min: 0,
 	    		                		stepSize: 100
 	    		                	}
-	    		                }
+	    		                }]
 	    	                }
 	    		        }
-	    		    });
+	    			});
 	    		},
 	    		error : function(e){
 	    			console.log(e);
