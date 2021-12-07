@@ -38,7 +38,7 @@
 		   AND TO_DATE(TO_CHAR(P.PURCHASE_DATE, 'yy/MM/dd'), 'yy/MM/dd') <![CDATA[ >= ]]> TO_DATE(#{ startDate }, 'yy/MM/dd')
            AND TO_DATE(TO_CHAR(P.PURCHASE_DATE, 'yy/MM/dd'), 'yy/MM/dd') <![CDATA[ <= ]]> TO_DATE(#{ endDate }, 'yy/MM/dd')
          </if>
-         <if test="searchStatus != null and searchStatus !='-구분-' and searchStatus != ''">
+         <if test="searchStatus != null and searchStatus !='- 전체 -' and searchStatus != ''">
 		   AND P.ORDER_STATUS = #{ searchStatus }
 		 </if>
 		 <if test="searchCondition == 'orderNumber' and searchValue != '' and searchValue != null">
@@ -86,7 +86,7 @@
 						   AND TO_DATE(TO_CHAR(P.PURCHASE_DATE, 'yy/MM/dd'), 'yy/MM/dd') <![CDATA[ >= ]]> TO_DATE(#{ startDate }, 'yy/MM/dd')
 				           AND TO_DATE(TO_CHAR(P.PURCHASE_DATE, 'yy/MM/dd'), 'yy/MM/dd') <![CDATA[ <= ]]> TO_DATE(#{ endDate }, 'yy/MM/dd')
 				         </if>
-						 <if test="searchStatus != null and searchStatus !='-구분-' and searchStatus != ''">
+						 <if test="searchStatus != null and searchStatus !='- 전체 -' and searchStatus != ''">
 						   AND P.ORDER_STATUS = #{ searchStatus }
 						 </if>
 						 <if test="searchCondition == 'orderNumber' and searchValue != '' and searchValue != null">

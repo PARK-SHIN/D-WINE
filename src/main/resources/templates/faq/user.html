@@ -21,14 +21,11 @@
     		font-family: 'Gowun Batang', serif;
     	}
     	
-        #container {
-            width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-            height: 1400px;
-        }
+        .wrapper {
+			display : flex;
+			width: 1100px;
+			margin : 0 auto;
+		}
 
         .contents {
             width: 888px;
@@ -39,7 +36,6 @@
             margin-top: 30px;
             margin-left: 100px;
             width: 900px;
-            /* height: 100%; */
         }
         
         a {
@@ -108,6 +104,10 @@
 		    background: white;
 		    border: 1px solid #83131E;
 		    color: #83131E;
+        }
+        
+        .list_area {
+        	height: 500px;
         }
 
         table {
@@ -236,7 +236,7 @@
 </head>
 <body>
 	<header th:include="common/header :: header"></header>
-    <div id="container">
+    <div class="wrapper">
         <div class="contents">
             <div class="inner">
                 <div class="headerArea">    
@@ -244,7 +244,7 @@
                 </div>
                 <hr style="padding-right: 130px;">
 
-                <div>
+                <div class="list_area">
                     <div class="btnArea">
                     	<input type="search" class="searchBox" name="searchValue" placeholder="제목 검색">
                     	<button type="button" class="searchBtn">검색</button>
