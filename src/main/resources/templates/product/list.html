@@ -22,81 +22,81 @@
    <div class="wrapper">
       <nav class="snb" th:replace="/common/adminSubmenu.html"></nav>
       <div class="contents">
-         <div id="header_area">
-            <h1>상품관리</h1>
-              <button id="open_regist_btn" onclick="location.href='/product/regist'">상품 등록</button>
-         </div>
-         <hr>
-         <div id="top_area">
-            <div>
-               <button id="deleteMulti_btn">선택 삭제</button>
-               <button id="hash_btn" onclick="openHashForm()">해시태그 관리</button>
-            </div>
-            <div>
-               <select name="searchStandard">
-                  <option value="no">상품번호</option>
-                  <option value="name">상품명</option>
-               </select> <input type="text" name="searchValue">
-               <button id="search_btn">검색</button>
-            </div>
-         </div> <!-- top_area -->
-         <div class="list_area">
-            <div class="sort_area">
-               <select name="sortStandard">
-               	<option value="no_low">상품번호 낮은 순</option>
-                <option value="no_high">상품번호 높은 순</option>
-                <option value="stock_low">재고 적은 순</option>
-                <option value="stock_high">재고 많은 순</option>
-               </select>
-            </div>
-            <form id="deleteMultiForm" th:action="@{/product/deleteMulti}"
-               method="post" onsubmit="return checkConfirm()">
-               <table id="table_area">
-                  <thead>
-                     <tr>
-                        <th><input type="checkbox" id="delete_all"
-                           name="delete_all"></th>
-                        <th>상품번호</th>
-                        <th>상품명</th>
-                        <th>판매가</th>
-                        <th>재고</th>
-                        <th>등록일</th>
-                        <th>수정일</th>
-                     </tr>
-                  </thead>
-                  <tbody id="productList">
-                     <tr th:each="product : ${ productList }">
-                        <td class="center"><input type="checkbox"
-                           name="delete_nums" th:value="${ product.productNo }"></td>
-                        <td class="center" th:text="${ product.productNo }"></td>
-                        <td class="choose" th:text="${ product.productKName }"
-                           th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|"></td>
-                        <td class="center" th:text="${#numbers.formatInteger(product.salePrice, 1, 'COMMA')}"></td>
-                        <td class="center choose" th:text="${#numbers.formatInteger(product.productCount, 1, 'COMMA')}"
-                           th:onclick="|location.href='@{/manage/inventoryMg/main}'|"></td>
-                        <td class="center"
-                           th:text="${#dates.format(product.createDate, 'yyyy-MM-dd')}"></td>
-                        <td class="center"
-                           th:text="${#dates.format(product.modifyDate, 'yyyy-MM-dd')}"></td>
-                     </tr>
-                  </tbody>
-               </table>
-            </form>
-         </div> <!-- list_area -->
-
-          <!-- 페이징 -->
-          <div class="paging__area">
-             <ul class="paging_ul">
-               <li class="go_first">&lt;&lt;</li>
-               <li class="go_prev">&lt;</li>
-               <li class="pageNo current_page" th:if="${pi.page == page} and ${pi.endPage != 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
-               <li class="pageNo" th:unless="${pi.page == page} or ${pi.endPage == 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
-               <li class="go_next">&gt;</li>
-               <li class="go_end">&gt;&gt;</li>
-            </ul> 
-         </div>
-         <!-- 페이징 -->
-         
+      	<div class="inner">
+      		<div id="header_area">
+            	<h3 style="font-size: 24px;">상품관리</h3>      		
+              	<button id="open_regist_btn" onclick="location.href='/product/regist'">상품 등록</button>
+	         </div>
+	         <hr style="padding-right: 130px;">
+	         <div id="top_area">
+	            <div>
+	               <button id="deleteMulti_btn">선택 삭제</button>
+	               <button id="hash_btn" onclick="openHashForm()">해시태그 관리</button>
+	            </div>
+	            <div>
+	               <select name="searchStandard">
+	                  <option value="no">상품번호</option>
+	                  <option value="name">상품명</option>
+	               </select> <input type="text" name="searchValue">
+	               <button id="search_btn">검색</button>
+	            </div>
+	         </div> <!-- top_area -->
+	         <div class="list_area">
+	            <div class="sort_area">
+	               <select name="sortStandard">
+	               	<option value="no_low">상품번호 낮은 순</option>
+	                <option value="no_high">상품번호 높은 순</option>
+	                <option value="stock_low">재고 적은 순</option>
+	                <option value="stock_high">재고 많은 순</option>
+	               </select>
+	            </div>
+	            <form id="deleteMultiForm" th:action="@{/product/deleteMulti}"
+	               method="post" onsubmit="return checkConfirm()">
+	               <table id="table_area">
+	                  <thead>
+	                     <tr>
+	                        <th><input type="checkbox" id="delete_all"
+	                           name="delete_all"></th>
+	                        <th>상품번호</th>
+	                        <th>상품명</th>
+	                        <th>판매가</th>
+	                        <th>재고</th>
+	                        <th>등록일</th>
+	                        <th>수정일</th>
+	                     </tr>
+	                  </thead>
+	                  <tbody id="productList">
+	                     <tr th:each="product : ${ productList }">
+	                        <td class="center"><input type="checkbox"
+	                           name="delete_nums" th:value="${ product.productNo }"></td>
+	                        <td class="center" th:text="${ product.productNo }"></td>
+	                        <td class="choose" th:text="${ product.productKName }"
+	                           th:onclick="|location.href='@{/product/detail/{productNo}(productNo=${product.productNo})}'|"></td>
+	                        <td class="center" th:text="${#numbers.formatInteger(product.salePrice, 1, 'COMMA')}"></td>
+	                        <td class="center choose" th:text="${#numbers.formatInteger(product.productCount, 1, 'COMMA')}"
+	                           th:onclick="|location.href='@{/manage/inventoryMg/main}'|"></td>
+	                        <td class="center"
+	                           th:text="${#dates.format(product.createDate, 'yyyy-MM-dd')}"></td>
+	                        <td class="center"
+	                           th:text="${#dates.format(product.modifyDate, 'yyyy-MM-dd')}"></td>
+	                     </tr>
+	                  </tbody>
+	               </table>
+	            </form>
+	         </div> <!-- list_area -->
+	
+	          <!-- 페이징 -->
+	          <div class="paging__area">
+	             <ul class="paging_ul">
+	               <li class="go_first">&lt;&lt;</li>
+	               <li class="go_prev">&lt;</li>
+	               <li class="pageNo current_page" th:if="${pi.page == page} and ${pi.endPage != 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
+	               <li class="pageNo" th:unless="${pi.page == page} or ${pi.endPage == 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
+	               <li class="go_next">&gt;</li>
+	               <li class="go_end">&gt;&gt;</li>
+	            </ul> 
+	         </div> <!-- 페이징 -->
+      	</div>
       </div>
    </div>
    <footer th:include="common/footer :: footer"></footer>

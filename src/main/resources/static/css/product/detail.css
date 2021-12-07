@@ -7,6 +7,19 @@
 		width: 1100px;
 		margin : 0 auto;
 	}
+	.contents {
+	    width: 888px;
+	    height: 100%;
+	}
+	h3 {
+		margin-top: 0;
+	}
+	.inner {
+	    margin-top: 30px;
+	    margin-left: 27px;
+	    width: 795px;
+	    height: 700px;
+	}
 	.input_area {
 		display: flex;
 		margin-bottom: 20px;
@@ -100,4 +113,8 @@
 	}
 	#deleteForm {
 		display: inline;
+	}
+	.snb_inner {
+	    width: 170px;
+	    margin: 30px auto 0;
 	}
