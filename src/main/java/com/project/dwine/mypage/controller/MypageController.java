@@ -188,7 +188,7 @@ public class MypageController{
 	}
 	
 	@PostMapping("/mypage/pickupModify")
-	public String pickupModify(@RequestParam Map<String, String> parameters, HttpServletResponse response) throws IOException {
+	public String pickupModify(@RequestParam Map<String, String> parameters, HttpServletResponse response, RedirectAttributes rttr) throws IOException {
 		response.setContentType("text/html; charset=euc-kr");
 		String purchase_no = parameters.get("purchase_no");
 		String pickup_place = parameters.get("pickup_place");
@@ -196,16 +196,12 @@ public class MypageController{
 		String pickup_time = parameters.get("pickup_time");
 		int result = mypageService.pickupModify(purchase_no, pickup_place, pickup_date, pickup_time);
 		if(result > 0) {
-			System.out.println("성공");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('픽업정보가 변경되었습니다.'); location.href='/mypage/orderlist';</script>");
-			out.flush();
-			return "/mypage/orderlist";
+			rttr.addFlashAttribute("message", "픽업정보가 변경되었습니다.");
+			return "redirect:/mypage/orderlist";
 		} else {
 			System.out.println("실패");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('픽업정보 변경에 실패하였습니다.'); location.href='/mypage/orderlist';</script>");
-			return "/mypage/orderlist";
+			rttr.addFlashAttribute("message", "픽업정보 변경에 실패하였습니다.");
+			return "redirect:/mypage/orderlist";
 		}
 		
 	}
@@ -469,20 +465,20 @@ public class MypageController{
 	
 	// 찜 목록에서 삭제
 	@GetMapping("/mypage/wish/{wish_no}")
-	public String deleteOneWish(@PathVariable int wish_no, Model model, HttpServletResponse response) throws IOException {
+	public String deleteOneWish(@PathVariable int wish_no, Model model, HttpServletResponse response, RedirectAttributes rttr) throws IOException {
 		int result = mypageService.deleteOneWish(wish_no);
 		response.setContentType("text/html; charset=euc-kr");
 		PrintWriter out = response.getWriter();
 		if(result > 0) {
-			out.println("<script>alert('찜 목록에서 삭제되었습니다.'); location.href='/mypage/wish' </script>");
-			out.flush();
-			//return "redirect:/mypage/wish";
-			return "/mypage/wish";
+//			out.println("<script>alert('찜 목록에서 삭제되었습니다.'); location.href='/mypage/wish' </script>");
+//			out.flush();
+			rttr.addFlashAttribute("message", "찜 목록에서 삭제되었습니다.");
+			return "redirect:/mypage/wish";
 		} else {
-			out.println("<script>alert('삭제에 실패하였습니다.'); location.href='/mypage/wish' </script>");
-			out.flush();
-			//return "redirect:/mypage/wish";
-			return "/mypage/wish";
+//			out.println("<script>alert('삭제에 실패하였습니다.'); location.href='/mypage/wish' </script>");
+//			out.flush();
+			rttr.addFlashAttribute("message", "삭제에 실패하였습니다.");
+			return "redirect:/mypage/wish";
 		}
 	}
 	
