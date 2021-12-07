@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>재고관리</title>
+<title>입고관리</title>
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <!-- 글꼴, jquery, 공통css -->
@@ -18,15 +18,14 @@
           font-family: 'Gowun Batang', serif;
        }
        
-    #container {
-            width: 1100px;
+  		 #container {
+		    width: 1100px;
 		    margin: 0 auto;
 		    display: flex;
 		    justify-content: space-between;
 		    flex-wrap: nowrap;
-		    border: none;
-		    height: 1400px;
-        }
+		}
+		        
 
         .snb {
             width: 200px;
@@ -35,10 +34,12 @@
         }
     	
         .inner {
-            margin-top: 30px;
-            margin-left: 27px;
-            width: 836px;
-        }
+			    margin-top: 30px;
+			    margin-left: 27px;
+			    width: 836px;
+			    height: 100%;
+			}
+
         a {
             text-decoration: none;
             color: #000;
@@ -166,7 +167,7 @@
 	    font-weight: lighter;
 	    border-collapse: collapse;
 	    border-spacing: 0px;
-	    font-size: 14px;
+	    font-size: 15px;
         }
 
         .invenMgTable th{
@@ -188,7 +189,7 @@
         border-left: none;
         text-align: center;
         height: 35px;
-        font-size: 14px;
+        font-size: 15px;
         }
       
       #cancleBtn{
@@ -252,7 +253,8 @@
 
         
   <div class="content">
-    <div th:include="common/footer :: goUp"></div>   
+    <div th:include="common/footer :: goUp"></div>  
+   <div class="inner">  
    <h2>입고관리</h2>    
     <hr>
     <div class="totalList">
@@ -262,7 +264,7 @@
   
         <div id="todayReceiving">
             <span id="count" th:text="${todayReceiving.todayReceiving}">9</span>
-            <span id="countTitle">Today Receiving</span>
+            <span id="countTitle">Today Inventory</span>
         </div>
         
         <div id="totalShop">
@@ -330,16 +332,17 @@
 			 	<ul class="paging_ul">
 					<li class="go_first">&lt;&lt;</li>
 					<li class="go_prev">&lt;</li>
-					<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
-					<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
+					<li class="pageNo current_page" th:if="${pi.page == page} and ${pi.endPage != 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
+            		<li class="pageNo" th:unless="${pi.page == page} or ${pi.endPage == 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
 					<li class="go_next">&gt;</li>
 					<li class="go_end">&gt;&gt;</li>
 				</ul> 
 			</div>
- 			<!-- 페이징 -->
+			
+			
 </div>
 </div>
-
+</div>
     
 
 <div th:replace="common/footer :: footer"></div>

@@ -82,7 +82,7 @@
 	    text-align: center;
 	    font-weight: lighter;
 	    border-collapse: collapse;
-	    font-size: 14px;
+	    font-size: 15px;
         }
 
         .reviewMgTable th{
@@ -209,7 +209,7 @@
                 <th>신고 수</th>
             </tr>
             <tbody class="trArea">
-            <tr th:each="report: ${ reviewMgList }" th:style="${report.count == 0 ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}">
+            <tr class="reviewR" th:each="report: ${ reviewMgList }" th:style="${report.count == 0 ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}">
                 <td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ report.review_no1 }" onclick="event.cancelBubble=true"></td>  
                 <td th:text="${ report.user_id2 }"/>
                 <td class="reviewText" onclick="openDetail();" th:text="${ report.review_text }"></td>
@@ -226,8 +226,8 @@
 			 	<ul class="paging_ul">
 					<li class="go_first">&lt;&lt;</li>
 					<li class="go_prev">&lt;</li>
-					<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
-					<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
+					<li class="pageNo current_page" th:if="${pi.page == page} and ${pi.endPage != 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
+           			<li class="pageNo" th:unless="${pi.page == page} or ${pi.endPage == 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
 					<li class="go_next">&gt;</li>
 					<li class="go_end">&gt;&gt;</li>
 				</ul> 
@@ -246,7 +246,7 @@ var header = $("meta[name='_csrf_header']").attr("content");
 $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
   
   
-$("tr").click(function(){
+$(".reviewR").click(function(){
     var no = $(this).children().eq(0).children().val();
     openDetail(no);
  });

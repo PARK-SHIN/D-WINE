@@ -54,10 +54,10 @@
 	    margin: 30px auto 0;
 	}
 	
-	label {
-	    font-size: 14px;
-	    margin-right: 30px;
-	}
+		label {
+			color: #83131E ;
+		    margin-right: 30px;
+		}
     
     	
         .content {
@@ -91,13 +91,13 @@
        height: 500px;
       }
    
-    .memberTable{
-        width: 795px;
-	    text-align: center;
-	    font-weight: lighter;
-	    border-collapse: collapse;
-	    font-size: 14px;
-    }
+	    .memberTable{
+	        width: 840px;
+		    text-align: center;
+		    font-weight: lighter;
+		    border-collapse: collapse;
+		    font-size: 14px;
+	    }
 
 	    .memberTable th{
 	     font-weight: lighter;
@@ -206,7 +206,7 @@
         .label_area{
             display: inline-flex;
             width: 150px;
-            margin-left: 80px;
+            margin-left: 90px;
        		margin-right: 20px;
 		}
 
@@ -346,8 +346,8 @@
 			 	<ul class="paging_ul">
 					<li class="go_first">&lt;&lt;</li>
 					<li class="go_prev">&lt;</li>
-					<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
-					<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
+					<li class="pageNo current_page" th:if="${pi.page == page} and ${pi.endPage != 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
+            		<li class="pageNo" th:unless="${pi.page == page} or ${pi.endPage == 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
 					<li class="go_next">&gt;</li>
 					<li class="go_end">&gt;&gt;</li>
 				</ul> 
@@ -427,15 +427,18 @@ function openModal(elem){
 
 			return date.getFullYear() + '-' + month + '-' + day;
 		}
+	
 	//삭제 AJAX
 	function deleteValue(){
 		
 		var valueArr = new Array();
 	    var list = $("input[name='checkbox']");
+	
 	    
 	    for(var i = 0; i < list.length; i++){
 	        if(list[i].checked){ 
 	            valueArr.push(list[i].value);
+	           // console.log(valueArr); 넘어감
 	        }
 	    }
 	    if (valueArr.length == 0){
@@ -443,14 +446,14 @@ function openModal(elem){
 	    }
 	    else{
 			var chk = confirm("정말 삭제하시겠습니까?");		
-			if(chk == ture){
+			if(chk == true){
 			$.ajax({
-			    url : "/manage/memberMg/delete",                   
+			    url : "/manage/memberMg/delete",                
 			    type : 'POST',  
 			    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			    traditional : true,
 			    data : {
-			    	valueArr : valueArr        //403에러는왜뜨는거지? -> csrf때문
+			    	valueArr : valueArr  
 			    },
 			    success : function(data){
 					alert("삭제에 성공했습니다.");
@@ -459,7 +462,6 @@ function openModal(elem){
 				error : function(e){
 					consloe.log("삭제에 실패했습니다");
 				}
-           
 			});
 		  }
 		}
@@ -472,8 +474,6 @@ function openModal(elem){
 		// 페이지 <li> 눌렀을 때
 		$(document).on("click", ".pageNo", function(){
 			var page = $(this).val();
-			console.log(page);
-			//var searchStandard = $("select[name=searchStandard]").val();
 			var searchValue = $("input[name=searchValue]").val();
 			
 			clickPage = page;
@@ -486,7 +486,6 @@ function openModal(elem){
 		$(document).on("click", ".go_first", function() {
 			clickPage = 1;
 			var page = 1;
-			//var searchStandard = $("select[name=searchStandard]").val();
 			var searchValue = $("input[name=searchValue]").val();
 			
 			ajaxPaging(page);
@@ -497,7 +496,6 @@ function openModal(elem){
 		$(document).on("click", ".go_end", function() {
 			clickPage = endPage;
 			var page = endPage;
-			//var searchStandard = $("select[name=searchStandard]").val();
 			var searchValue = $("input[name=searchValue]").val();
 			
 			ajaxPaging(page);
@@ -508,7 +506,6 @@ function openModal(elem){
 			if(clickPage != 1) {
 				var page = clickPage - 1;
 				clickPage = clickPage - 1;
-			//	var searchStandard = $("select[name=searchStandard]").val();
 				var searchValue = $("input[name=searchValue]").val();
 				
 				ajaxPaging(page);
@@ -522,7 +519,6 @@ function openModal(elem){
 			if(clickPage != endPage) {
 				var page = clickPage + 1;
 				clickPage = clickPage + 1;
-			//	var searchStandard = $("select[name=searchStandard]").val();
 				var searchValue = $("input[name=searchValue]").val();
 				
 				ajaxPaging(page,searchValue);
@@ -541,8 +537,6 @@ function openModal(elem){
 					var pi = data.pi;
 					var memberList = data.searchMemberList;
 					console.log("memberList: " + memberList );
-					//var searchStandard = data.searchStandard;
-					//console.log("searchStandard: " + searchStandard );
 					var searchValue = data.searchValue;
 					      
 					endPage = pi.endPage;

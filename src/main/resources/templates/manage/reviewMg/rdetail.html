@@ -14,8 +14,11 @@
        }
        
        
+      .contents{
+      margin: auto;
+      }
 	       
-	       .star-ratings {
+	  .star-ratings {
 	  color: #aaa9a9; 
 	  position: relative;
 	  unicode-bidi: bidi-override;
@@ -41,6 +44,44 @@
 	  z-index: 0;
 	  padding: 0;
 	}   
+	
+		.reporterList{
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 900px;
+            height: 500px;
+        }
+        
+        .reporteTable{
+       	width: 840px;
+	    text-align: center;
+	    font-weight: lighter;
+	    border-collapse: collapse;
+	    font-size: 14px;
+        }
+
+        .reporteTable th{
+        font-weight: lighter;
+	    background-color: rgba(196, 196, 196, 0.3);
+	    border: none;
+        }
+        
+        .reporteTable tr {
+	    height: 35px;
+		}
+		
+		.reviewMgTable tr:nth-child(n+2):hover {
+	    background-color: rgba(196, 196, 196, 0.1);
+		}
+
+        .reporteTable td{
+        border-bottom:1px solid lightgray;
+        border-left: none;
+        text-align: center;
+        height: 35px;
+        font-size: 14px;
+        }
 </style>
 </head>
 <body>
@@ -53,6 +94,7 @@
                 <hr style="width: 700px; padding-right: 130px;">
                 <form id="reviewUpdateForm" th:action="@{/mypage/reviewUpdateForm}" method="post" enctype="multipart/form-data">   
                     <div>
+                    
                         <h3>별점</h3>
 				
 						<div class="star-ratings">
@@ -89,7 +131,7 @@
                     </div>
                     <br>
                   </form>
-                  <h1>신고 상세창</h1>
+                  <h3>신고 상세창</h3>
                   <hr>
                   <div class="reporterList">
                   	 <table class="reporteTable">

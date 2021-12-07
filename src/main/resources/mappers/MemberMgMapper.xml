@@ -35,7 +35,7 @@
                *
                FROM MEMBER
               WHERE USER_STATUS = 'Y'
-              ORDER BY REPORTED_COUNT DESC, CREATE_DATE) MLIST)
+              ORDER BY REPORTED_COUNT DESC, CREATE_DATE DESC) MLIST)
       WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
 	
@@ -50,7 +50,7 @@
    	 	AND USER_ID LIKE '%' || #{ searchValue } || '%'
    	 	OR USER_NICKNAME LIKE '%' || #{ searchValue } || '%'
    	 	</if>
-   	 	ORDER BY REPORTED_COUNT DESC, CREATE_DATE
+   	 	ORDER BY REPORTED_COUNT DESC, CREATE_DATE DESC
 	</select>
 	
 	<select id="searchMemberList"  resultMap="memberResultMap">
@@ -63,14 +63,14 @@
 	               *
 	               FROM MEMBER
 	              WHERE USER_STATUS = 'Y'
-	              ORDER BY REPORTED_COUNT DESC, CREATE_DATE) MLIST)
+	              ORDER BY REPORTED_COUNT DESC, CREATE_DATE DESC) MLIST)
 	      WHERE USER_STATUS = 'Y'
 	      <if test="searchValue != null and searchValue != ''">
 	   	  AND USER_ID LIKE '%' || #{ searchValue } || '%'
 	   	  OR USER_NICKNAME LIKE '%' || #{ searchValue } || '%'
 	   	  </if>
 	      AND RNUM BETWEEN #{startRow} AND #{endRow}
-	      ORDER BY REPORTED_COUNT DESC, CREATE_DATE
+	      ORDER BY REPORTED_COUNT DESC, CREATE_DATE DESC
 	</select>
 	
 	
