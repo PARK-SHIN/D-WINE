@@ -87,8 +87,24 @@
 		color: red;
 		font-weight: bold;
 	}
-	/* 페이징 부분 */
-	.paging_ul {
+	#search_btn{
+        margin: 5px;
+		background: white;
+		border: 1px solid #83131E;
+		color: #83131E;
+		width: 45px;
+		height: 25px;
+		border-radius: 5px;
+	}
+	#search_btn:hover {
+		cursor: pointer;
+		transform: scale(1.1);
+		background: #83131E;
+		color: white;
+	}
+	
+/* 페이징 부분 */
+.paging_ul {
 		height: 50px;
 		line-height: 50px;
 		display: flex;
