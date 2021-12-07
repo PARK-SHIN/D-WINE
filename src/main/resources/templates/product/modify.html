@@ -13,7 +13,7 @@
 <body>
 	<header th:include="common/header :: header"></header>
 	<div class="wrapper">
-		<nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+		<nav class="snb" th:replace="/common/adminSubmenu.html"></nav>
 		<div class="contents">
 		    <h1>상품 수정</h1>
 		    <hr>
@@ -66,7 +66,7 @@
 		            <div class="label_area">용량 / 도수</div>
 		            <div>
 			            <input type="number" name="capacity" min="0" th:value="${product.capacity}" required>ml / 
-			            <input type="number" name="abv" min="0" th:value="${product.abv}" required>%</div>
+			            <input type="number" name="abv" min="0" step="0.1" th:value="${product.abv}" required>%</div>
 		        	</div>
 		        <div class="input_area">
 		            <div class="label_area">해시태그</div>

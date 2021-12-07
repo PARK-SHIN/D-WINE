@@ -335,6 +335,7 @@
 			COUNT(PRODUCT_NO)
 		FROM PRODUCT
 		WHERE PRODUCT_KNAME = #{ kname }
+		AND STATUS = 'Y'
 	</select>
 	
 	<select id="selectImgPath" resultMap="imgPathResultMap" parameterType="_int">

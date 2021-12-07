@@ -11,7 +11,7 @@
 <body>
 	<header th:include="common/header :: header"></header>
 	<div class="wrapper">
-		<nav class="snb" th:replace="/manage/adminSubmenu.html"></nav>
+		<nav class="snb" th:replace="/common/adminSubmenu.html"></nav>
 		<div class="contents">
 		    <h1>상품 상세 정보</h1>
 		    <div>
@@ -38,7 +38,7 @@
 			<div class="input_area">
 				<div class="label_area">판매가</div>
 				<div>
-					<input type="text" name="sale_price" min="0" th:value="${#numbers.formatInteger(product.salePrice, 3, 'COMMA')}" readonly>
+					<input type="text" name="sale_price" min="0" th:value="${#numbers.formatInteger(product.salePrice, 1, 'COMMA')}" readonly>
 				</div>
 			</div>
 			<div class="input_area">
@@ -52,7 +52,7 @@
 			<div class="input_area">
 				<div class="label_area">수량</div>
 				<div>
-					<input type="text" name="product_count" th:value="${#numbers.formatInteger(product.productCount, 3, 'COMMA')}" readonly>
+					<input type="text" name="product_count" th:value="${#numbers.formatInteger(product.productCount, 1, 'COMMA')}" readonly>
 				</div>
 			</div>
 		
