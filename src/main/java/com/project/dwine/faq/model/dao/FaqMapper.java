@@ -9,13 +9,13 @@ import com.project.dwine.faq.model.vo.Faq;
 @Mapper
 public interface FaqMapper {
 
-	List<Faq> selectFaqList();
+	int getFaqCount(String searchValue);
+
+	List<Faq> selectFaqList(String searchValue, int startRow, int endRow);
 
 	int deleteFaq(int faqNo);
 
 	int registFaq(String title, String content, int userNo);
-
-	List<Faq> selectSearchList(String searchValue);
 
 	Faq selectFaq(int faqNo);
 

@@ -19,8 +19,13 @@ public class FaqServiceImpl implements FaqService{
 	}
 
 	@Override
-	public List<Faq> selectFaqList() {
-		return faqMapper.selectFaqList();
+	public int getFaqCount(String searchValue) {
+		return faqMapper.getFaqCount(searchValue);
+	}
+
+	@Override
+	public List<Faq> selectFaqList(String searchValue, int startRow, int endRow) {
+		return faqMapper.selectFaqList(searchValue, startRow, endRow);
 	}
 
 	@Override
@@ -34,11 +39,6 @@ public class FaqServiceImpl implements FaqService{
 	}
 
 	@Override
-	public List<Faq> selectSearchList(String searchValue) {
-		return faqMapper.selectSearchList(searchValue);
-	}
-
-	@Override
 	public Faq selectFaq(int faqNo) {
 		return faqMapper.selectFaq(faqNo);
 	}
@@ -47,4 +47,5 @@ public class FaqServiceImpl implements FaqService{
 	public int updateFaq(String title, String content, int faqNo) {
 		return faqMapper.updateFaq(title, content, faqNo);
 	}
+
 }
