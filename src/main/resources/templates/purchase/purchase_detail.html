@@ -198,7 +198,8 @@
         var havePoint = Number(document.querySelector(".hiddenPoint").value);
      	var usePoint = Number(document.querySelector(".point_value").innerText);
         var userPointBtn = document.getElementsByClassName("userPoint");
-
+        
+        
 			/* 주문자가 작성한 Point 값 넣기 */
 			 function usePoints()  {
 				  const pv = Number(document.querySelector(".point_value").value);
@@ -209,9 +210,16 @@
 			 /* 포인트 사용버튼 눌렀을때 처리  (유효한 값인지 확인) */
 			 
 			document.getElementById("usePoint").addEventListener('click',function(){
+				var allprice = Number(document.querySelector(".allPriceValue").value);
+
+	        	console.log("총가격 : " + allprice);
+				
+				
 				if(havePoint < usePoint){
 					alert(havePoint + 'Point 이하로 사용해주세요.');
 					
+				} else if(usePoint > allprice){
+					alert(allprice + '이하로 사용해주세요.')
 				} else if(usePoint == 0 ){
 					alert('사용할 포인트를 입력해주세요.')
 				} else{

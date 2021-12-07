@@ -124,6 +124,11 @@ table tr {
 	margin-top: 50px;
 }
 
+.btns .main_btn,
+.btns .my_payment_btn{
+	border-radius: 5px;
+}
+
 .main_btn {
 	width: 120px;
 	height: 50px;
