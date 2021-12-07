@@ -120,15 +120,15 @@
                             <textarea th:text="${q.qna_content}" style="margin-left : 50px; overflow:scroll;" 
                             rows="6.5" cols="90" readonly></textarea>
                         </div>
-                        <form th:action="@{/qna/adminAnswerInsertForm}" method="post">
+                        <form th:action="@{/qna/adminAnswerModifyForm}" method="post">
                         	<input type="hidden" name="qna_no" th:value="${q.qna_no}">
                             <div class="labelSize">
                                 <label class="labelBold" style="margin-left:50px" for="">답변</label>
                                 <br><br>
                                 <textarea name="answer_content" style="margin-left:50px; overflow:scroll;" 
                                 rows="7" cols="90" th:text="${q.answer_content}"></textarea>
-                            </div> 
-                            <input class="submitInput" type="submit" value="등록">
+                            </div>
+                            <input class="submitInput" type="submit" value="수정">
                         </form>
                     </div>
                       

@@ -149,9 +149,9 @@
                                         </div><hr style="width: 500px;">
                                         <div class="labelSize"><label for="">수령점</label>
                                             <select name="pickup_place" id="" style="margin-left: 130px; width:200px;height:30px;">
-                                                <option value="강남점" th:selected="${p.pickup_place}=='강남점'">강남점</option>
-                                                <option value="당산점" th:selected="${p.pickup_place}=='당산점'">당산점</option>
-                                                <option value="종로점" th:selected="${p.pickup_place}=='종로점'">종로점</option>
+                                                <option value="강남" th:selected="${p.pickup_place}=='강남'">강남</option>
+                                                <option value="당산" th:selected="${p.pickup_place}=='당산'">당산</option>
+                                                <option value="종로" th:selected="${p.pickup_place}=='종로'">종로</option>
                                             </select></div><hr style="width: 500px;">
                                         <div class="labelSize"><label for="">수령날짜</label><select onclick="selectDate(this);" id="pickupDate" class="pickupDate" name="pickup_date" style="margin-left: 116px; width:200px;height:30px;">
                                         		<option>[[${p.pickup_date}]]</option>
