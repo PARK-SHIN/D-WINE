@@ -17,9 +17,15 @@
 }
 
 .content {
-	width: 1000px;
+	width: 1100px;
 	height: 100%;
 	margin: auto;
+}
+
+.inner {
+    height: 100%;
+    margin: auto;
+    width: 1100px;
 }
 
 #insertBtn {
@@ -77,7 +83,7 @@
 }
 
 .noticeTable {
-	width: 1000px;
+	width: 1100px;
 	text-align: center;
 	font-weight: lighter;
 	border-collapse: collapse;
@@ -85,7 +91,7 @@
 }
 
 .noticeTable th {
-	font-weight: lighter;
+	font-weight: bold;
 	background-color: rgba(196, 196, 196, 0.3);
 	border: none;
 }

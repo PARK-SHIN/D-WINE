@@ -5,13 +5,17 @@
  }
 
 
-  .content {
-	margin : 50px auto;
-	height : auto;
-	min-height : 100%;
-	width: 900px;
+.content {
+	width: 1100px;
+	height: 100%;
+	margin: auto;
 }
 
+.inner {
+    height: 100%;
+    margin: auto;
+    width: 1100px;
+}
     #noticeform{
 	    justify-content: center;
 	    align-items: center;   
@@ -63,8 +67,10 @@
         text-align: center;
         border-top: 1px solid #282A35;
         padding: 30px;
-        width: 900px;
+        width: 1100px;
+       
     }
+    
     #cancleBtn{
             background: white ;
             border: 1px solid #83131E ;
