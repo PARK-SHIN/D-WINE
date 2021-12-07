@@ -51,6 +51,10 @@
 		cursor: pointer;
 	}
 	
+	#selectDate:focus {
+		outline: none;
+	}
+	
 	#selectDate {
 		margin-right: 10px;
 		width: 180px;
