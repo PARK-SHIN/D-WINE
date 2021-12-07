@@ -20,7 +20,7 @@
 	    justify-content: space-between;
 	    flex-wrap: nowrap;
 	    border: none;
-	    height: 1400px;
+
 		}
 	
 	.snb {
@@ -31,18 +31,17 @@
 	}
 	
         .content {
-             width: 840px;
+             width: 888px;
 	    	height: 100%;
 	    
         }
         
         .inner {
-	    margin-top: 30px;
-	    margin-left: 27px;
-	    width: 795px;
-	    /* height: 100%; */
-	    border: none;
-	}
+		    margin-top: 30px;
+		    margin-left: 27px;
+		    width: 836px;
+		    height: 100%;
+		}
 	a {
 	    text-decoration: none;
 	    color: #000;
@@ -194,6 +193,7 @@
         });
         </script>
 <div class="content">
+<div class="inner">  
     <h2>리뷰관리</h2>    
     <hr>
     <button id="deleteBtn" onclick="deleteValue();">삭제</button><br>
@@ -236,6 +236,7 @@
 				</ul> 
 			</div>
  			<!-- 페이징 -->
+</div>
 </div>
 </div>
 <div th:replace="common/footer :: footer"></div>
