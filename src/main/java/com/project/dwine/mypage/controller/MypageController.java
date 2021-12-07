@@ -199,7 +199,6 @@ public class MypageController{
 			rttr.addFlashAttribute("message", "픽업정보가 변경되었습니다.");
 			return "redirect:/mypage/orderlist";
 		} else {
-			System.out.println("실패");
 			rttr.addFlashAttribute("message", "픽업정보 변경에 실패하였습니다.");
 			return "redirect:/mypage/orderlist";
 		}
@@ -470,13 +469,9 @@ public class MypageController{
 		response.setContentType("text/html; charset=euc-kr");
 		PrintWriter out = response.getWriter();
 		if(result > 0) {
-//			out.println("<script>alert('찜 목록에서 삭제되었습니다.'); location.href='/mypage/wish' </script>");
-//			out.flush();
 			rttr.addFlashAttribute("message", "찜 목록에서 삭제되었습니다.");
 			return "redirect:/mypage/wish";
 		} else {
-//			out.println("<script>alert('삭제에 실패하였습니다.'); location.href='/mypage/wish' </script>");
-//			out.flush();
 			rttr.addFlashAttribute("message", "삭제에 실패하였습니다.");
 			return "redirect:/mypage/wish";
 		}
