@@ -100,6 +100,7 @@
 		 LEFT JOIN PRODUCT_HASHTAG PH ON(P.PRODUCT_NO = PH.PRODUCT_NO)
 		 LEFT JOIN HASHTAG H ON(H.HASH_NO = PH.HASH_NO)
 		 WHERE PH.HASH_NO = #{ hashNo }
+		 AND P.STATUS = 'Y'
 	</select>
 	
 	<select id="searchWineList" resultMap="productResultMap" parameterType="string">
