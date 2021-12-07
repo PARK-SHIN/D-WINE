@@ -1,0 +1,452 @@
+@charset "UTF-8";
+
+* {
+	font-family: 'Gowun Batang', serif;
+}
+
+.wine_detail_view {
+	width: 1000px;
+	margin: 0 auto;
+	padding-top: 100px;
+}
+
+a {
+	text-decoration: none;
+}
+
+button {
+	cursor: pointer;
+}
+
+.search button {
+	background-color: #83131E;
+	color: white;
+	width: 17.5%;
+	height: 52.2px;
+	border: none;
+}
+
+input[type=range] {
+	height: 20px;
+}
+
+input[type=range] {
+	display: inline;
+	background: #c4c4c4;
+	-webkit-appearance: none;
+	border-radius: 5px;
+	height: 0.5em;
+}
+
+input[type=range]::-webkit-slider-thumb {
+	border: 1px solid #83131E;
+	height: 1em;
+	width: 0.6em;
+	background: #83131E;
+	cursor: pointer;
+	-webkit-appearance: none;
+}
+
+.product_view {
+	display: flex;
+	width: 100%;
+}
+
+.product_view .img img {
+	width: 500px;
+	height: 500px;
+}
+
+.graph .graph_info {
+	display: flex;
+	margin: 0px;
+	padding: 0;
+}
+
+.graph .wine_info {
+	margin-right: 10px;
+}
+
+.product_info {
+	margin: 0 auto;
+	width: 588px;
+	list-style: none;
+}
+
+.product_info>li {
+	margin: 20px;
+}
+
+.product_info h2 {
+	font-size: 24px;
+	color: #83131E;
+}
+
+.product_info .hashtag {
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.price {
+	font-size: 40px;
+}
+
+.slider_value {
+	color: #83131E;
+	margin-left: 43px;
+}
+
+.btns {
+	display: flex;
+}
+
+.btns div {
+	display: flex;
+}
+
+.btns .btn1 {
+	width: 170px;
+	height: 53px;
+	background-color: rgb(34, 34, 34);
+	border: none;
+	color: #fff
+}
+
+.btns .btn2 {
+	width: 170px;
+	height: 53px;
+	background-color: rgb(247, 81, 26);
+	border: none;
+	color: #fff
+}
+
+.noStock {
+	width: 170px;
+	height: 53px;
+	background-color: rgb(247, 81, 26);
+	border: none;
+	color: #fff
+}
+
+.fa-heart {
+	font-size: 44px;
+	margin-left: 10px;
+	color: black;
+}
+
+/* 구매 카운트*/
+.price_name {
+	margin: 10px 0;
+}
+
+.price_count {
+	display: flex;
+}
+
+.payment_price {
+	margin: 30px 0 30px 0;
+}
+
+.price_count button {
+	background-color: #ffffff;
+	border: none;
+	font-size: 20px;
+	width: 40px;
+	height: 40px;
+	box-shadow: none;
+	display: block;
+}
+
+#count {
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+}
+
+.total {
+	font-size: 20px;
+}
+
+.total_price {
+	font-size: 35px;
+	color: rgb(247, 81, 26);
+}
+
+.won {
+	font-size: 20px;
+	color: rgb(247, 81, 26);
+}
+
+.alert_ul {
+	text-align: center;
+	font-size: 20px;
+	width: 800px;
+	margin: 0 auto;
+	list-style: none;
+}
+
+.alert_ul li {
+	border: 2px solid #e9e9e9;
+	padding: 20px 0;
+	width: 800px;
+}
+
+.alert {
+	color: red;
+	font-weight: bolder;
+}
+
+.product_detail_view h2 {
+	margin-top: 50px;
+}
+
+.under_line {
+	border-bottom: 2px solid black;
+	margin-bottom: 70px;
+}
+
+.prod_info_group {
+	text-align: center;
+	margin: 100px 0 0 0;
+}
+
+.kor_name {
+	font-size: 24px;
+	color: #83131E;
+	font-weight: 600;
+	margin: 10px 0;
+}
+
+.for_name {
+	font-size: 50px;
+	margin: 0;
+}
+
+.icon_content .fas {
+	font-size: 50px;
+	width: 60px;
+	margin: 0 20px;
+}
+
+.icon_content {
+	display: flex;
+	height: 60px;
+	margin-top: 40px;
+}
+
+.icon_info {
+	width: 150px;
+}
+
+.icon_info .info1 {
+	color: #83131E;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.icon_info .info2 {
+	font-size: 25px;
+}
+
+.prod_info {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+.prod {
+	text-align: center;
+	margin-top: 30px;
+	padding-left: 100px;
+}
+
+.detail_wine_img {
+	width: 400px;
+	height: 400px;
+}
+
+.wine_category {
+	padding: 0;
+	width: 400px;
+	margin-left: 240px;
+	list-style: none;
+}
+
+.wine_category li {
+	margin: 20px;
+}
+
+.category_title {
+	color: #83131E;
+	font-size: 20px;
+	margin: 0 50px 0 0;
+}
+
+.category_content {
+	font-size: 20px;
+}
+
+.wine_color {
+	color: #83131E;
+}
+
+.inf {
+	margin: 60px 0;
+	font-size: 20px;
+}
+
+.inf p {
+	line-height: 2.5rem;
+}
+
+.wine_info_img {
+	display: block;
+	width: 500px;
+	height: 500px;
+	margin: 0 auto;
+}
+
+.product_h3 {
+	margin: 100px 0 50px;
+}
+
+.essential_table {
+	border: 2px solid #e9e9e9;
+	width: 800px;
+	margin: 0 auto;
+}
+
+.essential_table tr th {
+	border: 1px solid #e9e9e9;
+	width: 30%;
+	height: 53px;
+}
+
+.essential_table tr td {
+	border: 1px solid #e9e9e9;
+	/* border: 1px solid black; */
+	width: 70%;
+	height: 53px;
+	padding-left: 30px;
+}
+
+.review {
+	padding: 0;
+	border-bottom: 1px solid black;
+	list-style: none;
+}
+
+.review li {
+	border-top: 1px solid black;
+}
+
+.review .review_info {
+	display: flex;
+	justify-content: space-between;
+}
+
+.report_btn button {
+	border: none;
+	background: none;
+	font-size: 15px;
+	cursor: pointer;
+}
+
+.review_content {
+	margin: 20px 0 30px 0;
+}
+
+.review_img {
+	margin-top: 30px;
+}
+
+.review_img img {
+	width: 300px;
+	height: 300px;
+}
+
+.product_change {
+	border-bottom: 1px solid #e9e9e9;
+}
+
+.product_change th {
+	border-top: 1px solid #e9e9e9;
+}
+
+.product_change td {
+	border-top: 1px solid #e9e9e9;
+}
+
+.notice {
+	color: #83131E;
+	margin-bottom: 100px;
+}
+
+.star-ratings {
+	color: #aaa9a9;
+	position: relative;
+	unicode-bidi: bidi-override;
+	width: max-content;
+	-webkit-text-fill-color: transparent;
+	-webkit-text-stroke-width: 1.3px;
+	-webkit-text-stroke-color: #2b2a29;
+}
+
+.star-ratings-fill {
+	color: #fff58c;
+	padding: 0;
+	position: absolute;
+	z-index: 1;
+	display: flex;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+	-webkit-text-fill-color: gold;
+}
+
+.star-ratings-base {
+	z-index: 0;
+	padding: 0;
+}
+
+.product_score {
+	display: flex;
+	border-top: 1px solid #d1d1d1;
+	border-bottom: 1px solid #d1d1d1;
+	font-size: 20px;
+	text-align: center;
+	margin-top: 35px;
+	padding: 20px 0 20px 130px;
+}
+
+/* 페이징 부분 */
+.paging_ul {
+	height: 50px;
+	line-height: 50px;
+	display: flex;
+	justify-content: center;
+	list-style: none;
+	width: 480px;
+	margin: 30px auto;
+}
+
+.paging_ul li {
+	text-decoration: none;
+	display: block;
+	text-align: center;
+	border: 1px solid #dae0e9;
+	margin-left: 10px;
+	width: 37px;
+	height: 37px;
+	line-height: 37px;
+	font-size: 12px;
+	border-radius: 5px;
+}
+
+.current_page {
+	border: 1px solid #83131E;
+	background: #83131E;
+	color: white;
+	border-radius: 5px;
+}

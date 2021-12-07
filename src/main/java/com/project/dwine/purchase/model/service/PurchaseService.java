@@ -70,7 +70,7 @@ public interface PurchaseService {
 
 	List<Review> allReviewList(String id);
 
-	// int stockUpdates(List<Integer> productNo, List<Integer> stockArr);
+	int memberReportedCount(int userNo);
 
 
 }

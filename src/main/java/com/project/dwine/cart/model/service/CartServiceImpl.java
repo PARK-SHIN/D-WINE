@@ -28,20 +28,10 @@ public class CartServiceImpl implements CartService{
 
 	/* 장바구니에 있는 상품인지 확인 */
 	@Override
-	public Cart checkCart(int user_no, int product_no) {
-		return cartMapper.checkCart(user_no, product_no);
-	}
-	@Override
 	public Cart checkCart(Cart cart) {
 		return cartMapper.checkCart(cart);
 	}
 
-
-	/* 회원의 장바구니 리스트 */
-//	@Override
-//	public List<Cart> cartList(int user_no) {
-//		return cartMapper.cartList(user_no);
-//	}
 
 	/* 장바구니에 있는 상품인지 확인 */
 	@Override

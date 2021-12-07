@@ -7,429 +7,121 @@
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/purchase/wine_list.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 </head>
-<style>
-   * {
-          font-family: 'Gowun Batang', serif;
-       }
-   .wine_list{
-       width: 1300px;
-       margin: 0 auto;
-   }
-
-	#wineListForm{
-		margin-top: 50px;
-	}
-	
-/*  select */
-
-    .search select {
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        appearance: none;
-        font-family: "Noto Sansf KR", sans-serif;
-        font-size: 1.3rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #83131E;
-        background-color: #f5f5f5;
-        padding: .6em 1.4em .5em .8em;
-        margin: 0;
-        width: 49.7%;
-        border: none;
-        font-family: 'Gowun Batang', serif;
-    }
-
-    .search2 select{
-        width: 130px;
-        height: 40px;
-        margin-top: 20px;
-        border: none;
-        font-size: 20px;
-    }
-
-    .search2 button{
-        border: none;
-        background-color: #fff;
-        width: 40px;
-        height: 40px;
-    }
-
-    .search2 button img{
-        width: 20px;
-        height: 20px;
-    }
-
-    select:focus {
-        color: #83131E;
-        font-weight: bolder;
-        outline: none;
-    }
-
-    select:disabled {
-    opacity: 0.5;
-    }
-
-    select option{
-        padding: 20px;
-    }
-
-    .search .wine_name{
-        margin: 10px 0;
-        width: 80%;
-        height: 50px;
-        padding: 0 10px;
-        border-right: none;
-
-    }
-
-    .search .winebtn{
-        background-color: #83131E;
-        color: white;
-        width: 17.5%;
-        height: 52.2px;
-        border: none;
-    }
-
-    /* 상품 목록 */
-    .product_list{
-        display: flex;
-        flex-wrap: wrap;
-        list-style: none;
-        font-size: 13px;
-        padding: 0;
-    }
-    .product_list li{
- 
-        width: 300px;
-        height: 460px;
-        margin: 20px 10px;
-    }
-
-    .product_img{
-        width: 300px;
-        height: 300px;
-        background-color: rgba(0, 0, 0, 0.03);
-    }
-
-    .product_img img
-    {
-        width: 300px;
-        height: 300px;
-        margin-bottom: 20px;
-    }
-
-    .product_explain{
-        font-size: 17px;
-        padding: 10px 0 0 20px;
-    }
-
-    .product_foreignName{
-        padding: 3px 0;
-    }
-    .product_price{
-        font-weight: 500;
-    }
-    .product_score{
-        padding: 3px 0;
-        font-weight: normal;
-    }
-    a{
-    	text-decoration : none;
-    	color:black;
-    }
-    
-    /* 페이징 부분 */
-	.paging_ul {
-		height: 50px;
-		line-height: 50px;
-		display: flex;
-		justify-content: center;
-		list-style: none;
-		width: 480px;
-		margin: 30px auto;
-	}
-	.paging_ul li {
-		text-decoration: none;
-		display: block;
-		text-align: center;
-		border: 1px solid #dae0e9;
-	    margin-left: 10px;
-		width: 37px;
-		height: 37px;
-		line-height : 37px;
-	    font-size: 12px;
-	    border-radius : 5px;
-	}
-	.current_page {
-		border: 1px solid  #83131E;
-	    background:  #83131E;
-	    color: white;
-	    border-radius : 5px;
-	}		
-    
-    
-</style>
 <body>
 	<header th:include="common/header :: header"></header>
+	<div th:include="common/footer :: goUp"></div>
+	<div class="weather" th:include="recommendWine/weather"></div>
 	<div class="wrapper">
-    <div class="wine_list">
-    <form id="wineListForm">
-        <div class="search">
-            <select name="type" id="type">
-                <option value="">와인종류</option>
-                <option value="레드">레드</option>
-                <option value="화이트">화이트</option>
-                <option value="로제">로제</option>
-                <option value="주정강화">주정강화</option>
-                <option value="스파클링">스파클링</option>
-                <option value="etc">기타</option>
-            </select><select name="price" id="price">
-                <option value="">가격대</option>
-                <option value="10000">1만원이하</option>
-                <option value="30000">1만~3만</option>
-                <option value="50000">3만~5만</option>
-                <option value="100000">5만~10만</option>
-                <option value="200000">10만~20만</option>
-                <option value="300000">20만~30만</option>
-            </select><select name="country" id="country">
-                <option value="">국가</option>
-                <option value="프랑스">프랑스</option>
-                <option value="이탈리아">이탈리아</option>
-                <option value="스페인">스페인</option>
-                <option value="포르투갈">포르투갈</option>
-                <option value="독일">독일</option>
-                <option value="미국">미국</option>
-                <option value="뉴질랜드">뉴질랜드</option>
-                <option value="호주">호주</option>
-                <option value="칠레">칠레</option>
-                <option value="아르헨티나">아르헨티나</option>
-                <option value="남아프리카 공화국">남아프리카 공화국</option>
-                <option value="기타국가">기타 국가</option>
-            </select><select name="variety" id="variety">
-                <option value="">포도품종</option>
-                <option value="카베르네 소비뇽">카베르네 소비뇽</option>
-                <option value="메를로">메를로</option>
-                <option value="카르메네르">카르메네르</option>
-                <option value="시라/쉬라즈">시라/쉬라즈</option>
-                <option value="피노 누아">피노 누아</option>
-                <option value="말벡">말벡</option>
-                <option value="산지오베제">산지오베제</option>
-                <option value="템프라니요">템프라니요</option>
-                <option value="그르나슈">그르나슈</option>
-                <option value="까베르네 프랑">까베르네 프랑</option>
-                <option value="코르비나">코르비나</option>
-                <option value="샤르도네">샤르도네</option>
-                <option value="소비뇽 블랑">소비뇽 블랑</option>
-                <option value="리슬링">리슬링</option>
-                <option value="세미용">세미용</option>
-                <option value="베르데호">베르데호</option>
-                <option value="게부르츠트라미너">게부르츠트라미너</option>
-                <option value="블랜딩">블랜딩</option>
-                <option value="기타">기타</option>
-            </select>
-            <input class="wine_name" type="text" id="wine_name" value=""><input type="button" class="winebtn" value="와인검색">
-        </div>
-    </form>
-	
-	<script>
-	/*
-		var header = $("meta[name='_csrf_header']").attr('content');
-		var token = $("meta[name='_csrf']").attr('content');
-		const form = document.querySelector('#wineListForm');
-		*/
-		
-		/*
-		form.addEventListener('submit', (e) => {
-			let type = $("#type option:selected").val();
-			let price = $("#price option:selected").val();
-			let country = $("#country option:selected").val();
-			let variety = $("#variety option:selected").val();
-			let name = document.querySelector("#wine_name").value;
+		<div class="wine_list">
+			<form id="wineListForm">
+				<div class="search">
+					<select name="type" id="type">
+						<option value="">와인종류</option>
+						<option value="레드">레드</option>
+						<option value="화이트">화이트</option>
+						<option value="로제">로제</option>
+						<option value="주정강화">주정강화</option>
+						<option value="스파클링">스파클링</option>
+						<option value="etc">기타</option>
+					</select><select name="price" id="price">
+						<option value="">가격대</option>
+						<option value="10000">1만원이하</option>
+						<option value="30000">1만~3만</option>
+						<option value="50000">3만~5만</option>
+						<option value="100000">5만~10만</option>
+						<option value="200000">10만~20만</option>
+						<option value="300000">20만~30만</option>
+					</select><select name="country" id="country">
+						<option value="">국가</option>
+						<option value="프랑스">프랑스</option>
+						<option value="이탈리아">이탈리아</option>
+						<option value="스페인">스페인</option>
+						<option value="포르투갈">포르투갈</option>
+						<option value="독일">독일</option>
+						<option value="미국">미국</option>
+						<option value="뉴질랜드">뉴질랜드</option>
+						<option value="호주">호주</option>
+						<option value="칠레">칠레</option>
+						<option value="아르헨티나">아르헨티나</option>
+						<option value="남아프리카 공화국">남아프리카 공화국</option>
+						<option value="기타국가">기타 국가</option>
+					</select><select name="variety" id="variety">
+						<option value="">포도품종</option>
+						<option value="카베르네 소비뇽">카베르네 소비뇽</option>
+						<option value="메를로">메를로</option>
+						<option value="카르메네르">카르메네르</option>
+						<option value="시라/쉬라즈">시라/쉬라즈</option>
+						<option value="피노 누아">피노 누아</option>
+						<option value="말벡">말벡</option>
+						<option value="산지오베제">산지오베제</option>
+						<option value="템프라니요">템프라니요</option>
+						<option value="그르나슈">그르나슈</option>
+						<option value="까베르네 프랑">까베르네 프랑</option>
+						<option value="코르비나">코르비나</option>
+						<option value="샤르도네">샤르도네</option>
+						<option value="소비뇽 블랑">소비뇽 블랑</option>
+						<option value="리슬링">리슬링</option>
+						<option value="세미용">세미용</option>
+						<option value="베르데호">베르데호</option>
+						<option value="게부르츠트라미너">게부르츠트라미너</option>
+						<option value="블랜딩">블랜딩</option>
+						<option value="기타">기타</option>
+					</select> <input class="wine_name" type="text" id="wine_name" value=""><input
+						type="button" class="winebtn" value="와인검색">
+				</div>
+			</form>
 
-			
-			console.log("확인(type) : " + type);
-			console.log("확인(price) : " + price);
-			console.log("확인(country) : " + country);
-			console.log("확인(variety) : " + variety);
-			console.log("확인(name) : " + name);
-			
-			
-			var param = {};
-			param.type = type;
-			param.price = price;
-			param.country = country;
-			param.variety = variety;
-			param.name = name;
-			console.log(param);
-			
-		 	$.ajax({
-				url : "/purchase/filterWineList",
-				beforeSend: function(xhr){
-			        xhr.setRequestHeader(header, token);
-			    },
-				data: JSON.stringify(param),
-				contentType : "application/json; charset=utf-8",
-				type : "POST",
-				success : function(data){
-					console.log(data);
-				},
-				error : function(e){
-					console.log(e);
-				}
-			});	
+			<form id="wineListForm2" th:action="@{/purchase/wine_list}"
+				method="get">
+				<div class="search2">
+					<select id="wineSort" name="sortStandard">
+						<option value="popular" th:selected="${ sortStandard }=='popular'">판매순</option>
+						<option value="latest" th:selected="${ sortStandard }=='latest'">최신순</option>
+						<option value="hprice" th:selected="${ sortStandard }=='hprice'">높은가격순</option>
+						<option value="lprice" th:selected="${ sortStandard }=='lprice'">낮은가격순</option>
+					</select>
 
-		});
-		*/
-		
-		/*
-		요거임
-		$(function(){
-			$("#wineListForm input[type=button]").on("click", function(){
-				
-				let type = $("#type option:selected").val();
-				let price = $("#price option:selected").val();
-				let country = $("#country option:selected").val();
-				let variety = $("#variety option:selected").val();
-				let name = document.querySelector("#wine_name").value;
+				</div>
+			</form>
 
-				
-				console.log("확인(type) : " + type);
-				console.log("확인(price) : " + price);
-				console.log("확인(country) : " + country);
-				console.log("확인(variety) : " + variety);
-				console.log("확인(name) : " + name);
-				
-				
-				var param = {};
-				param.type = type;
-				param.price = price;
-				param.country = country;
-				param.variety = variety;
-				param.name = name;
-				console.log(param);
-				
-			 	$.ajax({
-					url : "/purchase/filterWineList",
-					beforeSend: function(xhr){
-				        xhr.setRequestHeader(header, token);
-				    },
-					data: JSON.stringify(param),
-					contentType : "application/json; charset=utf-8",
-					type : "POST",
-					success : function(data){
-						console.log(data);
-						
-						let html = '';				
-						for(let index in data){
-							 html += '<li><div class="product_explain"><div class="product_img"><a href="/purchase/' + data[index].product_no + '"><img src="' + data[index].thumbnail + '"></a></div>'
-							+ '<div class="product_explain"><div class="product_KoreaName"}>' + data[index].product_kname + '</div><div class="product_foreignName">'
-							+ data[index].product_ename + '</div><span class="product_price">'+ data[index].sale_price + '</span>&nbsp;원<br>'
-							+ '<div class="product_score">★★★★★<span class="review_count"> 25개</span></div></div></div></li>'
-						 }
-											
-						$(".product_list").html(html);
-					},
-					error : function(e){
-						console.log(e);
-					}
-				});	
-			});
-		});
-	*/
-	</script>
-
-
-
-
-    <form id="wineListForm2" th:action="@{/purchase/wine_list}" method="get">
-        <div class="search2">
-            <select id="wineSort" name="sortStandard">
-                <option value="popular" th:selected="${ sortStandard }=='popular'">판매순</option>
-                <option value="latest"  th:selected="${ sortStandard }=='latest'">최신순</option>
-                <option value="hprice"  th:selected="${ sortStandard }=='hprice'">높은가격순</option>
-                <option value="lprice"  th:selected="${ sortStandard }=='lprice'">낮은가격순</option>
-            </select>
-           
-        </div>
-    </form>
-    <script>
-	/* 요거임
-		var header = $("meta[name='_csrf_header']").attr('content');
-		var token = $("meta[name='_csrf']").attr('content');
-	 
-		$(function(){
-			$("#wineListForm2 select").on("change", function(){
-
-				let val = $("#wineSort option:selected").val();
-				console.log(val);
-				
-				
-			 	$.ajax({
-					url : "/purchase/sortWineList",
-					beforeSend: function(xhr){
-				        xhr.setRequestHeader(header, token);
-				    },
-					data: JSON.stringify(val),
-					contentType : "application/json; charset=utf-8",
-					type : "POST",
-					success : function(data){
-						console.log(data);
-						
-						let html = '';
-						for(let index in data){
-							 html += '<li><div class="product_explain"><div class="product_img"><a href="/purchase/' + data[index].product_no + '"><img src="' + data[index].thumbnail + '"></a></div>'
-							+ '<div class="product_explain"><div class="product_KoreaName"}>' + data[index].product_kname + '</div><div class="product_foreignName">'
-							+ data[index].product_ename + '</div><span class="product_price">'+ data[index].sale_price + '</span>&nbsp;원<br></li>'
-						 }
-											
-						$(".product_list").html(html);
-					},
-					error : function(e){
-						console.log(e);
-					}
-				}); 
-			});
-		});
-		
-		*/
-	</script>
-
-<!-- <a th:href="@{/room/{id}(id=${room.id})}">입장하기</a> -->
-<ul class="product_list">
-    <li th:each="product : ${wineList}">
-        <div class="product_explain">
-            <div class="product_img">
-              <a th:href="@{'/purchase/' + ${product.product_no} }">
-               <img th:src="${product.thumbnail}">
-              </a> 
-            </div>
-            <div class="product_explain">
-                <div class="product_KoreaName" th:text="${product.product_kname}"></div>
-                <div class="product_foreignName" th:text="${product.product_ename}"></div>
-                <span class="product_price" th:text="${#numbers.formatInteger(product.sale_price,0,'COMMA')}"></span>&nbsp;원<br>
-            </div>
-        </div>
-    </li>
-</ul>
+			<ul class="product_list">
+				<li th:each="product : ${wineList}">
+					<div class="product_explain">
+						<div class="product_img">
+							<a th:href="@{'/purchase/' + ${product.product_no} }"> <img
+								th:src="${product.thumbnail}">
+							</a>
+						</div>
+						<div class="product_explain">
+							<div class="product_KoreaName" th:text="${product.product_kname}"></div>
+							<div class="product_foreignName"
+								th:text="${product.product_ename}"></div>
+							<span class="product_price"
+								th:text="${#numbers.formatInteger(product.sale_price,0,'COMMA')}"></span>&nbsp;원<br>
+						</div>
+					</div>
+				</li>
+			</ul>
 
 			<!-- 페이징 -->
- 		 	<div class="paging__area">
-			 	<ul class="paging_ul">
+			<div class="paging__area">
+				<ul class="paging_ul">
 					<li class="go_first">&lt;&lt;</li>
 					<li class="go_prev">&lt;</li>
-					<li class="pageNo current_page" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:if="${pi.page == page}"></li>
-					<li class="pageNo" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" th:unless="${pi.page == page}"></li>
+					<li class="pageNo current_page" th:if="${pi.page == page} and ${pi.endPage != 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
+               		<li class="pageNo" th:unless="${pi.page == page} or ${pi.endPage == 0}" th:each="page: ${#numbers.sequence(pi.startPage, pi.endPage)}" th:value="${page}" th:text="${page}" ></li>
 					<li class="go_next">&gt;</li>
 					<li class="go_end">&gt;&gt;</li>
-				</ul> 
+				</ul>
 			</div>
- 			<!-- 페이징 -->
-</div>
-</div>
+			<!-- 페이징 -->
+		</div>
+	</div>
 
-		<script>
+	<script>
 		
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
@@ -639,18 +331,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <footer th:replace="common/footer :: footer"></footer>
+	<footer th:replace="common/footer :: footer"></footer>
 </body>
 </html>

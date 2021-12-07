@@ -97,56 +97,8 @@ public class PurchaseController {
 		
 		return "/purchase/wine_list";
 	}
-	/* 와인 검색 필터 */
-	/*
-	@ResponseBody
-	@RequestMapping(value = "/filterWineList", method = { RequestMethod.POST })
-	public List<Product> filterWineList(@RequestBody Map<String, String> param){
-		
-		String type = (String)param.get("type");
-		String price = (String)param.get("price");
-		String country = (String)param.get("country");
-		String variety = (String)param.get("variety");
-		String name = (String)param.get("name");
-		
-		System.out.println(country);
-		
-		System.out.println("TYPE : " + type + "PRICE : " +  price + "COUNTRY : " + country + "VARIETY : " + variety + "NAME : " + name);
-		// List<Product> list = purchaseService.filterWineList(type, price, country, variety, name);
-		
-		// System.out.println("결과 : " + list);
-		
-		return purchaseService.filterWineList(type, price, country, variety, name);
-	}
-	*/
+	
 	/* 와인 정렬 */
-	/*
-	@ResponseBody
-	@RequestMapping(value = "/sortWineList", method = { RequestMethod.POST })
-	public List<Product> sortWineList(@RequestBody String val){
-		
-		String value = val.replace("\"", "");
-		System.out.println(value);
-		
-		List<Product> lis = new ArrayList<Product>();
-		
-		if(value.equals("popular")) {
-			System.out.println("인기순");
-			lis = purchaseService.popularList(value);
-			System.out.println("인기순 : " + lis);
-		} else {
-			lis = purchaseService.sortWineList(value);
-			System.out.println(lis);
-			
-		}
-		
-		
-		return lis;
-	}
-	*/
-	
-	
-	
 	@PostMapping("list")
 	@ResponseBody
 	public Map<String, Object> sortList(@RequestParam(value="page", required=false) String page,
@@ -245,18 +197,11 @@ public class PurchaseController {
 		// 상품에 review가 없으면 null로 바꿔주고 보내준다.
 		System.out.println(review.size());
 		
+		/*
 		if(review.size() == 0) {
 			resultPage = 0;
 			pi = new PageInfo(resultPage, listCount, 1, 5);
 		}
-		
-	/*
-		if(review.get(0) == null) {
-			System.out.println("List is empty2");
-			review = null;
-			System.out.println("review : " + review);
-			
-		} 
 		*/
 		model.addAttribute("review", review);
 		model.addAttribute("allReviewList", allReviewList);
@@ -264,9 +209,6 @@ public class PurchaseController {
 		model.addAttribute("product", product);
 		model.addAttribute("pi", pi);
 	
-		
-
-
 		System.out.println(wish);
 		System.out.println(product);
 		System.out.println("review : " + review);
@@ -314,18 +256,6 @@ public class PurchaseController {
 		
 		return map;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	/* 약관 보여주기 */
@@ -456,13 +386,6 @@ public class PurchaseController {
 		
 		int product_no = 0;
 		int product_count = 0;
-		int result = 0;
-		/*
-		 * product_no = productNo.get(1); 
-		 * product_count = stockArr.get(1);
-		 * System.out.println("상품번호 : " + product_no); 
-		 * System.out.println("재고 : " + product_count);
-		 */
 	 
 		for(int i=0; i<size; i++) {
 			System.out.println("반복분");
@@ -471,29 +394,10 @@ public class PurchaseController {
 			System.out.println(product_no);
 			System.out.println(product_count);
 			
-			result = purchaseService.stockUpdate(product_no, product_count);
+			int result = purchaseService.stockUpdate(product_no, product_count);
 
 		}
-		//result = purchaseService.stockUpdates(productNo, stockArr);
-
-	
-		// System.out.println(cart_no.get(1));
-		// System.out.println(cart_no.get(1).getClass().getName());
-		/*
-		 * UserImpl user =
-		 * (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal
-		 * (); int user_no = user.getUser_no();
-		 */
-	/*
-		int size = cart_no.size();
 		
-		int result = 0;
-	
-			
-			result = purchaseService.cartDelete(user_no, cart_no);	
-	*/	
-		
-
 		
 		return "redirect:/purchase/purchase_detail";
 	}
@@ -507,19 +411,13 @@ public class PurchaseController {
 		System.out.println(cart_no);
 	
 		System.out.println(cart_no.size());
-		// System.out.println(cart_no.get(1));
-		// System.out.println(cart_no.get(1).getClass().getName());
-
+		
 		UserImpl user = (UserImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    int user_no = user.getUser_no();
 	    
 		int size = cart_no.size();
 		
-		int result = 0;
-	
-			
-			result = purchaseService.cartDelete(user_no, cart_no);	
-		
+		int result = purchaseService.cartDelete(user_no, cart_no);	
 		
 
 		System.out.println("삭제 되었는지 : " + result);
@@ -565,19 +463,7 @@ public class PurchaseController {
 		return mv;
 	}
 	
-	
-	/* 리뷰 신고 */
-	/*
-	@GetMapping("/reviewReport")
-	public String reviewReport(Model model,String shin) {
-	    
-	    model.addAttribute("shin", shin);
-	    
-		System.out.println("리뷰 번호 : " + shin);
-		return "purchase/reviewReport.html";
-	}
-	*/
-	
+	/* 리뷰 신고 창 띄워주기 */
 	@RequestMapping("/reviewReport")
 	public String reviewReport(Model model, @RequestParam(required = false) String userNo, @RequestParam(required = false) int reviewNo,@AuthenticationPrincipal User loginCheck,HttpServletResponse response, RedirectAttributes rttr)throws Exception{
 		
@@ -588,8 +474,6 @@ public class PurchaseController {
 				PrintWriter out = response.getWriter();
 				out.println("<script>alert('로그인이 필요합니다.'); self.close();</script>");
 				out.flush();
-			
-
 				
 		} else {
 			
@@ -607,14 +491,9 @@ public class PurchaseController {
 				PrintWriter out = response.getWriter();
 				out.println("<script>alert('이미 신고한 리뷰입니다.'); self.close();</script>");
 				out.flush();
-			
-
 			}
-
 		}
 
-		
-		
 		System.out.println("reviewNo :" + reviewNo);
 		System.out.println("userNo :" + userNo);
 		model.addAttribute("reviewNo", reviewNo);
@@ -625,7 +504,7 @@ public class PurchaseController {
 
 
 	
-
+	/* 리뷰 신고 DB insert*/
 	@PostMapping("/reviewReport")
 	public void reviewReportReason(@RequestParam int userNo, @RequestParam int reviewNo, @RequestParam(required = false) String reason,HttpServletResponse response) throws IOException{
 		
@@ -658,43 +537,15 @@ public class PurchaseController {
 	    
 		if(result > 0) {
 			
+			int result2 = purchaseService.memberReportedCount(userNo);
 			response.setContentType("text/html; charset=euc-kr");
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('신고처리가 등록되었습니다.'); self.close();</script>");
 			out.flush();
-			//SecurityContextHolder.clearContext();
 			
 		}
 	}
 	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

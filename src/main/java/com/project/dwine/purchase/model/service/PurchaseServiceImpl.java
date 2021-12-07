@@ -188,9 +188,17 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return purchaseMapper.getTotalReviewCount(id);
 	}
 
+	/* 모든 리뷰 불러오기 */
 	@Override
 	public List<Review> allReviewList(String id) {
 		return purchaseMapper.allReviewList(id);
+	}
+
+	/* 리뷰 신고시 member테이블 신고 누적 +1 */
+	@Override
+	public int memberReportedCount(int userNo) {
+		return purchaseMapper.memberReportedCount(userNo);
+		
 	}
 
 

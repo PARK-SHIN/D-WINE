@@ -73,6 +73,8 @@ public interface PurchaseMapper {
 
 	List<Review> allReviewList(String id);
 
+	int memberReportedCount(int userNo);
+
 	
 
 }
