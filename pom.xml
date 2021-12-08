@@ -140,8 +140,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-<!-- iamport  결제 검증 -->
-	
 	
 </project>
