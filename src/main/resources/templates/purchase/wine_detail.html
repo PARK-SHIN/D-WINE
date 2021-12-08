@@ -310,8 +310,10 @@
 							<div class="review_content">
 								<div class="review_text" th:text="${reviews.review_text}">
 								</div>
-								<div class="review_img">
-									<img th:src="${reviews.review_image}">
+								<div th:if="${reviews.review_image != null}">
+									<div class="review_img">
+										<img th:src="${reviews.review_image}">
+									</div>
 								</div>
 							</div>
 						</li>

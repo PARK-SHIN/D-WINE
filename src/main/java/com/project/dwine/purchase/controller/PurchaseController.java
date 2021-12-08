@@ -56,20 +56,14 @@ public class PurchaseController {
 	
 	/* 모든 와인 리스트 조회 */
 	@GetMapping("wine_list")
-	public String getWineList(@RequestParam(value="sortStandard", required=false) String sortStandard, @RequestParam(value="page", required=false) String page, Model model)  throws Exception {
+	public String getWineList(Model model)  throws Exception {
 		
-		if(sortStandard == null) {
-			sortStandard = "popular";
-		}
+		String sortStandard = "popular";
+		
 		
 		int listCount = purchaseService.getTotalListCount();
 		
 		int resultPage = 1;
-		
-		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
-		if(page != null) {
-			resultPage = Integer.parseInt(page);
-		}
 		
 		PageInfo pi = new PageInfo(resultPage, listCount, 10, 12);
 		
@@ -77,19 +71,15 @@ public class PurchaseController {
         int endRow = startRow + pi.getBoardLimit() - 1;
 		
 		
-       List<Product> wineList = new ArrayList<>();
+        List<Product> wineList = new ArrayList<>();
+        System.out.println("정렬: " + sortStandard);
         
-        
-		if(sortStandard.equals("popular")) {
-			
-			
-			wineList = purchaseService.popularwineList(sortStandard, startRow, endRow);
-		} else {
+		
+		wineList = purchaseService.popularwineList(sortStandard, startRow, endRow);
+		System.out.println("처음 인기");
 	
-			wineList = purchaseService.wineList(sortStandard, startRow, endRow);
-		}
-		System.out.println("인기순 정렬 : " + sortStandard);
-		System.out.println("정렬 : " + wineList);
+		//System.out.println("인기순 정렬 : " + sortStandard);
+		//System.out.println("정렬 : " + wineList);
 		
 		model.addAttribute("wineList", wineList);
 		model.addAttribute("pi", pi);
@@ -109,25 +99,41 @@ public class PurchaseController {
 			@RequestParam(value="variety", required=false) String variety, 
 			@RequestParam(value="name", required=false) String name) throws Exception {
 
-		int searchListCount = purchaseService.getsearchListCount(sortStandard, type, price, country, variety, name);
+		System.out.println("post 정렬 : " + sortStandard);
+		
+
+
+		int searchListCount = 0;
+		
+		
+		if(sortStandard.equals("popular")) {
+			searchListCount = purchaseService.getTotalListCount();
+		} else {
+			searchListCount = purchaseService.getsearchListCount(sortStandard, type, price, country, variety, name);
+		}
+		
+		
 		
 		int resultPage = 1;
-		
 		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
 		if(page != null) {
 			resultPage = Integer.parseInt(page);
 		}
 		
+
 		PageInfo pi = new PageInfo(resultPage, searchListCount, 10, 12);
-		
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
-        int endRow = startRow + pi.getBoardLimit() - 1;
+		int endRow = startRow + pi.getBoardLimit() - 1;
 		
-        System.out.println(startRow);
-        System.out.println(endRow);
+
+        List<Product> productList = new ArrayList<>();
         
-        
-		List<Product> productList = purchaseService.selectSearchProductList(sortStandard, type, price, country, variety, name, startRow, endRow);
+		if(sortStandard.equals("popular")) {
+			productList = purchaseService.popularwineList(sortStandard, startRow, endRow);
+		} else {
+			productList = purchaseService.selectSearchProductList(sortStandard, type, price, country, variety, name, startRow, endRow);
+		}
+		
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		

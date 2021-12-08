@@ -13,8 +13,8 @@
 <body>
 	<header th:include="common/header :: header"></header>
 	<div th:include="common/footer :: goUp"></div>
-	<div class="weather" th:include="recommendWine/weather"></div>
 	<div class="wrapper">
+	<div class="weather" th:include="recommendWine/weather"></div>
 		<div class="wine_list">
 			<form id="wineListForm">
 				<div class="search">
@@ -73,8 +73,8 @@
 				</div>
 			</form>
 
-			<form id="wineListForm2" th:action="@{/purchase/wine_list}"
-				method="get">
+			<!-- <form id="wineListForm2" th:action="@{/purchase/wine_list}"
+				method="get"> -->
 				<div class="search2">
 					<select id="wineSort" name="sortStandard">
 						<option value="popular" th:selected="${ sortStandard }=='popular'">판매순</option>
@@ -84,7 +84,7 @@
 					</select>
 
 				</div>
-			</form>
+			<!-- </form> -->
 
 			<ul class="product_list">
 				<li th:each="product : ${wineList}">
@@ -312,9 +312,17 @@
 							 html += '<li><div class="product_explain"><div class="product_img"><a href="/purchase/' + item.product_no + '"><img src="' + item.thumbnail + '"></a></div>'
 							+ '<div class="product_explain"><div class="product_KoreaName"}>' + item.product_kname + '</div><div class="product_foreignName">'
 							+ item.product_ename + '</div><span class="product_price">'+ item.sale_price + '</span>&nbsp;원<br></li>';
-							$(".product_list").html(html);
-						 });
 							
+						 });
+							$(".product_list").html(html);
+	
+							const p_price = document.querySelectorAll(".product_price");
+							
+							for(const elem of p_price){
+								
+								elem.innerText = elem.innerText.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+
+							}
 						
 						$('li[value='+ page + ']').addClass("current_page");
 					}
@@ -324,7 +332,9 @@
 				}			
 			});
 		
-		}
+		}     
+		
+
 		
 		</script>
 
