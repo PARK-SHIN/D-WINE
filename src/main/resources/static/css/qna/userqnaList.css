@@ -152,3 +152,8 @@ label {
    .nocursor {
    	cursor : default;
    }
+   @media screen and (max-width: 1400px) {
+      .weather {
+         display:none;
+      }
+   }

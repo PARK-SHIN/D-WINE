@@ -31,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.project.dwine.member.model.vo.Member;
 import com.project.dwine.member.model.vo.UserImpl;
 import com.project.dwine.mypage.model.service.MypageService;
+import com.project.dwine.mypage.model.vo.OrderDetail;
 import com.project.dwine.mypage.model.vo.Point;
 import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
@@ -214,12 +215,26 @@ public class MypageController{
 		int result = mypageService.updateCancelPayment(purchase_no);
 		System.out.println("purchase_no : " + purchase_no);
 		Point p = mypageService.findPurchasePoint(purchase_no);
+		System.out.println(p);
+		List<OrderDetail> od =  mypageService.selectProductCount(purchase_no);
+		System.out.println("selectProductCount : " + od);
 		int point = p.getPoint();
 		int use_point = p.getUse_point();
-		System.out.println("findPurchasePoint : " + p);
+		//System.out.println("findPurchasePoint : " + p);
+		//System.out.println("point : " + point + " use_point : " + use_point);
+		//int product_count = od.get(0).getOd_count();
+		//int product_no = od.get(0).getProduct_no();
+		for (int i =0; i<od.size(); i++) {
+			 int product_count = od.get(i).getOd_count();
+			 int product_no = od.get(i).getProduct_no();
+			 System.out.println("product_count : " + product_count + " product_no : " + product_no);
+             int result4 = mypageService.productCountModify(product_count, product_no);
+        }
+		//System.out.println("product_count : " + product_count + " product_no : " + product_no);
 		if(result > 0) {
 			int result2 = mypageService.memberPointPayCancelDelete(user_no, point, use_point);
 			int result3 = mypageService.pointModifyStatus(purchase_no);
+			//int result4 = mypageService.productCountModify(product_no, count)
 			rttr.addFlashAttribute("message", "결제취소 되었습니다.");
 		} else {
 			rttr.addFlashAttribute("message", "결제취소에 실패하였습니다.");

@@ -35,3 +35,8 @@
     .colorred {
         color: red;
     }
+    @media screen and (max-width: 1400px) {
+      .weather {
+         display:none;
+      }
+   }

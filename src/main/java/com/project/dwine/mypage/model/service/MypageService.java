@@ -3,6 +3,7 @@ package com.project.dwine.mypage.model.service;
 import java.util.List;
 
 import com.project.dwine.member.model.vo.Member;
+import com.project.dwine.mypage.model.vo.OrderDetail;
 import com.project.dwine.mypage.model.vo.Point;
 import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
@@ -83,4 +84,8 @@ public interface MypageService {
 	Review selectReviewImagePath(int review_no);
 
 	int pointModifyStatus(String purchase_no);
+
+	List<OrderDetail> selectProductCount(String purchase_no);
+
+	int productCountModify(int product_count, int product_no);
 }

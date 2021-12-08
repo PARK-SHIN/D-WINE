@@ -85,3 +85,8 @@ label {
 	margin-left: 380px;
 	margin-top: 50px;
 }
+@media screen and (max-width: 1400px) {
+      .weather {
+         display:none;
+      }
+   }
