@@ -17,7 +17,7 @@ public class Review {
 	private int od_no;
 	private String product_kname;
 	
-	//추가테스트컬럼
+	//추가컬럼
 	private String user_id1;
 	private String user_id2;
 	private int report_no;

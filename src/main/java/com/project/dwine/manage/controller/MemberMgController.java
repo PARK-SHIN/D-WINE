@@ -100,7 +100,6 @@ public class MemberMgController {
 	   public String memberMgdelete(String user_no) throws Exception {
 		   memberMgService.deleteMemberMg(user_no);
 		  
-		   System.out.println("컨트롤러" + user_no);
 		   
 	      return "redirect:/manage/memberMg/main";
 	   }

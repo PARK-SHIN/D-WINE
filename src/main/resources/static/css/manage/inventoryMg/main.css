@@ -1,0 +1,230 @@
+@charset "UTF-8";
+* {
+          font-family: 'Gowun Batang', serif;
+       }
+       
+  		 #container {
+		    width: 1100px;
+		    margin: 0 auto;
+		    display: flex;
+		    justify-content: space-between;
+		    flex-wrap: nowrap;
+		}
+		        
+
+        .snb {
+            width: 200px;
+            /* height: 2500px; */
+            height: 100%;
+        }
+    	
+        .inner {
+			    margin-top: 30px;
+			    margin-left: 27px;
+			    width: 836px;
+			    height: 100%;
+			}
+
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .snb {
+            width: 210px;
+        }
+
+        .snb_inner {
+            width: 170px;
+            margin: 30px auto 0;
+        }
+       /* 여기서부터 */
+        .content {
+            width: 888px;
+    		height: 100%;
+        }
+
+        .totalList{
+            border: black 1px solid;
+            width: 850px;
+            height: 120px;
+            display: flex;
+            list-style: none;
+            text-align: center;
+            margin-bottom: 10px;
+            margin-top: 20px; 
+        }
+        
+        #todayReceiving{
+            margin-right: 200px;
+            margin-left: 140px;
+        }
+
+        #totalShop {
+            margin-right: 200px;
+        }
+      
+        #totalStock{
+            margin-right: 150px;
+        }
+        span#count{
+           font-size: 45px;
+           font-weight: bolder;
+           color: #83131E;   
+        }
+        span#counts{
+           font-size: 45px;
+           font-weight: bolder;
+           color: black;  
+        }
+        span#countTitle{
+           width: 70px;
+        }
+   
+
+		.selectDay{
+			margin-bottom : 15px;		
+		}
+		
+		
+        .dayArrayBtn:hover {
+            cursor: pointer;
+            transform:scale(1.1);
+            background:  #83131E;
+            color: white;  
+        }
+        #selectDate {
+    	margin-right: 10px;
+    	width: 180px;
+    	text-align: center;
+    }
+
+        #search_btn, #msearch_btn{
+           margin: 5px;
+           background: white ;
+           border: 1px solid #83131E ;
+           color: #83131E;
+           width: 45px;
+           height: 25px;
+           border-radius: 5px;
+        }
+        
+        #search_btn:hover {
+            cursor: pointer;
+            transform:scale(1.1);
+            background:  #83131E;
+            color: white;  
+        }
+        
+
+        #registBtn{
+            float: right;
+            background: #83131E ;
+            border: none;
+            color:white;
+            width:80px;
+            height: 30px;
+            border-radius: 5px;
+            margin-right: -10px;
+            margin-bottom: 10px;
+        }
+		
+		
+		.invenMgList{
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 900px;
+            height: 500px;
+        
+        }
+        
+        tbody{
+        border: none;
+        }
+        
+        
+        .invenMgTable{
+       	width: 850px;
+	    font-weight: lighter;
+	    border-collapse: collapse;
+	    border-spacing: 0px;
+	    font-size: 15px;
+        }
+
+        .invenMgTable th{
+        font-weight: bold;
+	    background-color: rgba(196, 196, 196, 0.3);
+	    border: none;
+        }
+        
+        .invenMgTable tr {
+	    height: 35px;
+		}
+		
+		.invenMgTable tr:nth-child(n+2):hover {
+	    background-color: rgba(196, 196, 196, 0.1);
+		}
+
+        .invenMgTable td{
+        border-bottom:1px solid lightgray;
+        border-left: none;
+        height: 35px;
+        font-size: 15px;
+        }
+      
+      #cancleBtn{
+        background: white ;
+        border: 1px solid #83131E ;
+        color: #83131E;
+        width: 50px;
+        height: 25px;
+        border-radius: 8%;  
+      }
+       th:nth-of-type(4) { display: none; }   
+      th:nth-of-type(11) { display: none; } 
+      td:nth-of-type(4) { display: none; }  
+      td:nth-of-type(11) { display: none; }
+      
+      /* 페이징 부분 */
+	.paging_ul {
+		height: 50px;
+		line-height: 50px;
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		width: 480px;
+		margin: 30px auto;
+	}
+	
+	.paging_ul li {
+		text-decoration: none;
+		display: block;
+		text-align: center;
+		border: 1px solid #dae0e9;
+	    margin-left: 10px;
+		width: 37px;
+		height: 37px;
+		line-height : 37px;
+	    font-size: 12px;
+	    border-radius : 5px;
+	}
+	
+	.current_page {
+		border: 1px solid  #83131E;
+	    background:  #83131E;
+	    color: white;
+	    border-radius : 5px;
+	}
+      th{
+	font-weight: bold;
+	}
+	
+	.knameTh,.knameTd{
+	text-align: left;
+	padding-left: 15px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	}
+      
