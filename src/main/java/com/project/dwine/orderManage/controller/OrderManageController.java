@@ -92,8 +92,6 @@ public class OrderManageController {
 		int searchCount = orderManageService.getSearchListCount(order);
 		
 		int resultPage = 1;
-
-		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
 		if(page != null) {
 		resultPage = Integer.parseInt(page);
 		}

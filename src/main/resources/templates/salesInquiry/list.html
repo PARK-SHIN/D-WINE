@@ -98,7 +98,6 @@
 
 	    var bct = document.getElementById('barChart').getContext('2d');
 	    var barChart = new Chart(bct, {			
-	    	
 	        type: 'bar',
 	        data: {
 	            labels: label,
@@ -110,7 +109,6 @@
 	        },
 	        options: {
 	        	responsive: false,
-	        	// maintainAspectRatio: false,
 	            scales: {
 	                yAxes: [{
 	                	ticks: {
@@ -149,7 +147,6 @@
 	    				label.push(item.month + "월");
 	    			});
 					
-	    			
 	    			barChart.destroy();
 	    			
 	    		    bct = document.getElementById('barChart').getContext('2d');
@@ -166,7 +163,6 @@
 	    		        },
 	    		        options: {
 	    		        	responsive: false,
-	    		        	// maintainAspectRatio: false,
 	    		            scales: {
 	    		                yAxes: [{
 	    		                	ticks: {
