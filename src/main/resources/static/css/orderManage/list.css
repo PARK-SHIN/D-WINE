@@ -294,7 +294,7 @@
 	    background: #FFFFFF;
 	    border-radius: 5px;
 	    border: 1px solid #C4C4C4;
-	    width: 590px;
+	    width: 630px;
 	    height: 460px;
 	    position: relative;
 	    overflow: auto;
@@ -320,7 +320,7 @@
 	}
 	
 	#modal2 table {
-	    width: 560px;
+	    width: 600px;
 	    border-collapse: collapse;
 	    font-size: 14px;
 	}
