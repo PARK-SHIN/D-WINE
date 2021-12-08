@@ -8,7 +8,7 @@
       .weather {
          display:none;
       }
-   	}
+   }
 	
 	.wrapper {
 		display: flex;
@@ -105,6 +105,10 @@
 	
 	.list_area {
 		height: 500px;
+	}
+	
+	.fTitle, .fContent {
+		text-align: left;
 	}
 	
 	table {

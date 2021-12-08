@@ -57,9 +57,9 @@
                         <tbody id="fList">
 	                        <tr th:each="f : ${ faqList }" class="trFaq">
 	                            <td onclick="event.cancelBubble=true"><input name="chk" type="checkbox" th:value="${ f.faqNo }"></td>
-	                            <td th:text="${ f.faqNo }" class="selectRow"></td>
-	                            <td th:text="${ f.faqTitle }" class="selectRow"></td>
-	                            <td th:text="${ f.faqContent }" class="listContent selectRow"></td>
+	                            <td th:text="${ f.faqNo }"></td>
+	                            <td th:text="${ f.faqTitle }" class="fTitle"></td>
+	                            <td th:text="${ f.faqContent }" class="listContent fContent"></td>
 	                        </tr>
                         </tbody>
                     </table>
@@ -360,8 +360,8 @@
         					
 							tableHTML += "<tr  class='trFaq'><td onclick='event.cancelBubble=true'><input name='chk' type='checkbox' value='" + item.faqNo + "'></td>"
 		                     		   + "<td>" + item.faqNo + "</td>"
-		                     		   + "<td>" + item.faqTitle + "</td>"
-		                     		   + "<td class='listContent'>" + item.faqContent + "</td></tr>";
+		                     		   + "<td class='fTitle'>" + item.faqTitle + "</td>"
+		                     		   + "<td class='listContent fContent'>" + item.faqContent + "</td></tr>";
 	           		
 			 					$("#fList").html(tableHTML);
 			 					

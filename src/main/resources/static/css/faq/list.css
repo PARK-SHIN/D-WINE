@@ -105,6 +105,10 @@
 		height: 600px;
 	}
 	
+	.fTitle, .fContent {
+		text-align: left;
+	}
+	
 	table {
 		width: 836px;
 		text-align: center;
