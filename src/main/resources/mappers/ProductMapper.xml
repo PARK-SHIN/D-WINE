@@ -233,12 +233,6 @@
 		)
 	</insert>
 	
-	<select id="selectLastSeqNo" resultType="_int">
-		SELECT 
-			SEQ_PNO.CURRVAL 
-		FROM DUAL
-	</select>
-	
 	<insert id="registProductHash" parameterType="_int">
 		INSERT 
 		 INTO PRODUCT_HASHTAG
@@ -329,7 +323,6 @@
 		WHERE PRODUCT_NO = #{ productNo }
 	</update>
 
-	
 	<select id="productNameCheck" parameterType="string" resultType="_int">
 		SELECT
 			COUNT(PRODUCT_NO)
@@ -346,23 +339,6 @@
 		WHERE PRODUCT_NO = #{ productNo }
 	</select>
 	
-	<select id="searchProductList" resultMap="productListResultMap">
-		SELECT
-			PRODUCT_NO
-		  , PRODUCT_KNAME
-		  , SALE_PRICE
-		  , PRODUCT_COUNT
-		  , CREATE_DATE
-		  , MODIFY_DATE
-		FROM PRODUCT
-		WHERE STATUS = 'Y' 
-		<if test="searchStandard == 'no'">
-		AND PRODUCT_NO LIKE '%' || #{ searchValue } || '%' 
-		</if>
-		<if test="searchStandard == 'name'">
-		AND PRODUCT_KNAME LIKE '%' || #{ searchValue } || '%'OR PRODUCT_ENAME LIKE '%' || #{ searchValue } || '%' 
-		</if>
-		ORDER BY PRODUCT_NO 
-	</select>
+
 	
 </mapper>
