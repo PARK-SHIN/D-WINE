@@ -51,22 +51,22 @@
 		       (SELECT 
 		               COUNT(PURCHASE_NO) 
 		          FROM PURCHASE 
-		         WHERE PURCHASE_DATE = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalOrder
+		         WHERE TO_CHAR(PURCHASE_DATE) = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalOrder
 		     , (SELECT 
 		               COUNT(PURCHASE_NO)
 		          FROM PURCHASE 
 		         WHERE ORDER_STATUS = '픽업완료' 
-		           AND PURCHASE_DATE = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalPickup
+		           AND TO_CHAR(PURCHASE_DATE) = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalPickup
 		     , (SELECT SUM(PURCHASE_PRICE) 
 		          FROM PURCHASE 
-		         WHERE PURCHASE_DATE = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalPrice          
+		         WHERE TO_CHAR(PURCHASE_DATE) = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalPrice          
 		     , (SELECT 
 		               SUM(PURCHASE_PRICE)
 		          FROM PURCHASE 
 		         WHERE REFUND_DATE IS NOT NULL
-		           AND REFUND_DATE = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalRefund
+		           AND TO_CHAR(REFUND_DATE) = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')) totalRefund
 		  FROM PURCHASE
-		 WHERE PURCHASE_DATE = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')
+		 WHERE TO_CHAR(PURCHASE_DATE) = TO_CHAR((SELECT SYSDATE FROM DUAL), 'yy/MM/dd')
 		 GROUP BY PURCHASE_PRICE
 	</select>
 	

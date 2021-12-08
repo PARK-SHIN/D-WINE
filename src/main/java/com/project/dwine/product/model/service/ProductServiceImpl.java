@@ -46,12 +46,7 @@ public class ProductServiceImpl implements ProductService{
 	public int registProduct(Product product) {
 		return productMapper.registProduct(product);
 	}
-
-	@Override
-	public int selectLastSeqNo() {
-		return productMapper.selectLastSeqNo();
-	}
-
+	
 	@Override
 	public int registProductHash(int hashNo) {
 		return productMapper.registProductHash(hashNo);

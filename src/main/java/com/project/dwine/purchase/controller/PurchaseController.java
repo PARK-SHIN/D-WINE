@@ -194,24 +194,11 @@ public class PurchaseController {
 		
 		System.out.println("all review : " + allReviewList);
 		
-		// 상품에 review가 없으면 null로 바꿔주고 보내준다.
-		System.out.println(review.size());
-		
-		/*
-		if(review.size() == 0) {
-			resultPage = 0;
-			pi = new PageInfo(resultPage, listCount, 1, 5);
-		}
-		*/
 		model.addAttribute("review", review);
 		model.addAttribute("allReviewList", allReviewList);
 		model.addAttribute("wish", wish);
 		model.addAttribute("product", product);
 		model.addAttribute("pi", pi);
-	
-		System.out.println(wish);
-		System.out.println(product);
-		System.out.println("review : " + review);
 	
 		return "purchase/wine_detail";
 	}

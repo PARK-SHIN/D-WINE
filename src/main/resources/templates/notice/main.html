@@ -21,6 +21,7 @@
 <div id="container">
 <div th:include="common/footer :: goUp"></div>
   <div class="content">
+  <div class="inner">
     	<h2>공지사항</h2> 
     <hr>
     <th:block sec:authorize="hasRole('ADMIN')">
@@ -61,6 +62,7 @@
 					<li class="go_end">&gt;&gt;</li>
 				</ul> 
 			</div>
+   </div>
    </div>
 </div>
 </div>
@@ -143,7 +145,6 @@
 			  }
 			}
 		 }
-		
 		
 		endPage = $(".pageNo").last().val();
 		clickPage = 1;

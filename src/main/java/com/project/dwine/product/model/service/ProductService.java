@@ -19,8 +19,6 @@ public interface ProductService {
 
 	int registProduct(Product product);
 
-	int selectLastSeqNo();
-
 	int registProductHash(int hashNo);
 
 	int deleteProduct(int productNo);
@@ -41,8 +39,9 @@ public interface ProductService {
 			int endRow);
 	
 	List<Product> searchProductList(String searchStandard, String searchValue);
-
-
+	
+	
+	
 
 
 

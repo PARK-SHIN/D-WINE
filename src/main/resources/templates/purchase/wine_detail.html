@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <meta name="_csrf" th:content="${_csrf.token}">
-<title>Wine_Detail</title>
+<title>D.WINE</title>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
 <link href="/css/common/common.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
@@ -182,10 +182,10 @@
 					<li><span class="category_title">국가/지역</span> <span
 						class="category_content" th:text="${product.country_name}"></span><br>
 					</li>
-					<li><span class="category_title">와이너리</span>&nbsp; <span
+					<li><span class="category_title">와이너리</span>&nbsp;&nbsp; <span
 						class="category_content" th:text="${product.winery}"></span><br>
 					</li>
-					<li><span class="category_title">포도품종</span>&nbsp; <span
+					<li><span class="category_title">포도품종</span>&nbsp;&nbsp; <span
 						class="category_content" th:text="${product.variety_name}"></span><br>
 					</li>
 				</ul>
@@ -841,7 +841,6 @@
         document.querySelector(".allStar").style.width = allStarValueAvg*20 + '%';
         
         if(commentCount == 0){
-        	console.log('ddd');
         	document.querySelector(".allStarAvg").innerText = '(0.0)';
         } else{
             document.querySelector(".allStarAvg").innerText = '(' + (allStarValueAvg).toFixed(2) + ')';
