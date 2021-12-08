@@ -78,8 +78,6 @@
        
 /*시도*/
 
-        
-
         .label_area{
             display:inline-block;
             width: 100px;
@@ -92,7 +90,6 @@
            height: 377px;         
        	}
       
-
         .searchArea {
             margin-top: 20px;
             margin-left: 85px;
@@ -165,19 +162,10 @@
 	    border: 1px solid black;
 	    width: 700px;
   		height: 430px;
+  		margin-left: -145px;
         }
 
-      /* .modal .modal_layer {
-       position:fixed;
-       top:0;
-       left:0;
-       width:100%;
-       height:100%;
-       background:rgba(0, 0, 0, 0.3);
-       z-index:-1;
-   		}  나중에 css 맞춰보기 */
-
-        .modalBox {
+       .modalBox {
           position: absolute;
           background-color: white;
           width: 400px;
@@ -208,7 +196,6 @@
         
         .msearchArea{
          text-align: center;
-        
         }
         
         #msearchBtn{
@@ -221,19 +208,26 @@
          border-radius: 5px; 
         }
         
-
+		
+		.selectPno {
+	    justify-content: space-around;
+	    text-align: left;
+	    display: grid;
+		}
+		
         .msearchContext{
              border: 1px solid black;
 		    width: 500px;
 		    height: 180px;
 		    margin-top: 20px;
 		    display: inline-block;
+		    overflow: auto;
         }
         
        .mbtnArea{
             text-align: center;        
         }
-     
+     	
 
         #mcancleBtn{
             background: white ;
@@ -254,19 +248,23 @@
             border-radius: 5px;
             margin-right: 30px;
         }
+        ul{
+        padding : 0;
+        }
         
-        li{
+        .selectPno li{
         	list-style : none;
         }
         
+           
+        
         .noCss{
-            margin-right: 45px;
+            margin-right: 30px;
     		margin-left: -35px;
 		}
 		
 	
         
-
 
     </style>
 </head>
@@ -414,20 +412,24 @@
 			data : {searchStandard : searchStandard, searchValue : searchValue},
 			type : "post",
 			success : function(data) {
+				
 				if (data.length == 0) {
 					alert("검색 결과가 없습니다.");
 				} else {
+					
 					var tableHTML = '<ul class="selectPno" id="selectPno">';
-				
+									
 					$.each(data, function(index, item) {
-			
+
 					tableHTML += "<li value='" + item.productNo +"'><label class='noCss'>" + item.productNo + "</label>" + "   " + item.productKName +"</li>"
 							 
-					$("#productList").html(tableHTML);
+					$(".msearchContext").html(tableHTML);
 					
-					});
+				});
+					
 					tableHTML += '</ul>'
-						$(".msearchContext").append(tableHTML);
+				//$(".msearchContext").append(tableHTML);
+					
 				}
 			},
 			error : function(e) {
@@ -435,14 +437,15 @@
 			}						
 		});
 	});
-	
 		
 	var productNo = null;
 	
 	$(document).on("click", ".selectPno li", function() {
+		$(this).css('background', '');
 		productNo = $(this).val();
 		$(this).css("background-color", "rgba(196, 196, 196, 0.1)");
-	
+		$("li").not($(this)).css("background-color", "white");
+		
 	});
 
 	$("#mapplyBtn").click(function(){
@@ -453,6 +456,8 @@
 				type : "post",
 				success : function(data) {
 							
+					$(this).css('background', '');
+					
 						  $('#productNameK').attr('value',data.productKName);
 						  $('#productNameE').attr('value',data.productEName);
 						  $('#productPrice').attr('value',data.salePrice);
@@ -467,7 +472,7 @@
 
 	
 	
-	function calc(val){ //입고재고 가격 자동계산하기.
+	function calc(val){ //입고 가격 자동계산하기.
 	   // var iCount = document.getElementById('inven_count').value
 	    var iCount = $("#inven_count").val();
 	    //var iPrice = document.getElementById('inven_price').value
@@ -482,8 +487,6 @@
 	        document.getElementById('inven_price').value = inven_price;
 	    }
 	}	
-
-	//ficker날짜 css
 
 	
 </script>

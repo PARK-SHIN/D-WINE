@@ -96,7 +96,6 @@
    
 	    .memberTable{
 	        width: 840px;
-		    text-align: center;
 		    font-weight: lighter;
 		    border-collapse: collapse;
 		    font-size: 14px;
@@ -118,9 +117,7 @@
 		}
 
         .memberTable td{
-        border-bottom:1px solid lightgray;
         border-left: none;
-        text-align: center;
         height: 35px;
         font-size: 14px;
         }
@@ -223,11 +220,13 @@
 	    left: 0;
 	    width: 100%;
 	    height: 100%;
-	    margin-left: 650px;
 	    display: block;
 	    justify-content: center;
 	    align-items: center;
 	    margin-top: 200px;
+	    margin-left: 700px;
+	    z-index: 10;
+	   
         }
 
        	/*.modal .bg {
@@ -240,7 +239,7 @@
           position: absolute;
           background-color: #fff;
           width: 600px;
-          height: 554px;
+          height: 520px;
           padding: 15px;
           border: 1px solid black;
         }
@@ -284,9 +283,24 @@
 	    border-radius : 5px;
 	}
 	
-	th{
+	th, label{
 	font-weight: bold;
 	}
+	
+   #idTd, .nickTh, .nickTd{
+	text-align : left;
+	}
+	
+	.idTh{
+	padding-left: -80px;
+	}
+	
+	.nickTh{
+	width: 130px;
+	padding-left: 40px;
+	}
+	
+	
     </style>
 </head>
 <body>
@@ -308,24 +322,20 @@
     <hr>
     <div th:include="common/footer :: goUp"></div>
     <button id="deleteBtn" onclick="deleteValue();">회원제명</button><br>
-   <!--  <label>정렬 : </label>
-    <select name="array">
-        <option value="latest">최신순</option>
-        <option value="report-count">신고누적수</option>
-    </select> 기능특성 상 하지 않아도 될 듯 하다. -->
+  
     <div id="searchArea"><input type="text" id="searchTitle" name="searchValue"> <button id="searchBtn">검색</button> </div>
     <div class="memberList">
         <table class="memberTable">
             <tr>
                 <th><input type="checkbox" class="allCheck" name="allCheck" ></th>
                 <th>회원번호</th>
-                <th>닉네임</th>
-                <th>아이디</th>
+                <th class="nickTh">닉네임</th>
+                <th class="idTh">아이디</th>
                 <th>가입일</th>
                 <th>총 신고수</th>
        	   </tr>
        	   <tbody class="trArea">
-            <tr class="allMember" th:each="member: ${ memberList }" th:style="${member.reported_count == 0  ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}"><td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ member.user_no }"></td><td id="userNO" th:text="${ member.user_no }"></td><td th:text="${ member.user_nickname }"></td><td th:text="${ member.user_id }" class="openBtn" onclick="openModal(this)"></td><td th:text="${ #dates.format(member.create_date, 'yyyy-MM-dd') }"></td><td th:text="${ member.reported_count }"></td><td class="modal hidden tdCss"><div class="bg"></div><div class="modalBox"><img style="margin-left: 578px;"src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px">
+            <tr class="allMember" th:each="member: ${ memberList }" th:style="${member.reported_count == 0  ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}"><td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ member.user_no }"></td><td id="userNO" th:text="${ member.user_no }"></td><td class="nickTd" th:text="${ member.user_nickname }"></td><td id="idTd" th:text="${ member.user_id }" class="openBtn" onclick="openModal(this)"></td><td th:text="${ #dates.format(member.create_date, 'yyyy-MM-dd') }"></td><td th:text="${ member.reported_count }"></td><td class="modal hidden tdCss"><div class="bg"></div><div class="modalBox"><img style="margin-left: 578px;"src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px">
 			    <h1>회원 정보 창</h1>
             <div class="memberDetailArea">
              <div class="memberNo"><label>회원 번호 : </label> <span th:text="${member.user_no}" readonly/></div><br>

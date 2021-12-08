@@ -37,15 +37,15 @@
         <table class="noticeTable">
             <tr>
                 <th><input type="checkbox" class="allCheck" name="allCheck"></th>
-                <th>카테고리</th>
-                <th>제목</th>
+                <th class="categoryTh">카테고리</th>
+                <th class="titleTh">제목</th>
                 <th>등록일</th>
             </tr>
             <tbody class="trArea">   
             	<tr class="allNotice" th:each="notice : ${ noticeList }">
                 <td><input type="checkbox" class="checkbox" name="checkbox" th:value="${ notice.notice_no }"></td>
-                <td th:text="${notice.notice_category}"></td>
-                <td th:text="${notice.notice_title}" th:onclick="|location.href='@{/notice/detail/{notice_no}(notice_no=${notice.notice_no})}'|"></td>
+                <td class="categoryTd" th:text="${notice.notice_category}"></td>
+                <td class="titleTd" th:text="${notice.notice_title}" th:onclick="|location.href='@{/notice/detail/{notice_no}(notice_no=${notice.notice_no})}'|"></td>
                 <td th:text="${ #dates.format(notice.create_date, 'yyyy-MM-dd')}"></td>
             </tr> 
             </tbody>    

@@ -78,7 +78,6 @@
         
         .reviewMgTable{
        	width: 840px;
-	    text-align: center;
 	    font-weight: lighter;
 	    border-collapse: collapse;
 	    font-size: 15px;
@@ -102,16 +101,11 @@
         .reviewMgTable td{
         border-bottom:1px solid lightgray;
         border-left: none;
-        text-align: center;
         height: 35px;
         font-size: 14px;
         }
         
-        .reviewText{ 
-        text-overflow: ellpsis; 
-        white-space: nowrap; 
-        max-width: 70px;
-        }
+      
 
         /* 체크박스 색상 변경 */
         input[type="checkbox"] {
@@ -177,6 +171,32 @@
 	    color: white;
 	    border-radius : 5px;
 	}
+	
+	
+	
+	.idTd, .idTr{
+	text-align : left;
+	width: 170px;
+	padding-left: 5px;
+	}
+	
+	.idTr{
+	padding-left: 30px;
+	}
+
+	.contextTd, .contextTr{
+	text-align : left;
+	width : 400px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	}
+	
+	.contextTr{
+	text-align : center;
+	
+	}
+
 
 
     </style>
@@ -198,25 +218,21 @@
     <h2>리뷰관리</h2>    
     <hr>
     <button id="deleteBtn" onclick="deleteValue();">삭제</button><br>
-   <!--  <label>정렬 : </label>
-    <select name="array">
-        <option value="latest">최신순</option>
-        <option value="report-count">신고수</option>
-    </select> 기능 상 의미가 없는 것같다.  -->
+
     <div class="reviewMgList">
-            <table class="reviewMgTable">
+            <table class="reviewMgTable" style="table-layout:fixed">
             <tr>
-                <th><input type="checkbox" class="allCheck"  name="allCheck"></th>
-                <th>작성자(id)</th>
-                <th>리뷰내용</th>
+                <th class="checkTr"><input type="checkbox" class="allCheck"  name="allCheck"></th>
+                <th class="idTr">작성자(id)</th>
+                <th class="contextTr">리뷰내용</th>
                 <th>등록 날짜</th>
                 <th>신고 수</th>
             </tr>
             <tbody class="trArea">
             <tr class="reviewR" th:each="report: ${ reviewMgList }" th:style="${report.count == 0 ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}">
-                <td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ report.review_no1 }" onclick="event.cancelBubble=true"></td>  
-                <td th:text="${ report.user_id2 }"/>
-                <td class="reviewText" onclick="openDetail();" th:text="${ report.review_text }"></td>
+                <td class="checkTd"><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ report.review_no1 }" onclick="event.cancelBubble=true"></td>  
+                <td class="idTd" th:text="${ report.user_id2 }"/>
+                <td class="contextTd" onclick="openDetail();" th:text="${ report.review_text }"></td>
                 <td th:text="${ #dates.format(report.review_date, 'yyyy-MM-dd') }"></td>
                 <td th:text="${ report.count }">
             </tr>  
