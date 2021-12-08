@@ -54,7 +54,7 @@
 	                    <ul style="height: 100px;" th:each="w : ${ wishList }">
 	                        <li class="title">
 	                            <div class="parent">
-	                                <div class="first"><input type="checkbox" id="ck" name="ck_code" th:value="${w.product_no}"></div>
+	                                <div class="first"><input type="checkbox" class="ck" name="ck_code" th:value="${w.product_no}"></div>
 	                                <div class="second"><a class="movePno" th:href="@{'/purchase/' + ${w.product_no} }"><img th:src="${w.thumbnail}" width="80px" height="80px" alt="wineImg"></a></div>
 	                                <div class="third"><a th:href="@{'/purchase/' + ${w.product_no} }"><label th:text="${w.product_kname}" class="movePno"></label></a> </div>
 	                            </div>
@@ -92,26 +92,58 @@
             var checkArr = [];     // 배열 초기화
             var user_no = $("input[name='user_no']").val();
             console.log(user_no);
+            
 	        function checkboxArr() {
 	            $("input[name='ck_code']:checked").each(function(i) {
 	                checkArr.push($(this).val());     // 체크된 것만 값을 뽑아서 배열에 push
 	                console.log(checkArr[i]);
 	            })
 	        }
-         
+	        $(".cartBtn").attr("disabled", true);
+	        $(".ck").on('click',function(){
+	        	var chk = $("input[name='ck_code']").is(":checked");
+		        if(chk==false){
+	        		$(".cartBtn").attr("disabled", true);
+		            
+		        }else{
+		        	$(".cartBtn").removeAttr('disabled');
+		        }
+	        	/* if(checkArr==0){
+		            $(".cartBtn").removeAttr('disabled');
+		        }else{
+		            $(".cartBtn").attr("disabled", true);
+		        }  */
+		        /* var chk = $("input[name='ck_code']").is(":checked");
+		        if(chk==true){
+		            $(".cartBtn").removeAttr('disabled');
+		        }else{
+		            $(".cartBtn").attr("disabled", true);
+		        } */
+		    });
+	        
             function insertCart(){
-            	$.ajax({
-                    url: '/mypage/wishToCart'
-                    , beforeSend: function(xhr){
-        		        xhr.setRequestHeader(header, token);
-        		    },                    
-                    type: 'post'
-                    , data: {
-                    	checkedValue : checkArr,
-                    	user_no : user_no
-                    }
-                });	
+	            	$.ajax({
+	                    url: '/mypage/wishToCart'
+	                    , beforeSend: function(xhr){
+	        		        xhr.setRequestHeader(header, token);
+	        		    },                    
+	                    type: 'post'
+	                    , data: {
+	                    	checkedValue : checkArr,
+	                    	user_no : user_no
+	                    }
+	                });
             }
+	        
+            
+           /*  $("#ck").on('click',function(){
+		        var chk = $("input[name='ck_code']").is(":checked");
+		        if(chk==null){
+		            $(".cartBtn").removeAttr('disabled');
+		        }else{
+		            $(".cartBtn").attr("disabled", true);
+		        }
+		    }); */
         </script>
         
         <script>
@@ -242,20 +274,20 @@
         
          <script>
 		    //$(".cartBtn").attr("disabled", true);
-		    $(".cartBtn").on('click', function(){
+		    /* $(".cartBtn").on('click', function(){
 		    	alert("상품을 선택해주세요");
-		    });
+		    }); */
 		    
-		    $("#ck").on('click',function(){
+		    /* $("#ck").on('click',function(){
 		        var chk = $("input[name='ck_code']").is(":checked");
-		        if(chk==true){
+		        if(chk==false){
 		            $(".cartBtn").removeAttr('disabled');
 		            //$(".box").removeClass("on");
 		        }else{
 		            $(".cartBtn").attr("disabled", true);
 		            //$(".box").addClass("on");
 		        }
-		    });
+		    }); */
 	    </script>
 <div th:include="common/footer :: goUp"></div>   
 <footer th:include="common/footer :: footer"></footer>
