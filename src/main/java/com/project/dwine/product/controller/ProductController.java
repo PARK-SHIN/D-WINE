@@ -41,7 +41,8 @@ public class ProductController {
    }
    
    @GetMapping("list")
-   public String listPage(@RequestParam(value="page", required=false) String page, @RequestParam(value="sortStandard", required=false) String sortStandard, @RequestParam(value="searchStandard", required=false) String searchStandard, @RequestParam(value="searchValue", required=false) String searchValue, Model model) throws Exception {
+   public String listPage(@RequestParam(value="page", required=false) String page, @RequestParam(value="sortStandard", required=false) String sortStandard, 
+		   @RequestParam(value="searchStandard", required=false) String searchStandard, @RequestParam(value="searchValue", required=false) String searchValue, Model model) throws Exception {
       
       if(sortStandard == null) {
          sortStandard = "no_low";
@@ -73,7 +74,8 @@ public class ProductController {
    
    @PostMapping("list")
    @ResponseBody
-   public Map<String, Object> sortList(@RequestParam(value="page", required=false) String page, @RequestParam(value="sortStandard", required=false) String sortStandard, @RequestParam(value="searchStandard", required=false) String searchStandard, @RequestParam(value="searchValue", required=false) String searchValue) throws Exception {
+   public Map<String, Object> sortList(@RequestParam(value="page", required=false) String page, @RequestParam(value="sortStandard", required=false) String sortStandard, 
+		   @RequestParam(value="searchStandard", required=false) String searchStandard, @RequestParam(value="searchValue", required=false) String searchValue) throws Exception {
 
       int searchListCount = productService.getListCount(sortStandard, searchStandard, searchValue);
       
