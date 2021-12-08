@@ -45,8 +45,8 @@
                         <tbody id="fList">
 	                        <tr th:each="f : ${ faqList }" class="trFaq">
 	                            <td th:text="${ f.faqNo }"></td>
-	                            <td th:text="${ f.faqTitle }"></td>
-	                            <td th:text="${ f.faqContent }" class="listContent"></td>
+	                            <td th:text="${ f.faqTitle }" class="fTitle"></td>
+	                            <td th:text="${ f.faqContent }" class="listContent fCount"></td>
 	                        </tr>
                         </tbody>
                     </table>
@@ -236,8 +236,8 @@
 						$.each(faqList, function(index, item){
         					
         					tableHTML += "<tr  class='trFaq'><td>" + item.faqNo + "</td>"
-                            		   + "<td>" + item.faqTitle + "</td>"
-                            		   + "<td class='listContent'>" + item.faqContent + "</td></tr>";
+                            		   + "<td class='fTitle'>" + item.faqTitle + "</td>"
+                            		   + "<td class='listContent fContent'>" + item.faqContent + "</td></tr>";
    		           		
         					$("#fList").html(tableHTML);
         					
