@@ -71,10 +71,8 @@ public class FaqController {
 														  @RequestParam(value="searchValue", required=false) String searchValue) {
 					
 		int faqCount = faqService.getFaqCount(searchValue);
-		
+	
 		int resultPage = 1;
-		
-		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
 		if(page != null) {
 			resultPage = Integer.parseInt(page);
 		}
@@ -86,7 +84,6 @@ public class FaqController {
 		List<Faq> faqList = faqService.selectFaqList(searchValue, startRow, endRow);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		
 		map.put("pi", pi);
 		map.put("faqList", faqList);
 		
@@ -101,8 +98,6 @@ public class FaqController {
 		int faqCount = faqService.getFaqCount(searchValue);
 		
 		int resultPage = 1;
-		
-		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
 		if(page != null) {
 			resultPage = Integer.parseInt(page);
 		}
@@ -194,18 +189,5 @@ public class FaqController {
 		
 		return "redirect:/faq/list";
 	}
-	
-	// 제목 검색
-	/*
-	@PostMapping(value = "search")
-	@ResponseBody
-	public List<Faq> selectSearchList(@RequestParam String searchValue) {
-		
-		List<Faq> faqList = faqService.selectSearchList(searchValue);
-		
-		return faqList;
-	}*/
-	
-
 	
 }
