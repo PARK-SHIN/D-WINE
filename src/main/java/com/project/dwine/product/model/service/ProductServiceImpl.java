@@ -46,12 +46,7 @@ public class ProductServiceImpl implements ProductService{
 	public int registProduct(Product product) {
 		return productMapper.registProduct(product);
 	}
-
-	@Override
-	public int selectLastSeqNo() {
-		return productMapper.selectLastSeqNo();
-	}
-
+	
 	@Override
 	public int registProductHash(int hashNo) {
 		return productMapper.registProductHash(hashNo);
@@ -97,11 +92,6 @@ public class ProductServiceImpl implements ProductService{
 	public List<Product> selectProductList(String sortStandard, String searchStandard, String searchValue,
 			int startRow, int endRow) {
 		return productMapper.selectProductList(sortStandard, searchStandard, searchValue, startRow, endRow);
-	}
-
-	@Override
-	public List<Product> searchProductList(String searchStandard, String searchValue) {
-		return productMapper.searchProductList(searchStandard, searchValue);
 	}
 	
 	

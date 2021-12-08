@@ -68,7 +68,7 @@ public class ProductController {
       model.addAttribute("sortStandard", sortStandard);
 
       return "/product/list";
-      // return null;
+     
    }
    
    @PostMapping("list")
@@ -175,8 +175,7 @@ public class ProductController {
          
       // 이미지 처리(썸네일, 라벨이미지)
       String currentDir = System.getProperty("user.dir");
-      // System.getProperty("user.dir"); => 현재 작업중인 디렉터리 가져오는 메소드
-      // C:\Users\이경민\AppData\Roaming\SPB_16.6\git\DWine        
+      // System.getProperty("user.dir"); => 현재 작업중인 디렉터리 가져오는 메소드   
       
       // 사진이 저장되어야 할 경로
       // currentDir + \src\main\resources\static\images
@@ -216,14 +215,12 @@ public class ProductController {
       
       int result = productService.registProduct(product);
       int result2 = 0;
-      // int productNo = 0;
       
       if(result > 0) {
          for(int i = 0; i < 4; i++) {
             result2 += productService.registProductHash(hashArr[i]);
             
             if(result2 == hashArr.length) {
-               // productNo = productService.selectLastSeqNo();
                rttr.addFlashAttribute("message", "상품 등록에 성공하였습니다.");
             } else {
                rttr.addFlashAttribute("message", "상품 등록에 실패하였습니다.");
@@ -231,7 +228,6 @@ public class ProductController {
          }   
       }
       return "redirect:/product/list";
-      // return "redirect:/product/detail/" + productNo;
    }
    
    @GetMapping("modify/{productNo}")
@@ -292,7 +288,6 @@ public class ProductController {
       // file이 null이 아니면 삭제할 사진 경로
       String delete_path = currentDir + "\\src\\main\\resources\\static";
       String old_thumbPath = request.getParameter("old_thumbPath");
-      // \images\\uploadFiles\product\ea5107009fc84643b4e4b6047dcedac3.PNG
       String old_labelPath = request.getParameter("old_labelPath");
       
       // file이 null이 아니면 서버에 저장했던 사진 삭제
@@ -311,7 +306,6 @@ public class ProductController {
 
       // 이미지 저장
       // 사진이 저장되어야 할 경로
-      // C:\Users\이경민\AppData\Roaming\SPB_16.6\git\DWine\src\main\resources\static\images
       String filePath = currentDir + "\\src\\main\\resources\\static\\images\\product\\uploadFiles";
       
       // 이미지가 저장 될 폴더 생성
@@ -367,7 +361,6 @@ public class ProductController {
       }
       
       return "redirect:/product/list";
-      // return "redirect:/product/detail/" + productNo;
    }
    
    @PostMapping("delete") 
