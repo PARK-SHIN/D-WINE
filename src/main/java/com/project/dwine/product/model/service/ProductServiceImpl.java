@@ -93,6 +93,11 @@ public class ProductServiceImpl implements ProductService{
 			int startRow, int endRow) {
 		return productMapper.selectProductList(sortStandard, searchStandard, searchValue, startRow, endRow);
 	}
+
+	@Override
+	public List<Product> searchProductList(String searchStandard, String searchValue) {
+		return productMapper.searchProductList(searchStandard, searchValue);
+	}
 	
 	
 

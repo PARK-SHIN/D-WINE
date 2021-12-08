@@ -38,8 +38,10 @@ public interface ProductService {
 	List<Product> selectProductList(String sortStandard, String searchStandard, String searchValue, int startRow,
 			int endRow);
 	
-
-
+	List<Product> searchProductList(String searchStandard, String searchValue);
+	
+	
+	
 
 
 
