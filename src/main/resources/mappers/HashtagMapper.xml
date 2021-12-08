@@ -60,11 +60,10 @@
 		WHERE HASH_NO = #{hashNo}
 	</update> 
 	
-	<update id="deleteHashtag">
-		UPDATE HASHTAG
-			SET STATUS = 'N'
+	<delete id="deleteHashtag">
+		DELETE FROM HASHTAG
 		WHERE HASH_NO = #{hashNo}
-	</update>
+	</delete>
 	
 	<select id="checkDeleteHash" resultType="_int">
 		SELECT
