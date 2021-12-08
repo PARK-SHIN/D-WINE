@@ -110,3 +110,8 @@
 		.star.on {
 			background-image: url(/images/mypage/star_on.png)
 		}
+		@media screen and (max-width: 1400px) {
+      .weather {
+         display:none;
+      }
+   }

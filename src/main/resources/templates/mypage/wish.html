@@ -54,7 +54,7 @@
 	                    <ul style="height: 100px;" th:each="w : ${ wishList }">
 	                        <li class="title">
 	                            <div class="parent">
-	                                <div class="first"><input type="checkbox" name="ck_code" th:value="${w.product_no}"></div>
+	                                <div class="first"><input type="checkbox" id="ck" name="ck_code" th:value="${w.product_no}"></div>
 	                                <div class="second"><a class="movePno" th:href="@{'/purchase/' + ${w.product_no} }"><img th:src="${w.thumbnail}" width="80px" height="80px" alt="wineImg"></a></div>
 	                                <div class="third"><a th:href="@{'/purchase/' + ${w.product_no} }"><label th:text="${w.product_kname}" class="movePno"></label></a> </div>
 	                            </div>
@@ -239,6 +239,24 @@
     	
     	}
         </script>
+        
+         <script>
+		    //$(".cartBtn").attr("disabled", true);
+		    $(".cartBtn").on('click', function(){
+		    	alert("상품을 선택해주세요");
+		    });
+		    
+		    $("#ck").on('click',function(){
+		        var chk = $("input[name='ck_code']").is(":checked");
+		        if(chk==true){
+		            $(".cartBtn").removeAttr('disabled');
+		            //$(".box").removeClass("on");
+		        }else{
+		            $(".cartBtn").attr("disabled", true);
+		            //$(".box").addClass("on");
+		        }
+		    });
+	    </script>
 <div th:include="common/footer :: goUp"></div>   
 <footer th:include="common/footer :: footer"></footer>
 </body>

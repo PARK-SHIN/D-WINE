@@ -157,3 +157,8 @@ a {
 	color: white;
 	border-radius: 5px;
 }
+@media screen and (max-width: 1400px) {
+      .weather {
+         display:none;
+      }
+   }

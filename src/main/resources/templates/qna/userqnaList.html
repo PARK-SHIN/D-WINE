@@ -19,6 +19,7 @@
 <body>
 <header th:include="common/header :: header"></header>
 <div class="weather" th:include="recommendWine/weather"></div>
+<div class="wrapper">
 <div id="container">
 	<div class="contents">
         <div>
@@ -81,7 +82,7 @@
 		</div>
     </div>
    </div>
-
+</div>
     <script>
 	    var token = $("meta[name='_csrf']").attr("content");
 	    var header = $("meta[name='_csrf_header']").attr("content");

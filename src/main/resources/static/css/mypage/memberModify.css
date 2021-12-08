@@ -222,3 +222,8 @@ form>input {
 .closeBtn:hover {
 	cursor : pointer;	
 }
+@media screen and (max-width: 1400px) {
+      .weather {
+         display:none;
+      }
+   }

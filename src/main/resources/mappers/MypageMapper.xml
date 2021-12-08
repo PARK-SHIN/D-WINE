@@ -75,6 +75,14 @@
 		<result property="purchase_no" column="PURCHASE_NO" />
 	</resultMap>
 	
+	<resultMap type="com.project.dwine.mypage.model.vo.OrderDetail" id="OrderDetailResultMap">
+		<id property="od_no" column="OD_NO"/>
+		<result property="od_count" column="OD_COUNT"/>
+		<result property="od_price" column="OD_PRICE"/>
+		<result property="purchase_no" column="PURCHASE_NO"/>
+		<result property="product_no" column="PRODUCT_NO"/>
+	</resultMap>
+	
 	
 	<!-- <resultMap type="com.project.dwine.mypage.model.vo.Authority"
 		id="">
@@ -406,9 +414,17 @@
 	
 	<select id="findPurchasePoint" resultMap="PointResultMap">
 		SELECT 
-			*
+		 	point_no,
+			content,
+			point,
+			pdate,
+			review_no,
+			PURCHASE.purchase_no,
+			use_point,
+			POINT.status
 		FROM POINT
-		WHERE PURCHASE_NO = #{purchase_no}
+		LEFT JOIN PURCHASE ON (PURCHASE.PURCHASE_NO = POINT.PURCHASE_NO)
+		WHERE PURCHASE.PURCHASE_NO = #{purchase_no}
 	</select>
 	
 	<update id="memberPointPayCancelDelete" parameterType="com.project.dwine.member.model.vo.Member">
@@ -456,7 +472,7 @@
 			ORDER BY star DESC
 		</if>
 		<if test="sortStandard == 'name_asc'">
-			ORDER BY product_kname DESC
+			ORDER BY product_kname ASC
 		</if>
 		<if test="sortStandard == 'name_desc'">
 			ORDER BY product_kname DESC
@@ -472,5 +488,20 @@
 		UPDATE POINT SET
 		STATUS = 'N'
 		WHERE PURCHASE_NO = #{purchase_no}
+	</update>
+	
+	<select id="selectProductCount" resultMap="OrderDetailResultMap" >
+		SELECT 
+			PRODUCT_NO,
+			OD_COUNT
+		FROM ORDER_DETAIL
+		WHERE PURCHASE_NO = #{purchase_no}
+	</select>
+	
+	<update id="productCountModify" parameterType="com.project.dwine.purchase.model.vo.Product">
+		UPDATE PRODUCT
+		SET
+		PRODUCT_COUNT = PRODUCT_COUNT + #{product_count}
+		WHERE PRODUCT_NO = #{product_no}
 	</update>
 </mapper>

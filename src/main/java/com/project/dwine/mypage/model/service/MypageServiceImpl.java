@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.dwine.member.model.vo.Member;
 import com.project.dwine.mypage.model.dao.MypageMapper;
+import com.project.dwine.mypage.model.vo.OrderDetail;
 import com.project.dwine.mypage.model.vo.Point;
 import com.project.dwine.mypage.model.vo.Purchase;
 import com.project.dwine.mypage.model.vo.Review;
@@ -192,6 +193,16 @@ public class MypageServiceImpl implements MypageService{
 	@Override
 	public int pointModifyStatus(String purchase_no) {
 		return mypageMapper.pointModifyStatus(purchase_no);
+	}
+
+	@Override
+	public List<OrderDetail> selectProductCount(String purchase_no) {
+		return mypageMapper.selectProductCount(purchase_no);
+	}
+
+	@Override
+	public int productCountModify(int product_count, int product_no) {
+		return mypageMapper.productCountModify(product_count, product_no);
 	}
 
 }
