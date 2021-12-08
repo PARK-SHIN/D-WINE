@@ -281,8 +281,8 @@
 	/* 모달2 */
 	#modal2.modal-overlay {
 	    position: fixed;
-	    top: 15%;
-	    left: 30%;
+	    top: 20%;
+	    left: 32%;
 	    display: flex;
 	    flex-direction: column;
 	    align-items: center;

@@ -141,7 +141,7 @@
 	#modal.modal-overlay {
 		position: fixed;
 		top: 20%;
-		left: 30%;
+		left: 32%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
