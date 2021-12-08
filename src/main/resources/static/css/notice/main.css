@@ -84,7 +84,7 @@
 
 .noticeTable {
 	width: 1100px;
-	text-align: center;
+	
 	font-weight: lighter;
 	border-collapse: collapse;
 	font-size: 16px;
@@ -107,7 +107,6 @@
 .noticeTable td {
 	border-bottom: 1px solid lightgray;
 	border-left: none;
-	text-align: center;
 	height: 35px;
 	font-size: 15px;
 }
@@ -179,3 +178,11 @@ input[type="checkbox"]:checked::before {
 	color: white;
 	border-radius: 5px;
 }
+
+ .titleTd{
+	text-align: left;
+}
+ .categoryTh, .categoryTd{
+	width: 150px;
+	padding-right: 80px;
+ }

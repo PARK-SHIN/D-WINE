@@ -7,268 +7,8 @@
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+<link href="/css/manage/inventoryMg/regist.css" rel="stylesheet">
 <link href="/css/common/common.css" rel="stylesheet">
-    <style>
-    * {
-          font-family: 'Gowun Batang', serif;
-       }
-	    .content {
-	        margin : 50px auto;
-	        height : auto;
-	        min-height : 100%;
-	        width: 900px;
-	    }
-	    
-    	h2{
-    	    margin-left: 20px;
-    	}
-
-        .totalList{
-            border: black 1px solid;
-            width: 850px;
-            height: 120px;
-            display: flex;
-            list-style: none;
-            text-align: center;
-            margin-bottom: 10px;
-            margin-left: 24px;
-            margin-top: 18px;
-        }
-        
-        .registArea{
-        margin-left: 24px;
-        height: auto;
-        
-        }
-
-        hr {
-            width: 850px;
-        }
-
-        #todayReceiving{
-            margin-right: 200px;
-            margin-left: 140px;
-        }
-
-        #totalShop {
-            margin-right: 200px;
-        }
-        
-        #totalStock{
-            margin-right: 150px;
-        }
-        
-       span#count{
-        font-size: 45px;
-        font-weight: bolder;
-        color: #83131E;   
-        }
-        
-        
-       span#counts{
-        font-size: 45px;
-        font-weight: bolder;
-        color: black;  
-        }
-
-       span#countTitle{
-        width: 70px;
-        }
-        
-       
-/*시도*/
-
-        
-
-        .label_area{
-            display:inline-block;
-            width: 100px;
-        }
-        
-        .receivingArea{
-           border: 1px black solid;
-           margin-bottom: 20px;
-           width: 850px;
-           height: 377px;         
-       	}
-      
-
-        .searchArea {
-            margin-top: 20px;
-            margin-left: 85px;
-            text-align: center;
-            
-        }
-
-        #selectBtn{
-           margin: 5px;
-           background: white ;
-           border: 1px solid #83131E ;
-           color: #83131E;
-           width: 50px;
-           height: 25px;
-           border-radius: 5px; 
-        }
-
-      
-        .receivingArea input {
-		width : 255px;
-		height : 25px;
-		border: 1px solid;
-		margin-bottom: 11px;
-		
-	    }
-        #selectArea{
-            text-align: center;
-        }
-		.cssArea{
-		margin-bottom: 5px;
-		}
-
-       .btnArea{
-        text-align: center;
-        border-top: 1px solid #282A35;
-        margin-top: 15px;
-        padding: 30px;
-        }
-
-        #cancleBtn{
-            background: white ;
-            border: 1px solid #83131E ;
-            color: #83131E;
-            width:150px;
-            height: 25px;
-            border-radius: 5px;
-        
-        }
-
-        #enrollBtn{
-            background: #83131E ;
-            border: none;
-            color:white;
-            width:150px;
-            height: 25px;
-            border-radius: 5px;
-            margin-left: 30px;
-        }
-        
-		/*모달 css*/
-        .modal {
-        position: fixed;
-	    top: 40%;
-	    left: 40%;
-	    flex-direction: column;
-	    align-items: center;
-	    justify-content: center;
-	    display: none;
-	    background: white;
-	    border: 1px solid black;
-	    width: 700px;
-  		height: 430px;
-        }
-
-      /* .modal .modal_layer {
-       position:fixed;
-       top:0;
-       left:0;
-       width:100%;
-       height:100%;
-       background:rgba(0, 0, 0, 0.3);
-       z-index:-1;
-   		}  나중에 css 맞춰보기 */
-
-        .modalBox {
-          position: absolute;
-          background-color: white;
-          width: 400px;
-          height: 400px;
-          padding: 15px;
-          border: 1px solid black;
-          
-        }
-
-        .modalBox button {
-          display: block;
-          width: 80px;
-          margin: 0 auto;
-        }
-
-        .hidden {
-          display: none;
-        }
-        
-        <!--모달창 검색 detail css-->
-        .mcontent {
-            margin : 50px auto;
-            height : auto;
-            min-height : 100%;
-            width: 900px;
-            text-align: center;
-        }
-        
-        .msearchArea{
-         text-align: center;
-        
-        }
-        
-        #msearchBtn{
-         margin: 5px;
-         background: white ;
-         border: 1px solid #83131E ;
-         color: #83131E;
-         width: 50px;
-         height: 25px;
-         border-radius: 5px; 
-        }
-        
-
-        .msearchContext{
-             border: 1px solid black;
-		    width: 500px;
-		    height: 180px;
-		    margin-top: 20px;
-		    display: inline-block;
-        }
-        
-       .mbtnArea{
-            text-align: center;        
-        }
-     
-
-        #mcancleBtn{
-            background: white ;
-            border: 1px solid #83131E ;
-            color: #83131E;
-            width:150px;
-            height: 25px;
-            border-radius: 5px;
-            margin-right: 30px;
-        }
-
-        #mapplyBtn{
-            background: #83131E ;
-            border: none;
-            color:white;
-            width:150px;
-            height: 25px;
-            border-radius: 5px;
-            margin-right: 30px;
-        }
-        
-        li{
-        	list-style : none;
-        }
-        
-        .noCss{
-            margin-right: 45px;
-    		margin-left: -35px;
-		}
-		
-	
-        
-
-
-    </style>
 </head>
 <body>
 <header th:include="common/header :: header"></header>
@@ -414,20 +154,22 @@
 			data : {searchStandard : searchStandard, searchValue : searchValue},
 			type : "post",
 			success : function(data) {
+				
 				if (data.length == 0) {
 					alert("검색 결과가 없습니다.");
 				} else {
+					
 					var tableHTML = '<ul class="selectPno" id="selectPno">';
-				
+									
 					$.each(data, function(index, item) {
-			
+
 					tableHTML += "<li value='" + item.productNo +"'><label class='noCss'>" + item.productNo + "</label>" + "   " + item.productKName +"</li>"
 							 
-					$("#productList").html(tableHTML);
+					$(".msearchContext").html(tableHTML);
 					
-					});
+				});
 					tableHTML += '</ul>'
-						$(".msearchContext").append(tableHTML);
+				
 				}
 			},
 			error : function(e) {
@@ -435,24 +177,29 @@
 			}						
 		});
 	});
-	
 		
+	//모달 CSS 클릭시, 배경
 	var productNo = null;
 	
 	$(document).on("click", ".selectPno li", function() {
+		$(this).css('background', '');
 		productNo = $(this).val();
 		$(this).css("background-color", "rgba(196, 196, 196, 0.1)");
-	
+		$("li").not($(this)).css("background-color", "white");
 	});
 
-	$("#mapplyBtn").click(function(){
-			   
+	
+	
+	//regist에 검색결과 추가
+	$("#mapplyBtn").click(function(){ 
 		   $.ajax({
 				url : "/manage/inventoryMg/searchByProductNo",
 				data : {productNo : productNo},
 				type : "post",
 				success : function(data) {
 							
+					$(this).css('background', '');
+					
 						  $('#productNameK').attr('value',data.productKName);
 						  $('#productNameE').attr('value',data.productEName);
 						  $('#productPrice').attr('value',data.salePrice);
@@ -465,16 +212,13 @@
 			});
 		});
 
-	
-	
-	function calc(val){ //입고재고 가격 자동계산하기.
-	   // var iCount = document.getElementById('inven_count').value
+
+	function calc(val){ //입고 가격 자동계산하기.
+	   
 	    var iCount = $("#inven_count").val();
-	    //var iPrice = document.getElementById('inven_price').value
 		var iPrice = $("#inven_cost").val();
 
 		var inven_price = iCount*iPrice;
-		console.log(inven_price);
 	    
 	    if(val == ""){
 	        document.getElementById('inven_price').value = "0";
@@ -482,8 +226,6 @@
 	        document.getElementById('inven_price').value = inven_price;
 	    }
 	}	
-
-	//ficker날짜 css
 
 	
 </script>

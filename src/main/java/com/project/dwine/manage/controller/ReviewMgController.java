@@ -53,7 +53,6 @@ public class ReviewMgController {
 		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
         int endRow = startRow + pi.getBoardLimit() - 1;
-	    
 		
 		List<Review> reviewMgList = reviewMgService.selectReviewList(startRow, endRow);
 		
@@ -73,15 +72,12 @@ public class ReviewMgController {
 	    
 	    if(page != null) {
 			resultPage = Integer.parseInt(page);
-			//System.out.println();
 		}
 		
 		PageInfo pi = new PageInfo(resultPage, listCount, 10, 10);
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
 		int endRow = startRow + pi.getBoardLimit() - 1;
-	//	System.out.println(pi);
 		List<Review> reviewMgList = reviewMgService.selectReviewList(startRow, endRow);
- 	//	System.out.println("포스트방식"+reviewMgList);
  		Map<String, Object> map = new HashMap<>();
  		map.put("pi", pi);
  		map.put("reviewMgList", reviewMgList);
@@ -90,23 +86,15 @@ public class ReviewMgController {
  	}
 	
 	
-	
-	
-	
-	
-	
 	//detail
 	@GetMapping("/reviewMg/rdetail/{review_no}")
 	public String reviewDetailPage(Model model, @PathVariable int review_no) {
 	    
 	    Review r = reviewMgService.selectOneReview(review_no);
-		//Review reviewMgList = reviewMgService.selectReviewList(review_no);
 	    model.addAttribute("review", r);
-	    //model.addAttribute("reviewMgList", reviewMgList);
 	    
 		return "manage/reviewMg/rdetail.html";
 	}
-	
 	
 	
 	   @GetMapping("reviewMg/delete")

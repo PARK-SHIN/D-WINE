@@ -1,0 +1,80 @@
+@charset "UTF-8";
+	* {
+	   font-family: 'Gowun Batang', serif;
+       }
+       
+       
+      .contents{
+      margin: auto;
+      }
+	       
+	  .star-ratings {
+	  color: #aaa9a9; 
+	  position: relative;
+	  unicode-bidi: bidi-override;
+	  width: max-content;
+	  -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+	  -webkit-text-stroke-width: 1.3px;
+	  -webkit-text-stroke-color: #2b2a29;
+	}
+	 
+	.star-ratings-fill {
+	  color: #fff58c;
+	  padding: 0;
+	  position: absolute;
+	  z-index: 1;
+	  display: flex;
+	  top: 0;
+	  left: 0;
+	  overflow: hidden;
+	  -webkit-text-fill-color: gold;
+	}
+	 
+	.star-ratings-base {
+	  z-index: 0;
+	  padding: 0;
+	}   
+	
+		.reporterList{
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 900px;
+            height: 500px;
+        }
+        
+        .reporteTable{
+       	width: 840px;
+	    text-align: center;
+	    font-weight: lighter;
+	    border-collapse: collapse;
+	    font-size: 14px;
+        }
+
+        .reporteTable th{
+        font-weight: bold;
+        font-size: 16px;
+	    background-color: rgba(196, 196, 196, 0.3);
+	    border: none;
+        }
+        
+        .reporteTable tr {
+	    height: 35px;
+		}
+		
+		.reviewMgTable tr:nth-child(n+2):hover {
+	    background-color: rgba(196, 196, 196, 0.1);
+		}
+
+        .reporteTable td{
+        border-bottom:1px solid lightgray;
+        border-left: none;
+        text-align: center;
+        height: 35px;
+        font-size: 15px;
+        }
+        
+       
+        .review_text{
+        font-size : 16px;
+        }

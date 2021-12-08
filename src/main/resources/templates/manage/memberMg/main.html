@@ -7,287 +7,9 @@
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="/css/common/common.css" rel="stylesheet">
+<link href="/css/manage/memberMg/main.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-    <style>
-    
-    * {
-          font-family: 'Gowun Batang', serif;
-       }
-       
-    	#container {
-	    width: 1100px;
-	    margin: 0 auto;
-	    display: flex;
-	    justify-content: space-between;
-	    flex-wrap: nowrap;
-	    border: none;
-		}
-	
-	.snb {
-	    width: 200px;
-	    /* height: 2500px; */
-	    height: 100%;
-	    border: 1px solid blue;
-	}
-	
-  		.content {
-             width: 888px;
-	    	height: 100%;
-	    
-        }
-        
-        .inner {
-		    margin-top: 30px;
-		    margin-left: 27px;
-		    width: 836px;
-		    height: 100%;
-		}
-	
-	a {
-	    text-decoration: none;
-	    color: #000;
-	}
-	
-	.snb {
-	    width: 210px;
-	}
-	
-	.snb_inner {
-	    width: 170px;
-	    margin: 30px auto 0;
-	}
-	
-		label {
-			color: #83131E ;
-		    margin-right: 30px;
-		}
-    
-    	
-        .content {
-            width: 888px;
-    		height: 100%;
-        }
-        
-        #deleteBtn{
-            float: right;
-            background: #83131E ;
-            border: none;
-            color:white;
-            width:80px;
-            height: 25px;
-            border-radius: 5px;
-            margin-right: 20px;
-            
-        }
 
-        #searchArea{
-        float: right;
-        margin-right: 30px;
-        margin-bottom: 20px;
-        }  
-
-      .memberList{
-       text-align: center;
-       margin-top: 30px;
-       margin-bottom: 30px;
-       width: 900px;
-       height: 500px;
-      }
-   
-	    .memberTable{
-	        width: 840px;
-		    text-align: center;
-		    font-weight: lighter;
-		    border-collapse: collapse;
-		    font-size: 14px;
-	    }
-
-	    .memberTable th{
-	     font-weight: bold;
-	     background-color: rgba(196, 196, 196, 0.3);
-	     border: none;
-	    }
-    
-     	.memberTable tr {
-	    height: 35px;
-		}
-		
-
-    	.memberTable tr:nth-child(n+2):hover {
-	    background-color: rgba(196, 196, 196, 0.1);
-		}
-
-        .memberTable td{
-        border-bottom:1px solid lightgray;
-        border-left: none;
-        text-align: center;
-        height: 35px;
-        font-size: 14px;
-        }
-
-    
-        /* 체크박스 색상 변경 */
-       input[type="checkbox"] {
-		    -webkit-appearance: none;
-		    position: relative;
-		    width: 16px;
-		    height: 16px;
-		    cursor: pointer;
-		    outline: none !important;
-		    border: 1px solid #c4c4c4;
-		    border-radius: 2px;
-		    background: #fbfbfb;
-		}
-		input[type="checkbox"]::before {
-		    content: "\2713";
-		    position: absolute;
-		    top: 50%;
-		    left: 50%;
-		    overflow: hidden;
-		    transform: scale(0) translate(-50%, -50%);
-		    line-height: 1;
-		}
-		
-		input[type="checkbox"]:hover {
-		    border-color: rgba(170, 170, 170, 0.5);
-		}
-		
-		input[type="checkbox"]:checked {
-		    background-color: #83131E;
-		    border-color: rgba(255, 255, 255, 0.3);
-		    color: white;
-		}
-		
-		input[type="checkbox"]:checked::before {
-		    border-radius: 2px;
-		    transform: scale(1) translate(-50%, -50%)
-		}
-		 #searchBtn{
-           margin: 5px;
-           background: white ;
-           border: 1px solid #83131E ;
-           color: #83131E;
-           width: 45px;
-           height: 25px;
-           border-radius: 5px;
-        }
-        #searchBtn:hover {
-            cursor: pointer;
-            transform:scale(1.1);
-            background:  #83131E;
-            color: white;  
-        }
-		/*디테일 css*/
-		
-		 .detailArea{
-            border: none;
-			width: 600px;
-			height: auto;
-			display: inline-block;
-		    text-align: center;
-		    margin-top: 20px;
-		    font-size: 20px;
-        }
-        
-        .memberNo{
-            text-align: left;
-            margin-left: 48px;
-            font-size: 18px;  
-        }
-
-        .memberDetailList{
-            width : auto;
-		    height : 15px;
-		    margin-bottom: -15px;
-            display: -webkit-box;
-            margin-left: 60px;
-        }
-
-        hr{
-            background-color: lightgray;
-         
-        }
-
-        .label_area{
-            display: inline-flex;
-            width: 150px;
-            margin-left: 90px;
-       		margin-right: 20px;
-		}
-
-
-		/*모달 css*/
-        .modal {
-        position: fixed;
-	    top: 0;
-	    left: 0;
-	    width: 100%;
-	    height: 100%;
-	    margin-left: 650px;
-	    display: block;
-	    justify-content: center;
-	    align-items: center;
-	    margin-top: 200px;
-        }
-
-       	/*.modal .bg {
-          width: 200%;
-          height: 200%;
-          background-color: rgba(0, 0, 0, 0.6);
-        }*/
-
-        .modalBox {
-          position: absolute;
-          background-color: #fff;
-          width: 600px;
-          height: 554px;
-          padding: 15px;
-          border: 1px solid black;
-        }
-
-        .modalBox button {
-          display: block;
-          width: 80px;
-          margin: 0 auto;
-        }
-
-        .hidden {
-          display: none;
-        }
-        
-        /* 페이징 부분 */
-	.paging_ul {
-		height: 50px;
-		line-height: 50px;
-		display: flex;
-		justify-content: center;
-		list-style: none;
-		width: 480px;
-		margin: 30px auto;
-	}
-	.paging_ul li {
-		text-decoration: none;
-		display: block;
-		text-align: center;
-		border: 1px solid #dae0e9;
-	    margin-left: 10px;
-		width: 37px;
-		height: 37px;
-		line-height : 37px;
-	    font-size: 12px;
-	    border-radius : 5px;
-	}
-	.current_page {
-		border: 1px solid  #83131E;
-	    background:  #83131E;
-	    color: white;
-	    border-radius : 5px;
-	}
-	
-	th{
-	font-weight: bold;
-	}
-    </style>
 </head>
 <body>
 <header th:include="common/header :: header"></header>
@@ -308,24 +30,20 @@
     <hr>
     <div th:include="common/footer :: goUp"></div>
     <button id="deleteBtn" onclick="deleteValue();">회원제명</button><br>
-   <!--  <label>정렬 : </label>
-    <select name="array">
-        <option value="latest">최신순</option>
-        <option value="report-count">신고누적수</option>
-    </select> 기능특성 상 하지 않아도 될 듯 하다. -->
+  
     <div id="searchArea"><input type="text" id="searchTitle" name="searchValue"> <button id="searchBtn">검색</button> </div>
     <div class="memberList">
         <table class="memberTable">
             <tr>
                 <th><input type="checkbox" class="allCheck" name="allCheck" ></th>
                 <th>회원번호</th>
-                <th>닉네임</th>
-                <th>아이디</th>
+                <th class="nickTh">닉네임</th>
+                <th class="idTh">아이디</th>
                 <th>가입일</th>
                 <th>총 신고수</th>
        	   </tr>
        	   <tbody class="trArea">
-            <tr class="allMember" th:each="member: ${ memberList }" th:style="${member.reported_count == 0  ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}"><td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ member.user_no }"></td><td id="userNO" th:text="${ member.user_no }"></td><td th:text="${ member.user_nickname }"></td><td th:text="${ member.user_id }" class="openBtn" onclick="openModal(this)"></td><td th:text="${ #dates.format(member.create_date, 'yyyy-MM-dd') }"></td><td th:text="${ member.reported_count }"></td><td class="modal hidden tdCss"><div class="bg"></div><div class="modalBox"><img style="margin-left: 578px;"src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px">
+            <tr class="allMember" th:each="member: ${ memberList }" th:style="${member.reported_count == 0  ? 'background-color:none' : 'background-color:rgba(180,19,30,0.1);'}"><td><input type="checkbox" class="checkbox"  id="checkbox" name="checkbox" th:value="${ member.user_no }"></td><td id="userNO" th:text="${ member.user_no }"></td><td id="nickTd" th:text="${ member.user_nickname }"></td><td id="idTd" th:text="${ member.user_id }" class="openBtn" onclick="openModal(this)"></td><td th:text="${ #dates.format(member.create_date, 'yyyy-MM-dd') }"></td><td th:text="${ member.reported_count }"></td><td class="modal hidden tdCss"><div class="bg"></div><div class="modalBox"><img style="margin-left: 578px;"src="/images/mypage/close.png" class="closeBtn" width="20px" height="20px">
 			    <h1>회원 정보 창</h1>
             <div class="memberDetailArea">
              <div class="memberNo"><label>회원 번호 : </label> <span th:text="${member.user_no}" readonly/></div><br>
@@ -369,7 +87,6 @@
 <script>   
 
 function openModal(elem){
-	console.log(elem);
 	console.log(elem.className);
 	
 	var trClass = elem.parentNode
@@ -449,7 +166,7 @@ function openModal(elem){
 	    for(var i = 0; i < list.length; i++){
 	        if(list[i].checked){ 
 	            valueArr.push(list[i].value);
-	           // console.log(valueArr); 넘어감
+	       
 	        }
 	    }
 	    if (valueArr.length == 0){
