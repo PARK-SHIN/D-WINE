@@ -366,8 +366,8 @@
         			}
  
         			// 상품 정보
+        			productHTML = '';
         			$.each(data.orderDetail, function(index, item){
-        				productHTML = '';
         				productHTML += '<tr><td>'+ item.productNo + '</td>';
         				productHTML += '<td>' + item.typeName + '</td>';
         				productHTML += '<td>' + item.productKname + '</td>';
