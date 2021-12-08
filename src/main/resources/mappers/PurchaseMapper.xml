@@ -259,31 +259,7 @@
 		     AND G.STATUS = 'Y'
 		    ORDER BY REVIEW_MODIFY DESC
 	</select>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	<select id="wineDetail" resultMap="productDetailResultMap">
 		 	 	 SELECT
 			    P.PRODUCT_NO
@@ -360,113 +336,7 @@
 		    ORDER BY REVIEW_MODIFY DESC) PLIST)
 	      WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
-	
-	
-	
-	
-<!-- 
-	<select id="filterWineList" parameterType="String" resultMap="productResultMap">
-		SELECT
-				P.PRODUCT_NO
-			  , P.PRODUCT_KNAME
-			  , P.PRODUCT_ENAME
-			  , P.SALE_PRICE
-			  , P.PRODUCT_COUNT
-			  , P.WINERY
-			  , P.THUMBNAIL
-			  , P.CAPACITY
-			  , P.ABV
-			  , P.TASTE_GRAPH
-			  , P.INFORMATION
-			  , P.AWARD
-			  , P.TIP
-			  , P.LABEL_IMAGE
-			  , P.STATUS
-			  , P.CREATE_DATE
-			  , P.MODIFY_DATE
-			  , P.VARIETY_NO
-			  , P.TYPE_NO
-			  , P.COUNTRY_NO
-		   FROM PRODUCT P
-           LEFT JOIN COUNTRY C ON (P.COUNTRY_NO = C.COUNTRY_NO)
-           LEFT JOIN TYPE D ON(P.TYPE_NO = D.TYPE_NO)
-           LEFT JOIN VARIETY E ON(P.VARIETY_NO = E.VARIETY_NO)
-           WHERE 1=1
-           AND P.STATUS = 'Y'
-			<if test="country!=null and !country.equals('')">
-					AND COUNTRY_NAME = #{ country }		
-			</if>
-			<if test="type!=null and !type.equals('')">
-					AND TYPE_NAME = #{ type }		
-			</if>
-			<if test="name!=null and !name.equals('')">
-					AND (UPPER(REPLACE(PRODUCT_KNAME,' ','')) LIKE REPLACE(UPPER('%' ||  #{name} || '%'),' ','') OR UPPER(REPLACE(PRODUCT_ENAME,' ','')) LIKE REPLACE(UPPER('%' ||  #{name} || '%'),' ',''))
-			</if>
-			<if test="variety!=null and !variety.equals('')">
-					AND VARIETY_NAME = #{ variety }
-			</if>
-			<if test="price!=null and !price.equals('')">
-				<if test="price.equals('10000')">
-					AND SALE_PRICE &lt;= 10000
-				</if>
-				<if test="price.equals('30000')">
-					AND SALE_PRICE BETWEEN 10000 AND 30000
-				</if>
-				<if test="price.equals('50000')">
-					AND SALE_PRICE BETWEEN 30000 AND 50000
-				</if>
-				<if test="price.equals('100000')">
-					AND SALE_PRICE BETWEEN 50000 AND 100000
-				</if>
-				<if test="price.equals('200000')">
-					AND SALE_PRICE BETWEEN 100000 AND 200000
-				</if>
-				<if test="price.equals('300000')">
-					AND SALE_PRICE BETWEEN 200000 AND 300000
-				</if>
-			</if>
-	</select>
-	
-	<select id="sortWineList" parameterType="String" resultMap="productResultMap">
-		SELECT
-			    PRODUCT_NO
-			  , PRODUCT_KNAME
-			  , PRODUCT_ENAME
-			  , SALE_PRICE
-			  , PRODUCT_COUNT
-			  , WINERY
-			  , THUMBNAIL
-			  , CAPACITY
-			  , ABV
-			  , TASTE_GRAPH
-			  , INFORMATION
-			  , AWARD
-			  , TIP
-			  , LABEL_IMAGE
-			  , STATUS
-			  , CREATE_DATE
-			  , MODIFY_DATE
-			  , VARIETY_NO
-			  , TYPE_NO
-			  , COUNTRY_NO
-		   FROM PRODUCT
-           WHERE 1=1         
-           AND STATUS = 'Y'   
-            <if test="val!=null and !val.equals('')">
-				<if test="val.equals('hprice')">
-					ORDER BY SALE_PRICE DESC
-				</if>
-				<if test="val.equals('lprice')">
-					ORDER BY SALE_PRICE
-				</if>
-				<if test="val.equals('latest')">
-					ORDER BY CREATE_DATE
-				</if>
-			</if>
-	</select>
-	 -->
-	 
-	 
+
 	 <select id="getsearchListCount" resultType="_int">
 	 SELECT
 			COUNT(*)
@@ -619,38 +489,6 @@
       WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
 	
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
 	<select id="popularList" parameterType="String" resultType="com.project.dwine.purchase.model.vo.Product">
 		SELECT
 	        DISTINCT(PRODUCT_NO)
