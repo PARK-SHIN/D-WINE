@@ -35,6 +35,7 @@ public class SalesInquiryController {
 		List<Total> years = salesInquiryService.selectYear();
 		List<Total> yearSales = salesInquiryService.yearSales();
 		List<Total> salesProduct = salesInquiryService.salesProduct();
+		System.out.println(total);
 
 		mv.addObject("total", total);
 		mv.addObject("years", years);

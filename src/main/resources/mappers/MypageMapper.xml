@@ -228,6 +228,7 @@
 		UPDATE PURCHASE
 		SET
 		ORDER_STATUS = '결제취소',
+		REFUND_DATE = SYSDATE,
 		STATUS = 'N'
 		WHERE PURCHASE_NO = #{purchase_no}
 	</update>
