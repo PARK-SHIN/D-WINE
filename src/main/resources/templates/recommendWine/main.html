@@ -22,10 +22,10 @@
 			<div class="content">
 				<div id="search_area">
 					<form id="searchForm" th:action="@{/recommendWine/search}"
-						method="get" onsubmit="return validate()">
+						method="get">
 						<input id="input_box" type="text" name="search_hash"
 							placeholder="#해시태그를 입력하세요.">
-						<button id="search_btn">검색</button>
+						<button type="button" id="search_btn">검색</button>
 					</form>
 				</div>
 				<div id="content_area">
@@ -64,14 +64,6 @@
 			xhr.setRequestHeader(header, token);
 		});
 		 
-		 function validate() {
-			 
-			 if($("input[name=search_hash]").val() == null) {
-				 alert("검색하실 해시태그명을 입력해주세요.");
-				 return false;
-			 }
-		 }
-		 
 		$(function(){
 			$("input[name=search_hash]").val("");
 		});
@@ -79,7 +71,17 @@
 		$("li").on("click", function(){
 			$("input[name=hashNo]").val($(this).val());
 			$("input[name=hashName]").val($(this).text());
-			$("form").submit();
+			$("#hashListForm").submit();
+		});
+		
+		$("#search_btn").on("click", function(){
+			if($("input[name=search_hash]").val() != "") {
+				$("#searchForm").submit();
+			} else {
+				alert("검색하실 해시태그명을 입력해주세요.");
+				$("input[name=search_hash]").focus();
+			}
+			
 		});
 		 
 		 
