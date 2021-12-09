@@ -107,7 +107,7 @@
 		height: 500px;
 	}
 	
-	.fTitle, .fContent {
+	.fTitle {
 		text-align: left;
 	}
 	
@@ -135,6 +135,7 @@
 	
 	table .listContent {
 		width: 600px;
+		text-align: left;
 	}
 	
 	/* 모달 */

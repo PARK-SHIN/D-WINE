@@ -157,9 +157,9 @@
 	}
 	
 	#orderList th {
-	    font-weight: lighter;
 	    background-color: rgba(196, 196, 196, 0.3);
 	    border: none;
+	    font-weight: bold;
 	}
 	
 	.applyBtn {
