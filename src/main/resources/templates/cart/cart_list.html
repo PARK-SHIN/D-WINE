@@ -37,7 +37,7 @@
 							<div class="wine_info">
 
 								<div th:if="${cList.product_count == 0}"
-									style="pointer-events: none;"></div>
+									style="pointer-events: none; padding-left:28px;"></div>
 								<div th:unless="${cList.product_count == 0}">
 									<input class="product_checkbox" type="checkbox" name="chk"
 										th:value="${cList.cart.get(0).cart_no}">
@@ -57,7 +57,7 @@
 							<div class="price product_price"
 								th:text="${#numbers.formatInteger(cList.sale_price,0,'COMMA')}"></div>
 							<input type="hidden" class="p_price"
-							th:value="${cList.sale_price}"> <!-- <div class="price p_price"><fmt:formatNumber value="${cList.sale_price}" pattern="#,###,###"></div> -->
+							th:value="${cList.sale_price}">
 							<div class="order_value" th:each="product : ${cList.cart}">
 								<input class="product_count" type="hidden"
 									th:value="${cList.product_count}"> <input
