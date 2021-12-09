@@ -96,9 +96,9 @@
 	}
 	
 	th, tfoot {
-		font-weight: lighter;
 		background-color: rgba(196, 196, 196, 0.3);
 		border: none;
+		font-weight: bold;
 	}
 	
 	/* 페이징 부분 */

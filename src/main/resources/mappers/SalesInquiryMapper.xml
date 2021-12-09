@@ -131,11 +131,11 @@
 		                   AND P2.ORDER_STATUS IN ('환불완료', '결제취소')) totalRefund
 		         FROM PURCHASE P1
 		         <if test="startDate != null and endDate != null and startDate != '' and endDate != ''"> 
-		         WHERE TO_DATE(PURCHASE_DATE, 'yy/MM/dd') <![CDATA[ >= ]]> TO_DATE(#{ startDate }, 'yy/MM/dd')
-		           AND TO_DATE(PURCHASE_DATE, 'yy/MM/dd') <![CDATA[ <= ]]> TO_DATE(#{ endDate }, 'yy/MM/dd')
+		         WHERE TO_DATE(TO_CHAR(PURCHASE_DATE, 'yy/MM/dd'), 'yy/MM/dd') <![CDATA[ >= ]]> TO_DATE(#{ startDate }, 'yy/MM/dd')
+		           AND TO_DATE(TO_CHAR(PURCHASE_DATE, 'yy/MM/dd'), 'yy/MM/dd') <![CDATA[ <= ]]> TO_DATE(#{ endDate }, 'yy/MM/dd')
 		         </if>
-		         GROUP BY PURCHASE_DATE
-		         ORDER BY PURCHASE_DATE DESC) PLIST)
+		         GROUP BY P1.PURCHASE_DATE
+		         ORDER BY P1.PURCHASE_DATE DESC) PLIST)
 		  WHERE RNUM BETWEEN #{ startRow } AND #{ endRow }		
 	</select>
 </mapper>
