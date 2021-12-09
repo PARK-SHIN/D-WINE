@@ -16,7 +16,7 @@ public interface ReviewMgMapper {
 
 	void deleteReviewMg(String user_no);
 
-	Review selectOneReview(int review_no);
+	List<Review> selectOneReview(int review_no);
 
 	int reviewMgTotalListCnt();
 

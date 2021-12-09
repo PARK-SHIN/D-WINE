@@ -31,7 +31,7 @@ public class ReviewMgServiceImpl implements ReviewMgService {
 	}
 	
 	@Override
-	public Review selectOneReview(int review_no) {
+	public List<Review> selectOneReview(int review_no) {
 		return reviewMgMapper.selectOneReview(review_no);
 	}
 
