@@ -137,6 +137,7 @@
 			$("#hashNameCheck").attr('disabled', false);
 		 	$("input[name=hashType]").attr('disabled', false);
 		 	$("#hashName").prop('readonly', false);
+		 	$("li").css("background-color", "white");
 		 	
 		 	$("#hashNo").val("");
 		 	$("#hashName").val("");
@@ -247,6 +248,13 @@
 	/* <li> 하나 선택시 값 불러오기 */
 	$(".list_box").on("click", "li", function(){
 		var hashNo = $(this).val();
+		
+		var radio = $('input[name=function]:checked');
+		if(radio.val() !== 'regist') {
+			$(this).css("background-color", "rgba(196, 196, 196, 0.3)");
+		    $("li").not($(this)).css("background-color", "white");
+		}
+	    
 	    $.ajax({
 			url : "/hashtag/selectByHashNo",
 			data : {hashNo : hashNo},
@@ -265,7 +273,12 @@
 				console.log(e);
 			}
 		}); 
-	 
+	    
+	    if(radio.val() !== 'regist') {
+			$(this).css("background-color", "rgba(196, 196, 196, 0.3)");
+		    $("li").not($(this)).css("background-color", "white");
+		}
+	    
 	});
     </script>
 </body>
