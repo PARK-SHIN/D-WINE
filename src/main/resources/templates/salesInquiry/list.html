@@ -50,7 +50,7 @@
                         </div>
                         <div class="area4">
                             <p>총매출액</p>
-                            <b th:if="${total != null}" th:text="${#numbers.formatInteger((total.totalPrice - total.totalRefund), 3, 'COMMA')}"></b>
+                            <b th:if="${total != null}" th:text="${#numbers.formatInteger((total.totalPrice - total.totalRefund), 1, 'COMMA')}"></b>
                             <b th:unless="${total != null}" th:text="0"></b> 원
                         </div>
                     </div>

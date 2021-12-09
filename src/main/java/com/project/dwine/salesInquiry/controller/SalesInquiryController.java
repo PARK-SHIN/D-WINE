@@ -98,6 +98,7 @@ public class SalesInquiryController {
 		
 		int dailyCount = salesInquiryService.getDailyCount(daily);
 		
+		
 		int resultPage = 1;
 		
 		// 하지만 페이지 전환 시 전달 받은 현재 페이지가 있을 경우 해당 값을 page로 적용
@@ -113,7 +114,7 @@ public class SalesInquiryController {
         daily.put("endRow", endRow);
         
 		List<Total> dailyList = salesInquiryService.searchDailyList(daily);
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("pi", pi);
