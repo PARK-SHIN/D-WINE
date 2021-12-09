@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.project.dwine.manage.model.dao.ReviewMgMapper;
 import com.project.dwine.manage.model.service.ReviewMgService;
 import com.project.dwine.manage.model.vo.Report;
 import com.project.dwine.manage.model.vo.Review;
@@ -78,6 +79,7 @@ public class ReviewMgController {
 		int startRow = (pi.getPage() - 1) * pi.getBoardLimit() + 1;
 		int endRow = startRow + pi.getBoardLimit() - 1;
 		List<Review> reviewMgList = reviewMgService.selectReviewList(startRow, endRow);
+		
  		Map<String, Object> map = new HashMap<>();
  		map.put("pi", pi);
  		map.put("reviewMgList", reviewMgList);
@@ -90,7 +92,8 @@ public class ReviewMgController {
 	@GetMapping("/reviewMg/rdetail/{review_no}")
 	public String reviewDetailPage(Model model, @PathVariable int review_no) {
 	    
-	    Review r = reviewMgService.selectOneReview(review_no);
+	    List<Review> r = reviewMgService.selectOneReview(review_no);
+	    System.out.println(r);
 	    model.addAttribute("review", r);
 	    
 		return "manage/reviewMg/rdetail.html";
