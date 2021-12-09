@@ -52,7 +52,7 @@
                     <h3 style="font-size: 24px;">리뷰 수정</h3>
                 </div>
                 <hr style="width: 700px; padding-right: 130px;">
-                <form id="reviewUpdateForm" th:action="@{/mypage/reviewUpdateForm}" method="post" enctype="multipart/form-data">   
+                <form id="reviewUpdateForm" name="reviewUpdateForm" th:action="@{/mypage/reviewUpdateForm}" method="post" enctype="multipart/form-data">   
                     <div>
                         <h3>별점</h3>
 						<!--  별점테스트 2 
@@ -102,7 +102,7 @@
                     <input name="old_review_image" type="hidden" th:value=${review.review_image}>
                         <h3>리뷰내용 <span style="font-size: 12px;">(10자 이상 500자 미만)</span></h3>
                         <div>
-                            <input maxlength="500" type="text" name="review_text" style="border: 1px solid lightgray; width: 700px; height: 90px;" th:value="${review.review_text}">
+                            <textarea id="test" maxlength="500"  name="review_text" style="border: 1px solid lightgray; width: 700px; height: 130px;" th:text="${review.review_text}"></textarea>
                         </div>
                     </div>
                     <br>
@@ -116,7 +116,7 @@
                     <br>
                     <th:block sec:authorize="hasRole('MEMBER')">
 						<div class="cmd">
-	                        <input type="submit" name="save" id="save" value="등록">
+	                        <input type="button" name="save" id="save" value="등록" onclick="checkList();">
 	                    </div>
 					</th:block>
 					
@@ -145,6 +145,17 @@
                }
            }
        });
+       
+       function checkList() {
+   			var test = document.getElementById('test');
+   		
+          	  if(test.value.length < 10){
+          		  alert("10글자 이상 입력하세요");
+          		  return false;
+          	  }
+          	  
+          	  document.reviewUpdateForm.submit();
+          	}
     </script><script>
 	    $(".star").on('click',function(){
 	   		var result = 1;

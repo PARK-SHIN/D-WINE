@@ -179,7 +179,6 @@
 	    	onClose: function(selectDates){
 	    		var startDate = dateFormat1(selectDates[0]);
 	    		var endDate = dateFormat1(selectDates[1]);
-	    		
 	    		start = startDate;
 	    		end = endDate;
 	    		ajaxPaging(1, startDate, endDate);
@@ -270,6 +269,7 @@
 					var pi = data.pi;
 					
 					endPage = pi.endPage;
+							tableHTML = '';
 					
 					if(dailyList.length == 0) {
 						alert("조회할 데이터가 없습니다.");
@@ -279,7 +279,6 @@
 					
 					
 						for(var i = parseInt(pi.startPage); i <= parseInt(pi.endPage) ; i++) {
-							tableHTML = '';
 							pagingHTML += '<li class="pageNo" value="' + i + '">' + i +'</li>';
 						}  
 						

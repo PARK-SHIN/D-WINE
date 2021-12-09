@@ -251,7 +251,7 @@ function deleteValue(){
 							let review_date = new Date(item.review_date);
 							
 							tableHTML += "<tr class='allReview'><td><input type='checkbox' name='delete_nums' value='" + item.report_no + "'></td>"
-	                        + "<td class='idTd'>"+ item.user_id2 + "</td>"
+						    + "<td class='idTd'>"+ item.user_id2 + "</td>"
 	                        + "<td class='contextTd' onclick=\"location.href='/manage/reviewMg/rdetail/" + item.reivew_no + "'\">"+ item.review_text + "</td>"
 	                        + "<td>"+ dateFormat(review_date) + "</td>"
 	                        + "<td>"+ item.count + "</td></tr>";

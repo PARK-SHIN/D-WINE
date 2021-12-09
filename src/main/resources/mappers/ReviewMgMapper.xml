@@ -63,10 +63,19 @@
 	
 	
 	<select id="selectReviewList" resultMap="ReviewListMap">
-	select 
-	    ROWNUM,
+	select
+    review_no1,
+    user_id2,
+    count,
+    review_text,
+    review_date
+from
+(select
+    ROWNUM num,
+    item.*
+    from (select 
 	        rev.review_no review_no1,
-	    m.user_id user_id2,
+            m.user_id user_id2,
 	        (SELECT 
 			            COUNT(*)
 			            FROM REPORT rep
@@ -76,8 +85,9 @@
     from member m, review rev
     where rev.user_no = m.user_no
     and rev.status = 'Y'
-    and ROWNUM between #{startRow} AND #{endRow}
-    ORDER BY count DESC, rev.REVIEW_NO
+    ORDER BY count DESC, rev.REVIEW_NO)item)
+    where num between #{startRow} AND #{endRow}
+	
 	</select>
 	
 	<select id="reviewMgTotalListCnt" resultType="_int">
