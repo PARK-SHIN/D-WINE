@@ -238,7 +238,7 @@
 							let create_date = new Date(item.create_date);
 							
 							tableHTML += "<tr class='allNotice'><td><input type='checkbox' name='delete_nums' value='" + item.inven_no + "'></td>"
-	                        + "<td>"+ item.notice_category + "</td>"
+	                        + "<td class='categoryTd'>"+ item.notice_category + "</td>"
 	                        + "<td onclick=\"location.href='/notice/detail/" + item.notice_no + "'\">"+ item.notice_title + "</td>"
 	                        + "<td>"+ dateFormat(create_date) + "</td></tr>";
 	
