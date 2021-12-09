@@ -168,7 +168,8 @@
   	  var token = $("meta[name='_csrf']").attr('content');
 
 	  var allProductPrice = 0;
-	
+	 
+	  
 		/* 페이지 로드시 총상품 금액 보여주기*/
         window.onload = function(){
 			purchasePrice();
@@ -233,7 +234,7 @@
 				}
 			});
 			
-
+		
 			 
 			 
 			 
@@ -252,9 +253,8 @@
 		    var username = document.querySelector(".username").value;
 		    var phone = document.querySelector(".phone").value;
 		    var userId = document.querySelector(".userId").value;
-		    orderNames = orderNames.substring(1); 
-			 
-		    
+		    orderNames = orderNames.substring(1);
+		  
 		    /* 주문번호 만들기 로직 */
 		    var date = new Date();
 	        var year = date.getFullYear().toString();
@@ -276,6 +276,8 @@
 		
 			var purchase_no = today+ "_" + random;
 
+			
+			 
 		    
 		    /* 결제하기 버튼 눌렀을때 유효성 검사 및 결제 창 띄워주기(import) */
 		    function checkForm(){
@@ -283,6 +285,8 @@
 				var pickupDate = document.getElementById("pickupDate");
 				var time = document.getElementById("time");
 				var cbx_chkAll = document.getElementById("cbx_chkAll");
+				 var ofps = Number(document.querySelector(".fpValue").value);
+				    
 				
 				var shopSelect = shop.options[shop.selectedIndex].value;
 				var dateSelect = pickupDate.options[pickupDate.selectedIndex].value;
@@ -310,6 +314,11 @@
 				
 				iamport();
 				
+				
+				
+				
+				console.log("dd " + ofps);
+				
 				function iamport(){
 					//가맹점 식별코드
 					IMP.init('imp88153348');
@@ -318,7 +327,7 @@
 				    pay_method : 'card',
 				    merchant_uid : 'merchant_' + new Date().getTime(),
 				    name : orderNames ,   //결제창에서 보여질 이름
-				    amount : 100, //실제 결제되는 가격
+				    amount : 100, // 실제 결제되는 가격
 				    buyer_email : userId,	// 구매자 이메일
 				    buyer_name : username,	// 구매자 이름
 				    buyer_tel : phone,		// 구매자 번호
