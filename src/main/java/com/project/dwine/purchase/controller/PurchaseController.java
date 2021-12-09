@@ -76,7 +76,6 @@ public class PurchaseController {
         
 		
 		wineList = purchaseService.popularwineList(sortStandard, startRow, endRow);
-		System.out.println("처음 인기");
 	
 		//System.out.println("인기순 정렬 : " + sortStandard);
 		//System.out.println("정렬 : " + wineList);
@@ -106,7 +105,7 @@ public class PurchaseController {
 		int searchListCount = 0;
 		
 		
-		if(sortStandard.equals("popular")) {
+		if(sortStandard.equals("popular") && type.equals("") && price.equals("") && country.equals("") && variety.equals("") && name.equals("")) {
 			searchListCount = purchaseService.getTotalListCount();
 		} else {
 			searchListCount = purchaseService.getsearchListCount(sortStandard, type, price, country, variety, name);
@@ -127,8 +126,9 @@ public class PurchaseController {
 		
 
         List<Product> productList = new ArrayList<>();
+        System.out.println("type : " + type);
         
-		if(sortStandard.equals("popular")) {
+        if(sortStandard.equals("popular") && type.equals("") && price.equals("") && country.equals("") && variety.equals("") && name.equals("")) {
 			productList = purchaseService.popularwineList(sortStandard, startRow, endRow);
 		} else {
 			productList = purchaseService.selectSearchProductList(sortStandard, type, price, country, variety, name, startRow, endRow);
