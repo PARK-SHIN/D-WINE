@@ -22,8 +22,8 @@
                     <h3 style="font-size: 24px;">리뷰 작성</h3>
                 </div>
                 <hr style="width: 700px; padding-right: 130px;">
-                <form th:action="@{/mypage/reviewInsertForm}" method="post" enctype="multipart/form-data">   
-                	<input type="hidden" name="star" id="star">
+                <form name="reviewInsertFomr" th:action="@{/mypage/reviewInsertForm}" method="post" enctype="multipart/form-data">   
+                	<input type="hidden" name="star" id="star" value="">
                 	<input type="hidden" name="user_no" th:value="${user_no}">
                 	<input type="hidden" name="od_no" th:value="${od_no}">
                     <div>
@@ -57,8 +57,8 @@
                     <div>
                         <h3>리뷰내용 <span style="font-size: 12px;">(10자 이상 500자 미만)</span></h3>
                         <div>
-                            <input type="text" name="review_text" maxlength="500" placeholder="내용을 입력해주세요"
-                            style="border: 1px solid lightgray; width: 700px; height: 90px;">
+                            <textarea id="test" name="review_text" maxlength = "500"  placeholder="내용을 입력해주세요"
+                            style="border: 1px solid lightgray; width: 700px; height: 130px;" required></textarea>
                         </div>
                     </div>
                     <br>
@@ -70,7 +70,7 @@
                     </div>
                     <br>
                     <div class="cmd">
-                        <input type="submit" name="save" id="save" value="등록">
+                        <input type="button" name="save" id="save" value="등록" onclick="checkList();">
                     </div>
                 </form>
             </div>
@@ -88,6 +88,22 @@
                }
            }
        });
+       
+       function checkList() {
+       	const star = document.getElementById('star');
+		var test = document.getElementById('test');
+		
+       	  if (star.value=='') {
+       	    alert("별점을 입력하세요");
+       	    return false;
+       	  };
+       	  if(test.value.length < 10){
+       		  alert("10글자 이상 입력하세요");
+       		  return false;
+       	  }
+       	  
+       	  document.reviewInsertFomr.submit();
+       	}
     </script>
     	
     <script>

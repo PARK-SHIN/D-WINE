@@ -1,6 +1,7 @@
 package com.project.dwine.manage.model.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -16,8 +17,9 @@ public class Review {
 	private int user_no;
 	private int od_no;
 	private String product_kname;
-	
-	//추가컬럼
+
+	// 추가컬럼
+	private List<Report> reportList;
 	private String user_id1;
 	private String user_id2;
 	private int report_no;
@@ -29,13 +31,14 @@ public class Review {
 	private Date report_date;
 	private int count;
 	private String reason_context;
-	
-	public Review() {}
+
+	public Review() {
+	}
 
 	public Review(int review_no, String review_text, String review_image, Date review_date, Date review_modify,
 			double star, String status, int user_no, int od_no, String product_kname, String user_id1, String user_id2,
 			int report_no, int reason_no, int reporter_no, int review_no1, int review_no2, Date report_date, int count,
-			String reason_context) {
+			String reason_context, List<Report> reportList) {
 		super();
 		this.review_no = review_no;
 		this.review_text = review_text;
@@ -57,6 +60,7 @@ public class Review {
 		this.report_date = report_date;
 		this.count = count;
 		this.reason_context = reason_context;
+		this.reportList = reportList;
 	}
 
 	public int getReview_no() {
@@ -219,17 +223,23 @@ public class Review {
 		this.reason_context = reason_context;
 	}
 
+	public List<Report> getReportList() {
+		return reportList;
+	}
+
+	public void setReportList(List<Report> reportList) {
+		this.reportList = reportList;
+	}
+
 	@Override
 	public String toString() {
 		return "Review [review_no=" + review_no + ", review_text=" + review_text + ", review_image=" + review_image
 				+ ", review_date=" + review_date + ", review_modify=" + review_modify + ", star=" + star + ", status="
 				+ status + ", user_no=" + user_no + ", od_no=" + od_no + ", product_kname=" + product_kname
-				+ ", user_id1=" + user_id1 + ", user_id2=" + user_id2 + ", report_no=" + report_no + ", reason_no="
-				+ reason_no + ", reporter_no=" + reporter_no + ", review_no1=" + review_no1 + ", review_no2="
-				+ review_no2 + ", report_date=" + report_date + ", count=" + count + ", reason_context="
-				+ reason_context + "]";
+				+ ", reportList=" + reportList + ", user_id1=" + user_id1 + ", user_id2=" + user_id2 + ", report_no="
+				+ report_no + ", reason_no=" + reason_no + ", reporter_no=" + reporter_no + ", review_no1=" + review_no1
+				+ ", review_no2=" + review_no2 + ", report_date=" + report_date + ", count=" + count
+				+ ", reason_context=" + reason_context + "]";
 	}
 
-	
-	
 }

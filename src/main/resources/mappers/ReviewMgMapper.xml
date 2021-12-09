@@ -36,6 +36,14 @@
 		<result property="user_no" column="user_no" />
 	</resultMap>
 	
+	<resultMap type="com.project.dwine.manage.model.vo.Review"
+		id="ReviewListMap">
+		<id property="review_no" column="review_no" />
+		<result property="review_text" column="REVIEW_TEXT" />
+		<result property="review_date" column="review_date" />
+		<result property="user_no" column="user_no" />
+	</resultMap>
+	
 	<resultMap type="com.project.dwine.manage.model.vo.Report"
 		id="reviewMgResultMap">
 		<id property="report_no" column="report_no" />
@@ -54,45 +62,31 @@
 	</resultMap>
 	
 	
-	<select id="selectReviewList" resultMap="ReviewResultMap">
-	   SELECT
-                REVIEW_NO1
-              , REPORT_NO 
-              , user_id2
-              , REASON_CONTEXT
-              , COUNT
-              , REVIEW_TEXT
-              , REVIEW_DATE
-              , REPORT_DATE
-              , REVIEW_NO2
-              , STAR
-              , user_id1
-            FROM (SELECT 
-                ROWNUM RNUM
-                , RLIST.*
-            FROM (SELECT 
-            R.REVIEW_NO AS REVIEW_NO1
-              , RP.REPORT_NO 
-              , M2.USER_ID as user_id2
-              , REASON_CONTEXT
-              , (SELECT 
-		            COUNT(*)
-		            FROM REPORT
-		            WHERE REVIEW_NO = RP.REVIEW_NO)COUNT
-              , R.REVIEW_TEXT
-              , R.REVIEW_DATE
-              , RP.REPORT_DATE
-              , R.REVIEW_NO AS REVIEW_NO2
-              , R.STAR
-              , M1.USER_ID AS user_id1
-        FROM REVIEW R 
-        LEFT JOIN REPORT RP ON R.REVIEW_NO = RP.REVIEW_NO
-        LEFT JOIN REPORTREASON USING(REASON_NO)
-        LEFT JOIN MEMBER M1 ON (REPORTER_NO = M1.USER_NO)
-        LEFT JOIN MEMBER M2 ON R.USER_NO = M2.USER_NO
-        WHERE R.STATUS = 'Y'
-        ORDER BY COUNT DESC, R.REVIEW_NO) RLIST)
-        WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	<select id="selectReviewList" resultMap="ReviewListMap">
+	select
+    review_no1,
+    user_id2,
+    count,
+    review_text,
+    review_date
+from
+(select
+    ROWNUM num,
+    item.*
+    from (select 
+	        rev.review_no review_no1,
+            m.user_id user_id2,
+	        (SELECT 
+			            COUNT(*)
+			            FROM REPORT rep
+			            WHERE rep.REVIEW_NO = rev.REVIEW_NO) count,
+	    rev.review_text,
+	    rev.review_date
+    from member m, review rev
+    where rev.user_no = m.user_no
+    and rev.status = 'Y'
+    ORDER BY count DESC, rev.REVIEW_NO)item)
+    where num between #{startRow} AND #{endRow}
 	
 	</select>
 	

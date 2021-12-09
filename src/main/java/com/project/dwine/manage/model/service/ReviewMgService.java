@@ -10,7 +10,7 @@ public interface ReviewMgService {
 	List<Review> selectReviewList(int startRow, int endRow);
 	Review selectReviewList(int review_no);
 	
-	Review selectOneReview(int review_no);
+	List<Review> selectOneReview(int review_no);
 
 	void deleteReviewMg(String review_no);
 

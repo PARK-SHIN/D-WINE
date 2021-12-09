@@ -95,9 +95,11 @@
             padding: 0;
             font-size: 14px;
         }
-        /* .sum {
+        #sum {
             margin-bottom: 60px;
-        } */
+            color : #83131E;
+            font-size : 30px;
+        } 
         @media screen and (max-width: 1400px) {
       .weather {
          display:none;

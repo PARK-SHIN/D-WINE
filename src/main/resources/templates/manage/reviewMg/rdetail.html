@@ -37,21 +37,21 @@
                     </div>
                     <br>
                     <div>
-                    <input name= "star" type="hidden" id="star" th:value="${review.star}">
-                    <input name="user_no" type="hidden" th:value=${review.user_no}>
-                    <input name="od_no" type="hidden" th:value=${review.od_no}>
-                    <input name="review_no" type="hidden" th:value=${review.review_no}>
+                    <input name= "star" type="hidden" id="star" th:value="${review.get(0).star}">
+                    <input name="user_no" type="hidden" th:value=${review.get(0).user_no}>
+                    <input name="od_no" type="hidden" th:value=${review.get(0).od_no}>
+                    <input name="review_no" type="hidden" th:value=${review.get(0).review_no}>
                         <h3>리뷰내용 <span style="font-size: 12px;">(10자 이상 500자 미만)</span></h3>
                         <div>
-                            <input type="text" class="review_text" name="review_text"  readonly style="border: 1px solid lightgray; width: 700px; height: 90px;" th:value="${review.review_text}">
+                            <input type="text" class="review_text" name="review_text"  readonly style="border: 1px solid lightgray; width: 700px; height: 90px;" th:value="${review.get(0).review_text}">
                         </div>
                     </div>
                     <br>
                     <div>
                         <h3>리뷰이미지 첨부 </h3>
-                        <div th:if="${review.review_image != null}">
+                        <div th:if="${review.get(0).review_image != null}">
                         <div id="fileArea" style="border: 1px solid lightgray; width: 500px; height: 500px;">
-                            <img alt="" th:src="${review.review_image}" width="500px" height="500px">
+                            <img alt="" th:src="${review.get(0).review_image}" width="500px" height="500px">
                         </div>
                         </div>
                     </div>
