@@ -117,7 +117,7 @@
 		     , totalRefund
 		  FROM (SELECT 
 			           ROWNUM RNUM
-			         , TO_DATE(daily, 'yy/MM/dd')daily
+			         , TO_DATE(daily, 'yy/MM/dd') daily
 			         , totalOrder
 			         , totalPrice
 			         , point
