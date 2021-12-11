@@ -17,8 +17,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: dwine.com
-    password: www.dwine.com
+    username: 구글아이디
+    password: 구글비밀번호
     properties:
       mail:
         smtp:
@@ -30,8 +30,11 @@ spring:
           timeout: 5000
           writetimeout: 5000
   security:
-    oauth2:      client:        registration:          kakao:
-            client-id: fae29f41478653a98fe5c415e8f363f3
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 카카오ID
             redirect-uri: http://localhost:8000/login/oauth2/code/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
@@ -45,7 +48,8 @@ spring:
             user-name-attribute: id            
   jpa:
     show-sql: true
-    hibernate:      ddl-auto: create
+    hibernate:
+      ddl-auto: create
             
 # mybatis config
 mybatis:
