@@ -58,15 +58,4 @@
 <br>
 
 + 스터디 관리 (관리자)
-<img src="https://user-images.githubusercontent.com/59522336/148402725-514dbbb5-00f9-4f17-a5a5-3f864d63ae49.png" style="max-width: 100%;">
-
-<br>
-
-+ 신고 내역 (관리자)
-구분(게시글/댓글), 정렬(최신순/신고 횟수/회원 누적 횟수)
-<img src="https://user-images.githubusercontent.com/59522336/148403005-5b0fb540-6788-41ba-82b2-10f28536f91d.png" style="max-width: 100%;">
-
-<br>
-
-+ 신고 리스트 / 회원신고 누적리스트
-<img src="https://user-images.githubusercontent.com/59522336/148403607-c5c89c2e-84b4-4f1e-b71a-0f221fa79e7d.png" style="max-width: 100%;">
+<img src="https://user-images.githubusercontent.com/59522336/148419306-9b50fee6-4f74-4ec5-87af-82ab8db8e3be.png" style="max-width: 100%;">
