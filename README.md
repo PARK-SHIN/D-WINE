@@ -38,7 +38,7 @@
 <br>
 
 + 상품 상세 페이지
-<img src="https://user-images.githubusercontent.com/59522336/148415668-7ac7d763-0335-49ed-8a48-639c3838e76b.png" widht="800px" height="1200px">
+<img src="https://user-images.githubusercontent.com/59522336/148415668-7ac7d763-0335-49ed-8a48-639c3838e76b.png">
 
 <br>
 
