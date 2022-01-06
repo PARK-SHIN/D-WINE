@@ -38,7 +38,7 @@
 <br>
 
 + 상품 상세 페이지
-<img src="https://user-images.githubusercontent.com/59522336/148415668-7ac7d763-0335-49ed-8a48-639c3838e76b.png" style="max-width: 50%;" height="400">
+<img src="https://user-images.githubusercontent.com/59522336/148415668-7ac7d763-0335-49ed-8a48-639c3838e76b.png" widht="800px" height="1200px">
 
 <br>
 
@@ -53,7 +53,7 @@
 <br>
 
 + IAMPORT 결제
-<img src="https://user-images.githubusercontent.com/59522336/148416776-0d202d4c-4d54-4bb0-a225-0c80150746cf.png" style="max-width: 100%;">
+<img src="https://user-images.githubusercontent.com/59522336/148417475-34d3486b-3fec-43c8-8111-d34adbfc49fc.png" style="max-width: 100%;">
 
 <br>
 
