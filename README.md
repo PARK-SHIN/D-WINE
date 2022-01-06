@@ -37,7 +37,7 @@
 
 <br>
 
-+ 상품 상세 페이지
++ 상품 상세 페이지 (별점,리뷰, 리뷰신고, 찜, 장바구니 등록)
 <img src="https://user-images.githubusercontent.com/59522336/148415668-7ac7d763-0335-49ed-8a48-639c3838e76b.png">
 
 <br>
@@ -57,5 +57,5 @@
 
 <br>
 
-+ 스터디 관리 (관리자)
++ 주문 완료 (KAKAOMAP API)
 <img src="https://user-images.githubusercontent.com/59522336/148419306-9b50fee6-4f74-4ec5-87af-82ab8db8e3be.png" style="max-width: 100%;">
